@@ -14,7 +14,7 @@ const jetBrainsMono = JetBrains_Mono({
 
 export default function MarketingLayout({ children }: { children: React.ReactNode }) {
   return (
-    <main className={`${hankenGrotesk.variable} ${jetBrainsMono.variable} font-marketing-sans`}>
+    <main className={`${hankenGrotesk.variable} ${jetBrainsMono.variable} bg-white font-marketing-sans`}>
       {children}
     </main>
   );
