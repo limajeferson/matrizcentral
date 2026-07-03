@@ -29,9 +29,9 @@ const FEATURES: {
     icon: "⭐",
   },
   {
-    title: "Ebook Técnico",
+    title: "Ebook Completo",
     description:
-      "Conteúdo direto sobre rodar LLMs localmente — hardware, ferramentas e troubleshooting real.",
+      "Do zero ao avançado para ter sua própria IA no computador — com trilha sem código para quem não programa.",
     variant: "ebook",
     icon: "📘",
   },

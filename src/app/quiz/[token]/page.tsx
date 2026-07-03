@@ -40,5 +40,18 @@ export default async function QuizPage({ params }: { params: { token: string } }
     );
   }
 
-  return <QuizTriagem token={params.token} />;
+  return (
+    <div>
+      <div className="mx-auto max-w-2xl px-6 pt-10 text-center">
+        <h1 className="mb-2 text-2xl font-bold text-zinc-900">
+          Vamos montar seu plano de estudo
+        </h1>
+        <p className="text-sm text-zinc-600">
+          Isto não é uma prova — é como personalizamos o conteúdo para você.
+          Programando ou não, seu caminho sai daqui em poucos minutos.
+        </p>
+      </div>
+      <QuizTriagem token={params.token} />
+    </div>
+  );
 }

@@ -36,14 +36,15 @@ export default function Hero() {
   return (
     <section id="hero" className="mx-auto max-w-3xl px-6 py-24 text-center">
       <span className="mb-6 inline-block rounded-full bg-violet-100 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-violet-700">
-        Para devs brasileiros
+        Para quem quer dominar IA — programando ou não
       </span>
       <h1 className="mb-4 text-4xl font-bold text-zinc-900 sm:text-5xl">
         Construa Seu Próprio ChatGPT Particular em Poucos Minutos
       </h1>
       <p className="mb-8 text-lg text-zinc-600">
-        O Guia Definitivo para Rodar LLMs Localmente e Nunca Mais Pagar por
-        Tokens ou Mensalidades.
+        O guia definitivo para ter sua própria IA rodando no seu computador —
+        sem pagar mensalidade, sem depender da nuvem e sem precisar ser
+        especialista.
       </p>
 
       <div className="mx-auto flex max-w-md flex-col justify-center gap-3 sm:flex-row">
