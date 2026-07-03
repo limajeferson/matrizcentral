@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { QUIZ_TRIAGEM } from "@/data/quiz-triagem";
+import { visibleQuestions } from "@/lib/quiz-branching";
 
 interface Props {
   token: string;
@@ -16,8 +17,11 @@ export default function QuizTriagem({ token }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const question = QUIZ_TRIAGEM[currentQ];
-  const isLast = currentQ === QUIZ_TRIAGEM.length - 1;
+  // O conjunto de perguntas visíveis cresce conforme as respostas revelam
+  // ramos (técnico/não-técnico). O prefixo já respondido nunca muda.
+  const visible = visibleQuestions(QUIZ_TRIAGEM, answers);
+  const question = visible[currentQ];
+  const isLast = currentQ === visible.length - 1;
 
   const toggleOption = (index: number) => {
     if (question.type === "radio") {
@@ -35,7 +39,9 @@ export default function QuizTriagem({ token }: Props) {
     setSelectedIndexes([]);
     setError(null);
 
-    if (!isLast) {
+    // Recalcula com a resposta recém-dada: ela pode revelar novas perguntas.
+    const updatedVisible = visibleQuestions(QUIZ_TRIAGEM, updatedAnswers);
+    if (currentQ + 1 < updatedVisible.length) {
       setCurrentQ((prev) => prev + 1);
       return;
     }
@@ -59,12 +65,12 @@ export default function QuizTriagem({ token }: Props) {
   return (
     <div className="mx-auto max-w-2xl p-6">
       <p className="mb-2 text-sm text-zinc-500">
-        Pergunta {currentQ + 1} de {QUIZ_TRIAGEM.length}
+        Pergunta {currentQ + 1} de {visible.length}
       </p>
       <div className="mb-6 h-2 w-full rounded-full bg-zinc-200">
         <div
           className="h-2 rounded-full bg-violet-600 transition-all"
-          style={{ width: `${((currentQ + 1) / QUIZ_TRIAGEM.length) * 100}%` }}
+          style={{ width: `${((currentQ + 1) / visible.length) * 100}%` }}
         />
       </div>
 
