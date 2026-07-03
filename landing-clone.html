@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>IPSUM — AI Language Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#141414;
+    --ink-soft:#5c5c5c;
+    --ink-mute:#8a8a8a;
+    --line:#ececea;
+    --bg:#ffffff;
+    --bg-soft:#f6f6f4;
+    --green:#37c978;
+    --green-soft:#e7f7ee;
+    --radius-lg:20px;
+    --radius-md:14px;
+    --radius-sm:10px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Hanken Grotesk',system-ui,sans-serif;
+    color:var(--ink);
+    background:var(--bg);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+  }
+  .container{max-width:1120px;margin:0 auto;padding:0 32px}
+  .mono{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+  }
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(255,255,255,.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex;align-items:center;justify-content:space-between;
+    height:64px;
+  }
+  .logo{font-weight:700;font-size:20px;letter-spacing:.02em}
+  .logo span{color:var(--green)}
+  .nav-links{display:flex;gap:28px;list-style:none}
+  .nav-links a{
+    text-decoration:none;color:var(--ink);font-size:14px;font-weight:500;
+  }
+  .nav-links a:hover{color:var(--green)}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    border:none;cursor:pointer;text-decoration:none;
+    font-family:inherit;font-weight:600;font-size:14px;
+    border-radius:999px;padding:10px 22px;transition:.2s;
+  }
+  .btn-dark{background:var(--ink);color:#fff}
+  .btn-dark:hover{background:#000}
+  .btn-ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+  .btn-ghost:hover{border-color:var(--ink)}
+  /* ---------- HERO ---------- */
+  .hero{padding:72px 0 40px;text-align:center}
+  .badge{
+    display:inline-flex;align-items:center;gap:8px;
+    border:1px solid var(--line);border-radius:999px;
+    padding:6px 14px;color:var(--ink-soft);background:#fff;
+  }
+  .badge i{color:var(--green);font-style:normal}
+  .hero h1{
+    font-size:clamp(36px,5vw,56px);
+    font-weight:700;line-height:1.12;letter-spacing:-.02em;
+    margin:24px auto 20px;max-width:720px;
+  }
+  .hero p{
+    color:var(--ink-soft);max-width:440px;margin:0 auto 28px;font-size:15px;
+  }
+  .hero-cta{display:flex;gap:12px;justify-content:center}
+  /* ---------- DEMO WIDGET ---------- */
+  .demo{
+    background:var(--bg-soft);
+    border:1px solid var(--line);
+    border-radius:var(--radius-lg);
+    padding:20px;margin:48px 0 56px;
+  }
+  .demo-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+  .tab{
+    display:inline-flex;align-items:center;gap:8px;
+    background:#fff;border:1px solid var(--line);border-radius:999px;
+    padding:8px 16px;cursor:pointer;color:var(--ink-soft);
+  }
+  .tab.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .demo-body{
+    display:grid;grid-template-columns:1.4fr 1fr;gap:20px;
+    background:#fff;border:1px solid var(--line);
+    border-radius:var(--radius-md);padding:24px;
+  }
+  .create-label{color:var(--ink-mute);margin-bottom:14px;display:block}
+  .prompt{
+    font-size:15px;color:var(--ink-soft);font-style:italic;
+    border:none;width:100%;resize:none;font-family:inherit;outline:none;
+    line-height:1.6;
+  }
+  .generate-row{display:flex;justify-content:flex-end;margin:10px 0 22px}
+  .tutor-list{border-top:1px solid var(--line);padding-top:18px}
+  .tutor{
+    display:flex;align-items:center;gap:12px;padding:10px 0;
+  }
+  .avatar{
+    width:36px;height:36px;border-radius:50%;
+    background:linear-gradient(135deg,#bfe9d2,#141414 70%);
+    flex-shrink:0;
+  }
+  .tutor b{font-size:14px;display:block}
+  .tutor small{color:var(--ink-mute);font-size:12.5px}
+  .tutor .check{margin-left:auto;color:var(--ink)}
+  .tutor.dim{opacity:.45}
+  /* voice card */
+  .voice-side{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}
+  .voice-card{
+    width:200px;border-radius:18px;padding:10px;
+    background:linear-gradient(160deg,#d9f4e4,#8fd8ae);
+    border:1px solid #c4e8d3;
+  }
+  .voice-frame{
+    background:#101010;border-radius:12px;padding:14px 10px 12px;
+    display:flex;flex-direction:column;align-items:center;gap:10px;
+  }
+  .silhouette{width:110px;height:110px}
+  .wave{display:flex;align-items:center;gap:3px;height:26px}
+  .wave span{width:3px;border-radius:2px;background:#9be5b8;display:block}
+  .voice-name{color:#fff;font-size:11px;letter-spacing:.15em}
+  .lang{
+    display:inline-flex;align-items:center;gap:8px;
+    border:1px solid var(--line);border-radius:999px;background:#fff;
+    padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;
+  }
+  /* ---------- LOGOS ---------- */
+  .logos{padding:8px 0 64px;text-align:center}
+  .logos p{font-size:13px;color:var(--ink-soft);margin-bottom:26px}
+  .logo-row{
+    display:flex;gap:56px;justify-content:center;align-items:center;
+    flex-wrap:wrap;color:#1f1f1f;font-weight:700;font-size:18px;opacity:.85;
+  }
+  .logo-row span{display:inline-flex;align-items:center;gap:8px}
+  /* ---------- SECTION HEADS ---------- */
+  section{padding:72px 0}
+  .sec-tag{color:var(--ink-soft);display:inline-flex;gap:8px;align-items:center;margin-bottom:16px}
+  .sec-tag i{color:var(--green);font-style:normal}
+  .sec-head{
+    display:grid;grid-template-columns:1.2fr .8fr;gap:40px;align-items:end;
+    margin-bottom:44px;
+  }
+  .sec-head h2{
+    font-size:clamp(26px,3.2vw,36px);font-weight:700;line-height:1.15;letter-spacing:-.015em;
+  }
+  .sec-head .aside{color:var(--ink-soft);font-size:14px}
+  .sec-head .aside .btn{margin-top:16px}
+  /* ---------- ADVANTAGES / CHART ---------- */
+  .advantages{background:var(--bg-soft);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .chart-card{
+    background:#fff;border:1px solid var(--line);border-radius:var(--radius-lg);
+    padding:26px;
+  }
+  .pill-row{display:flex;gap:8px;margin-bottom:26px}
+  .pill{
+    border:1px solid var(--line);border-radius:999px;padding:7px 16px;
+    font-size:13px;font-weight:600;background:#fff;cursor:pointer;color:var(--ink-soft);
+  }
+  .pill.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .chart-wrap{position:relative}
+  .competitor-tag{
+    position:absolute;top:6px;right:8px;
+    background:var(--ink);color:#fff;font-size:11px;
+    border-radius:999px;padding:5px 12px;
+  }
+  .chart-feats{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:28px;
+    margin-top:28px;padding-top:24px;border-top:1px solid var(--line);
+  }
+  .feat h4{font-size:14px;display:flex;align-items:center;gap:8px;margin-bottom:6px}
+  .feat h4 i{color:var(--green);font-style:normal}
+  .feat p{font-size:13px;color:var(--ink-soft)}
+  /* ---------- FEATURES CARDS ---------- */
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .card{
+    background:#fff;border:1px solid var(--line);border-radius:var(--radius-lg);
+    padding:16px;display:flex;flex-direction:column;
+  }
+  .card-visual{
+    height:190px;border-radius:var(--radius-md);
+    background:var(--bg-soft);border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    position:relative;overflow:hidden;margin-bottom:18px;
+  }
+  .mini-phone{
+    width:96px;height:150px;border-radius:16px;
+    background:linear-gradient(180deg,#101010,#2c6b4b);
+    border:3px solid #101010;position:relative;
+  }
+  .float-chip{
+    position:absolute;background:var(--ink);color:#fff;font-size:10px;
+    border-radius:999px;padding:5px 10px;letter-spacing:.05em;
+  }
+  .float-card{
+    position:absolute;background:#fff;border:1px solid var(--line);
+    border-radius:12px;padding:8px 10px;font-size:10px;color:var(--ink-soft);
+    box-shadow:0 8px 24px rgba(0,0,0,.06);
+  }
+  .card h3{font-size:16px;margin-bottom:6px;display:flex;gap:8px;align-items:center}
+  .card h3 i{color:var(--green);font-style:normal}
+  .card > p{font-size:13.5px;color:var(--ink-soft)}
+  /* ---------- PRICING ---------- */
+  .pricing{background:var(--bg-soft);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .plan{
+    background:#fff;border:1px solid var(--line);border-radius:var(--radius-lg);
+    padding:24px;display:flex;flex-direction:column;position:relative;
+  }
+  .plan.popular{
+    background:linear-gradient(170deg,#eafaf1 0%,#b9e9cd 60%,#8fd8ae 100%);
+    border-color:#b7e4c9;
+  }
+  .plan-tag{
+    position:absolute;top:20px;right:20px;
+    background:var(--ink);color:#fff;font-size:10px;letter-spacing:.06em;
+    border-radius:999px;padding:5px 10px;
+  }
+  .plan h3{font-size:15px;font-weight:600;margin-bottom:14px}
+  .price{display:flex;align-items:baseline;gap:10px;margin-bottom:18px}
+  .price b{font-size:38px;font-weight:700;letter-spacing:-.02em}
+  .price small{color:var(--ink-soft);font-size:12px;line-height:1.35}
+  .plan .btn{justify-content:center;width:100%;margin-bottom:20px}
+  .plan ul{list-style:none;display:flex;flex-direction:column;gap:11px;font-size:13px;color:#333}
+  .plan ul li{display:flex;gap:10px;align-items:flex-start}
+  .plan ul li::before{content:"✓";color:var(--green);font-weight:700}
+  .plan.popular ul li::before{color:#0c5c34}
+  .plan .foot{margin-top:20px;font-size:12px;color:var(--ink-mute)}
+  /* ---------- TESTIMONIALS ---------- */
+  .testimonials .sec-head{margin-bottom:36px}
+  .arrows{display:flex;gap:10px;justify-content:flex-end;margin-bottom:18px}
+  .arrow{
+    width:36px;height:36px;border-radius:50%;
+    border:1px solid var(--line);background:#fff;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;font-size:15px;
+  }
+  .arrow:hover{border-color:var(--ink)}
+  .t-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .t-card{
+    background:#fff;border:1px solid var(--line);border-radius:var(--radius-lg);
+    padding:26px;
+  }
+  .t-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+  .t-person{display:flex;gap:12px;align-items:center}
+  .t-person b{font-size:14px;display:block}
+  .t-person small{color:var(--ink-mute);font-size:12px}
+  .t-brand{font-weight:700;font-size:15px;opacity:.8}
+  .t-card p{font-size:14.5px;color:#333}
+  /* ---------- CTA + FOOTER ---------- */
+  .cta{
+    background:var(--ink);color:#fff;border-radius:var(--radius-lg);
+    padding:56px 40px;text-align:center;
+  }
+  .cta h2{font-size:clamp(24px,3vw,34px);font-weight:700;margin-bottom:12px}
+  .cta p{color:#bdbdbd;max-width:420px;margin:0 auto 26px;font-size:14px}
+  .btn-green{background:var(--green);color:#08321c}
+  .btn-green:hover{filter:brightness(1.05)}
+  footer{padding:36px 0;border-top:1px solid var(--line);margin-top:72px}
+  .foot-row{
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;
+    font-size:13px;color:var(--ink-mute);
+  }
+  .foot-row nav{display:flex;gap:22px}
+  .foot-row a{color:var(--ink-soft);text-decoration:none}
+  .foot-row a:hover{color:var(--ink)}
+  /* ---------- RESPONSIVE ---------- */
+  @media(max-width:900px){
+    .nav-links{display:none}
+    .demo-body{grid-template-columns:1fr}
+    .sec-head{grid-template-columns:1fr}
+    .cards,.chart-feats{grid-template-columns:1fr}
+    .t-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <div class="logo">IP<span>/</span>UM<sup style="font-size:9px">®</sup></div>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#how">How It Works</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#resources">Resources</a></li>
+    </ul>
+    <a class="btn btn-dark" href="#">Sign Up</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="container hero">
+  <span class="badge mono"><i>✦</i> User-friendly AI tools</span>
+  <h1>Experience the Future of Language Learning with AI</h1>
+  <p>Lorem AI helps you master languages with real-time voice interaction, adaptive feedback, and personalized lessons powered by AI.</p>
+  <div class="hero-cta">
+    <a class="btn btn-dark" href="#">Try Voice Demo</a>
+    <a class="btn btn-ghost" href="#">Contact Sales</a>
+  </div>
+
+  <!-- DEMO WIDGET -->
+  <div class="demo" style="text-align:left">
+    <div class="demo-tabs mono">
+      <span class="tab active">🎙 Voice Tutor</span>
+      <span class="tab">T Text to Speech</span>
+      <span class="tab">🎧 Speech to Text</span>
+      <span class="tab">✎ AI Correction</span>
+      <span class="tab">💬 Conversational Mode</span>
+    </div>
+    <div class="demo-body">
+      <div>
+        <span class="create-label mono">Create your AI tutor</span>
+        <textarea class="prompt" rows="2">"A calm, authoritative voice with a deep baritone, speaking with a British accent for history lessons."</textarea>
+        <div class="generate-row"><button class="btn btn-ghost">Generate</button></div>
+        <div class="tutor-list">
+          <span class="create-label mono">Our tutor</span>
+          <div class="tutor">
+            <div class="avatar"></div>
+            <div><b>MONKS</b><small>Calm Baritone, Slow Pace, Highly Articulate.</small></div>
+            <span class="check">●</span>
+          </div>
+          <div class="tutor dim">
+            <div class="avatar" style="background:linear-gradient(135deg,#f3d1b8,#141414 70%)"></div>
+            <div><b>KELLY</b><small>Bright Tenor, Fast Pace, Highly Motivational.</small></div>
+          </div>
+        </div>
+      </div>
+      <div class="voice-side">
+        <div class="voice-card">
+          <div class="voice-frame">
+            <svg class="silhouette" viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="56" fill="url(#g1)"/>
+              <defs>
+                <radialGradient id="g1" cx="50%" cy="40%">
+                  <stop offset="0%" stop-color="#8fd8ae"/>
+                  <stop offset="100%" stop-color="#2f6a49"/>
+                </radialGradient>
+              </defs>
+              <path d="M78 30c-8-9-24-11-33-3-7 6-9 15-7 23 1 5-1 8-4 12-2 3 0 5 3 5h4c0 5 1 9 4 12 4 4 10 5 16 4v12h22V72c5-6 8-14 7-23-1-8-6-14-12-19z" fill="#0d0d0d"/>
+            </svg>
+            <div class="wave" id="wave"></div>
+            <span class="voice-name mono">MONKS</span>
+          </div>
+        </div>
+        <button class="lang">🇺🇸 English <span style="font-size:10px">▾</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOGOS -->
+  <div class="logos">
+    <p>Trusted by the world's top Enterprises and Startups</p>
+    <div class="logo-row">
+      <span>◎ loom</span><span>ramp ⚡</span><span>▲ Vercel</span><span>☰ descript</span><span>◆ Raycast</span>
+    </div>
+  </div>
+</div>
+
+<!-- ADVANTAGES -->
+<section class="advantages" id="how">
+  <div class="container">
+    <div class="sec-head">
+      <div>
+        <span class="sec-tag mono"><i>✦</i> Our advantages</span>
+        <h2>Learns and Responds<br/>Faster Than You Speak</h2>
+      </div>
+      <div class="aside">
+        Lorem sets the standard for real-time language learning. It listens, adapts, and responds instantly so every session feels natural and human.
+        <br/><a class="btn btn-ghost" href="#">Start Free Trial</a>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="pill-row">
+        <span class="pill active">Smart advantage</span>
+        <span class="pill">Human pace</span>
+      </div>
+      <div class="chart-wrap">
+        <span class="competitor-tag mono">Next Best Competitor</span>
+        <svg viewBox="0 0 800 220" width="100%" preserveAspectRatio="none" style="display:block">
+          <defs>
+            <linearGradient id="fill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#37c978" stop-opacity=".55"/>
+              <stop offset="100%" stop-color="#37c978" stop-opacity=".05"/>
+            </linearGradient>
+          </defs>
+          <path d="M0 200 C120 195 180 170 260 150 C360 125 420 80 520 55 C620 32 700 22 800 15 L800 220 L0 220 Z" fill="url(#fill)"/>
+          <path d="M0 200 C120 195 180 170 260 150 C360 125 420 80 520 55 C620 32 700 22 800 15" fill="none" stroke="#37c978" stroke-width="3"/>
+          <path d="M0 210 C150 208 300 195 450 175 C600 155 720 140 800 130" fill="none" stroke="#c9c9c9" stroke-width="2" stroke-dasharray="6 6"/>
+        </svg>
+      </div>
+      <div class="chart-feats">
+        <div class="feat">
+          <h4><i>✦</i> Instant Understanding</h4>
+          <p>No delays, no lag — get feedback on pronunciation, grammar, and tone in real time.</p>
+        </div>
+        <div class="feat">
+          <h4><i>◍</i> Trained for Global Contexts</h4>
+          <p>From English to Korean, Lingual adapts instantly to your accent and language needs.</p>
+        </div>
+        <div class="feat">
+          <h4><i>◔</i> Smarter Efficiency</h4>
+          <p>Low-latency processing lets you focus on speaking, not waiting for AI to think.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="container">
+    <div class="sec-head">
+      <div>
+        <span class="sec-tag mono"><i>✦</i> Our features</span>
+        <h2>Empowering Learners<br/>Across Levels and Goals</h2>
+      </div>
+      <div class="aside">
+        Lorem helps you master languages with real-time voice interaction, adaptive feedback, and personalized lessons powered by AI.
+        <br/><a class="btn btn-ghost" href="#">Start Free Trial</a>
+      </div>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-visual">
+          <span class="float-card" style="top:18px;left:18px">Cloning…</span>
+          <svg width="120" height="120" viewBox="0 0 120 120" style="border-radius:14px;background:linear-gradient(135deg,#d9f4e4,#8fd8ae)">
+            <path d="M78 30c-8-9-24-11-33-3-7 6-9 15-7 23 1 5-1 8-4 12-2 3 0 5 3 5h4c0 5 1 9 4 12 4 4 10 5 16 4v12h22V72c5-6 8-14 7-23-1-8-6-14-12-19z" fill="#0d0d0d"/>
+          </svg>
+          <span class="float-chip" style="bottom:16px;right:16px">VOICE MATCH</span>
+        </div>
+        <h3><i>🎙</i> AI Voice Tutor Cloning</h3>
+        <p>Clone any tutor's voice — or yours — for a fully personalized experience.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-visual">
+          <div class="mini-phone"></div>
+          <span class="float-card" style="top:24px;left:22px">🇩🇪 German · Lesson 04</span>
+          <span class="float-chip" style="top:60px;right:20px;background:#0c5c34">＋ EXCELLENT!</span>
+        </div>
+        <h3><i>📚</i> Personalized AI Lessons</h3>
+        <p>Lorem AI adapts lessons to your pace, goals, and level in real time.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-visual">
+          <span class="float-card" style="top:22px;right:20px;max-width:150px">"each word you memorize" <b style="color:#141414">🇺🇸</b></span>
+          <span class="float-card" style="bottom:44px;left:18px">🎧 It means learning and remembering words.</span>
+          <span class="float-chip" style="bottom:14px;left:18px">PODCASTIN'</span>
+        </div>
+        <h3><i>💬</i> Real Conversations</h3>
+        <p>Chat anytime with AI tutors that correct and guide you naturally.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="container">
+    <div class="sec-head">
+      <div>
+        <span class="sec-tag mono"><i>✦</i> Flexible pricing</span>
+        <h2>Pick Your Plan and<br/>Start Learning Fluently</h2>
+      </div>
+      <div class="aside">
+        Whether you're just starting or mastering fluency, our flexible plans make language learning personal, affordable, and effective.
+      </div>
+    </div>
+
+    <div class="cards">
+      <div class="plan">
+        <h3>Starter Plan</h3>
+        <div class="price"><b>$19</b><small>Billed annually<br/>at $228/year</small></div>
+        <a class="btn btn-ghost" href="#">Get Started</a>
+        <ul>
+          <li>1 AI Tutor (Basic Level)</li>
+          <li>Access to beginner-level lessons</li>
+          <li>100 personalized interactions per month</li>
+          <li>Email support</li>
+          <li>Monthly progress reports</li>
+        </ul>
+        <span class="foot">Perfect for beginners</span>
+      </div>
+
+      <div class="plan popular">
+        <span class="plan-tag mono">Most Popular</span>
+        <h3>Growth Plan</h3>
+        <div class="price"><b>$29</b><small>Billed annually<br/>at $348/year</small></div>
+        <a class="btn btn-dark" href="#">Get Started</a>
+        <ul>
+          <li>3 AI Tutors (Intermediate Level)</li>
+          <li>Access to intermediate lessons</li>
+          <li>500 personalized interactions per month</li>
+          <li>Priority email and chat support</li>
+          <li>Weekly progress reports</li>
+          <li>Voice recognition for feedback</li>
+          <li>Exclusive educational podcasts</li>
+        </ul>
+        <span class="foot" style="color:#31694a">Perfect for learners aiming to build fluency</span>
+      </div>
+
+      <div class="plan">
+        <h3>Scale Plan</h3>
+        <div class="price"><b>$59</b><small>Billed annually<br/>at $708/year</small></div>
+        <a class="btn btn-ghost" href="#">Get Started</a>
+        <ul>
+          <li>Unlimited AI Tutors (Advanced Level)</li>
+          <li>Full access to all language levels</li>
+          <li>Unlimited personalized interactions</li>
+          <li>Voice and video calls with AI in real time</li>
+          <li>Priority support and 24/7 chat access</li>
+          <li>Weekly advanced progress reports</li>
+          <li>Custom lesson creation based on interest</li>
+        </ul>
+        <span class="foot">Perfect for serious learners seeking mastery</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="resources">
+  <div class="container">
+    <div class="sec-head">
+      <div>
+        <span class="sec-tag mono"><i>✦</i> Testimonials</span>
+        <h2>What Our Users<br/>Are Saying</h2>
+      </div>
+      <div class="aside">
+        See how learners around the world are mastering new languages faster with AI-powered voice interaction.
+      </div>
+    </div>
+    <div class="arrows">
+      <button class="arrow">←</button>
+      <button class="arrow">→</button>
+    </div>
+    <div class="t-grid">
+      <div class="t-card">
+        <div class="t-top">
+          <div class="t-person">
+            <div class="avatar"></div>
+            <div><b>Emily Zhang</b><small>Head of Product</small></div>
+          </div>
+          <span class="t-brand">ramp ⚡</span>
+        </div>
+        <p>"The real-time voice feedback feels like having a private tutor available 24/7. My pronunciation improved in weeks, not months."</p>
+      </div>
+      <div class="t-card">
+        <div class="t-top">
+          <div class="t-person">
+            <div class="avatar" style="background:linear-gradient(135deg,#f3d1b8,#141414 70%)"></div>
+            <div><b>Julian Park</b><small>Language Research Lead</small></div>
+          </div>
+          <span class="t-brand">◎ loom</span>
+        </div>
+        <p>"Adaptive lessons that actually adapt. The AI notices what I struggle with and adjusts instantly — it's remarkably natural."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="container">
+  <div class="cta">
+    <h2>Start Speaking a New Language Today</h2>
+    <p>Join thousands of learners using AI-powered voice tutors to reach fluency faster.</p>
+    <a class="btn btn-green" href="#">Try Voice Demo</a>
+  </div>
+</div>
+
+<footer>
+  <div class="container foot-row">
+    <div class="logo" style="font-size:16px">IP<span>/</span>UM®</div>
+    <nav>
+      <a href="#features">Features</a>
+      <a href="#how">How It Works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#resources">Resources</a>
+    </nav>
+    <span>© 2026 Ipsum AI. Mockup — todos os dados são fictícios.</span>
+  </div>
+</footer>
+
+<script>
+  // waveform mockado
+  const wave = document.getElementById('wave');
+  const heights = [6,12,20,10,24,16,8,22,14,26,10,18,6,14,22,8];
+  heights.forEach((h,i)=>{
+    const bar=document.createElement('span');
+    bar.style.height=h+'px';
+    bar.style.animation=`pulse 1s ease-in-out ${i*0.07}s infinite alternate`;
+    wave.appendChild(bar);
+  });
+  const style=document.createElement('style');
+  style.textContent='@keyframes pulse{from{transform:scaleY(.5)}to{transform:scaleY(1.2)}}';
+  document.head.appendChild(style);
+
+  // tabs / pills interativos (visual apenas)
+  document.querySelectorAll('.demo-tabs .tab').forEach(t=>{
+    t.addEventListener('click',()=>{
+      document.querySelectorAll('.demo-tabs .tab').forEach(x=>x.classList.remove('active'));
+      t.classList.add('active');
+    });
+  });
+  document.querySelectorAll('.pill').forEach(p=>{
+    p.addEventListener('click',()=>{
+      document.querySelectorAll('.pill').forEach(x=>x.classList.remove('active'));
+      p.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
