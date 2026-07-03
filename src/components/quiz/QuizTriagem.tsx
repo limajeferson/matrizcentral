@@ -57,18 +57,18 @@ export default function QuizTriagem({ token }: Props) {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
-      <p className="text-sm text-gray-500 mb-2">
+    <div className="mx-auto max-w-2xl p-6">
+      <p className="mb-2 text-sm text-zinc-500">
         Pergunta {currentQ + 1} de {QUIZ_TRIAGEM.length}
       </p>
-      <div className="w-full bg-gray-200 rounded-full h-2 mb-6">
+      <div className="mb-6 h-2 w-full rounded-full bg-zinc-200">
         <div
-          className="bg-blue-600 h-2 rounded-full transition-all"
+          className="h-2 rounded-full bg-violet-600 transition-all"
           style={{ width: `${((currentQ + 1) / QUIZ_TRIAGEM.length) * 100}%` }}
         />
       </div>
 
-      <h2 className="text-lg font-semibold mb-4">{question.text}</h2>
+      <h2 className="mb-4 text-lg font-semibold text-zinc-900">{question.text}</h2>
 
       <div className="space-y-3">
         {question.options.map((option, index) => (
@@ -76,10 +76,10 @@ export default function QuizTriagem({ token }: Props) {
             key={option.text}
             type="button"
             onClick={() => toggleOption(index)}
-            className={`w-full text-left p-3 border-2 rounded-lg transition ${
+            className={`w-full rounded-lg border-2 p-3 text-left transition ${
               selectedIndexes.includes(index)
-                ? "border-blue-500 bg-blue-50"
-                : "border-gray-300 hover:border-blue-300"
+                ? "border-violet-500 bg-violet-50"
+                : "border-zinc-300 hover:border-violet-300"
             }`}
           >
             {option.text}
@@ -87,13 +87,13 @@ export default function QuizTriagem({ token }: Props) {
         ))}
       </div>
 
-      {error && <p className="text-red-600 text-sm mt-4">{error}</p>}
+      {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
 
       <button
         type="button"
         onClick={handleNext}
         disabled={selectedIndexes.length === 0 || submitting}
-        className="mt-6 w-full bg-blue-600 text-white py-3 rounded-lg font-bold disabled:opacity-50"
+        className="mt-6 w-full rounded-lg bg-violet-600 py-3 font-bold text-white transition hover:bg-violet-700 disabled:opacity-50"
       >
         {isLast ? (submitting ? "Calculando seu perfil..." : "Ver meu perfil") : "Próxima"}
       </button>
