@@ -14,17 +14,17 @@ export default function DemoWidget() {
   const [active, setActive] = useState<TabId>("quiz");
 
   return (
-    <div className="mx-auto mt-12 max-w-2xl rounded-3xl border border-zinc-200 bg-zinc-50 p-5 text-left">
-      <div className="mb-4 flex flex-wrap gap-2">
+    <div className="mx-auto mt-11 max-w-2xl rounded-[20px] border border-zinc-200 bg-zinc-50 p-5 text-left shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
+      <div className="mb-4 flex flex-wrap gap-2 font-marketing-mono">
         {TABS.map((tab) => (
           <button
             key={tab.id}
             type="button"
             onClick={() => setActive(tab.id)}
-            className={`rounded-full px-4 py-2 text-xs font-semibold transition ${
+            className={`rounded-full px-4 py-2 text-[11px] font-medium uppercase tracking-wide transition ${
               active === tab.id
-                ? "bg-violet-600 text-white"
-                : "border border-zinc-200 bg-white text-zinc-600"
+                ? "border border-zinc-900 bg-zinc-900 text-white"
+                : "border border-zinc-200 bg-white text-zinc-500 hover:border-zinc-400"
             }`}
           >
             {tab.label}
@@ -35,7 +35,7 @@ export default function DemoWidget() {
       <div className="rounded-2xl border border-zinc-200 bg-white p-6">
         {active === "quiz" && (
           <div>
-            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-zinc-400">
+            <p className="mb-1 font-marketing-mono text-[11px] font-medium uppercase tracking-wide text-zinc-400">
               Questão 3 de 20
             </p>
             <div className="mb-4 h-1.5 w-full rounded-full bg-zinc-100">
@@ -61,7 +61,7 @@ export default function DemoWidget() {
 
         {active === "roadmap" && (
           <div className="space-y-4">
-            <p className="text-xs font-semibold uppercase tracking-wide text-zinc-400">
+            <p className="font-marketing-mono text-[11px] font-medium uppercase tracking-wide text-zinc-400">
               Seu roadmap — semana 1
             </p>
             <div className="rounded-xl border-l-4 border-violet-400 bg-violet-50 p-4">
@@ -81,7 +81,7 @@ export default function DemoWidget() {
 
         {active === "ebook" && (
           <div>
-            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-zinc-400">
+            <p className="mb-2 font-marketing-mono text-[11px] font-medium uppercase tracking-wide text-zinc-400">
               Construa Seu Próprio ChatGPT Particular
             </p>
             <p className="mb-4 text-sm text-zinc-600">

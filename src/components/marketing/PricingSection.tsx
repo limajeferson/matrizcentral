@@ -1,3 +1,5 @@
+import Eyebrow from "@/components/marketing/Eyebrow";
+
 const FEATURES: string[] = [
   "Ebook completo (9 capítulos) sobre rodar LLMs localmente",
   "Triagem de perfil personalizada",
@@ -10,14 +12,15 @@ export default function PricingSection() {
   return (
     <section id="preco" className="mx-auto max-w-2xl border-t border-zinc-100 px-6 py-16">
       <div className="mb-8 text-center">
-        <span className="mb-3 inline-block text-xs font-semibold uppercase tracking-wide text-violet-600">
-          Preço
-        </span>
-        <h2 className="text-3xl font-bold text-zinc-900">Simples, transparente</h2>
+        <Eyebrow className="mb-4">Preço</Eyebrow>
+        <h2 className="text-3xl font-bold tracking-tight text-zinc-900">Simples, transparente</h2>
       </div>
-      <div className="rounded-3xl bg-gradient-to-br from-violet-600 to-violet-700 p-8 text-white shadow-lg">
-        <p className="text-5xl font-bold">R$47</p>
-        <p className="mb-6 text-violet-200">pagamento único, sem mensalidade</p>
+      <div className="relative rounded-[20px] bg-gradient-to-br from-violet-600 to-violet-700 p-8 text-white shadow-lg">
+        <span className="absolute right-6 top-6 rounded-full bg-white/15 px-3 py-1 font-marketing-mono text-[10px] uppercase tracking-wide">
+          Pagamento único
+        </span>
+        <p className="text-5xl font-bold tracking-tight">R$47</p>
+        <p className="mb-6 text-violet-200">sem mensalidade, acesso vitalício</p>
         <ul className="mb-8 space-y-3">
           {FEATURES.map((feature) => (
             <li key={feature} className="flex items-center gap-3">
@@ -30,7 +33,7 @@ export default function PricingSection() {
         </ul>
         <a
           href="#hero"
-          className="block rounded-xl bg-white py-3 text-center font-bold text-violet-700 transition hover:bg-violet-50"
+          className="block rounded-full bg-white py-3 text-center font-semibold text-violet-700 transition hover:bg-violet-50"
         >
           Comprar agora
         </a>

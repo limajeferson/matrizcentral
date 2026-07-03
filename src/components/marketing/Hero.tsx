@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import DemoWidget from "@/components/marketing/DemoWidget";
+import Eyebrow from "@/components/marketing/Eyebrow";
 
 export default function Hero() {
   const [email, setEmail] = useState("");
@@ -34,14 +35,12 @@ export default function Hero() {
   };
 
   return (
-    <section id="hero" className="mx-auto max-w-3xl px-6 py-24 text-center">
-      <span className="mb-6 inline-block rounded-full bg-violet-100 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-violet-700">
-        Para quem quer dominar IA — programando ou não
-      </span>
-      <h1 className="mb-4 text-4xl font-bold text-zinc-900 sm:text-5xl">
+    <section id="hero" className="mx-auto max-w-3xl px-6 pb-10 pt-16 text-center sm:pt-20">
+      <Eyebrow className="mb-6">Para quem quer dominar IA — programando ou não</Eyebrow>
+      <h1 className="mx-auto mb-5 max-w-xl text-[clamp(2.25rem,5vw,3.5rem)] font-bold leading-[1.1] tracking-tight text-zinc-900">
         Construa Seu Próprio ChatGPT Particular em Poucos Minutos
       </h1>
-      <p className="mb-8 text-lg text-zinc-600">
+      <p className="mx-auto mb-7 max-w-md text-[15px] text-zinc-600">
         O guia definitivo para ter sua própria IA rodando no seu computador —
         sem pagar mensalidade, sem depender da nuvem e sem precisar ser
         especialista.
@@ -53,13 +52,13 @@ export default function Hero() {
           placeholder="seu@email.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="flex-1 rounded-xl border-2 border-zinc-200 px-4 py-3 focus:border-violet-400 focus:outline-none"
+          className="flex-1 rounded-full border border-zinc-200 px-5 py-3 text-sm focus:border-violet-400 focus:outline-none"
         />
         <button
           type="button"
           onClick={handleCheckout}
           disabled={loading}
-          className="rounded-xl bg-violet-600 px-6 py-3 font-bold text-white transition hover:bg-violet-700 disabled:opacity-50"
+          className="rounded-full bg-violet-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-violet-700 disabled:opacity-50"
         >
           {loading ? "Redirecionando..." : "Quero por R$47"}
         </button>

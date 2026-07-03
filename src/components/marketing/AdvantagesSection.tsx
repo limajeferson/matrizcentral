@@ -1,12 +1,12 @@
+import Eyebrow from "@/components/marketing/Eyebrow";
+
 export default function AdvantagesSection() {
   return (
     <section className="border-y border-zinc-100 bg-zinc-50 py-20">
       <div className="mx-auto grid max-w-6xl gap-10 px-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
         <div>
-          <span className="mb-3 inline-block text-xs font-semibold uppercase tracking-wide text-violet-600">
-            Seus resultados
-          </span>
-          <h2 className="text-3xl font-bold leading-tight text-zinc-900 sm:text-4xl">
+          <Eyebrow className="mb-4">Seus resultados</Eyebrow>
+          <h2 className="text-3xl font-bold leading-tight tracking-tight text-zinc-900 sm:text-4xl">
             Seu XP cresce a cada semana de estudo real
           </h2>
         </div>
@@ -18,7 +18,15 @@ export default function AdvantagesSection() {
       </div>
 
       <div className="mx-auto mt-10 max-w-6xl px-6">
-        <div className="rounded-3xl border border-zinc-200 bg-white p-6">
+        <div className="rounded-[20px] border border-zinc-200 bg-white p-6">
+          <div className="mb-6 flex gap-2 font-marketing-mono text-[11px] uppercase tracking-wide">
+            <span className="rounded-full border border-zinc-900 bg-zinc-900 px-4 py-1.5 text-white">
+              Sua curva de XP
+            </span>
+            <span className="rounded-full border border-zinc-200 px-4 py-1.5 text-zinc-500">
+              Por semana
+            </span>
+          </div>
           <svg viewBox="0 0 800 220" width="100%" preserveAspectRatio="none" className="block">
             <defs>
               <linearGradient id="xpFill" x1="0" y1="0" x2="0" y2="1">
