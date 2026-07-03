@@ -33,36 +33,39 @@ export default function Hero() {
   };
 
   return (
-    <section className="max-w-3xl mx-auto px-6 py-20 text-center">
-      <h1 className="text-4xl font-bold mb-4">
+    <section className="mx-auto max-w-3xl px-6 py-24 text-center">
+      <span className="mb-6 inline-block rounded-full bg-violet-100 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-violet-700">
+        Guia prático de IA local
+      </span>
+      <h1 className="mb-4 text-4xl font-bold text-zinc-900 sm:text-5xl">
         Construa Seu Próprio ChatGPT Particular em Poucos Minutos
       </h1>
-      <p className="text-lg text-gray-600 mb-8">
+      <p className="mb-8 text-lg text-zinc-600">
         O Guia Definitivo para Rodar LLMs Localmente e Nunca Mais Pagar por
         Tokens ou Mensalidades.
       </p>
 
-      <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto">
+      <div className="mx-auto flex max-w-md flex-col justify-center gap-3 sm:flex-row">
         <input
           type="email"
           placeholder="seu@email.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="flex-1 border-2 border-gray-300 rounded-lg px-4 py-3"
+          className="flex-1 rounded-xl border-2 border-zinc-200 px-4 py-3 focus:border-violet-400 focus:outline-none"
         />
         <button
           type="button"
           onClick={handleCheckout}
           disabled={loading}
-          className="bg-blue-600 text-white px-6 py-3 rounded-lg font-bold disabled:opacity-50"
+          className="rounded-xl bg-violet-600 px-6 py-3 font-bold text-white transition hover:bg-violet-700 disabled:opacity-50"
         >
           {loading ? "Redirecionando..." : "Quero por R$47"}
         </button>
       </div>
 
-      {error && <p className="text-red-600 text-sm mt-3">{error}</p>}
+      {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
 
-      <p className="text-sm text-gray-500 mt-4">
+      <p className="mt-4 text-sm text-zinc-500">
         Pare de Pagar por IA — Monte sua própria IA Local em menos de uma hora.
       </p>
     </section>
