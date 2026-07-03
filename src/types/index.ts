@@ -20,6 +20,7 @@ export interface Database {
           created_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["users"]["Insert"]>;
+        Relationships: [];
       };
       purchases: {
         Row: {
@@ -45,6 +46,7 @@ export interface Database {
           created_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["purchases"]["Insert"]>;
+        Relationships: [];
       };
       tokens: {
         Row: {
@@ -66,6 +68,7 @@ export interface Database {
           created_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["tokens"]["Insert"]>;
+        Relationships: [];
       };
       quiz_responses: {
         Row: {
@@ -87,6 +90,7 @@ export interface Database {
           created_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["quiz_responses"]["Insert"]>;
+        Relationships: [];
       };
       profiles: {
         Row: {
@@ -98,6 +102,7 @@ export interface Database {
         };
         Insert: Database["public"]["Tables"]["profiles"]["Row"];
         Update: Partial<Database["public"]["Tables"]["profiles"]["Row"]>;
+        Relationships: [];
       };
       xp_events: {
         Row: {
@@ -117,7 +122,10 @@ export interface Database {
           created_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["xp_events"]["Insert"]>;
+        Relationships: [];
       };
     };
+    Views: Record<string, never>;
+    Functions: Record<string, never>;
   };
 }
