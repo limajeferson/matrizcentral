@@ -76,7 +76,7 @@ export default function QuizTriagem({ token }: Props) {
             key={option.text}
             type="button"
             onClick={() => toggleOption(index)}
-            className={`w-full rounded-lg border-2 p-3 text-left transition ${
+            className={`w-full rounded-xl border-2 p-3 text-left transition ${
               selectedIndexes.includes(index)
                 ? "border-violet-500 bg-violet-50"
                 : "border-zinc-300 hover:border-violet-300"
@@ -93,7 +93,7 @@ export default function QuizTriagem({ token }: Props) {
         type="button"
         onClick={handleNext}
         disabled={selectedIndexes.length === 0 || submitting}
-        className="mt-6 w-full rounded-lg bg-violet-600 py-3 font-bold text-white transition hover:bg-violet-700 disabled:opacity-50"
+        className="mt-6 w-full rounded-xl bg-violet-600 py-3 font-bold text-white transition hover:bg-violet-700 disabled:opacity-50"
       >
         {isLast ? (submitting ? "Calculando seu perfil..." : "Ver meu perfil") : "Próxima"}
       </button>
