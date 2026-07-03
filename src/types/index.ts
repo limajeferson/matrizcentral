@@ -1,5 +1,5 @@
 export type QuizType = "triagem" | "validacao";
-export type XpActionType = "compra" | "triagem" | "download" | "validacao";
+export type XpActionType = "compra" | "triagem" | "download" | "validacao" | "conteudo";
 
 export interface Database {
   public: {
@@ -122,6 +122,22 @@ export interface Database {
           created_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["xp_events"]["Insert"]>;
+        Relationships: [];
+      };
+      content_completions: {
+        Row: {
+          id: string;
+          token: string;
+          content_id: string;
+          completed_at: string;
+        };
+        Insert: {
+          id?: string;
+          token: string;
+          content_id: string;
+          completed_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["content_completions"]["Insert"]>;
         Relationships: [];
       };
     };
