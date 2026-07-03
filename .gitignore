@@ -1,0 +1,11 @@
+node_modules/
+.next/
+.env.local
+.env
+*.log
+.DS_Store
+
+# Mídia bruta do NotebookLM (destino: Spotify/YouTube/LinkedIn, não versionada)
+notebooklm/audio/
+notebooklm/video/
+notebooklm/apresentacoes/
