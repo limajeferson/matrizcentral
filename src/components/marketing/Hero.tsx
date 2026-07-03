@@ -33,9 +33,9 @@ export default function Hero() {
   };
 
   return (
-    <section className="mx-auto max-w-3xl px-6 py-24 text-center">
+    <section id="hero" className="mx-auto max-w-3xl px-6 py-24 text-center">
       <span className="mb-6 inline-block rounded-full bg-violet-100 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-violet-700">
-        Guia prático de IA local
+        Para devs brasileiros
       </span>
       <h1 className="mb-4 text-4xl font-bold text-zinc-900 sm:text-5xl">
         Construa Seu Próprio ChatGPT Particular em Poucos Minutos
