@@ -61,4 +61,40 @@ describe("scoreTriagem", () => {
     ];
     expect(scoreTriagem(questions, answers)).toBe("dev_python_aia");
   });
+
+  it("suporta os perfis novos (estudante_curioso e profissional_produtividade)", () => {
+    const novasQuestions: TriagemQuestion[] = [
+      {
+        id: 1,
+        text: "O que te traz aqui?",
+        type: "radio",
+        options: [
+          { text: "Entender IA do zero", points: { estudante_curioso: 3 } },
+          { text: "Produtividade no dia a dia", points: { profissional_produtividade: 3 } },
+        ],
+      },
+    ];
+    expect(
+      scoreTriagem(novasQuestions, [{ questionId: 1, selectedOptionIndexes: [0] }])
+    ).toBe("estudante_curioso");
+    expect(
+      scoreTriagem(novasQuestions, [{ questionId: 1, selectedOptionIndexes: [1] }])
+    ).toBe("profissional_produtividade");
+  });
+
+  it("em empate entre perfil original e novo, o original vence (ordem preservada)", () => {
+    const tie: TriagemQuestion[] = [
+      {
+        id: 1,
+        text: "Empate",
+        type: "radio",
+        options: [
+          { text: "A", points: { founder_builder: 2, estudante_curioso: 2 } },
+        ],
+      },
+    ];
+    expect(scoreTriagem(tie, [{ questionId: 1, selectedOptionIndexes: [0] }])).toBe(
+      "founder_builder"
+    );
+  });
 });

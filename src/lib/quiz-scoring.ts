@@ -4,7 +4,9 @@ export type ProfileId =
   | "devops_infra"
   | "ceo_financeiro"
   | "pm_product"
-  | "founder_builder";
+  | "founder_builder"
+  | "estudante_curioso"
+  | "profissional_produtividade";
 
 export interface TriagemOption {
   text: string;
@@ -16,6 +18,12 @@ export interface TriagemQuestion {
   text: string;
   type: "radio" | "checkbox";
   options: TriagemOption[];
+  /**
+   * Ramificação: a pergunta só é exibida se a resposta à pergunta
+   * `questionId` incluir ao menos um dos índices em `optionIndexes`.
+   * Sem `showIf`, a pergunta é sempre exibida.
+   */
+  showIf?: { questionId: number; optionIndexes: number[] };
 }
 
 export interface TriagemAnswer {
@@ -30,6 +38,8 @@ const PROFILE_ORDER: ProfileId[] = [
   "ceo_financeiro",
   "pm_product",
   "founder_builder",
+  "estudante_curioso",
+  "profissional_produtividade",
 ];
 
 export function scoreTriagem(
@@ -43,6 +53,8 @@ export function scoreTriagem(
     ceo_financeiro: 0,
     pm_product: 0,
     founder_builder: 0,
+    estudante_curioso: 0,
+    profissional_produtividade: 0,
   };
 
   for (const answer of answers) {
