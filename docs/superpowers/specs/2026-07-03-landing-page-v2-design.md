@@ -56,6 +56,13 @@ quiz-demo, que aqui é só um preview ilustrativo, pode ser client-side simples)
    ilustrativo, sem alegar comparação com concorrentes.
 7. **CTA final ("Start Speaking a New Language Today") adaptado** para o contexto do
    produto: convite para começar o quiz/comprar o ebook.
+8. **Seção de depoimentos (testimonials) omitida, não adaptada.** O modelo guia tem
+   uma seção inteira "What Our Users Are Saying" com dois cards de depoimento entre
+   Pricing e o CTA final. Diferente das outras seções (que foram reinterpretadas com
+   conteúdo real), esta foi conscientemente omitida — não existem depoimentos reais de
+   usuários ainda, e fabricar nomes/citações violaria a mesma regra já aplicada nos
+   itens 2 e 3 (sem logos e depoimentos fictícios). Retomar quando houver depoimentos
+   reais para usar.
 
 ## Componentes (arquivos)
 
