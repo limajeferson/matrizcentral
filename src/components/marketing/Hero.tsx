@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import DemoWidget from "@/components/marketing/DemoWidget";
 
 export default function Hero() {
   const [email, setEmail] = useState("");
@@ -68,6 +69,8 @@ export default function Hero() {
       <p className="mt-4 text-sm text-zinc-500">
         Pare de Pagar por IA — Monte sua própria IA Local em menos de uma hora.
       </p>
+
+      <DemoWidget />
     </section>
   );
 }
