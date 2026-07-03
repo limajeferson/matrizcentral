@@ -1189,14 +1189,14 @@ Create `src/app/api/webhooks/stripe/route.test.ts`:
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { NextRequest } from "next/server";
 
-const constructEventMock = vi.fn();
+const mockConstructEvent = vi.fn();
 vi.mock("@/lib/stripe", () => ({
-  stripe: { webhooks: { constructEvent: (...args: unknown[]) => constructEventMock(...args) } },
+  stripe: { webhooks: { constructEvent: (...args: unknown[]) => mockConstructEvent(...args) } },
 }));
 
-const sendTokenEmailMock = vi.fn().mockResolvedValue(undefined);
+const mockSendTokenEmail = vi.fn().mockResolvedValue(undefined);
 vi.mock("@/lib/email", () => ({
-  sendTokenEmail: (...args: unknown[]) => sendTokenEmailMock(...args),
+  sendTokenEmail: (...args: unknown[]) => mockSendTokenEmail(...args),
 }));
 
 function buildSupabaseMock(existingPurchase: unknown) {
@@ -1243,19 +1243,19 @@ function buildSupabaseMock(existingPurchase: unknown) {
   return { from, insertedRows };
 }
 
-let supabaseMock: ReturnType<typeof buildSupabaseMock>;
+let mockSupabase: ReturnType<typeof buildSupabaseMock>;
 vi.mock("@/lib/supabase/server", () => ({
-  getSupabaseServerClient: () => supabaseMock,
+  getSupabaseServerClient: () => mockSupabase,
 }));
 
 describe("POST /api/webhooks/stripe", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    supabaseMock = buildSupabaseMock(null);
+    mockSupabase = buildSupabaseMock(null);
   });
 
   it("cria user, purchase, token e envia e-mail em checkout.session.completed", async () => {
-    constructEventMock.mockReturnValue({
+    mockConstructEvent.mockReturnValue({
       type: "checkout.session.completed",
       data: {
         object: {
@@ -1280,17 +1280,17 @@ describe("POST /api/webhooks/stripe", () => {
 
     expect(response.status).toBe(200);
     expect(json.received).toBe(true);
-    expect(supabaseMock.insertedRows.purchases).toHaveLength(1);
-    expect(supabaseMock.insertedRows.tokens).toHaveLength(1);
-    expect(supabaseMock.insertedRows.xp_events).toHaveLength(1);
-    expect(sendTokenEmailMock).toHaveBeenCalledWith(
+    expect(mockSupabase.insertedRows.purchases).toHaveLength(1);
+    expect(mockSupabase.insertedRows.tokens).toHaveLength(1);
+    expect(mockSupabase.insertedRows.xp_events).toHaveLength(1);
+    expect(mockSendTokenEmail).toHaveBeenCalledWith(
       expect.objectContaining({ to: "aluno@example.com" })
     );
   });
 
   it("ignora evento se stripe_payment_id já foi processado (idempotência)", async () => {
-    supabaseMock = buildSupabaseMock({ id: "purchase-existente" });
-    constructEventMock.mockReturnValue({
+    mockSupabase = buildSupabaseMock({ id: "purchase-existente" });
+    mockConstructEvent.mockReturnValue({
       type: "checkout.session.completed",
       data: {
         object: {
@@ -1315,12 +1315,12 @@ describe("POST /api/webhooks/stripe", () => {
 
     expect(response.status).toBe(200);
     expect(json.deduped).toBe(true);
-    expect(supabaseMock.insertedRows.purchases).toHaveLength(0);
-    expect(sendTokenEmailMock).not.toHaveBeenCalled();
+    expect(mockSupabase.insertedRows.purchases).toHaveLength(0);
+    expect(mockSendTokenEmail).not.toHaveBeenCalled();
   });
 
   it("rejeita requisição com assinatura inválida", async () => {
-    constructEventMock.mockImplementation(() => {
+    mockConstructEvent.mockImplementation(() => {
       throw new Error("assinatura inválida");
     });
 
@@ -1694,9 +1694,9 @@ function buildSupabaseMock(tokenRow: Record<string, unknown> | null) {
   return { from, inserted, updated };
 }
 
-let supabaseMock: ReturnType<typeof buildSupabaseMock>;
+let mockSupabase: ReturnType<typeof buildSupabaseMock>;
 vi.mock("@/lib/supabase/server", () => ({
-  getSupabaseServerClient: () => supabaseMock,
+  getSupabaseServerClient: () => mockSupabase,
 }));
 
 describe("POST /api/quiz", () => {
@@ -1705,7 +1705,7 @@ describe("POST /api/quiz", () => {
   });
 
   it("calcula perfil, marca token como triado e concede XP", async () => {
-    supabaseMock = buildSupabaseMock({
+    mockSupabase = buildSupabaseMock({
       token: "ABC1234567",
       purchase_id: "purchase-1",
       triaged: false,
@@ -1726,12 +1726,12 @@ describe("POST /api/quiz", () => {
 
     expect(response.status).toBe(200);
     expect(json.profileId).toBe("dev_python_aia");
-    expect(supabaseMock.inserted.xp_events).toHaveLength(1);
-    expect(supabaseMock.updated[0]).toMatchObject({ triaged: true });
+    expect(mockSupabase.inserted.xp_events).toHaveLength(1);
+    expect(mockSupabase.updated[0]).toMatchObject({ triaged: true });
   });
 
   it("bloqueia reenvio de triagem se o token já foi triado", async () => {
-    supabaseMock = buildSupabaseMock({
+    mockSupabase = buildSupabaseMock({
       token: "ABC1234567",
       purchase_id: "purchase-1",
       triaged: true,
@@ -1748,7 +1748,7 @@ describe("POST /api/quiz", () => {
   });
 
   it("concede XP de validação apenas quando passed=true", async () => {
-    supabaseMock = buildSupabaseMock({
+    mockSupabase = buildSupabaseMock({
       token: "ABC1234567",
       purchase_id: "purchase-1",
       triaged: true,
@@ -1765,11 +1765,11 @@ describe("POST /api/quiz", () => {
 
     expect(response.status).toBe(200);
     expect(json.passed).toBe(false);
-    expect(supabaseMock.inserted.xp_events).toHaveLength(0);
+    expect(mockSupabase.inserted.xp_events).toHaveLength(0);
   });
 
   it("retorna 404 se o token não existe", async () => {
-    supabaseMock = buildSupabaseMock(null);
+    mockSupabase = buildSupabaseMock(null);
 
     const { POST } = await import("./route");
     const request = new NextRequest("http://localhost/api/quiz", {
