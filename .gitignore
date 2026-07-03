@@ -9,3 +9,6 @@ node_modules/
 notebooklm/audio/
 notebooklm/video/
 notebooklm/apresentacoes/
+
+# Subagent-driven-development scratch (progress ledger)
+.superpowers/
