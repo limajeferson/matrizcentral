@@ -1,27 +1,23 @@
 export default function Footer() {
   return (
-    <footer className="bg-zinc-900 px-6 py-12 text-zinc-400">
-      <div className="mx-auto flex max-w-6xl flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <p className="mb-2 text-lg font-bold text-white">Matriz Central</p>
-          <p className="max-w-md text-sm">
-            Conteúdo técnico sobre IA e DevTools, sem enrolação. Roadmap
-            personalizado para devs, DevOps, gestores e founders brasileiros.
-          </p>
-        </div>
-        <nav className="flex gap-6 text-sm">
-          <a href="#features" className="transition hover:text-white">
+    <footer className="mt-16 border-t border-zinc-100 bg-white px-6 py-9">
+      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-sm text-zinc-500 sm:flex-row">
+        <span className="text-base font-bold tracking-tight text-zinc-900">
+          Matriz<span className="text-violet-500">/</span>Central
+        </span>
+        <nav className="flex gap-6">
+          <a href="#features" className="text-zinc-600 transition hover:text-zinc-900">
             Features
           </a>
-          <a href="#preco" className="transition hover:text-white">
+          <a href="#preco" className="text-zinc-600 transition hover:text-zinc-900">
             Preço
           </a>
         </nav>
+        <span>
+          © {new Date().getFullYear()} Matriz Central. Todos os direitos
+          reservados.
+        </span>
       </div>
-      <p className="mx-auto mt-8 max-w-6xl text-xs text-zinc-500">
-        © {new Date().getFullYear()} Matriz Central. Todos os direitos
-        reservados.
-      </p>
     </footer>
   );
 }
