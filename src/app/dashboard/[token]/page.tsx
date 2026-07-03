@@ -2,6 +2,8 @@ import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { isTokenExpired } from "@/lib/tokens";
 import RoadmapCard from "@/components/dashboard/RoadmapCard";
 import QuizValidacaoContainer from "@/components/quiz/QuizValidacaoContainer";
+import GlassCard from "@/components/ui/glass-card";
+import CategoryBadge from "@/components/ui/category-badge";
 
 export default async function DashboardPage({ params }: { params: { token: string } }) {
   const supabase = getSupabaseServerClient();
@@ -19,7 +21,7 @@ export default async function DashboardPage({ params }: { params: { token: strin
     return (
       <p className="max-w-md mx-auto p-8 text-center">
         Complete primeiro a{" "}
-        <a href={`/quiz/${params.token}`} className="text-blue-600 underline">
+        <a href={`/quiz/${params.token}`} className="text-violet-600 underline">
           triagem de perfil
         </a>
         .
@@ -57,30 +59,41 @@ export default async function DashboardPage({ params }: { params: { token: strin
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-8">
-      <div className="inline-block bg-yellow-50 border border-yellow-200 px-4 py-2 rounded-lg font-bold text-yellow-900">
+    <div className="mx-auto max-w-4xl space-y-8 p-6">
+      <CategoryBadge variant="xp" className="text-sm">
         ⭐ {totalXp} XP
-      </div>
+      </CategoryBadge>
 
-      <div className="bg-green-50 border border-green-200 p-4 rounded-lg">
-        <h1 className="font-bold text-green-900">Seu perfil: {profile.name}</h1>
-        <p className="text-green-800">{profile.description}</p>
-      </div>
+      <GlassCard className="p-6">
+        <div className="mb-2 flex items-center gap-2">
+          <CategoryBadge variant="roadmap">Perfil</CategoryBadge>
+        </div>
+        <h1 className="text-2xl font-bold text-zinc-900">{profile.name}</h1>
+        <p className="text-zinc-600">{profile.description}</p>
+      </GlassCard>
 
-      <RoadmapCard roadmap={profile.study_roadmap} />
+      <GlassCard className="p-6">
+        <RoadmapCard roadmap={profile.study_roadmap} />
+      </GlassCard>
 
-      <div className="bg-blue-50 p-6 rounded-lg">
-        <h2 className="font-bold mb-2">Seu primeiro ebook</h2>
+      <GlassCard className="p-6">
+        <div className="mb-2">
+          <CategoryBadge variant="ebook">Ebook</CategoryBadge>
+        </div>
+        <h2 className="mb-3 font-bold text-zinc-900">Seu primeiro ebook</h2>
         <a
           href={`/api/download?token=${params.token}`}
-          className="inline-block bg-blue-600 text-white px-6 py-2 rounded"
+          className="inline-block rounded-xl bg-violet-600 px-6 py-2 font-semibold text-white transition hover:bg-violet-700"
         >
           📥 Baixar Ebook LLM Local
         </a>
-      </div>
+      </GlassCard>
 
       <div>
-        <h2 className="text-xl font-bold mb-4">Quiz de Validação</h2>
+        <div className="mb-4 flex items-center gap-2">
+          <CategoryBadge variant="quiz">Validação</CategoryBadge>
+          <h2 className="text-xl font-bold text-zinc-900">Quiz de Validação</h2>
+        </div>
         <QuizValidacaoContainer token={params.token} />
       </div>
     </div>
