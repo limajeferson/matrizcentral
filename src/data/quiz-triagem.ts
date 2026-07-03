@@ -1,224 +1,388 @@
 import type { TriagemQuestion } from "@/lib/quiz-scoring";
 
+/**
+ * Banco de perguntas da triagem — democratizado e ramificado.
+ *
+ * Q1 seleciona o objetivo; Q2 identifica a relação com programação.
+ * Perguntas técnicas só aparecem para quem programa (showIf sobre Q2);
+ * o ramo não-técnico recebe perguntas equivalentes sem jargão.
+ * A pontuação alimenta 8 perfis (ver lib/quiz-scoring.ts).
+ */
 export const QUIZ_TRIAGEM: TriagemQuestion[] = [
+  // ---------- Cabeça comum ----------
   {
     id: 1,
-    text: "Qual é sua principal linguagem de programação?",
+    text: "O que te traz aqui?",
     type: "radio",
     options: [
-      { text: "Python", points: { dev_python_aia: 3 } },
-      { text: "JavaScript/TypeScript", points: { dev_nodejs_web: 3 } },
-      { text: "Go/Rust", points: { devops_infra: 2 } },
-      { text: "Não programo", points: { ceo_financeiro: 3, pm_product: 2 } },
+      {
+        text: "Quero ter minha própria IA rodando no meu computador",
+        points: { dev_python_aia: 2, devops_infra: 1, profissional_produtividade: 1 },
+      },
+      {
+        text: "Quero integrar IA no que eu construo",
+        points: { dev_nodejs_web: 3, dev_python_aia: 1 },
+      },
+      {
+        text: "Quero usar IA para melhorar meu negócio",
+        points: { ceo_financeiro: 3 },
+      },
+      {
+        text: "Quero mais produtividade no meu dia a dia",
+        points: { profissional_produtividade: 3 },
+      },
+      {
+        text: "Quero entender IA do zero, sem pressa",
+        points: { estudante_curioso: 3 },
+      },
+      {
+        text: "Quero construir e vender coisas feitas com IA",
+        points: { founder_builder: 3 },
+      },
     ],
   },
   {
     id: 2,
-    text: "Qual seu principal objetivo com LLM local?",
+    text: "Você programa?",
     type: "radio",
     options: [
-      { text: "Automação de código/prompts", points: { dev_python_aia: 3, dev_nodejs_web: 2 } },
-      { text: "Deploy em produção", points: { devops_infra: 3 } },
-      { text: "Análise de dados/financeiro", points: { ceo_financeiro: 3 } },
-      { text: "Entender capacidades para produto", points: { pm_product: 3 } },
-      { text: "Testar ideias de startup", points: { founder_builder: 3 } },
+      {
+        text: "Sim, é meu trabalho ou hobby",
+        points: { dev_python_aia: 1, dev_nodejs_web: 1, devops_infra: 1 },
+      },
+      {
+        text: "Um pouco — já mexi em código ou automações",
+        points: { founder_builder: 1, estudante_curioso: 1 },
+      },
+      {
+        text: "Não programo — sem problema, o quiz se adapta a você",
+        points: { profissional_produtividade: 2, ceo_financeiro: 1 },
+      },
     ],
   },
+
+  // ---------- Ramo técnico (quem programa ou já mexeu) ----------
   {
     id: 3,
-    text: "Quantas horas/semana você dedica a aprender tecnologia?",
+    text: "Qual é sua principal linguagem de programação?",
     type: "radio",
+    showIf: { questionId: 2, optionIndexes: [0, 1] },
     options: [
-      { text: "0-5 horas", points: { ceo_financeiro: 2, pm_product: 1 } },
-      { text: "5-10 horas", points: { pm_product: 2, founder_builder: 2 } },
-      { text: "10+ horas", points: { dev_python_aia: 3, dev_nodejs_web: 3, devops_infra: 3 } },
+      { text: "Python", points: { dev_python_aia: 3 } },
+      { text: "JavaScript/TypeScript", points: { dev_nodejs_web: 3 } },
+      { text: "Go/Rust ou outras de infra", points: { devops_infra: 2 } },
+      {
+        text: "Low-code / automações (n8n, Make, planilhas)",
+        points: { founder_builder: 2, profissional_produtividade: 1 },
+      },
     ],
   },
   {
     id: 4,
-    text: "Você prefere conteúdo sobre...",
-    type: "checkbox",
+    text: "Qual seu principal objetivo com uma IA local?",
+    type: "radio",
+    showIf: { questionId: 2, optionIndexes: [0] },
     options: [
-      { text: "Código + implementação", points: { dev_python_aia: 2, dev_nodejs_web: 2 } },
-      { text: "Infraestrutura + deployment", points: { devops_infra: 2 } },
-      { text: "ROI + decisões de negócio", points: { ceo_financeiro: 2 } },
-      { text: "Features + UX", points: { pm_product: 2 } },
-      { text: "Go-to-market + growth", points: { founder_builder: 2 } },
+      {
+        text: "Automação de código e prompts no meu fluxo",
+        points: { dev_python_aia: 3, dev_nodejs_web: 2 },
+      },
+      { text: "Colocar em produção com confiabilidade", points: { devops_infra: 3 } },
+      {
+        text: "Privacidade: dados que não podem ir para a nuvem",
+        points: { devops_infra: 1, profissional_produtividade: 1, ceo_financeiro: 1 },
+      },
+      {
+        text: "Prototipar produtos rápido e sem custo por uso",
+        points: { founder_builder: 2 },
+      },
     ],
   },
   {
     id: 5,
-    text: "Seu maior bloqueador é?",
+    text: "Qual hardware você tem disponível hoje?",
     type: "radio",
+    showIf: { questionId: 2, optionIndexes: [0, 1] },
     options: [
-      { text: "Falta de conhecimento técnico", points: { dev_python_aia: 1, dev_nodejs_web: 1 } },
-      { text: "Como calcular ROI", points: { ceo_financeiro: 3 } },
-      { text: "Timing de mercado", points: { founder_builder: 3 } },
-      { text: "Alinhamento com produto", points: { pm_product: 2 } },
-      { text: "Nenhum bloqueio, quero escalar", points: { devops_infra: 2 } },
+      { text: "PC/notebook com GPU dedicada", points: { dev_python_aia: 2, dev_nodejs_web: 1 } },
+      { text: "Servidor ou VPS que eu administro", points: { devops_infra: 3 } },
+      {
+        text: "Só um notebook comum",
+        points: { estudante_curioso: 1, profissional_produtividade: 1 },
+      },
     ],
   },
   {
     id: 6,
-    text: "Qual dessas frases mais combina com você?",
+    text: "Qual seu nível com terminal/linha de comando?",
     type: "radio",
+    showIf: { questionId: 2, optionIndexes: [0] },
     options: [
-      { text: "Gosto de mexer no código até funcionar do meu jeito", points: { dev_python_aia: 2, dev_nodejs_web: 2 } },
-      { text: "Prefiro garantir que o sistema não caia", points: { devops_infra: 3 } },
-      { text: "Prefiro entender o impacto financeiro antes de mexer em nada", points: { ceo_financeiro: 3 } },
-      { text: "Prefiro entender o que o usuário final vai sentir", points: { pm_product: 3 } },
+      {
+        text: "Uso todos os dias, sem problema",
+        points: { dev_python_aia: 2, dev_nodejs_web: 2, devops_infra: 2 },
+      },
+      { text: "Uso o básico quando preciso", points: { founder_builder: 1 } },
+      {
+        text: "Prefiro interfaces gráficas",
+        points: { profissional_produtividade: 1, pm_product: 1 },
+      },
     ],
   },
   {
     id: 7,
-    text: "Onde você roda a maior parte do seu trabalho hoje?",
+    text: "Onde você passa a maior parte do trabalho hoje?",
     type: "radio",
+    showIf: { questionId: 2, optionIndexes: [0] },
     options: [
-      { text: "Terminal e editor de código", points: { dev_python_aia: 2, dev_nodejs_web: 2 } },
-      { text: "Servidores e ferramentas de deploy (Docker, CI/CD)", points: { devops_infra: 3 } },
-      { text: "Planilhas e relatórios", points: { ceo_financeiro: 3 } },
-      { text: "Ferramentas de gestão de produto (roadmap, backlog)", points: { pm_product: 3 } },
+      { text: "Editor de código", points: { dev_python_aia: 2, dev_nodejs_web: 2 } },
+      { text: "Docker, CI/CD e infraestrutura", points: { devops_infra: 3 } },
+      { text: "Notebooks e análise de dados", points: { dev_python_aia: 2 } },
+      { text: "Ferramentas de gestão de produto", points: { pm_product: 2 } },
     ],
   },
   {
     id: 8,
-    text: "O que mais te empolga em rodar uma IA localmente?",
-    type: "checkbox",
+    text: "O que você faria primeiro com uma IA local funcionando?",
+    type: "radio",
+    showIf: { questionId: 2, optionIndexes: [0, 1] },
     options: [
-      { text: "Não pagar mensalidade de API", points: { founder_builder: 2, ceo_financeiro: 2 } },
-      { text: "Privacidade dos dados", points: { devops_infra: 2, ceo_financeiro: 1 } },
-      { text: "Poder customizar o comportamento do modelo", points: { dev_python_aia: 2, dev_nodejs_web: 2 } },
-      { text: "Validar uma ideia de produto rápido e sem custo", points: { founder_builder: 2, pm_product: 1 } },
+      { text: "Integraria num script ou projeto Python", points: { dev_python_aia: 3 } },
+      { text: "Integraria numa API ou app web", points: { dev_nodejs_web: 3 } },
+      {
+        text: "Colocaria atrás de monitoramento antes de uso real",
+        points: { devops_infra: 3 },
+      },
+      {
+        text: "Testaria um protótipo de produto novo",
+        points: { founder_builder: 2, pm_product: 1 },
+      },
     ],
   },
+
+  // ---------- Ramo não-técnico (quem não programa ou mexeu pouco) ----------
   {
     id: 9,
-    text: "Qual hardware você tem disponível hoje?",
+    text: "Qual IA você usa hoje?",
     type: "radio",
+    showIf: { questionId: 2, optionIndexes: [1, 2] },
     options: [
-      { text: "PC/notebook com GPU dedicada", points: { dev_python_aia: 2, dev_nodejs_web: 1 } },
-      { text: "Servidor ou VPS que eu administro", points: { devops_infra: 3 } },
-      { text: "Só um notebook comum, sem GPU forte", points: { ceo_financeiro: 1, pm_product: 1, founder_builder: 1 } },
+      {
+        text: "Nenhuma ainda — quero começar do jeito certo",
+        points: { estudante_curioso: 2 },
+      },
+      {
+        text: "ChatGPT, Gemini ou Claude na versão gratuita",
+        points: { profissional_produtividade: 1, estudante_curioso: 1 },
+      },
+      { text: "Já assino uma IA paga", points: { profissional_produtividade: 2 } },
+      {
+        text: "Uso várias, dependendo da tarefa",
+        points: { founder_builder: 1, profissional_produtividade: 1 },
+      },
     ],
   },
   {
     id: 10,
-    text: "Como você prefere aprender algo novo?",
+    text: "O que mais pesa na hora de escolher uma IA?",
     type: "radio",
+    showIf: { questionId: 2, optionIndexes: [1, 2] },
     options: [
-      { text: "Seguindo um tutorial passo a passo e codando junto", points: { dev_python_aia: 2, dev_nodejs_web: 2 } },
-      { text: "Lendo um resumo executivo direto ao ponto", points: { ceo_financeiro: 3 } },
-      { text: "Vendo casos de uso reais de outros produtos", points: { pm_product: 2, founder_builder: 2 } },
-      { text: "Testando em um ambiente controlado antes de confiar", points: { devops_infra: 2 } },
+      {
+        text: "Preço — saber se vale pagar ou dá para usar grátis",
+        points: { profissional_produtividade: 1, estudante_curioso: 1 },
+      },
+      {
+        text: "Privacidade dos meus dados",
+        points: { ceo_financeiro: 1, profissional_produtividade: 1 },
+      },
+      { text: "Facilidade — sem complicação técnica", points: { estudante_curioso: 2 } },
+      {
+        text: "Qualidade das respostas para o meu trabalho",
+        points: { profissional_produtividade: 2 },
+      },
     ],
   },
   {
     id: 11,
-    text: "Você já usa alguma ferramenta de IA no seu dia a dia de trabalho?",
+    text: "O uso é mais pessoal ou para negócio?",
     type: "radio",
+    showIf: { questionId: 2, optionIndexes: [1, 2] },
     options: [
-      { text: "Sim, uso para escrever/revisar código", points: { dev_python_aia: 2, dev_nodejs_web: 2 } },
-      { text: "Sim, uso para automatizar deploy/infra", points: { devops_infra: 3 } },
-      { text: "Sim, uso para análises e relatórios", points: { ceo_financeiro: 2 } },
-      { text: "Ainda não uso no trabalho", points: { pm_product: 1, founder_builder: 1 } },
+      {
+        text: "Pessoal — estudo, organização, dia a dia",
+        points: { profissional_produtividade: 2, estudante_curioso: 1 },
+      },
+      { text: "Para o meu negócio", points: { ceo_financeiro: 2, founder_builder: 1 } },
+      {
+        text: "Para a empresa onde trabalho",
+        points: { pm_product: 2, ceo_financeiro: 1 },
+      },
+      { text: "Ainda estou explorando", points: { estudante_curioso: 2 } },
     ],
   },
   {
     id: 12,
-    text: "Qual desses times você mais parece com o dia a dia?",
-    type: "radio",
+    text: "Que tarefas você quer acelerar com IA?",
+    type: "checkbox",
+    showIf: { questionId: 2, optionIndexes: [1, 2] },
     options: [
-      { text: "Engenharia de produto/backend", points: { dev_python_aia: 2, dev_nodejs_web: 2 } },
-      { text: "SRE/Plataforma/Infraestrutura", points: { devops_infra: 3 } },
-      { text: "Financeiro/Operações", points: { ceo_financeiro: 3 } },
-      { text: "Produto/UX", points: { pm_product: 3 } },
-      { text: "Founders/early-stage", points: { founder_builder: 3 } },
+      {
+        text: "Escrever textos, e-mails e documentos",
+        points: { profissional_produtividade: 2 },
+      },
+      { text: "Planilhas, relatórios e análises", points: { ceo_financeiro: 2 } },
+      { text: "Estudar e resumir conteúdos", points: { estudante_curioso: 2 } },
+      { text: "Criar conteúdo para redes/produtos", points: { founder_builder: 2 } },
     ],
   },
+
+  // ---------- Cauda comum ----------
   {
     id: 13,
-    text: "O que você faria primeiro com um LLM local funcionando?",
+    text: "Quanto tempo por semana você tem para aprender?",
     type: "radio",
     options: [
-      { text: "Integraria em um script Python que já uso", points: { dev_python_aia: 3 } },
-      { text: "Integraria em uma API/rota que já mantenho", points: { dev_nodejs_web: 3 } },
-      { text: "Colocaria atrás de monitoramento antes de qualquer uso real", points: { devops_infra: 3 } },
-      { text: "Calcularia quanto isso economiza por mês", points: { ceo_financeiro: 3 } },
-      { text: "Testaria um protótipo de produto novo", points: { founder_builder: 3 } },
+      {
+        text: "Até 2 horas",
+        points: { profissional_produtividade: 1, estudante_curioso: 1 },
+      },
+      { text: "2 a 5 horas", points: { pm_product: 1, ceo_financeiro: 1 } },
+      { text: "5 a 10 horas", points: { founder_builder: 2, estudante_curioso: 1 } },
+      {
+        text: "Mais de 10 horas",
+        points: { dev_python_aia: 2, dev_nodejs_web: 2, devops_infra: 2 },
+      },
     ],
   },
   {
     id: 14,
-    text: "Como você mede sucesso de um projeto de IA?",
-    type: "checkbox",
+    text: "Como você prefere aprender?",
+    type: "radio",
     options: [
-      { text: "Corretude/qualidade técnica da resposta", points: { dev_python_aia: 2, dev_nodejs_web: 2 } },
-      { text: "Estabilidade e uptime", points: { devops_infra: 2 } },
-      { text: "Redução de custo mensurável", points: { ceo_financeiro: 2, founder_builder: 1 } },
-      { text: "Satisfação do usuário final", points: { pm_product: 2 } },
+      {
+        text: "Passo a passo, mão na massa",
+        points: { dev_python_aia: 1, dev_nodejs_web: 1, estudante_curioso: 1 },
+      },
+      { text: "Resumo direto ao ponto", points: { ceo_financeiro: 2 } },
+      {
+        text: "Vídeo e áudio (podcast)",
+        points: { estudante_curioso: 1, profissional_produtividade: 1 },
+      },
+      {
+        text: "Casos reais de quem já aplicou",
+        points: { pm_product: 2, founder_builder: 1 },
+      },
     ],
   },
   {
     id: 15,
-    text: "Qual frase melhor descreve sua relação com prazos?",
-    type: "radio",
+    text: "Que tipo de conteúdo mais te interessa?",
+    type: "checkbox",
     options: [
-      { text: "Prefiro entregar rápido e iterar depois", points: { founder_builder: 3, dev_nodejs_web: 1 } },
-      { text: "Prefiro validar bem antes de subir qualquer coisa", points: { devops_infra: 2, ceo_financeiro: 1 } },
-      { text: "Prefiro alinhar com o time antes de definir prazo", points: { pm_product: 3 } },
+      { text: "Código e implementação", points: { dev_python_aia: 2, dev_nodejs_web: 2 } },
+      { text: "Infraestrutura e operação", points: { devops_infra: 2 } },
+      { text: "Retorno e decisões de negócio", points: { ceo_financeiro: 2 } },
+      { text: "Produtividade pessoal", points: { profissional_produtividade: 2 } },
+      { text: "Fundamentos, começando do zero", points: { estudante_curioso: 2 } },
+      { text: "Produto e experiência do usuário", points: { pm_product: 2 } },
     ],
   },
   {
     id: 16,
-    text: "O que mais te frustra em ferramentas de IA baseadas em nuvem?",
+    text: "O que mais te incomoda nas IAs que você conhece?",
     type: "checkbox",
     options: [
-      { text: "Custo por token/mensalidade", points: { founder_builder: 2, ceo_financeiro: 2 } },
-      { text: "Falta de controle sobre o modelo", points: { dev_python_aia: 2, dev_nodejs_web: 1 } },
-      { text: "Dependência de terceiros para operar (SLA, disponibilidade)", points: { devops_infra: 2 } },
-      { text: "Dificuldade de justificar o ROI internamente", points: { ceo_financeiro: 1, pm_product: 1 } },
+      {
+        text: "Custo de mensalidades e créditos",
+        points: { founder_builder: 1, ceo_financeiro: 1, profissional_produtividade: 1 },
+      },
+      {
+        text: "Falta de controle sobre o comportamento",
+        points: { dev_python_aia: 1, dev_nodejs_web: 1 },
+      },
+      {
+        text: "Meus dados irem para a nuvem",
+        points: { devops_infra: 1, ceo_financeiro: 1 },
+      },
+      {
+        text: "Complexidade — parece coisa de especialista",
+        points: { estudante_curioso: 2 },
+      },
     ],
   },
   {
     id: 17,
-    text: "Se pudesse escolher, você preferia aprender...",
+    text: "Qual profundidade você busca agora?",
     type: "radio",
     options: [
-      { text: "Detalhes técnicos de arquitetura de modelos", points: { dev_python_aia: 2 } },
-      { text: "Como conectar IA a ferramentas e APIs (MCP, integrações)", points: { dev_nodejs_web: 3 } },
-      { text: "Como manter isso rodando de forma confiável", points: { devops_infra: 3 } },
-      { text: "Como decidir se vale o investimento", points: { ceo_financeiro: 3 } },
+      {
+        text: "Só o essencial para aplicar hoje",
+        points: { profissional_produtividade: 2, ceo_financeiro: 1 },
+      },
+      { text: "Passo a passo completo, do início ao fim", points: { estudante_curioso: 2 } },
+      {
+        text: "Quero os detalhes técnicos por trás",
+        points: { dev_python_aia: 2, devops_infra: 1 },
+      },
     ],
   },
   {
     id: 18,
-    text: "Qual seu nível de experiência com terminal/linha de comando?",
+    text: "Qual é a sua situação hoje?",
     type: "radio",
     options: [
-      { text: "Uso todos os dias, sem problema", points: { dev_python_aia: 2, dev_nodejs_web: 2, devops_infra: 2 } },
-      { text: "Uso o básico quando preciso", points: { pm_product: 1, founder_builder: 1 } },
-      { text: "Prefiro evitar quando possível", points: { ceo_financeiro: 2 } },
+      {
+        text: "Trabalho em uma empresa",
+        points: { pm_product: 1, profissional_produtividade: 1 },
+      },
+      { text: "Tenho meu próprio negócio", points: { ceo_financeiro: 2 } },
+      { text: "Sou founder / estou começando algo", points: { founder_builder: 2 } },
+      {
+        text: "Trabalho por conta própria",
+        points: { founder_builder: 1, profissional_produtividade: 1 },
+      },
+      { text: "Estudando ou explorando possibilidades", points: { estudante_curioso: 2 } },
     ],
   },
   {
     id: 19,
-    text: "Você está construindo ou já opera algum produto/empresa hoje?",
-    type: "radio",
+    text: "O que você quer ter conquistado em 30 dias?",
+    type: "checkbox",
     options: [
-      { text: "Sim, sou founder ou parte do time fundador", points: { founder_builder: 3 } },
-      { text: "Sim, mas em uma empresa maior/estabelecida", points: { ceo_financeiro: 2, pm_product: 1 } },
-      { text: "Não, trabalho como profissional técnico em um time", points: { dev_python_aia: 1, dev_nodejs_web: 1, devops_infra: 1 } },
+      {
+        text: "Minha IA rodando no meu computador",
+        points: { dev_python_aia: 2, devops_infra: 1 },
+      },
+      {
+        text: "Uma feature ou protótipo com IA funcionando",
+        points: { dev_nodejs_web: 2, founder_builder: 1 },
+      },
+      { text: "Clareza para decidir sobre IA no negócio", points: { ceo_financeiro: 2 } },
+      {
+        text: "Uma rotina de trabalho mais rápida com IA",
+        points: { profissional_produtividade: 2 },
+      },
+      { text: "Entender os fundamentos com segurança", points: { estudante_curioso: 2 } },
     ],
   },
   {
     id: 20,
-    text: "O que você espera conseguir fazer em 30 dias depois deste ebook?",
+    text: "Como você vai medir se valeu a pena?",
     type: "checkbox",
     options: [
-      { text: "Ter um LLM local rodando e integrado ao meu código", points: { dev_python_aia: 2, dev_nodejs_web: 2 } },
-      { text: "Ter um LLM local rodando de forma estável em servidor", points: { devops_infra: 2 } },
-      { text: "Ter clareza se vale o investimento para minha empresa", points: { ceo_financeiro: 2 } },
-      { text: "Ter uma feature ou protótipo validado", points: { pm_product: 1, founder_builder: 2 } },
+      {
+        text: "Qualidade técnica do que eu construir",
+        points: { dev_python_aia: 1, dev_nodejs_web: 1 },
+      },
+      {
+        text: "Estabilidade — funciona sem eu me preocupar",
+        points: { devops_infra: 2 },
+      },
+      { text: "Economia e retorno para o negócio", points: { ceo_financeiro: 2 } },
+      { text: "Tempo que eu ganhar de volta", points: { profissional_produtividade: 2 } },
+      { text: "Confiança para ir além do básico", points: { estudante_curioso: 2 } },
+      { text: "Satisfação de quem usa o que eu faço", points: { pm_product: 2 } },
     ],
   },
 ];
