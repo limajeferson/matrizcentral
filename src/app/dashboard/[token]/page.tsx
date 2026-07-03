@@ -89,6 +89,22 @@ export default async function DashboardPage({ params }: { params: { token: strin
         </a>
       </GlassCard>
 
+      <GlassCard className="p-6">
+        <div className="mb-2">
+          <CategoryBadge variant="hub">Hub de conteúdo</CategoryBadge>
+        </div>
+        <h2 className="mb-3 font-bold text-zinc-900">Relatórios, podcasts e vídeos</h2>
+        <p className="mb-3 text-zinc-600">
+          Aprofunde-se em IA local no seu ritmo — cada conteúdo concluído gera XP.
+        </p>
+        <a
+          href={`/dashboard/${params.token}/conteudo`}
+          className="inline-block rounded-xl bg-violet-600 px-6 py-2 font-semibold text-white transition hover:bg-violet-700"
+        >
+          🚀 Explorar hub de conteúdo
+        </a>
+      </GlassCard>
+
       <div>
         <div className="mb-4 flex items-center gap-2">
           <CategoryBadge variant="quiz">Validação</CategoryBadge>
