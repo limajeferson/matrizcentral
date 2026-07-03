@@ -1,7 +1,10 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { NextRequest } from "next/server";
 
-function buildSupabaseMock(tokenRow: Record<string, unknown> | null) {
+function buildSupabaseMock(
+  tokenRow: Record<string, unknown> | null,
+  existingXpEvent: Record<string, unknown> | null = null
+) {
   const inserted: Record<string, unknown[]> = { quiz_responses: [], xp_events: [] };
   const updated: Record<string, unknown>[] = [];
 
@@ -26,6 +29,19 @@ function buildSupabaseMock(tokenRow: Record<string, unknown> | null) {
             single: async () => ({ data: { user_id: "user-1" }, error: null }),
           }),
         }),
+      };
+    }
+    if (table === "xp_events") {
+      const chain = {
+        eq: () => chain,
+        maybeSingle: async () => ({ data: existingXpEvent, error: null }),
+      };
+      return {
+        select: () => chain,
+        insert: async (rows: unknown) => {
+          inserted.xp_events.push(rows);
+          return { data: null, error: null };
+        },
       };
     }
     return {
@@ -110,6 +126,30 @@ describe("POST /api/quiz", () => {
 
     expect(response.status).toBe(200);
     expect(json.passed).toBe(false);
+    expect(mockSupabase.inserted.xp_events).toHaveLength(0);
+  });
+
+  it("não concede XP de validação duplicado se já existe evento para o token", async () => {
+    mockSupabase = buildSupabaseMock(
+      {
+        token: "ABC1234567",
+        purchase_id: "purchase-1",
+        triaged: true,
+      },
+      { id: "xp-event-1" }
+    );
+
+    const { POST } = await import("./route");
+    const request = new NextRequest("http://localhost/api/quiz", {
+      method: "POST",
+      body: JSON.stringify({ token: "ABC1234567", quizType: "validacao", score: 100, passed: true }),
+    });
+
+    const response = await POST(request);
+    const json = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(json.passed).toBe(true);
     expect(mockSupabase.inserted.xp_events).toHaveLength(0);
   });
 

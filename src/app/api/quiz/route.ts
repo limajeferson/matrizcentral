@@ -76,12 +76,22 @@ export async function POST(req: NextRequest) {
       .single();
 
     if (purchase) {
-      await supabase.from("xp_events").insert({
-        user_id: purchase.user_id,
-        xp_amount: 100,
-        action_type: "validacao",
-        reference_id: token,
-      });
+      const { data: existingXpEvent } = await supabase
+        .from("xp_events")
+        .select("id")
+        .eq("user_id", purchase.user_id)
+        .eq("action_type", "validacao")
+        .eq("reference_id", token)
+        .maybeSingle();
+
+      if (!existingXpEvent) {
+        await supabase.from("xp_events").insert({
+          user_id: purchase.user_id,
+          xp_amount: 100,
+          action_type: "validacao",
+          reference_id: token,
+        });
+      }
     }
   }
 
