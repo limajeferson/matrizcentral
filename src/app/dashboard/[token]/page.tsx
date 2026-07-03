@@ -37,8 +37,31 @@ export default async function DashboardPage({ params }: { params: { token: strin
     return <p className="max-w-md mx-auto p-8 text-center">Perfil não encontrado.</p>;
   }
 
+  const { data: purchase } = await supabase
+    .from("purchases")
+    .select("user_id")
+    .eq("id", tokenRow.purchase_id)
+    .single();
+
+  let totalXp = 0;
+  if (purchase) {
+    const { data: xpEvents } = await supabase
+      .from("xp_events")
+      .select("xp_amount")
+      .eq("user_id", purchase.user_id);
+
+    totalXp = (xpEvents ?? []).reduce(
+      (sum: number, event: { xp_amount: number }) => sum + event.xp_amount,
+      0
+    );
+  }
+
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8">
+      <div className="inline-block bg-yellow-50 border border-yellow-200 px-4 py-2 rounded-lg font-bold text-yellow-900">
+        ⭐ {totalXp} XP
+      </div>
+
       <div className="bg-green-50 border border-green-200 p-4 rounded-lg">
         <h1 className="font-bold text-green-900">Seu perfil: {profile.name}</h1>
         <p className="text-green-800">{profile.description}</p>
