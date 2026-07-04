@@ -211,7 +211,7 @@ const FEATURES: {
     title: "Pesquisa com a Comunidade",
     category: "DADOS REAIS",
     description:
-      "Responda em segundos e veja o que o resto da comunidade está usando — sem enrolação, dado real.",
+      "Responda em segundos e acompanhe os dados da comunidade crescendo em tempo real.",
     visual: <PesquisaVisual />,
   },
   {

@@ -17,8 +17,8 @@ export default function PricingSection() {
             <h2>A partir de R$47, sem mensalidade</h2>
           </div>
           <div className="aside">
-            Comece com o ebook avulso ou veja os planos com mais ebooks e
-            acesso completo ao hub de conteúdo.
+            Comece com o ebook avulso, disponível agora. Os planos com mais
+            ebooks e acesso completo já têm lista de espera aberta em /oferta.
           </div>
         </div>
 
@@ -42,8 +42,8 @@ export default function PricingSection() {
                 <li key={feature}>{feature}</li>
               ))}
             </ul>
-            <span className="foot" style={{ color: "#4c1d95" }}>
-              Planos mensal e anual com mais ebooks disponíveis em /oferta
+            <span className="foot">
+              Planos mensal e anual (em breve) com mais ebooks — veja em /oferta
             </span>
           </div>
         </div>
