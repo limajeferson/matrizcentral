@@ -7,13 +7,13 @@ export default function Header() {
         </span>
         <ul className="nav-links">
           <li>
-            <a href="#features">Features</a>
+            <a href="/#features">Features</a>
           </li>
           <li>
-            <a href="#preco">Preço</a>
+            <a href="/#preco">Preço</a>
           </li>
         </ul>
-        <a className="btn btn-accent" href="#preco">
+        <a className="btn btn-accent" href="/oferta">
           Ver preço
         </a>
       </div>

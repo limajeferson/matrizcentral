@@ -6,8 +6,8 @@ export default function Footer() {
           Matriz<span>/</span>Central
         </span>
         <nav>
-          <a href="#features">Features</a>
-          <a href="#preco">Preço</a>
+          <a href="/#features">Features</a>
+          <a href="/#preco">Preço</a>
         </nav>
         <span>
           © {new Date().getFullYear()} Matriz Central. Todos os direitos
