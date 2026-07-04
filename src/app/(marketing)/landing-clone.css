@@ -482,6 +482,18 @@
   border-radius: 999px;
   padding: 5px 10px;
 }
+.lp-guide .card-badge-soon {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: #fff;
+  color: var(--ink-soft);
+  border: 1px solid var(--line);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  border-radius: 999px;
+  padding: 5px 10px;
+}
 
 /* ---------- PRICING ---------- */
 .lp-guide .pricing {
@@ -493,14 +505,73 @@
   max-width: 380px;
   margin: 0 auto;
 }
+.lp-guide .plans-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  align-items: stretch;
+}
 .lp-guide .plan {
-  background: linear-gradient(170deg, #f1e9fe 0%, #cfb8fb 60%, #a883f5 100%);
-  border: 1px solid #d9c9fb;
+  background: #fff;
+  border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   padding: 24px;
   display: flex;
   flex-direction: column;
   position: relative;
+}
+.lp-guide .plan.gradient {
+  background: linear-gradient(170deg, #f1e9fe 0%, #cfb8fb 60%, #a883f5 100%);
+  border: 1px solid #d9c9fb;
+}
+.lp-guide .plan.recommended {
+  background: linear-gradient(170deg, #f1e9fe 0%, #cfb8fb 60%, #a883f5 100%);
+  border: 1px solid #a883f5;
+  box-shadow: 0 16px 40px rgba(124, 58, 237, 0.22);
+  transform: translateY(-8px);
+}
+.lp-guide .plan-badge-soon {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: #fff;
+  color: var(--ink-soft);
+  border: 1px solid var(--line);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  border-radius: 999px;
+  padding: 5px 10px;
+}
+.lp-guide .plan-note {
+  margin-top: 10px;
+  font-size: 12px;
+  text-align: center;
+  color: var(--ink-mute);
+}
+.lp-guide .waitlist-form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.lp-guide .waitlist-form input {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+}
+.lp-guide .waitlist-form input:focus {
+  border-color: var(--accent);
+}
+.lp-guide .waitlist-done {
+  margin-bottom: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #0c5c34;
+  text-align: center;
 }
 .lp-guide .plan-tag {
   position: absolute;
@@ -538,6 +609,12 @@
   justify-content: center;
   width: 100%;
   margin-bottom: 20px;
+}
+.lp-guide .plan .waitlist-form .btn {
+  width: auto;
+  flex: 0 0 auto;
+  margin-bottom: 0;
+  white-space: nowrap;
 }
 .lp-guide .plan ul {
   list-style: none;

@@ -1,5 +1,6 @@
 export type QuizType = "triagem" | "validacao";
 export type XpActionType = "compra" | "triagem" | "download" | "validacao" | "conteudo";
+export type WaitlistPlanId = "mensal_97" | "anual_497";
 
 export interface Database {
   public: {
@@ -138,6 +139,22 @@ export interface Database {
           completed_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["content_completions"]["Insert"]>;
+        Relationships: [];
+      };
+      plan_waitlist: {
+        Row: {
+          id: string;
+          email: string;
+          plan_id: WaitlistPlanId;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          email: string;
+          plan_id: WaitlistPlanId;
+          created_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["plan_waitlist"]["Insert"]>;
         Relationships: [];
       };
     };

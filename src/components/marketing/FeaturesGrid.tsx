@@ -108,11 +108,47 @@ function CertificadoVisual() {
   );
 }
 
+function RelatorioVisual() {
+  return (
+    <svg viewBox="0 0 160 120" width="100%" height="100%">
+      <rect x="34" y="20" width="92" height="80" rx="8" fill="#fff" stroke="#e4e4e7" strokeWidth="2" />
+      <rect x="46" y="34" width="68" height="7" rx="3.5" fill="#7c3aed" />
+      <rect x="46" y="48" width="68" height="6" rx="3" fill="#e4e4e7" />
+      <rect x="46" y="60" width="50" height="6" rx="3" fill="#e4e4e7" />
+      <rect x="46" y="76" width="20" height="20" rx="4" fill="#ede9fe" />
+      <rect x="70" y="86" width="20" height="10" rx="4" fill="#ede9fe" />
+      <rect x="94" y="80" width="20" height="16" rx="4" fill="#ddd6fe" />
+    </svg>
+  );
+}
+
+function PodcastVisual() {
+  return (
+    <svg viewBox="0 0 160 120" width="100%" height="100%">
+      <circle cx="80" cy="55" r="30" fill="#ede9fe" />
+      <circle cx="80" cy="55" r="10" fill="#7c3aed" />
+      {[18, 24, 30].map((r, i) => (
+        <circle
+          key={r}
+          cx="80"
+          cy="55"
+          r={r}
+          fill="none"
+          stroke="#c4b5fd"
+          strokeWidth="2"
+          opacity={0.6 - i * 0.15}
+        />
+      ))}
+    </svg>
+  );
+}
+
 const FEATURES: {
   title: string;
   category: string;
   description: string;
   visual: ReactNode;
+  soon?: boolean;
 }[] = [
   {
     title: "Quiz de Perfil",
@@ -129,18 +165,33 @@ const FEATURES: {
     visual: <RoadmapVisual />,
   },
   {
-    title: "Sistema de XP",
-    category: "PROGRESSO",
-    description:
-      "Ganhe XP a cada ebook concluído e a cada validação de conhecimento aprovada.",
-    visual: <XpVisual />,
-  },
-  {
     title: "Ebook Completo",
     category: "CONTEÚDO",
     description:
       "Do zero ao avançado para ter sua própria IA no computador — com trilha sem código para quem não programa.",
     visual: <EbookVisual />,
+  },
+  {
+    title: "Relatórios Estratégicos",
+    category: "LEITURA RÁPIDA",
+    description:
+      "Panoramas e comparativos diretos sobre modelos e hardware, pra decidir rápido sem precisar ler o manual todo.",
+    visual: <RelatorioVisual />,
+  },
+  {
+    title: "Podcast",
+    category: "ÁUDIO",
+    description:
+      "Episódios sobre IA local pra ouvir no trajeto, sem precisar estar na tela.",
+    visual: <PodcastVisual />,
+    soon: true,
+  },
+  {
+    title: "Sistema de XP",
+    category: "PROGRESSO",
+    description:
+      "Ganhe XP a cada ebook concluído e a cada validação de conhecimento aprovada.",
+    visual: <XpVisual />,
   },
   {
     title: "Quiz de Validação",
@@ -170,8 +221,9 @@ export default function FeaturesGrid() {
             <h2>Um sistema, não um ebook solto.</h2>
           </div>
           <div className="aside">
-            Cada parte da plataforma existe para te levar do quiz de perfil ao
-            certificado, sem enrolação.
+            Ebook, relatórios, quiz de perfil, roadmap gerado por IA e
+            certificado — cada formato existe pra um jeito diferente de
+            aprender, sem enrolação.
           </div>
         </div>
 
@@ -180,6 +232,7 @@ export default function FeaturesGrid() {
             <div className="card" key={feature.title}>
               <div className="card-visual">
                 <span className="card-tag mono">{feature.category}</span>
+                {feature.soon && <span className="card-badge-soon mono">Em breve</span>}
                 {feature.visual}
               </div>
               <h3>{feature.title}</h3>

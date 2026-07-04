@@ -2,7 +2,6 @@ const FEATURES: string[] = [
   "Ebook completo (9 capítulos) sobre rodar LLMs localmente",
   "Triagem de perfil personalizada",
   "Roadmap de estudo sob medida para o seu perfil",
-  "Um segundo ebook grátis, escolhido pelo seu perfil",
   "Quiz de validação com certificado de conclusão",
 ];
 
@@ -15,35 +14,37 @@ export default function PricingSection() {
             <span className="sec-tag mono">
               <i>✦</i> Preço simples
             </span>
-            <h2>Pague uma vez, acesse pra sempre</h2>
+            <h2>A partir de R$47, sem mensalidade</h2>
           </div>
           <div className="aside">
-            Sem mensalidade, sem pegadinha — um pagamento único dá acesso
-            vitalício a tudo: ebook, roadmap, quiz e certificado.
+            Comece com o ebook avulso ou veja os planos com mais ebooks e
+            acesso completo ao hub de conteúdo.
           </div>
         </div>
 
         <div className="plan-single">
-          <div className="plan">
-            <span className="plan-tag mono">Pagamento único</span>
-            <h3>Acesso Completo</h3>
+          <div className="plan gradient">
+            <span className="plan-tag mono">A partir de</span>
+            <h3>Ebook Avulso</h3>
             <div className="price">
               <b>R$47</b>
               <small>
-                sem mensalidade
+                pagamento único
                 <br />
-                acesso vitalício
+                1 ebook completo
               </small>
             </div>
-            <a className="btn btn-dark" href="#hero">
-              Comprar agora
+            <a className="btn btn-dark" href="/oferta">
+              Ver todos os planos
             </a>
             <ul>
               {FEATURES.map((feature) => (
                 <li key={feature}>{feature}</li>
               ))}
             </ul>
-            <span className="foot">Pagamento único via PIX, cartão ou boleto</span>
+            <span className="foot" style={{ color: "#4c1d95" }}>
+              Planos mensal e anual com mais ebooks disponíveis em /oferta
+            </span>
           </div>
         </div>
       </div>
