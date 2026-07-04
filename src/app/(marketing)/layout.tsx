@@ -1,4 +1,5 @@
 import { Hanken_Grotesk, JetBrains_Mono } from "next/font/google";
+import "./landing-clone.css";
 
 const hankenGrotesk = Hanken_Grotesk({
   subsets: ["latin"],
@@ -14,7 +15,7 @@ const jetBrainsMono = JetBrains_Mono({
 
 export default function MarketingLayout({ children }: { children: React.ReactNode }) {
   return (
-    <main className={`${hankenGrotesk.variable} ${jetBrainsMono.variable} bg-white font-marketing-sans`}>
+    <main className={`${hankenGrotesk.variable} ${jetBrainsMono.variable} lp-guide`}>
       {children}
     </main>
   );

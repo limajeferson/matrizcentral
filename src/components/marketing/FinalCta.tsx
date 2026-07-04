@@ -1,21 +1,16 @@
 export default function FinalCta() {
   return (
-    <section className="mx-auto max-w-6xl px-6 py-16">
-      <div className="rounded-[20px] bg-zinc-900 px-10 py-14 text-center text-white">
-        <h2 className="mb-3 text-3xl font-bold tracking-tight sm:text-4xl">
-          Comece Sua Trilha de Estudo Hoje
-        </h2>
-        <p className="mx-auto mb-8 max-w-md text-sm text-zinc-400">
+    <div className="container">
+      <div className="cta">
+        <h2>Comece Sua Trilha de Estudo Hoje</h2>
+        <p>
           Descubra seu perfil, siga um roadmap sob medida e valide o que
           aprendeu com um certificado verificável.
         </p>
-        <a
-          href="#hero"
-          className="inline-block rounded-full bg-violet-600 px-8 py-3 text-sm font-semibold text-white transition hover:bg-violet-700"
-        >
+        <a className="btn btn-accent" href="#hero">
           Quero por R$47
         </a>
       </div>
-    </section>
+    </div>
   );
 }
