@@ -557,6 +557,13 @@
   box-shadow: 0 16px 40px rgba(124, 58, 237, 0.22);
   transform: translateY(-8px);
 }
+.lp-guide .plan.recommended .plan-tag {
+  left: 50%;
+  right: auto;
+  top: -14px;
+  transform: translateX(-50%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+}
 .lp-guide .plan-badge-soon {
   position: absolute;
   top: 20px;
