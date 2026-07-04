@@ -5,7 +5,7 @@ import OfferPricing from "@/components/marketing/OfferPricing";
 export default function OfertaPage() {
   return (
     <>
-      <Header />
+      <Header ctaLabel="Voltar para o início" ctaHref="/" />
       <section>
         <div className="container">
           <div className="sec-head">
