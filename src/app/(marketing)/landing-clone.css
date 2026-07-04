@@ -453,6 +453,13 @@
 .lp-guide .chart-wrap {
   position: relative;
 }
+.lp-guide .chart-weeks {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  color: var(--ink-mute);
+  font-size: 10px;
+}
 .lp-guide .chart-feats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

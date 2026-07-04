@@ -62,6 +62,14 @@ export default function AdvantagesSection() {
               />
             </svg>
           </div>
+          <div className="chart-weeks mono">
+            <span>Sem 1</span>
+            <span>Sem 2</span>
+            <span>Sem 3</span>
+            <span>Sem 4</span>
+            <span>Sem 5</span>
+            <span>Sem 6</span>
+          </div>
           <div className="chart-feats">
             <div className="feat">
               <h4>
