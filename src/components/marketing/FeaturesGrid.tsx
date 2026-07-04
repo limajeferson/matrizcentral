@@ -143,6 +143,27 @@ function PodcastVisual() {
   );
 }
 
+function PesquisaVisual() {
+  const bars = [70, 46, 30];
+  return (
+    <svg viewBox="0 0 160 120" width="100%" height="100%">
+      {bars.map((w, i) => (
+        <g key={w}>
+          <rect x="24" y={30 + i * 24} width="112" height="14" rx="7" fill="#ede9fe" />
+          <rect
+            x="24"
+            y={30 + i * 24}
+            width={w}
+            height="14"
+            rx="7"
+            fill={i === 0 ? "#7c3aed" : "#c4b5fd"}
+          />
+        </g>
+      ))}
+    </svg>
+  );
+}
+
 const FEATURES: {
   title: string;
   category: string;
@@ -185,6 +206,13 @@ const FEATURES: {
       "Episódios sobre IA local pra ouvir no trajeto, sem precisar estar na tela.",
     visual: <PodcastVisual />,
     soon: true,
+  },
+  {
+    title: "Pesquisa com a Comunidade",
+    category: "DADOS REAIS",
+    description:
+      "Responda em segundos e veja o que o resto da comunidade está usando — sem enrolação, dado real.",
+    visual: <PesquisaVisual />,
   },
   {
     title: "Sistema de XP",

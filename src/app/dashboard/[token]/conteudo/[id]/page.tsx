@@ -7,6 +7,8 @@ import { CONTENT_HUB } from "@/data/content-hub";
 import GlassCard from "@/components/ui/glass-card";
 import CategoryBadge from "@/components/ui/category-badge";
 import CompleteContentButton from "@/components/content/CompleteContentButton";
+import PesquisaForm from "@/components/content/PesquisaForm";
+import PesquisaResults from "@/components/content/PesquisaResults";
 
 function renderMarkdown(source: string) {
   return source.split("\n").map((line, index) => {
@@ -80,6 +82,42 @@ export default async function ConteudoDetailPage({
   const body = item.bodyPath
     ? await readFile(path.join(process.cwd(), item.bodyPath), "utf-8")
     : null;
+
+  if (item.type === "pesquisa" && item.surveyOptions) {
+    const { data: existingResponse } = await supabase
+      .from("survey_responses")
+      .select("id")
+      .eq("token", params.token)
+      .eq("survey_id", item.id)
+      .maybeSingle();
+
+    let results: React.ReactNode = null;
+    if (existingResponse) {
+      const { data: allResponses } = await supabase
+        .from("survey_responses")
+        .select("option_id")
+        .eq("survey_id", item.id);
+
+      const counts: Record<string, number> = {};
+      for (const row of allResponses ?? []) {
+        counts[row.option_id] = (counts[row.option_id] ?? 0) + 1;
+      }
+      results = <PesquisaResults options={item.surveyOptions} counts={counts} />;
+    }
+
+    return (
+      <div className="mx-auto max-w-3xl space-y-6 p-6">
+        <CategoryBadge variant="hub">{item.title}</CategoryBadge>
+        <p className="text-sm text-zinc-500">+{item.xpReward} XP ao responder</p>
+
+        <GlassCard className="p-6">
+          {results ?? (
+            <PesquisaForm token={params.token} surveyId={item.id} options={item.surveyOptions} />
+          )}
+        </GlassCard>
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto max-w-3xl space-y-6 p-6">

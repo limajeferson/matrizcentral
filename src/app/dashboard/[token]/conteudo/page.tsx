@@ -9,6 +9,7 @@ const TYPE_LABEL: Record<ContentType, string> = {
   relatorio: "📄 Relatório",
   podcast: "🎙️ Podcast",
   video: "🎬 Vídeo",
+  pesquisa: "📊 Pesquisa",
 };
 
 export default async function ConteudoHubPage({ params }: { params: { token: string } }) {
@@ -36,14 +37,16 @@ export default async function ConteudoHubPage({ params }: { params: { token: str
         <CategoryBadge variant="hub">Hub de conteúdo</CategoryBadge>
         <h1 className="mt-2 text-2xl font-bold text-zinc-900">Aprenda no seu ritmo</h1>
         <p className="text-zinc-600">
-          Relatórios, podcasts e vídeos para se aprofundar em IA local — cada conteúdo concluído gera XP.
+          Relatórios, podcasts, vídeos e pesquisas com a comunidade sobre IA local — cada conteúdo
+          concluído gera XP.
         </p>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
         {CONTENT_HUB.map((item) => {
           const done = completedIds.has(item.id);
-          const comingSoon = item.embedUrl === null && item.type !== "relatorio";
+          const comingSoon =
+            item.embedUrl === null && item.type !== "relatorio" && item.type !== "pesquisa";
 
           return (
             <Link key={item.id} href={`/dashboard/${params.token}/conteudo/${item.id}`}>

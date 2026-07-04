@@ -157,6 +157,24 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["plan_waitlist"]["Insert"]>;
         Relationships: [];
       };
+      survey_responses: {
+        Row: {
+          id: string;
+          token: string;
+          survey_id: string;
+          option_id: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          token: string;
+          survey_id: string;
+          option_id: string;
+          created_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["survey_responses"]["Insert"]>;
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;

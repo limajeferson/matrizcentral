@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { isTokenExpired } from "@/lib/tokens";
 import { CONTENT_HUB } from "@/data/content-hub";
+import { grantContentXp } from "@/lib/content-xp";
 
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
@@ -29,33 +30,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "token inválido ou expirado" }, { status: 404 });
   }
 
-  const { data: existingCompletion } = await supabase
-    .from("content_completions")
-    .select("id")
-    .eq("token", token)
-    .eq("content_id", contentId)
-    .maybeSingle();
+  const xpAwarded = await grantContentXp(
+    supabase,
+    token,
+    tokenRow.purchase_id,
+    contentId,
+    contentItem.xpReward
+  );
 
-  if (existingCompletion) {
-    return NextResponse.json({ xpAwarded: 0 });
-  }
-
-  await supabase.from("content_completions").insert({ token, content_id: contentId });
-
-  const { data: purchase } = await supabase
-    .from("purchases")
-    .select("user_id")
-    .eq("id", tokenRow.purchase_id)
-    .single();
-
-  if (purchase) {
-    await supabase.from("xp_events").insert({
-      user_id: purchase.user_id,
-      xp_amount: contentItem.xpReward,
-      action_type: "conteudo",
-      reference_id: contentId,
-    });
-  }
-
-  return NextResponse.json({ xpAwarded: contentItem.xpReward });
+  return NextResponse.json({ xpAwarded });
 }

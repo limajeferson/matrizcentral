@@ -1,4 +1,9 @@
-export type ContentType = "relatorio" | "podcast" | "video";
+export type ContentType = "relatorio" | "podcast" | "video" | "pesquisa";
+
+export interface SurveyOption {
+  id: string;
+  label: string;
+}
 
 export interface ContentItem {
   id: string;
@@ -11,6 +16,8 @@ export interface ContentItem {
   bodyPath?: string;
   /** URL de embed (Spotify/YouTube). null = ainda não publicado ("em breve"). */
   embedUrl: string | null;
+  /** Opções de resposta (só para type="pesquisa"). */
+  surveyOptions?: SurveyOption[];
 }
 
 export const CONTENT_HUB: ContentItem[] = [
@@ -91,5 +98,21 @@ export const CONTENT_HUB: ContentItem[] = [
     durationMinutes: 10,
     xpReward: 25,
     embedUrl: null,
+  },
+  {
+    id: "pesquisa-hardware-atual",
+    type: "pesquisa",
+    title: "Qual hardware você usa hoje pra rodar IA?",
+    description:
+      "Responda em 5 segundos e veja o que o resto da comunidade está usando — sem enrolação.",
+    durationMinutes: 1,
+    xpReward: 15,
+    embedUrl: null,
+    surveyOptions: [
+      { id: "gpu_dedicada", label: "GPU dedicada (RTX ou similar)" },
+      { id: "apple_silicon", label: "Mac com Apple Silicon (M1/M2/M3/M4)" },
+      { id: "so_cpu", label: "Só CPU / notebook comum" },
+      { id: "ainda_nao", label: "Ainda não rodei nada localmente" },
+    ],
   },
 ];
