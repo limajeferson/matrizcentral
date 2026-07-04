@@ -1,8 +1,10 @@
 import DemoWidget from "@/components/marketing/DemoWidget";
+import NetworkMotif from "@/components/marketing/NetworkMotif";
 
 export default function Hero() {
   return (
     <div className="container hero" id="hero">
+      <NetworkMotif className="hero-motif" />
       <span className="badge mono">
         <i>✦</i> Para quem quer dominar IA — programando ou não
       </span>

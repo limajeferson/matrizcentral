@@ -142,6 +142,23 @@
 .lp-guide .hero {
   padding: 72px 0 40px;
   text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.lp-guide .hero-motif {
+  position: absolute;
+  top: -40px;
+  right: -60px;
+  width: 420px;
+  height: 280px;
+  color: var(--accent);
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: 0;
+}
+.lp-guide .hero > *:not(.hero-motif) {
+  position: relative;
+  z-index: 1;
 }
 .lp-guide .badge {
   display: inline-flex;
@@ -683,6 +700,23 @@
   border-radius: var(--radius-lg);
   padding: 56px 40px;
   text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.lp-guide .cta-motif {
+  position: absolute;
+  bottom: -60px;
+  left: -40px;
+  width: 360px;
+  height: 240px;
+  color: #fff;
+  opacity: 0.06;
+  pointer-events: none;
+  z-index: 0;
+}
+.lp-guide .cta > *:not(.cta-motif) {
+  position: relative;
+  z-index: 1;
 }
 .lp-guide .cta h2 {
   font-size: clamp(24px, 3vw, 34px);
