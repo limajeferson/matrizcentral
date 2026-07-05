@@ -28,7 +28,7 @@ const STEPS = [
   },
 ];
 
-function GlassPanel({ step }: { step: (typeof STEPS)[number]; index: number }) {
+function GlassPanel({ step }: { step: (typeof STEPS)[number] }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -57,8 +57,8 @@ export default function ProcessSteps() {
           <h2 className="mc-display">Seu caminho até uma IA independente</h2>
         </Reveal>
         <div className="mc-glass-track">
-          {STEPS.map((step, i) => (
-            <GlassPanel key={step.number} step={step} index={i} />
+          {STEPS.map((step) => (
+            <GlassPanel key={step.number} step={step} />
           ))}
         </div>
       </div>
