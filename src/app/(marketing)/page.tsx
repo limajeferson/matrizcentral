@@ -1,7 +1,8 @@
 import { Archivo_Black, Inter } from "next/font/google";
 import "./landing-v2.css";
 
-import Header from "@/components/marketing/Header";
+import LandingHeader from "@/components/marketing/v2/LandingHeader";
+import FixedCta from "@/components/marketing/v2/FixedCta";
 import Hero from "@/components/marketing/Hero";
 import AdvantagesSection from "@/components/marketing/AdvantagesSection";
 import FeaturesGrid from "@/components/marketing/FeaturesGrid";
@@ -24,7 +25,8 @@ const inter = Inter({
 export default function HomePage() {
   return (
     <div className={`${archivoBlack.variable} ${inter.variable} mcv2`}>
-      <Header />
+      <LandingHeader />
+      <FixedCta />
       <Hero />
       <AdvantagesSection />
       <FeaturesGrid />

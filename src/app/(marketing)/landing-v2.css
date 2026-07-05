@@ -114,3 +114,71 @@
 @media (prefers-reduced-motion: reduce) {
   .mcv2 * { transition-duration: 0.01ms !important; }
 }
+
+/* ---- Header + menu overlay ---- */
+.mcv2 .mc-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(10, 8, 18, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--mc-line);
+}
+.mcv2 .mc-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+.mcv2 .mc-logo { font-size: 1.1rem; letter-spacing: 0; }
+.mcv2 .mc-menu-toggle {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 10px 6px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  z-index: 60;
+  position: relative;
+}
+.mcv2 .mc-menu-line {
+  width: 28px;
+  height: 2px;
+  background: var(--mc-white);
+  transition: transform 0.3s ease;
+}
+.mcv2 .mc-menu-line.open-top { transform: translateY(4.5px) rotate(45deg); }
+.mcv2 .mc-menu-line.open-bottom { transform: translateY(-4.5px) rotate(-45deg); }
+.mcv2 .mc-menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: var(--mc-accent-deep);
+  display: flex;
+  align-items: center;
+}
+.mcv2 .mc-menu-overlay ul {
+  list-style: none;
+  margin: 0;
+  padding: 0 24px;
+  width: 100%;
+  max-width: 1160px;
+  margin-inline: auto;
+}
+.mcv2 .mc-menu-overlay a {
+  display: block;
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 0;
+}
+.mcv2 .mc-menu-overlay a:hover { color: var(--mc-bg); }
+
+/* ---- CTA fixo ---- */
+.mcv2 .mc-fixed-cta {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 45;
+}
