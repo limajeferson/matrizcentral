@@ -7,7 +7,8 @@ import HeroV2 from "@/components/marketing/v2/HeroV2";
 import ProblemSection from "@/components/marketing/v2/ProblemSection";
 import SystemSection from "@/components/marketing/v2/SystemSection";
 import ProcessSteps from "@/components/marketing/v2/ProcessSteps";
-import PricingSection from "@/components/marketing/PricingSection";
+import PricingV2 from "@/components/marketing/v2/PricingV2";
+import FaqSection from "@/components/marketing/v2/FaqSection";
 import FinalCta from "@/components/marketing/FinalCta";
 import Footer from "@/components/marketing/Footer";
 
@@ -32,7 +33,8 @@ export default function HomePage() {
       <ProblemSection />
       <SystemSection />
       <ProcessSteps />
-      <PricingSection />
+      <PricingV2 />
+      <FaqSection />
       <FinalCta />
       <Footer />
     </div>

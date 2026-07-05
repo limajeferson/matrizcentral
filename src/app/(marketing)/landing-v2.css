@@ -409,3 +409,81 @@
   .mcv2 .mc-step-inner { grid-template-columns: 1fr; gap: 16px; }
   .mcv2 .mc-step-motif { display: none; }
 }
+
+/* ---- Preço ---- */
+.mcv2 .mc-price-card {
+  margin-top: 48px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  background: var(--mc-surface);
+  border: 1px solid var(--mc-line);
+  border-radius: var(--mc-radius);
+  padding: 48px;
+  clip-path: polygon(
+    0 0, calc(100% - 24px) 0, 100% 24px,
+    100% 100%, 24px 100%, 0 calc(100% - 24px)
+  );
+}
+.mcv2 .mc-price-main { display: flex; flex-direction: column; gap: 20px; align-items: flex-start; }
+.mcv2 .mc-price-value { font-size: clamp(3.5rem, 8vw, 5.5rem); }
+.mcv2 .mc-price-note {
+  display: block;
+  font-family: var(--font-mc-sans), sans-serif;
+  font-size: 0.9rem;
+  text-transform: none;
+  color: var(--mc-gray);
+  margin-top: 8px;
+}
+.mcv2 .mc-price-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  color: var(--mc-gray);
+}
+.mcv2 .mc-price-list li { padding-left: 24px; position: relative; }
+.mcv2 .mc-price-list li::before {
+  content: "✦";
+  position: absolute;
+  left: 0;
+  color: var(--mc-accent);
+}
+.mcv2 .mc-price-foot { margin-top: 20px; color: var(--mc-gray); }
+@media (max-width: 800px) {
+  .mcv2 .mc-price-card { grid-template-columns: 1fr; padding: 32px 24px; }
+}
+
+/* ---- FAQ ---- */
+.mcv2 .mc-faq { padding: 72px 48px; }
+.mcv2 .mc-faq .mc-tag {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+.mcv2 .mc-faq h2 { margin-top: 20px; }
+.mcv2 .mc-faq-list { margin-top: 40px; display: flex; flex-direction: column; gap: 10px; }
+.mcv2 .mc-faq-item {
+  background: #fff;
+  color: #17131f;
+  border-radius: 12px;
+}
+.mcv2 .mc-faq-question {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px;
+  background: none;
+  border: 0;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+}
+.mcv2 .mc-faq-answer { padding: 0 24px 20px; color: #4b4655; }
+@media (max-width: 640px) {
+  .mcv2 .mc-faq { padding: 48px 20px; }
+}
