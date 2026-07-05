@@ -43,10 +43,6 @@ const ITEMS = [
   },
 ];
 
-const OFFSET_X = 28;
-const OFFSET_Y = 20;
-const ROTATION = 2.5;
-
 export default function SystemSection() {
   const [focusIndex, setFocusIndex] = useState<number | null>(null);
   const reduced = useReducedMotion();
@@ -65,7 +61,7 @@ export default function SystemSection() {
           </h2>
         </Reveal>
 
-        <div className="mc-system-stack">
+        <div className="mc-system-row">
           {ITEMS.map((item, index) => {
             const isFocused = focusIndex === index;
             const isDimmed = focusIndex !== null && !isFocused;
@@ -74,26 +70,18 @@ export default function SystemSection() {
               <motion.div
                 key={item.feature}
                 className={`mc-system-card${item.accent ? " is-accent" : ""}`}
-                style={{ zIndex: isFocused ? 10 : ITEMS.length - index }}
-                initial={{
-                  x: index * OFFSET_X,
-                  y: index * OFFSET_Y,
-                  rotate: reduced ? 0 : (index - 1.5) * ROTATION,
-                }}
                 animate={{
-                  x: index * OFFSET_X,
-                  y: index * OFFSET_Y,
-                  rotate: reduced || isFocused ? 0 : (index - 1.5) * ROTATION,
-                  scale: isFocused ? 1.05 : isDimmed ? 0.96 : 1,
-                  opacity: isDimmed ? 0.55 : 1,
+                  scale: reduced ? 1 : isFocused ? 1.04 : isDimmed ? 0.97 : 1,
+                  opacity: isDimmed ? 0.5 : 1,
+                  y: reduced ? 0 : isFocused ? -8 : 0,
                 }}
-                whileHover={{ scale: 1.05, rotate: 0, zIndex: 10 }}
+                whileHover={reduced ? undefined : { scale: 1.04, y: -8 }}
                 onHoverStart={() => setFocusIndex(index)}
                 onHoverEnd={() => setFocusIndex(null)}
                 onFocus={() => setFocusIndex(index)}
                 onBlur={() => setFocusIndex(null)}
                 tabIndex={0}
-                transition={{ duration: reduced ? 0 : 0.35, ease: [0.21, 0.47, 0.32, 0.98] }}
+                transition={{ duration: reduced ? 0 : 0.3, ease: [0.21, 0.47, 0.32, 0.98] }}
               >
                 <div className="mc-system-image-wrap">
                   <img
