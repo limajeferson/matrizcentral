@@ -86,7 +86,9 @@ describe("POST /api/quiz", () => {
     const json = await response.json();
 
     expect(response.status).toBe(200);
-    expect(json.profileId).toBe("dev_python_aia");
+    // Q1/opção 0 no banco atual ("Todos os dias") pontua para
+    // profissional_produtividade (ver src/data/quiz-triagem.ts).
+    expect(json.profileId).toBe("profissional_produtividade");
     expect(mockSupabase.inserted.xp_events).toHaveLength(1);
     expect(mockSupabase.updated[0]).toMatchObject({ triaged: true });
   });
