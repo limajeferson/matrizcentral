@@ -763,7 +763,6 @@
 }
 
 /* ---- Rede ambiente (fundo único do site) ---- */
-.mcv2 .mc-ambient-network,
 .mcv2 .mc-wave-bg {
   position: fixed;
   inset: 0;

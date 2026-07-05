@@ -46,7 +46,7 @@ export default function ScrambleText({ text, className }: { text: string; classN
   }, [text, reduced]);
 
   return (
-    <span className={className} aria-label={text}>
+    <span className={className} role="img" aria-label={text}>
       {chars.map((c, i) => (
         <span
           key={i}
