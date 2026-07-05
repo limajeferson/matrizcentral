@@ -658,3 +658,19 @@
   position: relative;
   z-index: 1;
 }
+
+/* ---- Rede ambiente (fundo único do site) ---- */
+.mcv2 .mc-ambient-network {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.mcv2 .mc-header,
+.mcv2 .mc-canvas,
+.mcv2 .mc-footer,
+.mcv2 .mc-fixed-cta,
+.mcv2 .mc-menu-overlay {
+  position: relative;
+  z-index: 1;
+}

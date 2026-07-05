@@ -1,12 +1,8 @@
-import NetworkField from "./NetworkField";
 import { Reveal } from "./motion-primitives";
 
 export default function ClosingSection() {
   return (
     <section className="mc-section mc-closing">
-      <div className="mc-closing-motif" aria-hidden="true">
-        <NetworkField />
-      </div>
       <div className="mc-container mc-closing-content">
         <Reveal>
           <h2 className="mc-display">

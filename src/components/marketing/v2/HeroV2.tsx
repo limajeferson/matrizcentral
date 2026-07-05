@@ -1,8 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import DemoWidget from "@/components/marketing/DemoWidget";
-import NetworkField from "./NetworkField";
 import RotatingWord from "./RotatingWord";
 import { Reveal } from "./motion-primitives";
 
@@ -18,15 +16,8 @@ const ROTATING_WORDS = ["do GPT", "do Claude", "do Gemini", "de aluguel de servi
 // ];
 
 export default function HeroV2() {
-  const { scrollY } = useScroll();
-  const reduced = useReducedMotion();
-  const y = useTransform(scrollY, [0, 800], [0, reduced ? 0 : 160]);
-
   return (
     <section className="mc-hero">
-      <motion.div className="mc-hero-motif" style={{ y }} aria-hidden="true">
-        <NetworkField />
-      </motion.div>
       <div className="mc-container mc-hero-content">
         <Reveal>
           <p className="mc-hero-proof mc-mono">
