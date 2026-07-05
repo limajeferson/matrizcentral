@@ -2,58 +2,42 @@ import { Reveal, Stagger, StaggerItem } from "./motion-primitives";
 
 const ITEMS = [
   {
-    tag: "CONTEÚDO",
-    title: "Ebook completo",
+    benefit: "Aprenda no seu ritmo",
+    feature: "Ebook Técnico",
     description:
-      "9 capítulos do zero ao avançado para rodar LLMs localmente — com trilha sem código para quem não programa.",
+      "9 capítulos organizados para levar você do primeiro modelo até uma utilização prática da IA local, mesmo sem experiência prévia.",
+    image:
+      "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=60",
     accent: false,
-    bars: [36, 52, 44, 68, 84],
   },
   {
-    tag: "TRIAGEM + APRENDIZADO",
-    title: "Trilha sob medida",
+    benefit: "Receba uma orientação personalizada",
+    feature: "Diagnóstico Inicial",
     description:
-      "Quiz de perfil mapeia sua stack, nível e objetivos; o roadmap evita que você estude o que já domina.",
+      "O sistema identifica seu contexto de uso e recomenda a trilha mais adequada para começar.",
+    image:
+      "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=60",
     accent: true,
-    bars: [28, 44, 60, 72, 90],
   },
   {
-    tag: "PROGRESSO",
-    title: "Dashboard com XP",
+    benefit: "Acompanhe sua evolução",
+    feature: "Roadmap Inteligente",
     description:
-      "Cada ebook concluído e cada quiz aprovado somam XP. Progresso visível a cada etapa.",
+      "Cada etapa concluída desbloqueia a próxima, permitindo acompanhar claramente sua evolução.",
+    image:
+      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=60",
     accent: false,
-    bars: [20, 36, 48, 66, 80],
   },
   {
-    tag: "RECONHECIMENTO",
-    title: "Certificado verificável",
+    benefit: "Comprove seu conhecimento",
+    feature: "Certificação Verificável",
     description:
-      "Quiz de validação com 15 questões; 70% de acerto libera certificado com QR code verificável publicamente.",
+      "Após concluir sua trilha e validação, gere um certificado com autenticação pública.",
+    image:
+      "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=60",
     accent: true,
-    bars: [40, 55, 65, 78, 96],
   },
 ];
-
-function CardVisual({ bars, accent }: { bars: number[]; accent: boolean }) {
-  const fill = accent ? "rgba(255,255,255,0.85)" : "#7c5cff";
-  const dim = accent ? "rgba(255,255,255,0.3)" : "rgba(124,92,255,0.3)";
-  return (
-    <svg viewBox="0 0 160 110" width="100%" aria-hidden="true">
-      {bars.map((h, i) => (
-        <rect
-          key={i}
-          x={16 + i * 28}
-          y={100 - h}
-          width="18"
-          height={h}
-          rx="4"
-          fill={i === bars.length - 1 ? fill : dim}
-        />
-      ))}
-    </svg>
-  );
-}
 
 export default function SystemSection() {
   return (
@@ -72,14 +56,22 @@ export default function SystemSection() {
         <Stagger className="mc-system-grid">
           {ITEMS.map((item) => (
             <StaggerItem
-              key={item.title}
+              key={item.feature}
               className={`mc-system-card${item.accent ? " is-accent" : ""}`}
             >
-              <span className="mc-tag">{item.tag}</span>
-              <h3 className="mc-display">{item.title}</h3>
-              <p>{item.description}</p>
-              <div className="mc-system-visual">
-                <CardVisual bars={item.bars} accent={item.accent} />
+              <div className="mc-system-image-wrap">
+                <img
+                  src={item.image}
+                  alt=""
+                  aria-hidden="true"
+                  className="mc-system-image"
+                  loading="lazy"
+                />
+              </div>
+              <div className="mc-system-card-body">
+                <span className="mc-tag">{item.benefit}</span>
+                <h3 className="mc-display">{item.feature}</h3>
+                <p>{item.description}</p>
               </div>
             </StaggerItem>
           ))}
