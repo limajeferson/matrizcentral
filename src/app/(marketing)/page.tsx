@@ -6,6 +6,7 @@ import FixedCta from "@/components/marketing/v2/FixedCta";
 import HeroV2 from "@/components/marketing/v2/HeroV2";
 import ProblemSection from "@/components/marketing/v2/ProblemSection";
 import SystemSection from "@/components/marketing/v2/SystemSection";
+import ProcessSteps from "@/components/marketing/v2/ProcessSteps";
 import PricingSection from "@/components/marketing/PricingSection";
 import FinalCta from "@/components/marketing/FinalCta";
 import Footer from "@/components/marketing/Footer";
@@ -30,6 +31,7 @@ export default function HomePage() {
       <HeroV2 />
       <ProblemSection />
       <SystemSection />
+      <ProcessSteps />
       <PricingSection />
       <FinalCta />
       <Footer />

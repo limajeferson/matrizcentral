@@ -362,3 +362,50 @@
   .mcv2 .mc-system-grid { grid-template-columns: 1fr; }
   .mcv2 .mc-system-card { padding: 28px; }
 }
+
+/* ---- Processo (sticky stack) ---- */
+.mcv2 .mc-steps { margin-top: 48px; }
+.mcv2 .mc-step {
+  position: sticky;
+  padding: 32px 0;
+  background: var(--mc-bg);
+  border-top: 1px solid var(--mc-line);
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+}
+.mcv2 .mc-step:nth-child(2) { background: var(--mc-surface); }
+.mcv2 .mc-step:nth-child(3) { background: var(--mc-accent-deep); }
+.mcv2 .mc-step-inner {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 40px;
+  align-items: center;
+  width: 100%;
+}
+.mcv2 .mc-step-number {
+  font-size: clamp(4rem, 12vw, 9rem);
+  opacity: 0.25;
+}
+.mcv2 .mc-step-label { color: var(--mc-gray); margin-bottom: 12px; }
+.mcv2 .mc-step:nth-child(3) .mc-step-label { color: rgba(255, 255, 255, 0.7); }
+.mcv2 .mc-step-desc {
+  margin-top: 16px;
+  max-width: 440px;
+  color: var(--mc-gray);
+  font-size: 1.05rem;
+}
+.mcv2 .mc-step:nth-child(3) .mc-step-desc { color: rgba(255, 255, 255, 0.85); }
+.mcv2 .mc-step-motif {
+  width: 220px;
+  height: 150px;
+  color: var(--mc-accent);
+  opacity: 0.4;
+}
+.mcv2 .mc-step:nth-child(3) .mc-step-motif { color: #fff; }
+.mcv2 .mc-step-motif svg { width: 100%; height: 100%; }
+@media (max-width: 800px) {
+  .mcv2 .mc-step { position: static; min-height: 0; }
+  .mcv2 .mc-step-inner { grid-template-columns: 1fr; gap: 16px; }
+  .mcv2 .mc-step-motif { display: none; }
+}
