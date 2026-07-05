@@ -6,37 +6,37 @@ import { Reveal } from "./motion-primitives";
 
 const ITEMS = [
   {
-    benefit: "Aprenda no seu ritmo",
-    feature: "Ebook Técnico",
+    benefit: "Tudo em um só lugar",
+    feature: "Biblioteca multi-formato",
     description:
-      "9 capítulos organizados para levar você do primeiro modelo até uma utilização prática da IA local, mesmo sem experiência prévia.",
+      "Relatórios, podcasts, vídeos e apresentações sobre IA local — com o ebook técnico como material de apoio, não como o produto.",
     image:
       "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=60",
     accent: false,
   },
   {
-    benefit: "Receba uma orientação personalizada",
-    feature: "Diagnóstico Inicial",
+    benefit: "Aprenda como numa rede social",
+    feature: "Plataforma-feed",
     description:
-      "O sistema identifica seu contexto de uso e recomenda a trilha mais adequada para começar.",
+      "Um feed de aprendizado no seu ritmo, organizado por contexto — não um PDF que você baixa e esquece.",
     image:
       "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=60",
     accent: true,
   },
   {
-    benefit: "Acompanhe sua evolução",
-    feature: "Roadmap Inteligente",
+    benefit: "Comece pelo caminho certo",
+    feature: "Trilha guiada",
     description:
-      "Cada etapa concluída desbloqueia a próxima, permitindo acompanhar claramente sua evolução.",
+      "Um diagnóstico inicial do seu contexto e um roadmap inteligente que libera cada etapa na ordem certa.",
     image:
       "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=60",
     accent: false,
   },
   {
-    benefit: "Comprove seu conhecimento",
-    feature: "Certificação Verificável",
+    benefit: "Comprove sua evolução",
+    feature: "Gamificação + Certificado",
     description:
-      "Após concluir sua trilha e validação, gere um certificado com autenticação pública.",
+      "XP, níveis e uma certificação verificável com autenticação pública ao concluir sua trilha.",
     image:
       "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=60",
     accent: true,
