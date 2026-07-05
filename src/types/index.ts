@@ -1,5 +1,5 @@
 export type QuizType = "triagem" | "validacao";
-export type XpActionType = "compra" | "triagem" | "download" | "validacao" | "conteudo";
+export type XpActionType = "compra" | "triagem" | "download" | "validacao" | "conteudo" | "roadmap";
 export type WaitlistPlanId = "mensal_97" | "anual_497";
 
 export interface Database {
@@ -173,6 +173,20 @@ export interface Database {
           created_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["survey_responses"]["Insert"]>;
+        Relationships: [];
+      };
+      roadmap_progress: {
+        Row: {
+          token: string;
+          stage_key: string;
+          completed_at: string;
+        };
+        Insert: {
+          token: string;
+          stage_key: string;
+          completed_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["roadmap_progress"]["Insert"]>;
         Relationships: [];
       };
     };
