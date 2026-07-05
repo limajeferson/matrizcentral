@@ -9,8 +9,8 @@ import SystemSection from "@/components/marketing/v2/SystemSection";
 import ProcessSteps from "@/components/marketing/v2/ProcessSteps";
 import PricingV2 from "@/components/marketing/v2/PricingV2";
 import FaqSection from "@/components/marketing/v2/FaqSection";
-import FinalCta from "@/components/marketing/FinalCta";
-import Footer from "@/components/marketing/Footer";
+import FinalCtaV2 from "@/components/marketing/v2/FinalCtaV2";
+import FooterV2 from "@/components/marketing/v2/FooterV2";
 
 const archivoBlack = Archivo_Black({
   subsets: ["latin"],
@@ -29,14 +29,16 @@ export default function HomePage() {
     <div className={`${archivoBlack.variable} ${inter.variable} mcv2`}>
       <LandingHeader />
       <FixedCta />
-      <HeroV2 />
-      <ProblemSection />
-      <SystemSection />
-      <ProcessSteps />
-      <PricingV2 />
-      <FaqSection />
-      <FinalCta />
-      <Footer />
+      <div className="mc-canvas">
+        <HeroV2 />
+        <ProblemSection />
+        <SystemSection />
+        <ProcessSteps />
+        <PricingV2 />
+        <FaqSection />
+        <FinalCtaV2 />
+      </div>
+      <FooterV2 />
     </div>
   );
 }
