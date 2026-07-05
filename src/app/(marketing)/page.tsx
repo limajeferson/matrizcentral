@@ -9,7 +9,7 @@ import SystemSection from "@/components/marketing/v2/SystemSection";
 import ProcessSteps from "@/components/marketing/v2/ProcessSteps";
 import PricingV2 from "@/components/marketing/v2/PricingV2";
 import FaqSection from "@/components/marketing/v2/FaqSection";
-import FinalCtaV2 from "@/components/marketing/v2/FinalCtaV2";
+import ClosingSection from "@/components/marketing/v2/ClosingSection";
 import FooterV2 from "@/components/marketing/v2/FooterV2";
 
 const archivoBlack = Archivo_Black({
@@ -39,7 +39,7 @@ export default function HomePage() {
         <ProcessSteps />
         <PricingV2 />
         <FaqSection />
-        <FinalCtaV2 />
+        <ClosingSection />
       </div>
       <FooterV2 />
     </div>

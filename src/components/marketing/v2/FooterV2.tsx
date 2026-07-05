@@ -7,8 +7,8 @@ export default function FooterV2() {
             Matriz<span className="mc-accent-text">/</span>Central
           </span>
           <p className="mc-footer-desc">
-            Sistema de estudo para dominar IA local — ebook, trilha
-            personalizada, XP e certificado verificável.
+            Sistema para aprender IA local através de conteúdo estruturado,
+            diagnóstico personalizado, roadmap de evolução e certificação.
           </p>
         </div>
         <nav className="mc-footer-nav" aria-label="Links do rodapé">
@@ -20,10 +20,7 @@ export default function FooterV2() {
         </nav>
       </div>
       <div className="mc-container mc-footer-bottom">
-        <span>
-          © {new Date().getFullYear()} Matriz Central. Todos os direitos
-          reservados.
-        </span>
+        <span>© {new Date().getFullYear()} Matriz Central. Todos os direitos reservados.</span>
       </div>
     </footer>
   );

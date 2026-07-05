@@ -520,23 +520,25 @@
   .mcv2 .mc-faq { padding: 48px 20px; }
 }
 
-/* ---- CTA final ---- */
-.mcv2 .mc-final { position: relative; overflow: clip; padding: 140px 0; }
-.mcv2 .mc-final-motif {
+/* ---- Closing ---- */
+.mcv2 .mc-closing { position: relative; overflow: clip; padding: 140px 0; }
+.mcv2 .mc-closing-motif {
   position: absolute;
   inset: 0;
   color: var(--mc-accent);
   opacity: 0.2;
   pointer-events: none;
 }
-.mcv2 .mc-final-motif svg { width: 100%; height: 100%; }
-.mcv2 .mc-final-content { position: relative; text-align: center; }
-.mcv2 .mc-final-sub {
-  max-width: 480px;
-  margin: 24px auto 36px;
+.mcv2 .mc-closing-motif svg { width: 100%; height: 100%; }
+.mcv2 .mc-closing-content { position: relative; text-align: center; }
+.mcv2 .mc-closing-sub {
+  max-width: 520px;
+  margin: 24px auto 0;
   color: var(--mc-gray);
   font-size: 1.1rem;
 }
+.mcv2 .mc-closing-cta { margin-top: 40px; }
+.mcv2 .mc-closing-cta-note { margin-top: 14px; color: var(--mc-gray); font-size: 0.9rem; }
 
 /* ---- Footer claro ---- */
 .mcv2 .mc-footer {
