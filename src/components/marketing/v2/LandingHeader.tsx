@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import ScrambleText from "./ScrambleText";
 
 const LINKS = [
   { href: "#sistema", label: "O Sistema" },
@@ -18,7 +19,7 @@ export default function LandingHeader() {
       <header className="mc-header">
         <div className="mc-container mc-header-row">
           <span className="mc-logo mc-display">
-            Matriz<span className="mc-accent-text">/</span>Central
+            <ScrambleText text="Matriz/Central" />
           </span>
           <button
             type="button"
