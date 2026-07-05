@@ -1,3 +1,5 @@
+"use client";
+
 import { annualSpendBRL, formatBRL } from "@/lib/annual-spend";
 import { AnimatedCounter, Reveal } from "./motion-primitives";
 

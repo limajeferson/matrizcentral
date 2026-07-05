@@ -119,7 +119,10 @@
 .mcv2 .mc-header {
   position: sticky;
   top: 0;
-  z-index: 40;
+  /* Acima do .mc-menu-overlay (z-index 50): o overlay agora é renderizado
+     como irmão do header (ver LandingHeader.tsx), então o header precisa
+     ficar por cima para o botão de fechar (X) continuar clicável. */
+  z-index: 55;
   background: rgba(10, 8, 18, 0.85);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--mc-line);
