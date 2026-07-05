@@ -3,7 +3,7 @@ import "./landing-v2.css";
 
 import LandingHeader from "@/components/marketing/v2/LandingHeader";
 import FixedCta from "@/components/marketing/v2/FixedCta";
-import Hero from "@/components/marketing/Hero";
+import HeroV2 from "@/components/marketing/v2/HeroV2";
 import AdvantagesSection from "@/components/marketing/AdvantagesSection";
 import FeaturesGrid from "@/components/marketing/FeaturesGrid";
 import PricingSection from "@/components/marketing/PricingSection";
@@ -27,7 +27,7 @@ export default function HomePage() {
     <div className={`${archivoBlack.variable} ${inter.variable} mcv2`}>
       <LandingHeader />
       <FixedCta />
-      <Hero />
+      <HeroV2 />
       <AdvantagesSection />
       <FeaturesGrid />
       <PricingSection />
