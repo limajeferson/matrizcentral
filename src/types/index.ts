@@ -99,7 +99,7 @@ export interface Database {
           name: string;
           description: string;
           recommended_ebooks: unknown;
-          study_roadmap: Record<string, { title: string; items: string[] }>;
+          study_roadmap: Record<string, { title: string; objective: string; checklist: string[] }>;
         };
         Insert: Database["public"]["Tables"]["profiles"]["Row"];
         Update: Partial<Database["public"]["Tables"]["profiles"]["Row"]>;
