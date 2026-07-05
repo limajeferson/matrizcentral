@@ -173,6 +173,7 @@
   height: 64px;
 }
 .mcv2 .mc-logo { font-size: 1.1rem; letter-spacing: 0; }
+.mcv2 .mc-scramble-live { color: var(--mc-accent); opacity: 0.85; }
 .mcv2 .mc-menu-toggle {
   display: flex;
   flex-direction: column;

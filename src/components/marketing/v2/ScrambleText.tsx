@@ -2,43 +2,42 @@
 
 import { useEffect, useState } from "react";
 import { useReducedMotion } from "framer-motion";
+import {
+  resolveScramble,
+  totalScrambleFrames,
+  SCRAMBLE_GLYPHS,
+  type ScrambleChar,
+} from "@/lib/scramble";
 
-const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz";
-const FRAME_MS = 35;
+const FRAME_MS = 30;
 const FRAMES_PER_CHAR = 3;
 
 function randomGlyph(): string {
-  return GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+  return SCRAMBLE_GLYPHS[Math.floor(Math.random() * SCRAMBLE_GLYPHS.length)];
+}
+
+function settledChars(text: string): ScrambleChar[] {
+  return text.split("").map((char) => ({ char, settled: true }));
 }
 
 export default function ScrambleText({ text, className }: { text: string; className?: string }) {
   const reduced = useReducedMotion();
-  const [display, setDisplay] = useState(text);
+  const [chars, setChars] = useState<ScrambleChar[]>(() => settledChars(text));
 
   useEffect(() => {
     if (reduced) {
-      setDisplay(text);
+      setChars(settledChars(text));
       return;
     }
 
     let frame = 0;
-    const totalFrames = text.length * FRAMES_PER_CHAR;
+    const total = totalScrambleFrames(text, FRAMES_PER_CHAR);
 
     const id = setInterval(() => {
-      const resolvedCount = Math.floor(frame / FRAMES_PER_CHAR);
-      const next = text
-        .split("")
-        .map((char, index) => {
-          if (char === " " || char === "/") return char;
-          if (index < resolvedCount) return text[index];
-          return randomGlyph();
-        })
-        .join("");
-      setDisplay(next);
+      setChars(resolveScramble(text, frame, FRAMES_PER_CHAR, randomGlyph));
       frame += 1;
-
-      if (frame > totalFrames) {
-        setDisplay(text);
+      if (frame > total) {
+        setChars(settledChars(text));
         clearInterval(id);
       }
     }, FRAME_MS);
@@ -46,5 +45,17 @@ export default function ScrambleText({ text, className }: { text: string; classN
     return () => clearInterval(id);
   }, [text, reduced]);
 
-  return <span className={className}>{display}</span>;
+  return (
+    <span className={className} aria-label={text}>
+      {chars.map((c, i) => (
+        <span
+          key={i}
+          aria-hidden="true"
+          className={c.settled ? undefined : "mc-scramble-live"}
+        >
+          {c.char}
+        </span>
+      ))}
+    </span>
+  );
 }
