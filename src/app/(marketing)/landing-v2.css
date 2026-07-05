@@ -303,34 +303,43 @@
   color: var(--mc-gray);
 }
 
-/* ---- Problema ---- */
-.mcv2 .mc-problem { padding: 72px 48px; }
-.mcv2 .mc-problem .mc-tag {
+/* ---- Oportunidade ---- */
+.mcv2 .mc-opportunity { padding: 72px 48px; }
+.mcv2 .mc-opportunity .mc-tag {
   background: rgba(255, 255, 255, 0.15);
   border-color: rgba(255, 255, 255, 0.25);
 }
-.mcv2 .mc-problem h2 { margin-top: 20px; max-width: 720px; }
-.mcv2 .mc-problem-sub {
+.mcv2 .mc-opportunity h2 { margin-top: 20px; max-width: 720px; }
+.mcv2 .mc-opportunity-sub {
   margin-top: 24px;
   max-width: 560px;
   font-size: 1.1rem;
   color: rgba(255, 255, 255, 0.85);
 }
-.mcv2 .mc-problem-counter {
-  margin-top: 40px;
-  font-size: clamp(3rem, 8vw, 6rem);
+.mcv2 .mc-opportunity-compare {
+  margin-top: 48px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  flex-wrap: wrap;
 }
-.mcv2 .mc-problem-per {
-  font-size: 0.35em;
-  margin-left: 12px;
-  color: rgba(255, 255, 255, 0.7);
+.mcv2 .mc-opportunity-label { color: rgba(255, 255, 255, 0.7); }
+.mcv2 .mc-opportunity-value {
+  margin-top: 8px;
+  font-size: clamp(2rem, 5vw, 3.25rem);
 }
-.mcv2 .mc-problem-vs {
-  margin-top: 20px;
-  color: rgba(255, 255, 255, 0.8);
+.mcv2 .mc-opportunity-note { color: rgba(255, 255, 255, 0.6); }
+.mcv2 .mc-opportunity-arrow {
+  font-size: 2rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+.mcv2 .mc-opportunity-result {
+  margin-top: 32px;
+  color: rgba(255, 255, 255, 0.85);
 }
 @media (max-width: 640px) {
-  .mcv2 .mc-problem { padding: 48px 24px; }
+  .mcv2 .mc-opportunity { padding: 48px 24px; }
+  .mcv2 .mc-opportunity-compare { gap: 16px; }
 }
 
 /* ---- Sistema ---- */
