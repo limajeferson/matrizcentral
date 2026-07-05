@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { FAQ_ITEMS } from "./faq-data";
 import { Reveal } from "./motion-primitives";
 
@@ -32,19 +32,14 @@ export default function FaqSection() {
                     {item.question}
                     <span aria-hidden="true">{open ? "−" : "+"}</span>
                   </button>
-                  <AnimatePresence initial={false}>
-                    {open && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
-                        style={{ overflow: "hidden" }}
-                      >
-                        <p className="mc-faq-answer">{item.answer}</p>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                  <motion.div
+                    initial={false}
+                    animate={{ height: open ? "auto" : 0, opacity: open ? 1 : 0 }}
+                    transition={{ duration: 0.3 }}
+                    style={{ overflow: "hidden" }}
+                  >
+                    <p className="mc-faq-answer">{item.answer}</p>
+                  </motion.div>
                 </div>
               );
             })}

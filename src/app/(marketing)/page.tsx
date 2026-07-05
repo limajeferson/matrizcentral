@@ -27,6 +27,9 @@ const inter = Inter({
 export default function HomePage() {
   return (
     <div className={`${archivoBlack.variable} ${inter.variable} mcv2`}>
+      <noscript>
+        <style>{`.mcv2 [style*="opacity"], .mcv2 [style*="opacity:0"] { opacity: 1 !important; transform: none !important; filter: none !important; height: auto !important; overflow: visible !important; }`}</style>
+      </noscript>
       <LandingHeader />
       <FixedCta />
       <div className="mc-canvas">

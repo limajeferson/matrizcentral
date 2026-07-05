@@ -227,79 +227,79 @@
 
 /* Overrides dark para o DemoWidget existente (classes vêm de landing-clone.css/.lp-guide,
    que foi feito para fundo claro; aqui reescrevemos para o fundo escuro do .mcv2) */
-.mcv2 .demo {
+.lp-guide .mcv2 .demo {
   background: var(--mc-surface);
   border: 1px solid var(--mc-line);
   color: var(--mc-white);
 }
-.mcv2 .demo-tabs .tab {
+.lp-guide .mcv2 .demo-tabs .tab {
   background: transparent;
   border: 1px solid var(--mc-line);
   color: var(--mc-gray);
 }
-.mcv2 .demo-tabs .tab.active {
+.lp-guide .mcv2 .demo-tabs .tab.active {
   background: var(--mc-accent);
   color: var(--mc-white);
   border-color: var(--mc-accent);
 }
-.mcv2 .demo-body {
+.lp-guide .mcv2 .demo-body {
   background: var(--mc-bg);
   border: 1px solid var(--mc-line);
 }
-.mcv2 .create-label {
+.lp-guide .mcv2 .create-label {
   color: var(--mc-gray);
 }
-.mcv2 .quiz-progress {
+.lp-guide .mcv2 .quiz-progress {
   background: var(--mc-line);
 }
-.mcv2 .quiz-progress span {
+.lp-guide .mcv2 .quiz-progress span {
   background: var(--mc-accent);
 }
-.mcv2 .quiz-question {
+.lp-guide .mcv2 .quiz-question {
   color: var(--mc-white);
 }
-.mcv2 .quiz-option {
+.lp-guide .mcv2 .quiz-option {
   border: 1px solid var(--mc-line);
   color: var(--mc-gray);
 }
-.mcv2 .roadmap-step.active {
+.lp-guide .mcv2 .roadmap-step.active {
   border-left: 4px solid var(--mc-accent);
   background: rgba(124, 92, 255, 0.15);
 }
-.mcv2 .roadmap-step.locked {
+.lp-guide .mcv2 .roadmap-step.locked {
   border-left: 4px solid var(--mc-line);
   color: var(--mc-gray);
 }
-.mcv2 .roadmap-step b {
+.lp-guide .mcv2 .roadmap-step b {
   color: var(--mc-white);
 }
-.mcv2 .roadmap-step.locked b {
+.lp-guide .mcv2 .roadmap-step.locked b {
   color: var(--mc-gray);
 }
-.mcv2 .roadmap-step p {
+.lp-guide .mcv2 .roadmap-step p {
   color: var(--mc-gray);
 }
-.mcv2 .roadmap-step.locked p {
+.lp-guide .mcv2 .roadmap-step.locked p {
   color: var(--mc-gray);
 }
-.mcv2 .ebook-check {
+.lp-guide .mcv2 .ebook-check {
   color: var(--mc-accent);
 }
-.mcv2 .ebook-check span {
+.lp-guide .mcv2 .ebook-check span {
   background: rgba(124, 92, 255, 0.2);
   color: var(--mc-accent);
 }
-.mcv2 .voice-side {
+.lp-guide .mcv2 .voice-side {
   background: linear-gradient(160deg, rgba(124, 92, 255, 0.22), rgba(124, 92, 255, 0.06));
   border: 1px solid var(--mc-line);
 }
-.mcv2 .xp-ring svg circle:first-child {
+.lp-guide .mcv2 .xp-ring svg circle:first-child {
   stroke: rgba(255, 255, 255, 0.14);
 }
-.mcv2 .xp-ring .xp-value {
+.lp-guide .mcv2 .xp-ring .xp-value {
   color: var(--mc-white);
 }
-.mcv2 .streak {
+.lp-guide .mcv2 .streak {
   color: var(--mc-gray);
 }
 
