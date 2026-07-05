@@ -59,7 +59,7 @@ export default function QuizTriagem({ token }: Props) {
     }
 
     setSubmitting(false);
-    setError("Não foi possível calcular seu perfil agora. Tente novamente.");
+    setError("Não foi possível calcular sua trilha agora. Tente novamente.");
   };
 
   return (
@@ -101,7 +101,7 @@ export default function QuizTriagem({ token }: Props) {
         disabled={selectedIndexes.length === 0 || submitting}
         className="mt-6 w-full rounded-xl bg-violet-600 py-3 font-bold text-white transition hover:bg-violet-700 disabled:opacity-50"
       >
-        {isLast ? (submitting ? "Calculando seu perfil..." : "Ver meu perfil") : "Próxima"}
+        {isLast ? (submitting ? "Calculando sua trilha..." : "Ver minha trilha recomendada") : "Próxima"}
       </button>
     </div>
   );

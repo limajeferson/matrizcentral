@@ -20,9 +20,9 @@ export default async function DashboardPage({ params }: { params: { token: strin
   if (!tokenRow.triaged || !tokenRow.profile_id) {
     return (
       <p className="max-w-md mx-auto p-8 text-center">
-        Complete primeiro a{" "}
+        Complete primeiro o{" "}
         <a href={`/quiz/${params.token}`} className="text-violet-600 underline">
-          triagem de perfil
+          Diagnóstico Inicial
         </a>
         .
       </p>
@@ -66,9 +66,9 @@ export default async function DashboardPage({ params }: { params: { token: strin
 
       <GlassCard className="p-6">
         <div className="mb-2 flex items-center gap-2">
-          <CategoryBadge variant="roadmap">Perfil</CategoryBadge>
+          <CategoryBadge variant="roadmap">Sua Trilha Recomendada</CategoryBadge>
         </div>
-        <h1 className="text-2xl font-bold text-zinc-900">{profile.name}</h1>
+        <h1 className="text-2xl font-bold text-zinc-900">Objetivo principal</h1>
         <p className="text-zinc-600">{profile.description}</p>
       </GlassCard>
 
