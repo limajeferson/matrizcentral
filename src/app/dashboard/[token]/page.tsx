@@ -1,6 +1,7 @@
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { isTokenExpired } from "@/lib/tokens";
 import RoadmapCard from "@/components/dashboard/RoadmapCard";
+import type { RoadmapStages } from "@/data/roadmap-stages";
 import QuizValidacaoContainer from "@/components/quiz/QuizValidacaoContainer";
 import GlassCard from "@/components/ui/glass-card";
 import CategoryBadge from "@/components/ui/category-badge";
@@ -58,6 +59,13 @@ export default async function DashboardPage({ params }: { params: { token: strin
     );
   }
 
+  const { data: progressRows } = await supabase
+    .from("roadmap_progress")
+    .select("stage_key")
+    .eq("token", params.token);
+
+  const completedStages = (progressRows ?? []).map((row: { stage_key: string }) => row.stage_key);
+
   return (
     <div className="mx-auto max-w-4xl space-y-8 p-6">
       <CategoryBadge variant="xp" className="text-sm">
@@ -73,7 +81,11 @@ export default async function DashboardPage({ params }: { params: { token: strin
       </GlassCard>
 
       <GlassCard className="p-6">
-        <RoadmapCard roadmap={profile.study_roadmap} />
+        <RoadmapCard
+          roadmap={profile.study_roadmap as RoadmapStages}
+          completedStages={completedStages}
+          token={params.token}
+        />
       </GlassCard>
 
       <GlassCard className="p-6">
