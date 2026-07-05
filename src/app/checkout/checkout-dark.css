@@ -1,0 +1,49 @@
+/*
+  Identidade escura mínima para as páginas de checkout (hoje sem
+  identidade nenhuma — Tailwind puro). Escopo próprio `.mc-checkout`,
+  independente de `.mcv2`/`.lp-guide`.
+*/
+.mc-checkout {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: #0a0812;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow: clip;
+}
+.mc-checkout-card {
+  position: relative;
+  z-index: 1;
+  max-width: 420px;
+  text-align: center;
+}
+.mc-checkout-card h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #ffffff;
+}
+.mc-checkout-card p {
+  color: #a49fb8;
+  margin-bottom: 16px;
+}
+.mc-checkout-card a {
+  color: #7c5cff;
+  text-decoration: underline;
+}
+
+.mc-neural-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  pointer-events: none;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mc-neural-blob { animation: none !important; }
+}
