@@ -58,7 +58,9 @@ export default function Starfield() {
         }
       }
       frame += 1;
-      rafId = requestAnimationFrame(draw);
+      if (!reduced) {
+        rafId = requestAnimationFrame(draw);
+      }
     };
 
     draw();
@@ -68,6 +70,9 @@ export default function Starfield() {
       height = window.innerHeight;
       canvas.width = width;
       canvas.height = height;
+      if (reduced) {
+        draw();
+      }
     };
     window.addEventListener("resize", handleResize);
 

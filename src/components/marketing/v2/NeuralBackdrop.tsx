@@ -22,9 +22,9 @@ export default function NeuralBackdrop() {
       const xRatio = event.clientX / window.innerWidth - 0.5;
       const yRatio = event.clientY / window.innerHeight - 0.5;
 
-      container.querySelectorAll<HTMLDivElement>(".mc-neural-blob").forEach((blob, index) => {
+      container.querySelectorAll<HTMLDivElement>(".mc-neural-blob-wrap").forEach((wrap, index) => {
         const depth = BLOBS[index]?.depth ?? 15;
-        blob.style.transform = `translate(${xRatio * depth}px, ${yRatio * depth}px)`;
+        wrap.style.transform = `translate(${xRatio * depth}px, ${yRatio * depth}px)`;
       });
     };
 
@@ -37,26 +37,32 @@ export default function NeuralBackdrop() {
       {BLOBS.map((blob, index) => (
         <div
           key={index}
-          className="mc-neural-blob"
+          className="mc-neural-blob-wrap"
           style={{
-            width: blob.size,
-            height: blob.size,
             top: blob.top,
             left: blob.left,
-            background: blob.color,
-            animation: `mc-blob-drift-${index % 2} ${blob.duration}s ease-in-out infinite`,
             transition: "transform 0.3s ease-out",
           }}
-        />
+        >
+          <div
+            className="mc-neural-blob"
+            style={{
+              width: blob.size,
+              height: blob.size,
+              background: blob.color,
+              animation: `mc-blob-drift-${index % 2} ${blob.duration}s ease-in-out infinite`,
+            }}
+          />
+        </div>
       ))}
       <style>{`
         @keyframes mc-blob-drift-0 {
-          0%, 100% { margin: 0; }
-          50% { margin: 20px 30px; }
+          0%, 100% { transform: translate(0, 0); }
+          50% { transform: translate(30px, 20px); }
         }
         @keyframes mc-blob-drift-1 {
-          0%, 100% { margin: 0; }
-          50% { margin: -25px 15px; }
+          0%, 100% { transform: translate(0, 0); }
+          50% { transform: translate(15px, -25px); }
         }
       `}</style>
     </div>

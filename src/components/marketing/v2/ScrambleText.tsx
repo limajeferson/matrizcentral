@@ -13,7 +13,7 @@ function randomGlyph(): string {
 
 export default function ScrambleText({ text, className }: { text: string; className?: string }) {
   const reduced = useReducedMotion();
-  const [display, setDisplay] = useState(reduced ? text : "");
+  const [display, setDisplay] = useState(text);
 
   useEffect(() => {
     if (reduced) {

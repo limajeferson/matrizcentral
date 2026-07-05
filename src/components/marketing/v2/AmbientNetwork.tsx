@@ -68,7 +68,9 @@ export default function AmbientNetwork() {
         node.y = (node.y + node.vy + height) % height;
       }
 
-      rafId = requestAnimationFrame(draw);
+      if (!reduced) {
+        rafId = requestAnimationFrame(draw);
+      }
     };
 
     draw();
@@ -78,6 +80,9 @@ export default function AmbientNetwork() {
       height = window.innerHeight;
       canvas.width = width;
       canvas.height = height;
+      if (reduced) {
+        draw();
+      }
     };
     window.addEventListener("resize", handleResize);
 

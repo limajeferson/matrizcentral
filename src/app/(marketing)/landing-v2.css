@@ -656,6 +656,16 @@
   position: relative;
   background: #0a0812;
   min-height: 100vh;
+
+  /* landing-clone.css/.lp-guide define --ink, --ink-soft e --ink-mute
+     pensando em fundo claro. Como .mc-oferta-wrapper agora é escuro,
+     sobrescrevemos os tokens
+     de texto para claro aqui — eles cascadeiam (custom properties herdam
+     pelo DOM) para qualquer descendente que leia var(--ink) etc., incluindo
+     h2/.sec-tag/.aside/rodapé que ficam direto sobre o fundo escuro. */
+  --ink: #f5f3ff;
+  --ink-soft: #b8b3cf;
+  --ink-mute: #8b86a3;
 }
 .mc-oferta-starfield {
   position: fixed;
@@ -668,6 +678,21 @@
   z-index: 1;
 }
 
+/* O header (fundo branco translúcido) e os cards de plano da OfferPricing
+   (fundo branco/gradiente claro, ambos hardcoded em landing-clone.css) não
+   herdam o fundo escuro do wrapper — continuam claros. Se deixássemos os
+   tokens --ink* claros vazarem para dentro deles, o texto escuro esperado
+   (nav-links, títulos dos planos, badges) ficaria claro sobre fundo claro
+   e ilegível. Por isso restauramos os valores originais (escuros) só
+   dentro dessas subárvores. */
+.mc-oferta-wrapper header,
+.mc-oferta-wrapper .nav-mobile-panel,
+.mc-oferta-wrapper .plan {
+  --ink: #141414;
+  --ink-soft: #5c5c5c;
+  --ink-mute: #6b6b6b;
+}
+
 /* ---- Rede ambiente (fundo único do site) ---- */
 .mcv2 .mc-ambient-network {
   position: fixed;
@@ -675,11 +700,8 @@
   z-index: 0;
   pointer-events: none;
 }
-.mcv2 .mc-header,
 .mcv2 .mc-canvas,
-.mcv2 .mc-footer,
-.mcv2 .mc-fixed-cta,
-.mcv2 .mc-menu-overlay {
+.mcv2 .mc-footer {
   position: relative;
   z-index: 1;
 }
