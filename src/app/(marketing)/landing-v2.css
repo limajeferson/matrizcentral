@@ -7,6 +7,14 @@
   --mc-surface: #14101f;
   --mc-accent: #7c5cff;
   --mc-accent-deep: #5b3df5;
+  /* Cores semânticas (briefing de cor): separadas do acento da marca.
+     success = permissão/alívio (garantia, "acesso liberado");
+     trust = confiança (pagamento/privacidade); gold = conquista
+     (certificado/gamificação); warn = escassez/novidade, com parcimônia. */
+  --mc-success: #19c39a;
+  --mc-trust: #466eff;
+  --mc-gold: #e8b64c;
+  --mc-warn: #ffb454;
   --mc-white: #ffffff;
   --mc-gray: #a49fb8;
   --mc-line: rgba(255, 255, 255, 0.12);
@@ -498,6 +506,8 @@
   gap: 16px;
   color: var(--mc-gray);
 }
+/* ✓ em verde-menta = confirmação/permissão; texto segue neutro (aplicação restrita). */
+.mcv2 .mc-price-badges .mc-check { color: var(--mc-success); font-weight: 700; }
 /* ---- Produtos incluídos (banners ultrawide com loop) ---- */
 .mcv2 .mc-product-banners {
   margin-top: 56px;

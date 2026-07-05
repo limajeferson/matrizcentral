@@ -21,6 +21,21 @@
   max-width: 420px;
   text-align: center;
 }
+/* Verde-menta = "acesso liberado / deu certo": permissão e alívio no
+   momento pós-compra. Semântico, separado do violeta da marca. */
+.mc-checkout-success {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 20px;
+  border-radius: 50%;
+  color: #19c39a;
+  background: rgba(25, 195, 154, 0.12);
+  border: 1px solid rgba(25, 195, 154, 0.4);
+}
+.mc-checkout-success svg { width: 26px; height: 26px; }
 .mc-checkout-card h1 {
   font-size: 1.5rem;
   font-weight: 700;

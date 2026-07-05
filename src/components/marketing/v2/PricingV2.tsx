@@ -33,10 +33,10 @@ export default function PricingV2() {
         </Reveal>
         <Reveal delay={0.2}>
           <div className="mc-price-badges mc-mono">
-            <span>✓ Pagamento único</span>
-            <span>✓ Acesso imediato</span>
-            <span>✓ Sem assinatura</span>
-            <span>✓ Acesso vitalício à versão adquirida</span>
+            <span><span className="mc-check" aria-hidden="true">✓</span> Pagamento único</span>
+            <span><span className="mc-check" aria-hidden="true">✓</span> Acesso imediato</span>
+            <span><span className="mc-check" aria-hidden="true">✓</span> Sem assinatura</span>
+            <span><span className="mc-check" aria-hidden="true">✓</span> Acesso vitalício à versão adquirida</span>
           </div>
         </Reveal>
 
