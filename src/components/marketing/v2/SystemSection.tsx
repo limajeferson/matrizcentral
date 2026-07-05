@@ -1,4 +1,8 @@
-import { Reveal, Stagger, StaggerItem } from "./motion-primitives";
+"use client";
+
+import { useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { Reveal } from "./motion-primitives";
 
 const ITEMS = [
   {
@@ -39,7 +43,14 @@ const ITEMS = [
   },
 ];
 
+const OFFSET_X = 28;
+const OFFSET_Y = 20;
+const ROTATION = 2.5;
+
 export default function SystemSection() {
+  const [focusIndex, setFocusIndex] = useState<number | null>(null);
+  const reduced = useReducedMotion();
+
   return (
     <section className="mc-section" id="sistema">
       <div className="mc-container">
@@ -53,29 +64,55 @@ export default function SystemSection() {
             não um ebook solto
           </h2>
         </Reveal>
-        <Stagger className="mc-system-grid">
-          {ITEMS.map((item) => (
-            <StaggerItem
-              key={item.feature}
-              className={`mc-system-card${item.accent ? " is-accent" : ""}`}
-            >
-              <div className="mc-system-image-wrap">
-                <img
-                  src={item.image}
-                  alt=""
-                  aria-hidden="true"
-                  className="mc-system-image"
-                  loading="lazy"
-                />
-              </div>
-              <div className="mc-system-card-body">
-                <span className="mc-tag">{item.benefit}</span>
-                <h3 className="mc-display">{item.feature}</h3>
-                <p>{item.description}</p>
-              </div>
-            </StaggerItem>
-          ))}
-        </Stagger>
+
+        <div className="mc-system-stack">
+          {ITEMS.map((item, index) => {
+            const isFocused = focusIndex === index;
+            const isDimmed = focusIndex !== null && !isFocused;
+
+            return (
+              <motion.div
+                key={item.feature}
+                className={`mc-system-card${item.accent ? " is-accent" : ""}`}
+                style={{ zIndex: isFocused ? 10 : ITEMS.length - index }}
+                initial={{
+                  x: index * OFFSET_X,
+                  y: index * OFFSET_Y,
+                  rotate: reduced ? 0 : (index - 1.5) * ROTATION,
+                }}
+                animate={{
+                  x: index * OFFSET_X,
+                  y: index * OFFSET_Y,
+                  rotate: reduced || isFocused ? 0 : (index - 1.5) * ROTATION,
+                  scale: isFocused ? 1.05 : isDimmed ? 0.96 : 1,
+                  opacity: isDimmed ? 0.55 : 1,
+                }}
+                whileHover={{ scale: 1.05, rotate: 0, zIndex: 10 }}
+                onHoverStart={() => setFocusIndex(index)}
+                onHoverEnd={() => setFocusIndex(null)}
+                onFocus={() => setFocusIndex(index)}
+                onBlur={() => setFocusIndex(null)}
+                tabIndex={0}
+                transition={{ duration: reduced ? 0 : 0.35, ease: [0.21, 0.47, 0.32, 0.98] }}
+              >
+                <div className="mc-system-image-wrap">
+                  <img
+                    src={item.image}
+                    alt=""
+                    aria-hidden="true"
+                    className="mc-system-image"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="mc-system-card-body">
+                  <span className="mc-tag">{item.benefit}</span>
+                  <h3 className="mc-display">{item.feature}</h3>
+                  <p>{item.description}</p>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
     </section>
   );
