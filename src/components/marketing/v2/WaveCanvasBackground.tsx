@@ -10,9 +10,9 @@ interface ColoredLayer extends WaveLayer {
 
 // Deep blues + violetas sobre o fundo escuro — casa com os tokens da .mcv2.
 const LAYERS: ColoredLayer[] = [
-  { amplitude: 72, wavelength: 720, speed: 0.35, phase: 0.0, yOffset: 0.55, color: "rgba(91, 61, 245, 0.26)" },
-  { amplitude: 56, wavelength: 540, speed: 0.5, phase: 1.6, yOffset: 0.68, color: "rgba(124, 92, 255, 0.20)" },
-  { amplitude: 40, wavelength: 400, speed: 0.68, phase: 3.1, yOffset: 0.8, color: "rgba(70, 110, 255, 0.15)" },
+  { amplitude: 84, wavelength: 760, speed: 0.35, phase: 0.0, yOffset: 0.42, color: "rgba(91, 61, 245, 0.44)" },
+  { amplitude: 66, wavelength: 560, speed: 0.5, phase: 1.6, yOffset: 0.58, color: "rgba(124, 92, 255, 0.36)" },
+  { amplitude: 50, wavelength: 420, speed: 0.68, phase: 3.1, yOffset: 0.74, color: "rgba(70, 110, 255, 0.30)" },
 ];
 
 const STEP = 8; // resolução horizontal em px
@@ -58,7 +58,7 @@ export default function WaveCanvasBackground() {
         ctx.lineTo(width, height);
         ctx.closePath();
 
-        const grad = ctx.createLinearGradient(0, height * 0.4, 0, height);
+        const grad = ctx.createLinearGradient(0, height * 0.15, 0, height);
         grad.addColorStop(0, layer.color);
         grad.addColorStop(1, "rgba(10, 8, 18, 0)");
         ctx.fillStyle = grad;

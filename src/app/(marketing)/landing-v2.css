@@ -30,7 +30,9 @@
 
 /* Canvas com moldura: cantos arredondados inseridos na viewport */
 .mcv2 .mc-canvas {
-  background: var(--mc-bg);
+  /* Fundo transparente para o WaveCanvasBackground (fixo, z-index 0) aparecer
+     atrás do conteúdo — antes era sólido (--mc-bg) e cobria a animação. */
+  background: transparent;
   border-radius: var(--mc-radius);
   margin: 8px;
   overflow: clip;
