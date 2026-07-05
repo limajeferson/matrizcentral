@@ -271,6 +271,23 @@
   gap: 14px;
   margin-top: 36px;
 }
+.mcv2 .mc-hero-proof-strip {
+  list-style: none;
+  margin: 28px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  color: var(--mc-gray);
+}
+.mcv2 .mc-hero-proof-strip li {
+  padding: 6px 12px;
+  border: 1px solid var(--mc-line);
+  border-radius: 999px;
+  font-size: 0.72rem;
+}
+.mcv2 .mc-hero-proof-strip b { color: var(--mc-white); }
+.mcv2 .mc-hero-proof-grow { color: var(--mc-accent); border-color: rgba(124, 92, 255, 0.4) !important; }
 .mcv2 .mc-hero-demo { margin-top: 72px; }
 
 /* Overrides dark para o DemoWidget existente (classes vêm de landing-clone.css/.lp-guide,

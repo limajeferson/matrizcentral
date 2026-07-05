@@ -3,6 +3,7 @@
 import DemoWidget from "@/components/marketing/DemoWidget";
 import RotatingWord from "./RotatingWord";
 import { Reveal } from "./motion-primitives";
+import { formatCounts } from "@/lib/content-stats";
 
 const ROTATING_WORDS = ["do GPT", "do Claude", "do Gemini", "de aluguel de servidor", "de VPS"];
 
@@ -16,6 +17,8 @@ const ROTATING_WORDS = ["do GPT", "do Claude", "do Gemini", "de aluguel de servi
 // ];
 
 export default function HeroV2() {
+  const formats = formatCounts();
+
   return (
     <section className="mc-hero">
       <div className="mc-container mc-hero-content">
@@ -47,6 +50,16 @@ export default function HeroV2() {
               Ver o que você recebe
             </a>
           </div>
+        </Reveal>
+        <Reveal delay={0.35}>
+          <ul className="mc-hero-proof-strip mc-mono" aria-label="A biblioteca inclui">
+            {formats.map((f) => (
+              <li key={f.type}>
+                <span aria-hidden="true">{f.icon}</span> <b>{f.count}</b> {f.label}
+              </li>
+            ))}
+            <li className="mc-hero-proof-grow">+ pesquisas da comunidade · em expansão</li>
+          </ul>
         </Reveal>
         <Reveal delay={0.4}>
           <div className="mc-hero-demo">
