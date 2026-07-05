@@ -76,7 +76,7 @@ export const QUIZ_TRIAGEM: TriagemQuestion[] = [
       },
       {
         text: "Um equilíbrio entre teoria e prática",
-        points: { pm_product: 1, dev_nodejs_web: 1, estudante_curioso: 1 },
+        points: { pm_product: 2, dev_nodejs_web: 1, estudante_curioso: 1 },
       },
     ],
   },
@@ -110,7 +110,7 @@ export const QUIZ_TRIAGEM: TriagemQuestion[] = [
     options: [
       {
         text: "Trabalho",
-        points: { profissional_produtividade: 2, pm_product: 1 },
+        points: { profissional_produtividade: 2, pm_product: 2 },
       },
       {
         text: "Estudos",
