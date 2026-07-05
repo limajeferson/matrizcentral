@@ -4,7 +4,7 @@ import "./landing-v2.css";
 import LandingHeader from "@/components/marketing/v2/LandingHeader";
 import FixedCta from "@/components/marketing/v2/FixedCta";
 import HeroV2 from "@/components/marketing/v2/HeroV2";
-import AdvantagesSection from "@/components/marketing/AdvantagesSection";
+import ProblemSection from "@/components/marketing/v2/ProblemSection";
 import FeaturesGrid from "@/components/marketing/FeaturesGrid";
 import PricingSection from "@/components/marketing/PricingSection";
 import FinalCta from "@/components/marketing/FinalCta";
@@ -28,7 +28,7 @@ export default function HomePage() {
       <LandingHeader />
       <FixedCta />
       <HeroV2 />
-      <AdvantagesSection />
+      <ProblemSection />
       <FeaturesGrid />
       <PricingSection />
       <FinalCta />
