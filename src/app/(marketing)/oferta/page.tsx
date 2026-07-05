@@ -1,10 +1,13 @@
 import Header from "@/components/marketing/Header";
 import Footer from "@/components/marketing/Footer";
 import OfferPricing from "@/components/marketing/OfferPricing";
+import Starfield from "@/components/marketing/v2/Starfield";
+import "../landing-v2.css";
 
 export default function OfertaPage() {
   return (
-    <>
+    <div className="mc-oferta-wrapper">
+      <Starfield />
       <Header ctaLabel="Voltar para o início" ctaHref="/" />
       <section>
         <div className="container">
@@ -26,6 +29,6 @@ export default function OfertaPage() {
         </div>
       </section>
       <Footer />
-    </>
+    </div>
   );
 }

@@ -641,3 +641,20 @@
 @media (prefers-reduced-motion: reduce) {
   .mcv2 .mc-rotating-cursor { animation: none; }
 }
+
+/* ---- Starfield da /oferta ---- */
+.mc-oferta-wrapper {
+  position: relative;
+  background: #0a0812;
+  min-height: 100vh;
+}
+.mc-oferta-starfield {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.mc-oferta-wrapper > * {
+  position: relative;
+  z-index: 1;
+}
