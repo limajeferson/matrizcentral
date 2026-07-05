@@ -31,12 +31,24 @@ export async function POST(req: NextRequest) {
     .single();
 
   if (purchase) {
-    await supabase.from("xp_events").insert({
-      user_id: purchase.user_id,
-      xp_amount: 50,
-      action_type: "roadmap",
-      reference_id: `${token}:${stageKey}`,
-    });
+    const referenceId = `${token}:${stageKey}`;
+
+    const { data: existingXpEvent } = await supabase
+      .from("xp_events")
+      .select("id")
+      .eq("user_id", purchase.user_id)
+      .eq("action_type", "roadmap")
+      .eq("reference_id", referenceId)
+      .maybeSingle();
+
+    if (!existingXpEvent) {
+      await supabase.from("xp_events").insert({
+        user_id: purchase.user_id,
+        xp_amount: 50,
+        action_type: "roadmap",
+        reference_id: referenceId,
+      });
+    }
   }
 
   return NextResponse.json({ ok: true });

@@ -1,7 +1,10 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { NextRequest } from "next/server";
 
-function buildSupabaseMock(tokenRow: Record<string, unknown> | null) {
+function buildSupabaseMock(
+  tokenRow: Record<string, unknown> | null,
+  existingXpEvent: Record<string, unknown> | null = null
+) {
   const inserted: Record<string, unknown>[] = [];
 
   const from = (table: string) => {
@@ -30,7 +33,12 @@ function buildSupabaseMock(tokenRow: Record<string, unknown> | null) {
       };
     }
     if (table === "xp_events") {
+      const chain = {
+        eq: () => chain,
+        maybeSingle: async () => ({ data: existingXpEvent, error: null }),
+      };
       return {
+        select: () => chain,
         insert: async (row: unknown) => {
           inserted.push({ __xp: row });
           return { data: null, error: null };
@@ -93,5 +101,42 @@ describe("POST /api/roadmap/complete", () => {
         (row) => (row as { __xp?: { action_type: string } }).__xp?.action_type === "roadmap"
       )
     ).toBe(true);
+  });
+
+  it("não concede XP duplicado ao concluir a mesma etapa duas vezes", async () => {
+    mockSupabase = buildSupabaseMock({ token: "ABC123", purchase_id: "purchase-1" });
+
+    const req1 = new NextRequest("http://localhost/api/roadmap/complete", {
+      method: "POST",
+      body: JSON.stringify({ token: "ABC123", stageKey: "fundacao_local" }),
+    });
+    const res1 = await POST(req1);
+    expect(res1.status).toBe(200);
+    expect(
+      mockSupabase.inserted.filter(
+        (row) => (row as { __xp?: { action_type: string } }).__xp?.action_type === "roadmap"
+      )
+    ).toHaveLength(1);
+
+    // Simula a segunda chamada com um xp_event já existente para o mesmo token+stageKey.
+    mockSupabase = buildSupabaseMock(
+      { token: "ABC123", purchase_id: "purchase-1" },
+      { id: "xp-event-1" }
+    );
+
+    const req2 = new NextRequest("http://localhost/api/roadmap/complete", {
+      method: "POST",
+      body: JSON.stringify({ token: "ABC123", stageKey: "fundacao_local" }),
+    });
+    const res2 = await POST(req2);
+    const body2 = await res2.json();
+
+    expect(res2.status).toBe(200);
+    expect(body2).toEqual({ ok: true });
+    expect(
+      mockSupabase.inserted.filter(
+        (row) => (row as { __xp?: { action_type: string } }).__xp?.action_type === "roadmap"
+      )
+    ).toHaveLength(0);
   });
 });
