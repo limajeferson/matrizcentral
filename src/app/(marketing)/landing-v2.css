@@ -498,20 +498,6 @@
   gap: 16px;
   color: var(--mc-gray);
 }
-.mcv2 .mc-price-included {
-  margin-top: 56px;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
-}
-.mcv2 .mc-price-item {
-  display: flex;
-  gap: 16px;
-  align-items: flex-start;
-}
-.mcv2 .mc-price-item-icon { font-size: 1.5rem; }
-.mcv2 .mc-price-item h3 { font-size: 1.15rem; margin-bottom: 6px; }
-.mcv2 .mc-price-item p { color: var(--mc-gray); font-size: 0.95rem; }
 /* ---- Produtos incluídos (banners ultrawide com loop) ---- */
 .mcv2 .mc-product-banners {
   margin-top: 56px;
@@ -616,7 +602,6 @@
 .mcv2 .mc-price-cta-note { margin-top: 14px; color: var(--mc-gray); font-size: 0.9rem; }
 .mcv2 .mc-price-foot { margin-top: 40px; color: var(--mc-gray); max-width: 560px; }
 @media (max-width: 800px) {
-  .mcv2 .mc-price-included { grid-template-columns: 1fr; }
   .mcv2 .mc-price-compare { gap: 20px; }
 }
 

@@ -2,6 +2,7 @@
 
 import { annualSpendBRL, formatBRL } from "@/lib/annual-spend";
 import { AnimatedCounter, Reveal } from "./motion-primitives";
+import ProductBanner from "./ProductBanner";
 
 const INCLUDED = [
   { icon: "📘", label: "Ebook Técnico", description: "Aprenda a rodar IA local do zero ao uso prático." },
@@ -40,15 +41,15 @@ export default function PricingV2() {
         </Reveal>
 
         <Reveal delay={0.3}>
-          <div className="mc-price-included">
-            {INCLUDED.map((item) => (
-              <div className="mc-price-item" key={item.label}>
-                <span className="mc-price-item-icon" aria-hidden="true">{item.icon}</span>
-                <div>
-                  <h3 className="mc-display">{item.label}</h3>
-                  <p>{item.description}</p>
-                </div>
-              </div>
+          <div className="mc-product-banners">
+            {INCLUDED.map((item, index) => (
+              <ProductBanner
+                key={item.label}
+                icon={item.icon}
+                label={item.label}
+                description={item.description}
+                index={index}
+              />
             ))}
           </div>
         </Reveal>
