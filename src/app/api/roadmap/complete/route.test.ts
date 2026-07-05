@@ -3,7 +3,8 @@ import { NextRequest } from "next/server";
 
 function buildSupabaseMock(
   tokenRow: Record<string, unknown> | null,
-  existingXpEvent: Record<string, unknown> | null = null
+  existingXpEvent: Record<string, unknown> | null = null,
+  progressUpsertError: Record<string, unknown> | null = null
 ) {
   const inserted: Record<string, unknown>[] = [];
 
@@ -18,6 +19,9 @@ function buildSupabaseMock(
     if (table === "roadmap_progress") {
       return {
         upsert: async (row: Record<string, unknown>) => {
+          if (progressUpsertError) {
+            return { data: null, error: progressUpsertError };
+          }
           inserted.push(row);
           return { data: null, error: null };
         },
@@ -60,7 +64,11 @@ import { POST } from "./route";
 
 describe("POST /api/roadmap/complete", () => {
   beforeEach(() => {
-    mockSupabase = buildSupabaseMock({ token: "ABC123", purchase_id: "purchase-1" });
+    mockSupabase = buildSupabaseMock({
+      token: "ABC123",
+      purchase_id: "purchase-1",
+      valid_until: "2099-01-01T00:00:00.000Z",
+    });
   });
 
   it("rejeita payload sem token ou stageKey", async () => {
@@ -72,6 +80,17 @@ describe("POST /api/roadmap/complete", () => {
     expect(res.status).toBe(400);
   });
 
+  it("rejeita stageKey que não existe em ROADMAP_STAGE_KEYS", async () => {
+    const req = new NextRequest("http://localhost/api/roadmap/complete", {
+      method: "POST",
+      body: JSON.stringify({ token: "ABC123", stageKey: "etapa_inventada" }),
+    });
+    const res = await POST(req);
+    const body = await res.json();
+    expect(res.status).toBe(400);
+    expect(body).toEqual({ error: "etapa inválida" });
+  });
+
   it("retorna 404 quando o token não existe", async () => {
     mockSupabase = buildSupabaseMock(null);
     const req = new NextRequest("http://localhost/api/roadmap/complete", {
@@ -80,6 +99,44 @@ describe("POST /api/roadmap/complete", () => {
     });
     const res = await POST(req);
     expect(res.status).toBe(404);
+  });
+
+  it("retorna 404 quando o token está expirado", async () => {
+    mockSupabase = buildSupabaseMock({
+      token: "ABC123",
+      purchase_id: "purchase-1",
+      valid_until: "2020-01-01T00:00:00.000Z",
+    });
+    const req = new NextRequest("http://localhost/api/roadmap/complete", {
+      method: "POST",
+      body: JSON.stringify({ token: "ABC123", stageKey: "fundacao_local" }),
+    });
+    const res = await POST(req);
+    const body = await res.json();
+    expect(res.status).toBe(404);
+    expect(body).toEqual({ error: "token não encontrado" });
+  });
+
+  it("retorna 500 e não concede XP se o upsert de roadmap_progress falhar", async () => {
+    mockSupabase = buildSupabaseMock(
+      { token: "ABC123", purchase_id: "purchase-1", valid_until: "2099-01-01T00:00:00.000Z" },
+      null,
+      { message: "db offline" }
+    );
+    const req = new NextRequest("http://localhost/api/roadmap/complete", {
+      method: "POST",
+      body: JSON.stringify({ token: "ABC123", stageKey: "fundacao_local" }),
+    });
+    const res = await POST(req);
+    const body = await res.json();
+
+    expect(res.status).toBe(500);
+    expect(body).toEqual({ error: "não foi possível salvar o progresso" });
+    expect(
+      mockSupabase.inserted.some(
+        (row) => (row as { __xp?: { action_type: string } }).__xp?.action_type === "roadmap"
+      )
+    ).toBe(false);
   });
 
   it("marca a etapa como concluída e concede XP", async () => {
@@ -104,7 +161,11 @@ describe("POST /api/roadmap/complete", () => {
   });
 
   it("não concede XP duplicado ao concluir a mesma etapa duas vezes", async () => {
-    mockSupabase = buildSupabaseMock({ token: "ABC123", purchase_id: "purchase-1" });
+    mockSupabase = buildSupabaseMock({
+      token: "ABC123",
+      purchase_id: "purchase-1",
+      valid_until: "2099-01-01T00:00:00.000Z",
+    });
 
     const req1 = new NextRequest("http://localhost/api/roadmap/complete", {
       method: "POST",
@@ -120,7 +181,7 @@ describe("POST /api/roadmap/complete", () => {
 
     // Simula a segunda chamada com um xp_event já existente para o mesmo token+stageKey.
     mockSupabase = buildSupabaseMock(
-      { token: "ABC123", purchase_id: "purchase-1" },
+      { token: "ABC123", purchase_id: "purchase-1", valid_until: "2099-01-01T00:00:00.000Z" },
       { id: "xp-event-1" }
     );
 
