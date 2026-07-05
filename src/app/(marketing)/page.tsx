@@ -5,7 +5,7 @@ import LandingHeader from "@/components/marketing/v2/LandingHeader";
 import FixedCta from "@/components/marketing/v2/FixedCta";
 import HeroV2 from "@/components/marketing/v2/HeroV2";
 import ProblemSection from "@/components/marketing/v2/ProblemSection";
-import FeaturesGrid from "@/components/marketing/FeaturesGrid";
+import SystemSection from "@/components/marketing/v2/SystemSection";
 import PricingSection from "@/components/marketing/PricingSection";
 import FinalCta from "@/components/marketing/FinalCta";
 import Footer from "@/components/marketing/Footer";
@@ -29,7 +29,7 @@ export default function HomePage() {
       <FixedCta />
       <HeroV2 />
       <ProblemSection />
-      <FeaturesGrid />
+      <SystemSection />
       <PricingSection />
       <FinalCta />
       <Footer />

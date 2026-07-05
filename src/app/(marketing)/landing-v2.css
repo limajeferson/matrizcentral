@@ -329,3 +329,36 @@
 @media (max-width: 640px) {
   .mcv2 .mc-problem { padding: 48px 24px; }
 }
+
+/* ---- Sistema ---- */
+.mcv2 .mc-system-heading { margin-top: 20px; }
+.mcv2 .mc-system-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 48px;
+}
+.mcv2 .mc-system-card {
+  background: var(--mc-surface);
+  border: 1px solid var(--mc-line);
+  border-radius: var(--mc-radius);
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.mcv2 .mc-system-card.is-accent {
+  background: var(--mc-accent-deep);
+  border-color: transparent;
+}
+.mcv2 .mc-system-card.is-accent .mc-tag {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+.mcv2 .mc-system-card p { color: var(--mc-gray); }
+.mcv2 .mc-system-card.is-accent p { color: rgba(255, 255, 255, 0.85); }
+.mcv2 .mc-system-visual { margin-top: auto; padding-top: 16px; }
+@media (max-width: 800px) {
+  .mcv2 .mc-system-grid { grid-template-columns: 1fr; }
+  .mcv2 .mc-system-card { padding: 28px; }
+}
