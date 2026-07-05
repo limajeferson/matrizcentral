@@ -583,10 +583,11 @@
 .mcv2 .mc-rotating-word {
   position: relative;
   display: inline-flex;
+  flex-wrap: wrap;
   align-items: baseline;
   color: var(--mc-accent);
 }
-.mcv2 .mc-rotating-word-inner { display: inline-block; white-space: nowrap; }
+.mcv2 .mc-rotating-word-inner { display: inline-block; }
 .mcv2 .mc-rotating-cursor {
   display: inline-block;
   margin-left: 4px;
