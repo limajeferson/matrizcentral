@@ -1,0 +1,116 @@
+/*
+  Identidade v2 da landing — dark + violeta elétrico, tipografia display.
+  Escopado sob .mcv2 para não afetar /oferta (que usa .lp-guide).
+*/
+.mcv2 {
+  --mc-bg: #0a0812;
+  --mc-surface: #14101f;
+  --mc-accent: #7c5cff;
+  --mc-accent-deep: #5b3df5;
+  --mc-white: #ffffff;
+  --mc-gray: #a49fb8;
+  --mc-line: rgba(255, 255, 255, 0.12);
+  --mc-radius: 24px;
+  --mc-notch: 14px;
+
+  font-family: var(--font-mc-sans), system-ui, sans-serif;
+  background: #050308;
+  color: var(--mc-white);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Canvas com moldura: cantos arredondados inseridos na viewport */
+.mcv2 .mc-canvas {
+  background: var(--mc-bg);
+  border-radius: var(--mc-radius);
+  margin: 8px;
+  overflow: clip;
+}
+
+.mcv2 .mc-container {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.mcv2 .mc-display {
+  font-family: var(--font-mc-display), var(--font-mc-sans), sans-serif;
+  text-transform: uppercase;
+  line-height: 0.94;
+  letter-spacing: -0.01em;
+  font-weight: 400;
+  margin: 0;
+}
+
+.mcv2 h1.mc-display { font-size: clamp(3rem, 9vw, 7.25rem); }
+.mcv2 h2.mc-display { font-size: clamp(2.25rem, 5.5vw, 4.25rem); }
+.mcv2 h3.mc-display { font-size: clamp(1.5rem, 3vw, 2.5rem); }
+
+.mcv2 .mc-accent-text { color: var(--mc-accent); }
+
+.mcv2 .mc-mono {
+  font-family: var(--font-marketing-mono), monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mcv2 .mc-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--mc-line);
+  color: var(--mc-white);
+  font-family: var(--font-marketing-mono), monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Botão chanfrado — assinatura da identidade */
+.mcv2 .mc-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 28px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  cursor: pointer;
+  border: 0;
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--mc-notch)) 0,
+    100% var(--mc-notch),
+    100% 100%,
+    var(--mc-notch) 100%,
+    0 calc(100% - var(--mc-notch))
+  );
+  transition: transform 0.2s ease;
+}
+.mcv2 .mc-btn:hover { transform: translate(2px, -2px); }
+.mcv2 .mc-btn-accent { background: var(--mc-accent); color: #fff; }
+.mcv2 .mc-btn-accent:hover { background: var(--mc-accent-deep); }
+.mcv2 .mc-btn-ghost {
+  background: transparent;
+  color: var(--mc-white);
+  box-shadow: inset 0 0 0 1px var(--mc-line);
+}
+.mcv2 .mc-btn-ghost:hover { box-shadow: inset 0 0 0 1px var(--mc-accent); }
+
+.mcv2 .mc-section { padding: 96px 0; }
+
+/* Bloco de cor sólida do acento (seções violeta) */
+.mcv2 .mc-block-accent {
+  background: var(--mc-accent-deep);
+  border-radius: var(--mc-radius);
+  color: #fff;
+}
+
+.mcv2 p { margin: 0; }
+.mcv2 a { color: inherit; }
+
+@media (prefers-reduced-motion: reduce) {
+  .mcv2 * { transition-duration: 0.01ms !important; }
+}
