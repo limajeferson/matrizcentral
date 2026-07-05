@@ -1,54 +1,66 @@
-import NetworkField from "./NetworkField";
+"use client";
+
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Reveal } from "./motion-primitives";
 
 const STEPS = [
   {
     number: "01",
-    title: "Garanta seu acesso",
+    title: "Comece pelo caminho certo",
     description:
-      "Pagamento único de R$47. Sem mensalidade, sem fidelidade, acesso imediato.",
+      "Após adquirir seu acesso, você recebe uma orientação personalizada para começar exatamente pelo que faz sentido para seu contexto.",
+    detail: "Diagnóstico Inicial",
   },
   {
     number: "02",
-    title: "Descubra sua trilha",
+    title: "Siga sua trilha",
     description:
-      "O quiz de perfil mapeia sua stack, nível e objetivos e gera um roadmap de estudo sob medida.",
+      "Cada etapa mostra o próximo objetivo, liberando uma evolução organizada sem excesso de conteúdo.",
+    detail: "Roadmap Inteligente",
   },
   {
     number: "03",
-    title: "Estude e suba de nível",
+    title: "Construa sua independência",
     description:
-      "Cada capítulo concluído soma XP no dashboard. Valide com o quiz final e emita seu certificado verificável.",
+      "Ao concluir sua trilha, você terá aprendido a utilizar IA local com mais autonomia, além de validar seu conhecimento através da certificação.",
+    detail: "Certificação Verificável",
   },
 ];
+
+function GlassPanel({ step }: { step: (typeof STEPS)[number]; index: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start 85%", "start 40%"],
+  });
+  const glow = useTransform(scrollYProgress, [0, 1], [0.15, 0.55]);
+
+  return (
+    <motion.div ref={ref} className="mc-glass-panel" style={{ ["--mc-glow" as string]: glow }}>
+      <span className="mc-glass-number mc-display">{step.number}</span>
+      <h3 className="mc-display">{step.title}</h3>
+      <p className="mc-glass-desc">{step.description}</p>
+      <span className="mc-mono mc-glass-detail">{step.detail}</span>
+    </motion.div>
+  );
+}
 
 export default function ProcessSteps() {
   return (
     <section className="mc-section" id="processo">
       <div className="mc-container">
         <Reveal>
-          <span className="mc-tag">Como funciona</span>
+          <span className="mc-tag">Sua jornada</span>
         </Reveal>
         <Reveal delay={0.1}>
-          <h2 className="mc-display">Três passos até sua IA própria</h2>
+          <h2 className="mc-display">Seu caminho até uma IA independente</h2>
         </Reveal>
-      </div>
-      <div className="mc-steps">
-        {STEPS.map((step, i) => (
-          <div className="mc-step" key={step.number} style={{ top: `${72 + i * 20}px` }}>
-            <div className="mc-container mc-step-inner">
-              <span className="mc-step-number mc-display">{step.number}</span>
-              <div className="mc-step-body">
-                <p className="mc-mono mc-step-label">Passo {step.number}</p>
-                <h3 className="mc-display">{step.title}</h3>
-                <p className="mc-step-desc">{step.description}</p>
-              </div>
-              <div className="mc-step-motif" aria-hidden="true">
-                <NetworkField />
-              </div>
-            </div>
-          </div>
-        ))}
+        <div className="mc-glass-track">
+          {STEPS.map((step, i) => (
+            <GlassPanel key={step.number} step={step} index={i} />
+          ))}
+        </div>
       </div>
     </section>
   );
