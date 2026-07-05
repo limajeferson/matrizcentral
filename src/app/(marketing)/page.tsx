@@ -7,6 +7,7 @@ import FixedCta from "@/components/marketing/v2/FixedCta";
 import HeroV2 from "@/components/marketing/v2/HeroV2";
 import OpportunitySection from "@/components/marketing/v2/OpportunitySection";
 import SystemSection from "@/components/marketing/v2/SystemSection";
+import ContentLibrarySection from "@/components/marketing/v2/ContentLibrarySection";
 import ProcessSteps from "@/components/marketing/v2/ProcessSteps";
 import PricingV2 from "@/components/marketing/v2/PricingV2";
 import FaqSection from "@/components/marketing/v2/FaqSection";
@@ -38,6 +39,7 @@ export default function HomePage() {
         <HeroV2 />
         <OpportunitySection />
         <SystemSection />
+        <ContentLibrarySection />
         <ProcessSteps />
         <PricingV2 />
         <FaqSection />
