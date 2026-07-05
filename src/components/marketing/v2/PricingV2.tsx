@@ -5,10 +5,12 @@ import { AnimatedCounter, Reveal } from "./motion-primitives";
 import ProductBanner from "./ProductBanner";
 
 const INCLUDED = [
-  { icon: "📘", label: "Ebook Técnico", description: "Aprenda a rodar IA local do zero ao uso prático." },
-  { icon: "🧭", label: "Diagnóstico Inicial", description: "Receba uma trilha recomendada para o seu contexto." },
-  { icon: "🛣️", label: "Roadmap Inteligente", description: "Saiba exatamente qual é o próximo passo." },
-  { icon: "🏆", label: "Certificação Verificável", description: "Valide seu aprendizado ao concluir a trilha." },
+  { icon: "📚", label: "Biblioteca multi-formato", description: "Relatórios, podcasts, vídeos e apresentações sobre IA local." },
+  { icon: "🧩", label: "Plataforma-feed", description: "Aprenda no seu ritmo, como numa rede social de aprendizado." },
+  { icon: "🧭", label: "Diagnóstico inicial", description: "Uma trilha recomendada para o seu contexto." },
+  { icon: "🛣️", label: "Roadmap inteligente", description: "Sempre o próximo passo certo, sem excesso de conteúdo." },
+  { icon: "🏆", label: "Gamificação + Certificado", description: "XP, níveis e certificação verificável ao concluir a trilha." },
+  { icon: "📘", label: "Ebook técnico (bônus)", description: "Material de apoio para rodar IA local do zero ao uso prático." },
 ];
 
 export default function PricingV2() {
