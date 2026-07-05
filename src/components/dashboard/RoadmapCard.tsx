@@ -13,19 +13,28 @@ interface Props {
 export default function RoadmapCard({ roadmap, completedStages, token }: Props) {
   const [completed, setCompleted] = useState(completedStages);
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const view = deriveRoadmapView(completed);
 
   const handleComplete = async (stageKey: string) => {
     setSubmitting(true);
-    const response = await fetch("/api/roadmap/complete", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token, stageKey }),
-    });
-    setSubmitting(false);
-    if (response.ok) {
-      setCompleted((prev) => [...prev, stageKey]);
+    setError(null);
+    try {
+      const response = await fetch("/api/roadmap/complete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token, stageKey }),
+      });
+      if (response.ok) {
+        setCompleted((prev) => [...prev, stageKey]);
+      } else {
+        setError("Não foi possível concluir a etapa agora. Tente novamente.");
+      }
+    } catch {
+      setError("Não foi possível concluir a etapa agora. Tente novamente.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -74,6 +83,7 @@ export default function RoadmapCard({ roadmap, completedStages, token }: Props) 
                 >
                   {submitting ? "Enviando..." : "Concluir Etapa"}
                 </button>
+                {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
               </div>
             );
           }
