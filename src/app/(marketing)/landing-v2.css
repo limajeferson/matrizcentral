@@ -68,7 +68,7 @@
   text-transform: uppercase;
 }
 
-/* Botão chanfrado — assinatura da identidade */
+/* Botão chanfrado — assinatura da identidade, com relevo tátil (skeuomorphism escuro) */
 .mcv2 .mc-btn {
   display: inline-flex;
   align-items: center;
@@ -87,17 +87,56 @@
     var(--mc-notch) 100%,
     0 calc(100% - var(--mc-notch))
   );
-  transition: transform 0.2s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 .mcv2 .mc-btn:hover { transform: translate(2px, -2px); }
-.mcv2 .mc-btn-accent { background: var(--mc-accent); color: #fff; }
-.mcv2 .mc-btn-accent:hover { background: var(--mc-accent-deep); }
-.mcv2 .mc-btn-ghost {
-  background: transparent;
-  color: var(--mc-white);
-  box-shadow: inset 0 0 0 1px var(--mc-line);
+.mcv2 .mc-btn:active { transform: translate(0, 1px); }
+
+.mcv2 .mc-btn-accent {
+  background: var(--mc-accent);
+  color: #fff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.25),
+    0 6px 14px -4px rgba(124, 92, 255, 0.55);
 }
-.mcv2 .mc-btn-ghost:hover { box-shadow: inset 0 0 0 1px var(--mc-accent); }
+.mcv2 .mc-btn-accent:hover {
+  background: var(--mc-accent-deep);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.3),
+    0 8px 18px -4px rgba(124, 92, 255, 0.65);
+}
+.mcv2 .mc-btn-accent:active {
+  box-shadow:
+    inset 0 2px 5px rgba(0, 0, 0, 0.35),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.mcv2 .mc-btn-ghost {
+  background: var(--mc-surface);
+  color: var(--mc-white);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.4),
+    0 0 0 1px var(--mc-line);
+}
+.mcv2 .mc-btn-ghost:hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.45),
+    0 0 0 1px var(--mc-accent);
+}
+.mcv2 .mc-btn-ghost:active {
+  box-shadow:
+    inset 0 2px 5px rgba(0, 0, 0, 0.5),
+    0 0 0 1px var(--mc-line);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mcv2 .mc-btn { transition: box-shadow 0.15s ease; }
+  .mcv2 .mc-btn:hover, .mcv2 .mc-btn:active { transform: none; }
+}
 
 .mcv2 .mc-section { padding: 96px 0; }
 
