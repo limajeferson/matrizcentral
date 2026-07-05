@@ -58,7 +58,7 @@ export default function HeroV2() {
                 <span aria-hidden="true">{f.icon}</span> <b>{f.count}</b> {f.label}
               </li>
             ))}
-            <li className="mc-hero-proof-grow">+ pesquisas da comunidade · em expansão</li>
+            <li className="mc-hero-proof-grow">sempre em expansão</li>
           </ul>
         </Reveal>
         <Reveal delay={0.4}>

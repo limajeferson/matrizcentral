@@ -37,7 +37,8 @@ export default function ContentLibrarySection() {
         <Reveal delay={0.15}>
           <p className="mc-library-sub">
             Leia, ouça, assista — no formato que combina com você. Uma
-            biblioteca de IA local em expansão, com novos conteúdos toda semana.
+            biblioteca de IA local sempre em expansão, com novos conteúdos
+            com frequência.
           </p>
         </Reveal>
 
