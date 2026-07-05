@@ -1,7 +1,7 @@
 import { Archivo_Black, Inter } from "next/font/google";
 import "./landing-v2.css";
 
-import AmbientNetwork from "@/components/marketing/v2/AmbientNetwork";
+import WaveCanvasBackground from "@/components/marketing/v2/WaveCanvasBackground";
 import LandingHeader from "@/components/marketing/v2/LandingHeader";
 import FixedCta from "@/components/marketing/v2/FixedCta";
 import HeroV2 from "@/components/marketing/v2/HeroV2";
@@ -28,7 +28,7 @@ const inter = Inter({
 export default function HomePage() {
   return (
     <div className={`${archivoBlack.variable} ${inter.variable} mcv2`}>
-      <AmbientNetwork />
+      <WaveCanvasBackground />
       <noscript>
         <style>{`.mcv2 [style*="opacity"], .mcv2 [style*="opacity:0"] { opacity: 1 !important; transform: none !important; filter: none !important; height: auto !important; overflow: visible !important; }`}</style>
       </noscript>
