@@ -775,6 +775,7 @@
   position: relative;
   background: #0a0812;
   min-height: 100vh;
+  overflow-x: clip;
 
   /* landing-clone.css/.lp-guide define --ink, --ink-soft e --ink-mute
      pensando em fundo claro. Como .mc-oferta-wrapper agora é escuro,
@@ -792,7 +793,7 @@
   z-index: 0;
   pointer-events: none;
 }
-.mc-oferta-wrapper > * {
+.mc-oferta-wrapper > *:not(.mc-oferta-starfield) {
   position: relative;
   z-index: 1;
 }
