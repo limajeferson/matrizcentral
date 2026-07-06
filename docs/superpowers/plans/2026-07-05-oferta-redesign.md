@@ -100,7 +100,7 @@ export default function OfferPricing() {
     <div>
       <div className="plans-grid">
         <div className="plan">
-          <h3>Ebook Avulso</h3>
+          <h3>Start</h3>
           <div className="price">
             <b>R$47</b>
             <small>
@@ -125,33 +125,35 @@ export default function OfferPricing() {
 
         <div className="plan">
           <span className="plan-badge-soon mono">Em breve</span>
-          <h3 style={{ marginTop: 20 }}>Assinatura Mensal</h3>
+          <h3 style={{ marginTop: 20 }}>Regular</h3>
           <div className="price">
             <b>R$97</b>
             <small>
-              por mês
+              pagamento único
               <br />
-              1 ebook novo/mês
+              acesso por 12 meses
             </small>
           </div>
           <WaitlistForm planId="mensal_97" />
           <ul>
-            <li>Todos os benefícios do Ebook Avulso</li>
-            <li>1 ebook novo por mês — 12 no ano, na ordem de lançamento</li>
-            <li>Acesso ao hub de conteúdo: todos os relatórios, 1 pesquisa/mês, 1 podcast/mês</li>
-            <li>Cancela quando quiser</li>
+            <li>Todos os benefícios do Start</li>
+            <li>Acesso ao hub/portal por 12 meses</li>
+            <li>1 benefício liberado por mês, você escolhe: um podcast, um relatório, uma apresentação ou uma pesquisa</li>
+            <li>Cancela quando quiser — o reembolso segue as mesmas condições do Start (ver termos)</li>
           </ul>
-          <span className="foot">Pra quem quer estudar todo mês, sem compromisso longo</span>
+          <span className="foot">Pra quem quer estudar no seu ritmo, sem assinatura</span>
         </div>
 
         <div className="plan recommended">
           <span className="plan-badge-soon mono">Em breve</span>
-          <span className="plan-tag mono">Melhor custo por ebook</span>
-          <h3 style={{ marginTop: 20 }}>Acesso Total 12 Meses</h3>
+          <span className="plan-tag mono plan-tag-hot">Mais procurado</span>
+          <h3 style={{ marginTop: 20 }}>Advanced</h3>
           <div className="price">
-            <b>R$497</b>
+            <b>
+              <span style={{ fontSize: "0.5em", fontWeight: 400, verticalAlign: "middle" }}>12x</span> R$47
+            </b>
             <small>
-              à vista ou 12x R$47
+              ou R$497 à vista
               <br />
               acesso completo 12 meses
             </small>
@@ -262,6 +264,63 @@ Verificação visual (controlador): a intro comunica independência ("deixe de a
 ```bash
 git add "src/app/(marketing)/oferta/page.tsx" "src/app/(marketing)/landing-v2.css"
 git commit -m "feat: intro da /oferta reposiciona R$47 (diagnostico + fim das assinaturas) e planos no topo"
+```
+
+---
+
+## Task 4: Tag "Mais procurado" com fonte RGB animada (cores quentes)
+
+**Files:**
+- Modify: `src/app/(marketing)/landing-clone.css` (adicionar `.plan-tag-hot` junto às regras `.lp-guide .plan-tag`)
+
+**Interfaces:**
+- Consumes: a classe `plan-tag-hot` aplicada no card recomendado (Task 2 já renderiza `<span className="plan-tag mono plan-tag-hot">Mais procurado</span>`).
+- Produces: nenhum export novo.
+
+**Contexto:** o `.plan-tag` do plano recomendado já é estilizado em `landing-clone.css` (`.lp-guide .plan-tag`, ~linha perto de `.plan-tag`). A Task 2 troca o texto para "Mais procurado" e adiciona a classe `plan-tag-hot`. Esta task dá a ela uma fonte com cores quentes que trocam continuamente (efeito "RGB" quente), via gradiente animado recortado no texto. Respeita `prefers-reduced-motion` (gradiente estático).
+
+- [ ] **Step 1: Adicionar o CSS da tag animada**
+
+Em `src/app/(marketing)/landing-clone.css`, no fim do arquivo, adicionar:
+
+```css
+/* Tag "Mais procurado" — fonte em cores quentes que trocam continuamente */
+.lp-guide .plan-tag.plan-tag-hot {
+  background: linear-gradient(
+    90deg,
+    #ff3d3d, #ff7a1a, #ffc21a, #ff5e8a, #ff3d3d
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  font-weight: 700;
+  animation: mc-hot-shift 4s linear infinite;
+}
+@keyframes mc-hot-shift {
+  to { background-position: 200% center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lp-guide .plan-tag.plan-tag-hot { animation: none; }
+}
+```
+
+- [ ] **Step 2: Verificar o gate**
+
+Run: `npx tsc --noEmit`
+Expected: exit 0.
+
+Run: `npm run test`
+Expected: todos os testes passam.
+
+Verificação visual (controlador): a tag do plano "Acesso Total 12 Meses" mostra "Mais procurado" com as letras trocando entre tons quentes (vermelho → laranja → âmbar → rosa) num loop suave; com `prefers-reduced-motion`, fica estática.
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add "src/app/(marketing)/landing-clone.css"
+git commit -m "feat: tag Mais procurado com fonte RGB quente animada na /oferta"
 ```
 
 ---
