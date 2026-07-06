@@ -915,6 +915,68 @@
   .mcv2 .mc-library-grid { grid-template-columns: 1fr; }
 }
 
+/* ---- Diagnóstico inicial (preview interativo — isca de valor) ---- */
+.mcv2 .mc-triagem-heading { margin-top: 20px; }
+.mcv2 .mc-triagem-sub {
+  margin-top: 20px;
+  max-width: 560px;
+  color: var(--mc-gray);
+  font-size: 1.05rem;
+}
+.mcv2 .mc-triagem-card {
+  margin-top: 40px;
+  max-width: 620px;
+  padding: 32px;
+  background: var(--mc-surface);
+  border: 1px solid var(--mc-line);
+  border-radius: var(--mc-radius);
+}
+.mcv2 .mc-triagem-progress { color: var(--mc-gray); margin-bottom: 12px; }
+.mcv2 .mc-triagem-q { font-size: 1.35rem; font-weight: 600; margin: 0 0 20px; }
+.mcv2 .mc-triagem-options { display: flex; flex-direction: column; gap: 10px; }
+.mcv2 .mc-triagem-option {
+  text-align: left;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--mc-line);
+  color: var(--mc-white);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.98rem;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.mcv2 .mc-triagem-option:hover { border-color: rgba(124, 92, 255, 0.5); }
+.mcv2 .mc-triagem-option.is-picked {
+  border-color: var(--mc-accent);
+  background: rgba(124, 92, 255, 0.14);
+}
+.mcv2 .mc-triagem-next { margin-top: 24px; }
+.mcv2 .mc-triagem-next:disabled { opacity: 0.45; }
+.mcv2 .mc-triagem-next:disabled:hover { transform: none; }
+.mcv2 .mc-triagem-result { text-align: center; padding: 12px 0; }
+.mcv2 .mc-triagem-check {
+  display: inline-block;
+  font-size: 2rem;
+  color: var(--mc-accent);
+  margin-bottom: 12px;
+}
+.mcv2 .mc-triagem-result h3 { font-size: clamp(1.4rem, 3vw, 2rem); }
+.mcv2 .mc-triagem-result p {
+  margin: 16px auto 24px;
+  max-width: 460px;
+  color: var(--mc-gray);
+}
+.mcv2 .mc-triagem-restart {
+  display: block;
+  margin: 16px auto 0;
+  background: none;
+  border: 0;
+  color: var(--mc-gray);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 /* ---- Fundo pixel glow (fundo único do site) ---- */
 .mcv2 .mc-pixel-bg {
   position: fixed;
