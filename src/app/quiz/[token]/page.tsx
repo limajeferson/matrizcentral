@@ -47,8 +47,9 @@ export default async function QuizPage({ params }: { params: { token: string } }
           Vamos montar seu plano de estudo
         </h1>
         <p className="text-sm text-zinc-600">
-          Isto não é uma prova — é como personalizamos o conteúdo para você.
-          Programando ou não, seu caminho sai daqui em poucos minutos.
+          Isto não é uma prova — é como entendemos o seu contexto para
+          recomendar o melhor caminho. Sua trilha personalizada sai daqui em
+          poucos minutos.
         </p>
       </div>
       <QuizTriagem token={params.token} />
