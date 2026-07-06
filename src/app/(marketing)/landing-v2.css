@@ -797,6 +797,9 @@
   position: relative;
   z-index: 1;
 }
+.mc-oferta-wrapper .mc-oferta-intro {
+  padding: 40px 0 72px;
+}
 
 /* O header (fundo branco translúcido) e os cards de plano da OfferPricing
    (fundo branco/gradiente claro, ambos hardcoded em landing-clone.css) não
