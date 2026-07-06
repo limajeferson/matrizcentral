@@ -7,7 +7,8 @@ const FADE_SCROLL_PX = 620; // distância de scroll até sumir
 const BASE_OPACITY = 0.72; // presente, mas ainda atrás do texto
 
 // Rampa de densidade (escuro -> claro). Inclui os caracteres pedidos: -=+*#%▓.
-const RAMP = " .:-=+*#%▓";
+// Rampa da metade preenchida (efeito de giro): - -> = -> + -> # -> %.
+const FILL_RAMP = "-=+#%";
 const YAW_SPEED = 0.006; // rotação por frame — lenta, hipnótica
 const TILT = 0.42; // inclinação fixa do eixo (rad) — deixa o giro visível
 // Luz quase frontal (leve canto superior-esquerdo) — centro mais aceso.
@@ -133,12 +134,19 @@ export default function HeroObserver() {
         const idx = row * cols + col;
         if (z2 <= zbuf[idx]) continue;
 
-        // sombreamento 3D pela luz + faixas longitudinais (giram com a esfera)
-        const shade = Math.max(0, x2 * LX + y2 * LY + z2 * LZ);
-        const band = 0.5 + 0.5 * Math.sin(p.phi * 6);
-        const intensity = shade * (0.5 + 0.5 * band);
+        // Lado oculto da lua: metade limpa / metade preenchida, definida pela
+        // longitude material (phi) — gira rigidamente com a esfera. A metade
+        // limpa ainda ocupa o z-buffer para ocultar o que está atrás.
         zbuf[idx] = z2;
-        cbuf[idx] = 1 + Math.min(RAMP.length - 1, Math.floor(intensity * (RAMP.length - 1)));
+        const u = p.phi / (Math.PI * 2); // 0..1 (longitude material)
+        if (u < 0.5) {
+          cbuf[idx] = 0; // metade limpa (oculta)
+        } else {
+          const f = (u - 0.5) / 0.5; // 0..1 na metade preenchida
+          const shade = 0.6 + 0.4 * Math.max(0, x2 * LX + y2 * LY + z2 * LZ);
+          const intensity = Math.min(1, f * shade + 0.04);
+          cbuf[idx] = 1 + Math.min(FILL_RAMP.length - 1, Math.floor(intensity * (FILL_RAMP.length - 1)));
+        }
       }
 
       // render
@@ -146,19 +154,18 @@ export default function HeroObserver() {
         for (let col = 0; col < cols; col += 1) {
           const ci = cbuf[row * cols + col];
           if (ci === 0) continue;
-          let ch = RAMP[ci - 1];
-          if (ch === " ") continue;
+          let ch = FILL_RAMP[ci - 1];
           if (glitching && Math.random() < 0.06) {
-            ch = RAMP[1 + Math.floor(Math.random() * (RAMP.length - 1))];
+            ch = FILL_RAMP[Math.floor(Math.random() * FILL_RAMP.length)];
           }
-          const a = 0.3 + (ci / RAMP.length) * 0.6;
+          const a = 0.32 + (ci / FILL_RAMP.length) * 0.55;
           ctx.fillStyle = `rgba(150, 132, 255, ${a})`;
           ctx.fillText(ch, ox + col * cellW + gx, oy + row * cellH);
         }
       }
 
-      // anel fino no contorno da esfera
-      ctx.strokeStyle = `rgba(150, 122, 255, ${0.4 + pulse * 0.22})`;
+      // anel fino no contorno da esfera (50% mais escuro)
+      ctx.strokeStyle = `rgba(150, 122, 255, ${0.2 + pulse * 0.11})`;
       ctx.lineWidth = 1.2;
       ctx.beginPath();
       ctx.arc(cx + gx, cy, R, 0, Math.PI * 2);
