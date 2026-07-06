@@ -8,12 +8,12 @@ const BASE_OPACITY = 0.72; // presente, mas ainda atrás do texto
 
 // Rampa de densidade (escuro -> claro). Inclui os caracteres pedidos: -=+*#%▓.
 const RAMP = " .:-=+*#%▓";
-const YAW_SPEED = 0.018; // rotação por frame
-const TILT = 0.5; // inclinação fixa do eixo (rad) — deixa o giro visível
-// Luz normalizada (canto superior-esquerdo, em direção ao observador).
-const LX = -0.42;
-const LY = -0.5;
-const LZ = 0.76;
+const YAW_SPEED = 0.006; // rotação por frame — lenta, hipnótica
+const TILT = 0.42; // inclinação fixa do eixo (rad) — deixa o giro visível
+// Luz quase frontal (leve canto superior-esquerdo) — centro mais aceso.
+const LX = -0.24;
+const LY = -0.28;
+const LZ = 0.93;
 
 interface Pt {
   x: number;
@@ -155,6 +155,27 @@ export default function HeroObserver() {
         }
       }
 
+      // anel fino no contorno da esfera
+      ctx.strokeStyle = `rgba(150, 122, 255, ${0.4 + pulse * 0.22})`;
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.arc(cx + gx, cy, R, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // núcleo luminoso (a "pupila" — dá o ar de olho observador)
+      const prevOp = ctx.globalCompositeOperation;
+      ctx.globalCompositeOperation = "lighter";
+      const core = ctx.createRadialGradient(cx, cy, 0, cx, cy, R * 0.5);
+      core.addColorStop(0, `rgba(214, 205, 255, ${0.42 + pulse * 0.16})`);
+      core.addColorStop(0.25, "rgba(150, 122, 255, 0.3)");
+      core.addColorStop(0.6, "rgba(124, 92, 255, 0.08)");
+      core.addColorStop(1, "rgba(124, 92, 255, 0)");
+      ctx.fillStyle = core;
+      ctx.beginPath();
+      ctx.arc(cx, cy, R * 0.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.globalCompositeOperation = prevOp;
+
       // scanline de glitch (fatia ciano)
       if (glitching) {
         const sy = cy + (Math.random() - 0.5) * R * 1.6;
@@ -170,8 +191,8 @@ export default function HeroObserver() {
         t += 1;
         yaw += YAW_SPEED;
         if (t > nextGlitch) {
-          glitchUntil = t + 4 + Math.random() * 7;
-          nextGlitch = t + 150 + Math.random() * 260;
+          glitchUntil = t + 3 + Math.random() * 5;
+          nextGlitch = t + 280 + Math.random() * 400;
         }
         raf = requestAnimationFrame(draw);
       }
