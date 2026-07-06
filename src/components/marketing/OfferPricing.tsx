@@ -149,19 +149,19 @@ export default function OfferPricing() {
           <div className="price">
             <b>R$97</b>
             <small>
-              por mês
+              pagamento único
               <br />
-              1 ebook novo/mês
+              acesso por 12 meses
             </small>
           </div>
           <WaitlistForm planId="mensal_97" />
           <ul>
             <li>Todos os benefícios do Start</li>
-            <li>1 ebook novo por mês — 12 no ano, na ordem de lançamento</li>
-            <li>Acesso ao hub de conteúdo: todos os relatórios, 1 pesquisa/mês, 1 podcast/mês</li>
-            <li>Cancela quando quiser</li>
+            <li>Acesso ao hub/portal por 12 meses</li>
+            <li>1 benefício liberado por mês, você escolhe: um podcast, um relatório, uma apresentação ou uma pesquisa</li>
+            <li>Cancela quando quiser — o reembolso segue as mesmas condições do Start (ver termos)</li>
           </ul>
-          <span className="foot">Pra quem quer estudar todo mês, sem compromisso longo</span>
+          <span className="foot">Pra quem quer estudar no seu ritmo, sem assinatura</span>
         </div>
 
         <div className="plan recommended">
