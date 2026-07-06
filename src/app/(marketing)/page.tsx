@@ -9,7 +9,7 @@ import OpportunitySection from "@/components/marketing/v2/OpportunitySection";
 import SystemSection from "@/components/marketing/v2/SystemSection";
 import ContentLibrarySection from "@/components/marketing/v2/ContentLibrarySection";
 import ProcessSteps from "@/components/marketing/v2/ProcessSteps";
-import TriagemPreview from "@/components/marketing/v2/TriagemPreview";
+import StrategySection from "@/components/marketing/v2/StrategySection";
 import PricingV2 from "@/components/marketing/v2/PricingV2";
 import FaqSection from "@/components/marketing/v2/FaqSection";
 import ClosingSection from "@/components/marketing/v2/ClosingSection";
@@ -42,7 +42,7 @@ export default function HomePage() {
         <SystemSection />
         <ContentLibrarySection />
         <ProcessSteps />
-        <TriagemPreview />
+        <StrategySection />
         <PricingV2 />
         <FaqSection />
         <ClosingSection />
