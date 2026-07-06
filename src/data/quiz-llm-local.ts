@@ -281,7 +281,7 @@ export const QUIZ_LLM_LOCAL: QuizQuestion[] = [
 // Configurações do Quiz
 export const QUIZ_CONFIG = {
   productId: "ebook_llm_local",
-  title: "Quiz de Validação: LLM Local",
+  title: "Validação de Conhecimento: LLM Local",
   subtitle: "Construa Seu Próprio ChatGPT Particular",
   totalQuestions: 15,
   passingScore: 70, // 70% = 11/15 questões corretas

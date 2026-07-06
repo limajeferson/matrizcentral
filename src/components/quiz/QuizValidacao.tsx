@@ -88,7 +88,7 @@ export default function QuizValidacao({ token, onComplete }: QuizProps) {
                 Parabéns! 🎉
               </h2>
               <p className="text-green-300 text-lg mb-6">
-                Você passou no quiz de validação!
+                Você concluiu a validação de conhecimento!
               </p>
             </>
           ) : (

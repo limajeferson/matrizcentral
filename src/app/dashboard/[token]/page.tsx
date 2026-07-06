@@ -1,7 +1,11 @@
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { isTokenExpired } from "@/lib/tokens";
 import RoadmapCard from "@/components/dashboard/RoadmapCard";
-import type { RoadmapStages } from "@/data/roadmap-stages";
+import {
+  ROADMAP_STAGE_KEYS,
+  ROADMAP_STAGE_LABELS,
+  type RoadmapStages,
+} from "@/data/roadmap-stages";
 import QuizValidacaoContainer from "@/components/quiz/QuizValidacaoContainer";
 import GlassCard from "@/components/ui/glass-card";
 import CategoryBadge from "@/components/ui/category-badge";
@@ -73,11 +77,31 @@ export default async function DashboardPage({ params }: { params: { token: strin
       </CategoryBadge>
 
       <GlassCard className="p-6">
-        <div className="mb-2 flex items-center gap-2">
+        <div className="mb-4 flex items-center gap-2">
           <CategoryBadge variant="roadmap">Sua Trilha Recomendada</CategoryBadge>
         </div>
-        <h1 className="text-2xl font-bold text-zinc-900">Objetivo principal</h1>
-        <p className="text-zinc-600">{profile.description}</p>
+        <dl className="space-y-4">
+          <div>
+            <dt className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
+              Objetivo principal
+            </dt>
+            <dd className="text-lg font-bold text-zinc-900">{profile.description}</dd>
+          </div>
+          <div>
+            <dt className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
+              Ponto de partida
+            </dt>
+            <dd className="text-zinc-700">
+              {ROADMAP_STAGE_LABELS[ROADMAP_STAGE_KEYS[0]]}
+            </dd>
+          </div>
+          <div>
+            <dt className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
+              Tempo estimado
+            </dt>
+            <dd className="text-zinc-700">≈ 45–60 minutos nos primeiros passos</dd>
+          </div>
+        </dl>
       </GlassCard>
 
       <GlassCard className="p-6">
@@ -120,7 +144,7 @@ export default async function DashboardPage({ params }: { params: { token: strin
       <div>
         <div className="mb-4 flex items-center gap-2">
           <CategoryBadge variant="quiz">Validação</CategoryBadge>
-          <h2 className="text-xl font-bold text-zinc-900">Quiz de Validação</h2>
+          <h2 className="text-xl font-bold text-zinc-900">Validação de Conhecimento</h2>
         </div>
         <QuizValidacaoContainer token={params.token} />
       </div>
