@@ -49,7 +49,8 @@ export default function HeroObserver() {
     let size = 0;
     let cx = 0;
     let cy = 0;
-    let R = 0;
+    let R = 0; // raio do anel (contorno)
+    let Rs = 0; // raio da esfera de caracteres — menor que o anel
     let charPx = 0;
     let cellW = 0;
     let cellH = 0;
@@ -69,13 +70,14 @@ export default function HeroObserver() {
       cx = size / 2;
       cy = size / 2;
       R = size * 0.44;
-      charPx = size * 0.03;
+      Rs = R * 0.66; // caracteres ocupam área menor que o anel (margem estruturada)
+      charPx = size * 0.026;
       cellW = charPx * 0.62;
       cellH = charPx * 1.02;
-      cols = Math.ceil((2 * R) / cellW) + 2;
-      rows = Math.ceil((2 * R) / cellH) + 2;
-      ox = cx - R - cellW;
-      oy = cy - R - cellH;
+      cols = Math.ceil((2 * Rs) / cellW) + 2;
+      rows = Math.ceil((2 * Rs) / cellH) + 2;
+      ox = cx - Rs - cellW;
+      oy = cy - Rs - cellH;
       zbuf = new Float32Array(cols * rows);
       cbuf = new Uint8Array(cols * rows);
       ctx.font = `${Math.round(charPx)}px ui-monospace, "SF Mono", Menlo, monospace`;
@@ -125,8 +127,8 @@ export default function HeroObserver() {
         if (z2 <= 0) continue; // hemisfério de trás
         const x2 = x1;
 
-        const col = Math.round((cx + x2 * R - ox) / cellW);
-        const row = Math.round((cy - y2 * R - oy) / cellH);
+        const col = Math.round((cx + x2 * Rs - ox) / cellW);
+        const row = Math.round((cy - y2 * Rs - oy) / cellH);
         if (col < 0 || col >= cols || row < 0 || row >= rows) continue;
         const idx = row * cols + col;
         if (z2 <= zbuf[idx]) continue;
@@ -165,14 +167,14 @@ export default function HeroObserver() {
       // núcleo luminoso (a "pupila" — dá o ar de olho observador)
       const prevOp = ctx.globalCompositeOperation;
       ctx.globalCompositeOperation = "lighter";
-      const core = ctx.createRadialGradient(cx, cy, 0, cx, cy, R * 0.5);
-      core.addColorStop(0, `rgba(214, 205, 255, ${0.42 + pulse * 0.16})`);
-      core.addColorStop(0.25, "rgba(150, 122, 255, 0.3)");
+      const core = ctx.createRadialGradient(cx, cy, 0, cx, cy, Rs * 0.62);
+      core.addColorStop(0, `rgba(214, 205, 255, ${0.46 + pulse * 0.16})`);
+      core.addColorStop(0.25, "rgba(150, 122, 255, 0.32)");
       core.addColorStop(0.6, "rgba(124, 92, 255, 0.08)");
       core.addColorStop(1, "rgba(124, 92, 255, 0)");
       ctx.fillStyle = core;
       ctx.beginPath();
-      ctx.arc(cx, cy, R * 0.5, 0, Math.PI * 2);
+      ctx.arc(cx, cy, Rs * 0.62, 0, Math.PI * 2);
       ctx.fill();
       ctx.globalCompositeOperation = prevOp;
 

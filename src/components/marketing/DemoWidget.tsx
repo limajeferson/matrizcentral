@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 const TABS = [
-  { id: "quiz", label: "Quiz de Perfil" },
+  { id: "quiz", label: "Diagnóstico" },
   { id: "roadmap", label: "Roadmap" },
   { id: "ebook", label: "Ebook" },
 ] as const;
@@ -62,21 +62,19 @@ export default function DemoWidget() {
         <div>
           {active === "quiz" && (
             <div>
-              <span className="create-label mono">Questão 3 de 20</span>
+              <span className="create-label mono">Diagnóstico inicial · 1 de 7</span>
               <div className="quiz-progress">
                 <span style={{ width: "15%" }} />
               </div>
               <p className="quiz-question">
-                Qual é sua principal linguagem de programação?
+                Qual sua principal ferramenta de IA?
               </p>
               <div className="quiz-options">
-                {["Python", "JavaScript/TypeScript", "Go/Rust", "Não programo"].map(
-                  (option) => (
-                    <div key={option} className="quiz-option">
-                      {option}
-                    </div>
-                  )
-                )}
+                {["ChatGPT", "Gemini", "Claude", "Outra"].map((option) => (
+                  <div key={option} className="quiz-option">
+                    {option}
+                  </div>
+                ))}
               </div>
             </div>
           )}
