@@ -169,9 +169,11 @@ export default function OfferPricing() {
           <span className="plan-tag mono plan-tag-hot">Mais procurado</span>
           <h3 style={{ marginTop: 20 }}>Advanced</h3>
           <div className="price">
-            <b>R$497</b>
+            <b>
+              <span style={{ fontSize: "0.5em", fontWeight: 400, verticalAlign: "middle" }}>12x</span> R$47
+            </b>
             <small>
-              à vista ou 12x R$47
+              ou R$497 à vista
               <br />
               acesso completo 12 meses
             </small>
