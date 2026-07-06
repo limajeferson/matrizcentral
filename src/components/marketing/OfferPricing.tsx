@@ -126,17 +126,21 @@ export default function OfferPricing() {
             <small>
               pagamento único
               <br />
-              1 ebook completo
+              você vira dono da sua IA
             </small>
           </div>
           <EbookAvulsoCheckout />
           <ul>
-            <li>Ebook completo (9 capítulos) sobre rodar LLMs localmente</li>
-            <li>Triagem de perfil + roadmap personalizado</li>
-            <li>Quiz de validação com certificado de conclusão</li>
-            <li>Garantia de 30 dias — não gostou, devolvemos</li>
+            <li>1 ebook completo com todos os capítulos sobre rodar LLMs localmente</li>
+            <li>Passo a passo de instalação e uso dos modelos</li>
+            <li>Avaliação de qual o melhor modelo para o seu objetivo</li>
+            <li>Triagem de perfil + roadmap personalizado — indica o melhor plano para assinar</li>
+            <li>1 cupom de R$47 para migrar para a assinatura ou o acesso total</li>
+            <li>Garantia de 7 dias — não gostou, devolvemos</li>
           </ul>
-          <span className="foot">Ideal pra testar antes de assinar</span>
+          <span className="foot">
+            Por R$47, uma vez: um diagnóstico, um plano de ação e o fim das mensalidades.
+          </span>
         </div>
 
         <div className="plan">
@@ -152,10 +156,9 @@ export default function OfferPricing() {
           </div>
           <WaitlistForm planId="mensal_97" />
           <ul>
-            <li>1 ebook novo por mês — 12 no ano</li>
-            <li>Triagem de perfil + roadmap personalizado</li>
-            <li>Quiz de validação com certificado de conclusão</li>
-            <li>Acesso ao hub de conteúdo (relatórios, podcasts, pesquisas)</li>
+            <li>Todos os benefícios do Ebook Avulso</li>
+            <li>1 ebook novo por mês — 12 no ano, na ordem de lançamento</li>
+            <li>Acesso ao hub de conteúdo: todos os relatórios, 1 pesquisa/mês, 1 podcast/mês</li>
             <li>Cancela quando quiser</li>
           </ul>
           <span className="foot">Pra quem quer estudar todo mês, sem compromisso longo</span>
@@ -163,7 +166,7 @@ export default function OfferPricing() {
 
         <div className="plan recommended">
           <span className="plan-badge-soon mono">Em breve</span>
-          <span className="plan-tag mono">Melhor custo por ebook</span>
+          <span className="plan-tag mono plan-tag-hot">Mais procurado</span>
           <h3 style={{ marginTop: 20 }}>Acesso Total 12 Meses</h3>
           <div className="price">
             <b>R$497</b>
@@ -175,11 +178,13 @@ export default function OfferPricing() {
           </div>
           <WaitlistForm planId="anual_497" />
           <ul>
+            <li>Acesso completo à plataforma</li>
             <li>Todos os ebooks lançados durante os 12 meses</li>
             <li>Triagem de perfil + roadmap personalizado</li>
             <li>Quiz de validação com certificado de conclusão</li>
-            <li>Hub de conteúdo completo (relatórios, podcasts, pesquisas)</li>
-            <li>≈ R$41 por ebook — o mais barato do catálogo</li>
+            <li>Gamificação de perfil para medir a profundidade do seu aprendizado</li>
+            <li>Hub completo: relatórios, podcasts, pesquisas, apresentações, conteúdo personalizado e avaliação de novas ferramentas</li>
+            <li>≈ R$19 por ebook — o mais barato do catálogo (2 lançamentos por mês)</li>
           </ul>
           <span className="foot">Pra quem já sabe que vai estudar o ano inteiro</span>
         </div>
