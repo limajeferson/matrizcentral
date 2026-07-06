@@ -708,14 +708,14 @@
 .mcv2 .mc-closing-cta { margin-top: 40px; }
 .mcv2 .mc-closing-cta-note { margin-top: 14px; color: var(--mc-gray); font-size: 0.9rem; }
 
-/* ---- Footer claro ---- */
+/* ---- Footer escuro ---- */
 .mcv2 .mc-footer {
-  background: #ffffff;
-  color: #17131f;
+  background: #14101F;
+  color: var(--mc-white);
   border-radius: var(--mc-radius) var(--mc-radius) 0 0;
   padding: 64px 0 32px;
 }
-.mcv2 .mc-footer .mc-logo { color: #17131f; }
+.mcv2 .mc-footer .mc-logo { color: var(--mc-white); }
 .mcv2 .mc-footer-grid {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -725,7 +725,7 @@
 .mcv2 .mc-footer-desc {
   margin-top: 16px;
   max-width: 380px;
-  color: #5c5666;
+  color: var(--mc-gray);
 }
 .mcv2 .mc-footer-nav {
   display: flex;
@@ -734,15 +734,15 @@
 }
 .mcv2 .mc-footer-nav a {
   text-decoration: none;
-  color: #17131f;
+  color: var(--mc-white);
   font-weight: 500;
 }
-.mcv2 .mc-footer-nav a:hover { color: var(--mc-accent-deep); }
+.mcv2 .mc-footer-nav a:hover { color: var(--mc-accent); }
 .mcv2 .mc-footer-bottom {
   margin-top: 48px;
   padding-top: 24px;
-  border-top: 1px solid #e8e5ee;
-  color: #5c5666;
+  border-top: 1px solid var(--mc-line);
+  color: var(--mc-gray);
   font-size: 0.9rem;
 }
 @media (max-width: 640px) {
