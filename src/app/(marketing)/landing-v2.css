@@ -806,20 +806,55 @@
   color: var(--ink);
 }
 
-/* O header (fundo branco translúcido) e os cards de plano da OfferPricing
-   (fundo branco/gradiente claro, ambos hardcoded em landing-clone.css) não
-   herdam o fundo escuro do wrapper — continuam claros. Se deixássemos os
-   tokens --ink* claros vazarem para dentro deles, o texto escuro esperado
-   (nav-links, títulos dos planos, badges) ficaria claro sobre fundo claro
-   e ilegível. Por isso restauramos os valores originais (escuros) só
-   dentro dessas subárvores. */
+/* O header (fundo branco translúcido) não herda o fundo escuro do wrapper —
+   continua claro. Restauramos os tokens --ink* escuros só nessa subárvore para
+   o texto (nav-links) não ficar claro sobre fundo claro. Os cards de plano
+   agora são vidro escuro (ver bloco glassmorph abaixo), então saíram daqui. */
 .mc-oferta-wrapper header,
-.mc-oferta-wrapper .nav-mobile-panel,
-.mc-oferta-wrapper .plan {
+.mc-oferta-wrapper .nav-mobile-panel {
   --ink: #141414;
   --ink-soft: #5c5c5c;
   --ink-mute: #6b6b6b;
 }
+
+/* ---- Glassmorph nos cards de plano da /oferta (sobre o fundo escuro) ---- */
+.mc-oferta-wrapper .plan {
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.03));
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 20px 50px -24px rgba(0, 0, 0, 0.6);
+  /* texto claro dentro do vidro */
+  --ink: #f5f3ff;
+  --ink-soft: #cfc9df;
+  --ink-mute: #a49fb8;
+  color: var(--ink);
+}
+.mc-oferta-wrapper .plan.recommended {
+  background:
+    linear-gradient(160deg, rgba(124, 92, 255, 0.24), rgba(124, 92, 255, 0.05)),
+    rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(124, 92, 255, 0.45);
+  box-shadow: 0 24px 60px -22px rgba(124, 92, 255, 0.55);
+}
+.mc-oferta-wrapper .plan h3,
+.mc-oferta-wrapper .plan .price b { color: var(--ink); }
+.mc-oferta-wrapper .plan .price small { color: var(--ink-soft); }
+.mc-oferta-wrapper .plan ul { color: var(--ink-soft); }
+.mc-oferta-wrapper .plan ul li::before { color: #a78bfa; }
+.mc-oferta-wrapper .plan .foot { color: var(--ink-mute); }
+.mc-oferta-wrapper .plan-badge-soon {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--ink-soft);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+.mc-oferta-wrapper .plan-tag { background: rgba(255, 255, 255, 0.12); }
+/* CTA principal (Comprar agora) precisa saltar sobre o vidro escuro */
+.mc-oferta-wrapper .plan .btn-dark {
+  background: #7c5cff;
+  color: #fff;
+}
+.mc-oferta-wrapper .plan .btn-dark:hover { background: #5b3df5; }
 
 /* ---- A Central (vitrine da biblioteca multi-formato) ---- */
 .mcv2 .mc-library-heading { margin-top: 20px; }
