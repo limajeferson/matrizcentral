@@ -3,11 +3,15 @@
 import { useEffect, useRef } from "react";
 import { twinkleAlpha } from "@/lib/pixel-twinkle";
 
-const CELL = 34;         // espaçamento da grade (px)
-const SQUARE = 10;       // lado do quadradinho (px)
-const MAX_ALPHA = 0.12;  // brilho máximo — bem apagado
-const TIME_INC = 0.012;  // avanço de tempo por frame — lento
-const COLORS = ["124, 92, 255", "70, 110, 255"]; // violeta, azul
+const CELL = 34;             // espaçamento da grade (px)
+const SQUARE = 10;           // lado do quadradinho (px)
+const GLOW = 6;              // raio do brilho
+const MAX_ALPHA = 0.12;      // brilho máximo — bem apagado
+const TIME_INC = 0.012;      // avanço de tempo por frame — lento
+const RESIZE_DEBOUNCE = 180; // ms
+// Espelham --mc-accent (#7c5cff) e --mc-trust (#466eff). Como o canvas não lê
+// custom properties do CSS, ficam aqui como fonte única do lado JS.
+const COLORS = ["124, 92, 255", "70, 110, 255"];
 
 interface Cell {
   x: number;
@@ -15,7 +19,27 @@ interface Cell {
   amp: number;
   speed: number;
   phase: number;
-  color: string;
+  sprite: number; // índice em COLORS / sprites
+}
+
+/**
+ * Pré-renderiza um quadradinho com brilho UMA vez por cor, num canvas offscreen.
+ * O loop por frame só faz drawImage + globalAlpha — sem shadowBlur por célula.
+ */
+function makeSprite(color: string): HTMLCanvasElement {
+  const size = SQUARE + GLOW * 4;
+  const c = document.createElement("canvas");
+  c.width = size;
+  c.height = size;
+  const g = c.getContext("2d");
+  if (g) {
+    g.shadowBlur = GLOW;
+    g.shadowColor = `rgba(${color}, 1)`;
+    g.fillStyle = `rgba(${color}, 1)`;
+    const p = (size - SQUARE) / 2;
+    g.fillRect(p, p, SQUARE, SQUARE);
+  }
+  return c;
 }
 
 export default function PixelGridBackground() {
@@ -29,6 +53,8 @@ export default function PixelGridBackground() {
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const sprites = COLORS.map(makeSprite);
+    const spriteOffset = (SQUARE + GLOW * 4) / 2;
 
     let width = 0;
     let height = 0;
@@ -54,7 +80,7 @@ export default function PixelGridBackground() {
             amp: MAX_ALPHA * r * r,
             speed: 0.3 + Math.random() * 0.5,
             phase: Math.random() * Math.PI * 2,
-            color: COLORS[Math.floor(Math.random() * COLORS.length)],
+            sprite: Math.floor(Math.random() * sprites.length),
           });
         }
       }
@@ -66,16 +92,13 @@ export default function PixelGridBackground() {
 
     const draw = () => {
       ctx.clearRect(0, 0, width, height);
-      ctx.shadowBlur = 6;
       for (const c of cells) {
         const a = twinkleAlpha(c.amp, c.speed, c.phase, time);
         if (a < 0.008) continue;
-        const fill = `rgba(${c.color}, ${a})`;
-        ctx.fillStyle = fill;
-        ctx.shadowColor = fill;
-        ctx.fillRect(c.x - SQUARE / 2, c.y - SQUARE / 2, SQUARE, SQUARE);
+        ctx.globalAlpha = a;
+        ctx.drawImage(sprites[c.sprite], c.x - spriteOffset, c.y - spriteOffset);
       }
-      ctx.shadowBlur = 0;
+      ctx.globalAlpha = 1;
 
       if (!reduced) {
         time += TIME_INC;
@@ -84,14 +107,19 @@ export default function PixelGridBackground() {
     };
     draw();
 
+    let resizeTimer = 0;
     const handleResize = () => {
-      build();
-      if (reduced) draw();
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        build();
+        if (reduced) draw();
+      }, RESIZE_DEBOUNCE);
     };
     window.addEventListener("resize", handleResize);
 
     return () => {
       cancelAnimationFrame(rafId);
+      window.clearTimeout(resizeTimer);
       window.removeEventListener("resize", handleResize);
     };
   }, []);

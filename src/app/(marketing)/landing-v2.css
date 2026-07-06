@@ -259,7 +259,7 @@
 @media (prefers-reduced-motion: reduce) {
   .mcv2 .mc-node { animation: none; }
 }
-.mcv2 .mc-hero-content { position: relative; }
+.mcv2 .mc-hero-content { position: relative; z-index: 1; }
 .mcv2 .mc-hero-proof { color: var(--mc-gray); margin-bottom: 20px; }
 .mcv2 .mc-hero-sub {
   max-width: 560px;
@@ -303,13 +303,12 @@
   pointer-events: none;
   border-radius: 50%;
   background:
-    radial-gradient(circle, transparent 38%, rgba(124, 92, 255, 0.10) 39%, transparent 41%),
-    radial-gradient(circle, transparent 52%, rgba(70, 110, 255, 0.08) 53%, transparent 55%),
-    radial-gradient(circle, transparent 66%, rgba(124, 92, 255, 0.06) 67%, transparent 69%),
-    radial-gradient(circle at 50% 50%, rgba(124, 92, 255, 0.14) 0%, rgba(91, 61, 245, 0.06) 30%, transparent 62%);
+    radial-gradient(circle, transparent 38%, color-mix(in srgb, var(--mc-accent) 10%, transparent) 39%, transparent 41%),
+    radial-gradient(circle, transparent 52%, color-mix(in srgb, var(--mc-trust) 8%, transparent) 53%, transparent 55%),
+    radial-gradient(circle, transparent 66%, color-mix(in srgb, var(--mc-accent) 6%, transparent) 67%, transparent 69%),
+    radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--mc-accent) 14%, transparent) 0%, color-mix(in srgb, var(--mc-accent-deep) 6%, transparent) 30%, transparent 62%);
   filter: blur(1px);
 }
-.mcv2 .mc-hero-content { z-index: 1; }
 @media (max-width: 700px) {
   .mcv2 .mc-observer { width: clamp(420px, 90vw, 560px); top: -12%; right: -22%; }
 }
@@ -710,7 +709,7 @@
 
 /* ---- Footer escuro ---- */
 .mcv2 .mc-footer {
-  background: #14101F;
+  background: var(--mc-surface);
   color: var(--mc-white);
   border-radius: var(--mc-radius) var(--mc-radius) 0 0;
   padding: 64px 0 32px;
