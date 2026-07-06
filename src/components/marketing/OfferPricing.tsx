@@ -135,7 +135,7 @@ export default function OfferPricing() {
             <li>Passo a passo de instalação e uso dos modelos</li>
             <li>Avaliação de qual o melhor modelo para o seu objetivo</li>
             <li>Triagem de perfil + roadmap personalizado — indica o melhor plano para assinar</li>
-            <li>1 cupom de R$47 para migrar para a assinatura ou o acesso total</li>
+            <li>1 cupom de R$47 para migrar para o plano Regular ou o Advanced</li>
             <li>Garantia de 7 dias — não gostou, devolvemos</li>
           </ul>
           <span className="foot">
