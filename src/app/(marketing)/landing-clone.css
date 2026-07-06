@@ -761,6 +761,28 @@
   color: var(--ink);
 }
 
+/* ---------- TAG ANIMADA "MAIS PROCURADO" ---------- */
+/* Tag "Mais procurado" — fonte em cores quentes que trocam continuamente */
+.lp-guide .plan-tag.plan-tag-hot {
+  background: linear-gradient(
+    90deg,
+    #ff3d3d, #ff7a1a, #ffc21a, #ff5e8a, #ff3d3d
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  font-weight: 700;
+  animation: mc-hot-shift 4s linear infinite;
+}
+@keyframes mc-hot-shift {
+  to { background-position: 200% center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lp-guide .plan-tag.plan-tag-hot { animation: none; }
+}
+
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 900px) {
   .lp-guide .nav-links {
