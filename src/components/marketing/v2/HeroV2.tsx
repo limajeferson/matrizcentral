@@ -3,6 +3,7 @@
 import DemoWidget from "@/components/marketing/DemoWidget";
 import RotatingWord from "./RotatingWord";
 import { Reveal } from "./motion-primitives";
+import HeroObserver from "./HeroObserver";
 import { formatCounts } from "@/lib/content-stats";
 
 const ROTATING_WORDS = ["do GPT", "do Claude", "do Gemini", "de aluguel de servidor", "de VPS"];
@@ -21,6 +22,7 @@ export default function HeroV2() {
 
   return (
     <section className="mc-hero">
+      <HeroObserver />
       <div className="mc-container mc-hero-content">
         <Reveal>
           <p className="mc-hero-proof mc-mono">
