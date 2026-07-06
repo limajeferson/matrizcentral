@@ -30,8 +30,8 @@
 
 /* Canvas com moldura: cantos arredondados inseridos na viewport */
 .mcv2 .mc-canvas {
-  /* Fundo transparente para o WaveCanvasBackground (fixo, z-index 0) aparecer
-     atrás do conteúdo — antes era sólido (--mc-bg) e cobria a animação. */
+  /* Fundo transparente para o PixelGridBackground (fixo, z-index 0) aparecer
+     atrás do conteúdo. */
   background: transparent;
   border-radius: var(--mc-radius);
   margin: 8px;
@@ -855,8 +855,8 @@
   .mcv2 .mc-library-grid { grid-template-columns: 1fr; }
 }
 
-/* ---- Rede ambiente (fundo único do site) ---- */
-.mcv2 .mc-wave-bg {
+/* ---- Fundo pixel glow (fundo único do site) ---- */
+.mcv2 .mc-pixel-bg {
   position: fixed;
   inset: 0;
   z-index: 0;
