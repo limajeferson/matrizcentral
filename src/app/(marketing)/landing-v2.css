@@ -292,7 +292,8 @@
 .mcv2 .mc-hero-proof-grow { color: var(--mc-accent); border-color: rgba(124, 92, 255, 0.4) !important; }
 .mcv2 .mc-hero-demo { margin-top: 72px; }
 
-/* Círculo "IA observando" — anéis tênues (íris), quase apagado, canto sup. direito */
+/* Esfera de IA "viva" (canvas: globo + código + glitch) — canto sup. direito,
+   ~63% visível (cortada pelo overflow do hero), some ao rolar. */
 .mcv2 .mc-observer {
   position: absolute;
   top: -18%;
@@ -301,14 +302,8 @@
   aspect-ratio: 1 / 1;
   z-index: 0;
   pointer-events: none;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle, transparent 38%, color-mix(in srgb, var(--mc-accent) 10%, transparent) 39%, transparent 41%),
-    radial-gradient(circle, transparent 52%, color-mix(in srgb, var(--mc-trust) 8%, transparent) 53%, transparent 55%),
-    radial-gradient(circle, transparent 66%, color-mix(in srgb, var(--mc-accent) 6%, transparent) 67%, transparent 69%),
-    radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--mc-accent) 14%, transparent) 0%, color-mix(in srgb, var(--mc-accent-deep) 6%, transparent) 30%, transparent 62%);
-  filter: blur(1px);
 }
+.mcv2 .mc-observer-canvas { width: 100%; height: 100%; display: block; }
 @media (max-width: 700px) {
   .mcv2 .mc-observer { width: clamp(420px, 90vw, 560px); top: -12%; right: -22%; }
 }
