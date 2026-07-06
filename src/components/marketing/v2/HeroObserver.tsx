@@ -7,14 +7,11 @@ const FADE_SCROLL_PX = 620; // distância de scroll até sumir
 const BASE_OPACITY = 0.72; // presente, mas ainda atrás do texto
 
 // Rampa de densidade (escuro -> claro). Inclui os caracteres pedidos: -=+*#%▓.
-// Rampa da metade preenchida (efeito de giro): - -> = -> + -> # -> %.
-const FILL_RAMP = "-=+#%";
+// Rampa simétrica da metade preenchida: - = + # % ▓ (esparso -> denso).
+// A intensidade em triângulo produz o palíndromo - = + # % ▓ % # + = -.
+const FILL_RAMP = "-=+#%▓";
 const YAW_SPEED = 0.006; // rotação por frame — lenta, hipnótica
 const TILT = 0.42; // inclinação fixa do eixo (rad) — deixa o giro visível
-// Luz quase frontal (leve canto superior-esquerdo) — centro mais aceso.
-const LX = -0.24;
-const LY = -0.28;
-const LZ = 0.93;
 
 interface Pt {
   x: number;
@@ -143,9 +140,10 @@ export default function HeroObserver() {
           cbuf[idx] = 0; // metade limpa (oculta)
         } else {
           const f = (u - 0.5) / 0.5; // 0..1 na metade preenchida
-          const shade = 0.6 + 0.4 * Math.max(0, x2 * LX + y2 * LY + z2 * LZ);
-          const intensity = Math.min(1, f * shade + 0.04);
-          cbuf[idx] = 1 + Math.min(FILL_RAMP.length - 1, Math.floor(intensity * (FILL_RAMP.length - 1)));
+          // triângulo: esparso (-) nas bordas, denso (▓) no meio ->
+          // - = + # % ▓ % # + = -
+          const sym = 1 - Math.abs(f - 0.5) * 2;
+          cbuf[idx] = 1 + Math.min(FILL_RAMP.length - 1, Math.floor(sym * (FILL_RAMP.length - 1)));
         }
       }
 
