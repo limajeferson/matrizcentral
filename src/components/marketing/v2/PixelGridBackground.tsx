@@ -4,10 +4,10 @@ import { useEffect, useRef } from "react";
 import { twinkleAlpha } from "@/lib/pixel-twinkle";
 
 const CELL = 34;             // espaçamento da grade (px)
-const SQUARE = 10;           // lado do quadradinho (px)
+const SQUARE = 6;            // lado do quadradinho (px) — cubos menores
 const GLOW = 6;              // raio do brilho
-const MAX_ALPHA = 0.12;      // brilho máximo — bem apagado
-const TIME_INC = 0.012;      // avanço de tempo por frame — lento
+const MAX_ALPHA = 0.36;      // brilho máximo (3x mais claro que antes)
+const TIME_INC = 0.012;      // avanço de tempo por frame — mesmo ritmo
 const RESIZE_DEBOUNCE = 180; // ms
 // Espelham --mc-accent (#7c5cff) e --mc-trust (#466eff). Como o canvas não lê
 // custom properties do CSS, ficam aqui como fonte única do lado JS.
