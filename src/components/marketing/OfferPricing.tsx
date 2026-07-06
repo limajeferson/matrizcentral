@@ -120,7 +120,7 @@ export default function OfferPricing() {
     <div>
       <div className="plans-grid">
         <div className="plan">
-          <h3>Ebook Avulso</h3>
+          <h3>Start</h3>
           <div className="price">
             <b>R$47</b>
             <small>
@@ -145,7 +145,7 @@ export default function OfferPricing() {
 
         <div className="plan">
           <span className="plan-badge-soon mono">Em breve</span>
-          <h3 style={{ marginTop: 20 }}>Assinatura Mensal</h3>
+          <h3 style={{ marginTop: 20 }}>Regular</h3>
           <div className="price">
             <b>R$97</b>
             <small>
@@ -156,7 +156,7 @@ export default function OfferPricing() {
           </div>
           <WaitlistForm planId="mensal_97" />
           <ul>
-            <li>Todos os benefícios do Ebook Avulso</li>
+            <li>Todos os benefícios do Start</li>
             <li>1 ebook novo por mês — 12 no ano, na ordem de lançamento</li>
             <li>Acesso ao hub de conteúdo: todos os relatórios, 1 pesquisa/mês, 1 podcast/mês</li>
             <li>Cancela quando quiser</li>
@@ -167,7 +167,7 @@ export default function OfferPricing() {
         <div className="plan recommended">
           <span className="plan-badge-soon mono">Em breve</span>
           <span className="plan-tag mono plan-tag-hot">Mais procurado</span>
-          <h3 style={{ marginTop: 20 }}>Acesso Total 12 Meses</h3>
+          <h3 style={{ marginTop: 20 }}>Advanced</h3>
           <div className="price">
             <b>R$497</b>
             <small>
