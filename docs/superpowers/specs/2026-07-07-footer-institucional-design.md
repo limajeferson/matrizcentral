@@ -136,15 +136,33 @@ Visual: linha de "trust badges" com ícones de linha pequenos + texto mono, bord
 
 ## 5. Newsletter (funcional)
 
+> **Correção sobre o spec original:** `/api/waitlist` NÃO serve — ele exige `planId`
+> (`mensal_97`/`anual_497`) e grava na tabela `plan_waitlist` (interesse em plano de
+> preço). Usar para newsletter poluiria dados de negócio. A newsletter ganha endpoint
+> e tabela próprios.
+
 Componente client `src/components/marketing/v2/FooterNewsletter.tsx`.
 - Título: "Receba novidades sobre IA Local"
 - Descrição: "Artigos, novidades e novos conteúdos diretamente no seu e-mail."
 - Campo de e-mail + botão "Inscrever-se".
-- **Backend:** `POST /api/waitlist` (já existe). Envia `{ email }`.
-- Estados: idle → enviando → sucesso ("✓ Anotado! Avisamos assim que houver novidade.") → erro (mensagem discreta).
-- Validação de e-mail: extraída para helper puro `src/lib/email-validation.ts` (`isValidEmail(value: string): boolean`) — testável no Vitest (`environment: node`).
-
-Verificar o contrato real de `/api/waitlist` (campos aceitos, formato de resposta) antes de implementar; adaptar o payload se necessário.
+- **Backend novo:** `POST /api/newsletter` → grava `{ email }` na tabela `newsletter_subscribers`.
+  - Valida e-mail no servidor (reusa `isValidEmail`), retorna `400` se inválido.
+  - Insere via `getSupabaseServerClient()` (mesmo padrão de `/api/waitlist`).
+  - `onConflict` no e-mail é ignorado (re-inscrição não é erro): usar `upsert` com `onConflict: "email"` ou tratar erro de duplicata como sucesso.
+  - Resposta: `{ ok: true }` em sucesso; `{ error }` + status em falha.
+- **Migration nova:** `supabase/migrations/0011_newsletter_subscribers.sql` — tabela
+  `newsletter_subscribers` (`id uuid pk default gen_random_uuid()`, `email text not null unique`,
+  `created_at timestamptz default now()`), RLS habilitado sem policies públicas (só service role
+  insere, como as demais tabelas de waitlist).
+  - ⚠️ A migration precisa ser aplicada no Supabase (`supabase db push` ou painel) pelo
+    usuário para a newsletter funcionar em runtime. Anotar como passo manual.
+- **Tipo:** adicionar `newsletter_subscribers` ao tipo `Database` em `src/types` (seguir o
+  padrão das outras tabelas). Se o tipo `Database` for gerado/estático, incluir a nova tabela.
+- Estados do componente: idle → enviando → sucesso ("✓ Pronto! Você vai receber nossas novidades.") → erro (mensagem discreta).
+- Validação de e-mail no client: helper puro `src/lib/email-validation.ts`
+  (`isValidEmail(value: string): boolean`) — testável no Vitest (`environment: node`).
+  Reusa o mesmo regex já usado em `OfferPricing.tsx` (`/^[^\s@]+@[^\s@]+\.[^\s@]+$/`),
+  agora centralizado.
 
 ---
 
@@ -206,6 +224,8 @@ Remover o bloco CSS de footer duplicado detectado (`landing-v2.css` ~719 e ~1004
 - `src/components/marketing/v2/footer-nav.ts` (dados)
 - `src/components/marketing/v2/FooterNewsletter.tsx` (client)
 - `src/lib/email-validation.ts` (helper puro) + `src/lib/email-validation.test.ts`
+- `src/app/api/newsletter/route.ts` (endpoint newsletter)
+- `supabase/migrations/0011_newsletter_subscribers.sql` (tabela) — aplicar manualmente
 - `src/app/(marketing)/sobre/page.tsx`
 - `src/app/(marketing)/legal/privacidade/page.tsx`
 - `src/app/(marketing)/legal/termos/page.tsx`
@@ -231,7 +251,7 @@ Remover o bloco CSS de footer duplicado detectado (`landing-v2.css` ~719 e ~1004
 Fases (cada uma verificada antes da próxima):
 1. **Dados + ícones sociais** — `footer-nav.ts`, 6 ícones em `icons.tsx`, helper `email-validation` + teste.
 2. **Footer component + CSS** — reescrever `FooterV2.tsx` consumindo os dados, novas classes CSS, faixa de destaque, grupo social. Verificar visual na home.
-3. **Newsletter** — `FooterNewsletter.tsx` + fio com `/api/waitlist`. Verificar envio real.
+3. **Newsletter** — migration `0011`, tipo `Database`, endpoint `/api/newsletter`, `FooterNewsletter.tsx`. Verificar envio real.
 4. **Página `/sobre`** — com seções âncora. Verificar navegação footer→âncora.
 5. **Páginas legais** `/legal/privacidade` e `/legal/termos` + `.mc-legal`. Verificar links do footer.
 6. **Polish** — responsividade (6→3→2→1), glow/divisórias, revisão final tsc+test+visual.
