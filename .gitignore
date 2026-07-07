@@ -16,3 +16,7 @@ notebooklm/apresentacoes/
 
 # Subagent-driven-development scratch (progress ledger)
 .superpowers/
+
+# Arquivos de rascunho/referência locais (não fazem parte do produto)
+new-prompt.md
+modelo-esfera.ia.png
