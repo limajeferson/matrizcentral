@@ -2,11 +2,14 @@
 
 Contexto para sessões do Claude Code neste repositório. Mantenha conciso.
 
+> **› Contexto completo e navegação:** leia [`docs/ECOSSISTEMA.md`](docs/ECOSSISTEMA.md) primeiro — é o hub que indexa specs, arquitetura, memória e o fluxo de deploy.
+
 ## Produto (não é um ebook)
 
 - O produto é uma **plataforma multi-formato de IA local**: relatórios, podcasts, vídeos, apresentações e pesquisas da comunidade, num **feed/hub** com gamificação (XP/níveis/certificado). O ebook é material de apoio, não o produto.
 - **Fonte única de conteúdo:** `src/data/content-hub.ts` (`CONTENT_HUB`). Nunca inventar títulos numa vitrine — mapear desse array.
 - **Regra "em breve":** item com `embedUrl === null` (exceto `relatorio`/`pesquisa`) ainda não está publicado → exibir selo "em breve". Enquadrar a biblioteca como "em expansão", nunca "tudo já disponível".
+- **Estado da landing (07/2026):** landing v2 completa em `src/app/(marketing)`. Seção 2 (`SystemSection`) vende o **método** (4 cards com imagens locais em `public/system/`); Seção 3 (`ContentLibrarySection`) vende a **experiência** (cards NOVO/em breve). Há footer institucional, páginas `/sobre` e `/legal/{privacidade,termos}`, e newsletter (`/api/newsletter` → tabela `newsletter_subscribers`, migration `0011` pendente de aplicar). Detalhe e histórico: ver `docs/ECOSSISTEMA.md`.
 
 ## Verificação (gotcha importante)
 
