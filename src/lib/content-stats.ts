@@ -3,19 +3,20 @@ import { CONTENT_HUB, type ContentItem, type ContentType } from "@/data/content-
 export interface FormatStat {
   type: ContentType | "apresentacao";
   label: string;
-  icon: string;
+  /** Chave usada para escolher o ícone SVG (ver `FORMAT_ICON`/`FormatIcon` em components/marketing/v2/icons). */
+  icon: ContentType | "apresentacao";
   count: number;
 }
 
 /** Apresentações existem como assets (.pptx/.png) mas ainda não estão no CONTENT_HUB. */
 const APRESENTACOES_COUNT = 3;
 
-const FORMAT_ORDER: { type: ContentType | "apresentacao"; label: string; icon: string }[] = [
-  { type: "relatorio", label: "Relatórios", icon: "📄" },
-  { type: "podcast", label: "Podcasts", icon: "🎙️" },
-  { type: "video", label: "Vídeos", icon: "🎬" },
-  { type: "apresentacao", label: "Apresentações", icon: "🖥️" },
-  { type: "pesquisa", label: "Pesquisas", icon: "📊" },
+const FORMAT_ORDER: { type: ContentType | "apresentacao"; label: string; icon: ContentType | "apresentacao" }[] = [
+  { type: "relatorio", label: "Relatórios", icon: "relatorio" },
+  { type: "podcast", label: "Podcasts", icon: "podcast" },
+  { type: "video", label: "Vídeos", icon: "video" },
+  { type: "apresentacao", label: "Apresentações", icon: "apresentacao" },
+  { type: "pesquisa", label: "Pesquisas", icon: "pesquisa" },
 ];
 
 /** Contagem de itens por formato, na ordem de exibição. */

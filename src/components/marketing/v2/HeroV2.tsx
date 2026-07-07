@@ -5,6 +5,7 @@ import RotatingWord from "./RotatingWord";
 import { Reveal } from "./motion-primitives";
 import HeroObserver from "./HeroObserver";
 import { formatCounts } from "@/lib/content-stats";
+import { FormatIcon } from "./icons";
 
 const ROTATING_WORDS = ["do GPT", "do Claude", "do Gemini", "de servidores", "de VPS"];
 
@@ -57,7 +58,7 @@ export default function HeroV2() {
           <ul className="mc-hero-proof-strip mc-mono" aria-label="A biblioteca inclui">
             {formats.map((f) => (
               <li key={f.type}>
-                <span aria-hidden="true">{f.icon}</span> <b>{f.count}</b> {f.label}
+                <FormatIcon type={f.icon} className="mc-hero-proof-icon" /> <b>{f.count}</b> {f.label}
               </li>
             ))}
             <li className="mc-hero-proof-grow">sempre em expansão</li>

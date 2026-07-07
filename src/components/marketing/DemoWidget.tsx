@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { IconFire } from "./v2/icons";
 
 const TABS = [
   { id: "quiz", label: "Diagnóstico" },
@@ -112,7 +113,9 @@ export default function DemoWidget() {
 
         <div className="voice-side">
           <XpRing />
-          <span className="streak mono">🔥 5 dias seguidos</span>
+          <span className="streak mono">
+            <IconFire className="streak-icon" /> 5 dias seguidos
+          </span>
         </div>
       </div>
     </div>
