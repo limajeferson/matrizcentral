@@ -157,6 +157,20 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["plan_waitlist"]["Insert"]>;
         Relationships: [];
       };
+      newsletter_subscribers: {
+        Row: {
+          id: string;
+          email: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          email: string;
+          created_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["newsletter_subscribers"]["Insert"]>;
+        Relationships: [];
+      };
       survey_responses: {
         Row: {
           id: string;
