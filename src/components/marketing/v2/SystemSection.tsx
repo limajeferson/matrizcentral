@@ -3,42 +3,39 @@
 import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Reveal } from "./motion-primitives";
+import { IconCompass, IconRoad, IconBooks, IconTrophy } from "./icons";
 
 const ITEMS = [
   {
-    benefit: "Tudo em um só lugar",
-    feature: "Biblioteca multi-formato",
+    benefit: "Descubra por onde começar",
+    feature: "Diagnóstico Inicial",
     description:
-      "Relatórios, podcasts, vídeos e apresentações sobre IA local — com o ebook técnico como material de apoio, não como o produto.",
-    image:
-      "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=60",
+      "Em vez de procurar informações aleatórias, o sistema identifica seu contexto e recomenda a melhor trilha para começar.",
+    Icon: IconCompass,
     accent: false,
   },
   {
-    benefit: "Aprenda como numa rede social",
-    feature: "Plataforma-feed",
+    benefit: "Aprenda em uma sequência lógica",
+    feature: "Roadmap Inteligente",
     description:
-      "Um feed de aprendizado no seu ritmo, organizado por contexto — não um PDF que você baixa e esquece.",
-    image:
-      "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=60",
+      "Cada etapa desbloqueia a próxima para que você evolua sem estudar conteúdos fora do seu momento.",
+    Icon: IconRoad,
     accent: true,
   },
   {
-    benefit: "Comece pelo caminho certo",
-    feature: "Trilha guiada",
+    benefit: "Estude no formato que preferir",
+    feature: "Biblioteca Multimídia",
     description:
-      "Um diagnóstico inicial do seu contexto e um roadmap inteligente que libera cada etapa na ordem certa.",
-    image:
-      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=60",
+      "Leia, assista ou ouça o mesmo conhecimento em diferentes formatos, mantendo sempre o mesmo objetivo.",
+    Icon: IconBooks,
     accent: false,
   },
   {
-    benefit: "Comprove sua evolução",
-    feature: "Gamificação + Certificado",
+    benefit: "Acompanhe sua evolução",
+    feature: "Progressão + Certificação",
     description:
-      "XP, níveis e uma certificação verificável com autenticação pública ao concluir sua trilha.",
-    image:
-      "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=60",
+      "Veja seu progresso crescer ao longo da jornada e valide o conhecimento adquirido ao final da trilha.",
+    Icon: IconTrophy,
     accent: true,
   },
 ];
@@ -51,20 +48,29 @@ export default function SystemSection() {
     <section className="mc-section" id="sistema">
       <div className="mc-container">
         <Reveal>
-          <span className="mc-tag">O sistema</span>
+          <span className="mc-tag">Por que é diferente</span>
         </Reveal>
         <Reveal delay={0.1}>
           <h2 className="mc-display mc-system-heading">
             Um sistema,
             <br />
-            não um ebook solto
+            muito além da leitura isolada
           </h2>
+        </Reveal>
+        <Reveal delay={0.15}>
+          <p className="mc-system-intro">
+            Você não compra apenas conteúdo. Você entra em um sistema pensado
+            para levar você do primeiro contato com IA Local até a utilização
+            prática, seguindo uma sequência organizada de aprendizado. Cada
+            recurso existe para resolver uma etapa da jornada.
+          </p>
         </Reveal>
 
         <div className="mc-system-row">
           {ITEMS.map((item, index) => {
             const isFocused = focusIndex === index;
             const isDimmed = focusIndex !== null && !isFocused;
+            const { Icon } = item;
 
             return (
               <motion.div
@@ -83,14 +89,8 @@ export default function SystemSection() {
                 tabIndex={0}
                 transition={{ duration: reduced ? 0 : 0.3, ease: [0.21, 0.47, 0.32, 0.98] }}
               >
-                <div className="mc-system-image-wrap">
-                  <img
-                    src={item.image}
-                    alt=""
-                    aria-hidden="true"
-                    className="mc-system-image"
-                    loading="lazy"
-                  />
+                <div className="mc-system-icon-wrap">
+                  <Icon className="mc-system-icon" />
                 </div>
                 <div className="mc-system-card-body">
                   <span className="mc-tag">{item.benefit}</span>
