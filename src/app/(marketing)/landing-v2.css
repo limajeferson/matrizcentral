@@ -449,12 +449,14 @@
   align-items: stretch;
 }
 .mcv2 .mc-system-card {
-  background: var(--mc-surface);
+  position: relative;
+  min-height: 400px;
   border: 1px solid var(--mc-line);
   border-radius: var(--mc-radius);
   overflow: clip;
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
   cursor: pointer;
   box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.6);
   transition: box-shadow 0.3s ease, border-color 0.3s ease;
@@ -465,19 +467,31 @@
   border-color: rgba(124, 92, 255, 0.5);
   outline: none;
 }
-.mcv2 .mc-system-card.is-accent { background: var(--mc-accent-deep); border-color: transparent; }
-.mcv2 .mc-system-icon-wrap {
-  display: flex;
+/* Imagem cobre o card inteiro; o corpo do texto fica sobre um fade escuro. */
+.mcv2 .mc-system-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.9) saturate(0.95);
+}
+.mcv2 .mc-system-icon-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 2;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 28px 0 4px;
-}
-.mcv2 .mc-system-icon {
   width: 40px;
   height: 40px;
-  color: var(--mc-accent);
+  border-radius: 12px;
+  background: rgba(10, 8, 18, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(6px);
 }
-.mcv2 .mc-system-card.is-accent .mc-system-icon { color: #fff; }
+.mcv2 .mc-system-icon { width: 20px; height: 20px; color: #fff; }
 .mcv2 .mc-system-intro {
   max-width: 620px;
   margin-top: 20px;
@@ -486,18 +500,26 @@
   line-height: 1.7;
 }
 .mcv2 .mc-system-card-body {
-  padding: 24px;
+  position: relative;
+  z-index: 1;
+  padding: 60px 22px 24px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 8, 18, 0) 0%,
+    rgba(10, 8, 18, 0.72) 42%,
+    rgba(10, 8, 18, 0.95) 100%
+  );
 }
-.mcv2 .mc-system-card-body h3 { font-size: 1.35rem; }
-.mcv2 .mc-system-card.is-accent .mc-tag {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.25);
+.mcv2 .mc-system-card-body h3 { font-size: 1.3rem; color: var(--mc-white); }
+.mcv2 .mc-system-card-body .mc-tag {
+  align-self: flex-start;
+  background: rgba(124, 92, 255, 0.25);
+  border-color: rgba(124, 92, 255, 0.5);
 }
-.mcv2 .mc-system-card p { color: var(--mc-gray); font-size: 0.95rem; }
-.mcv2 .mc-system-card.is-accent p { color: rgba(255, 255, 255, 0.85); }
+.mcv2 .mc-system-card p { color: rgba(255, 255, 255, 0.82); font-size: 0.92rem; }
 
 @media (max-width: 1000px) {
   .mcv2 .mc-system-row { grid-template-columns: repeat(2, 1fr); }

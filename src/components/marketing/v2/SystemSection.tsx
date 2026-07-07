@@ -12,7 +12,7 @@ const ITEMS = [
     description:
       "Em vez de procurar informações aleatórias, o sistema identifica seu contexto e recomenda a melhor trilha para começar.",
     Icon: IconCompass,
-    accent: false,
+    image: "/system/diagnostico.jpg",
   },
   {
     benefit: "Aprenda em uma sequência lógica",
@@ -20,7 +20,7 @@ const ITEMS = [
     description:
       "Cada etapa desbloqueia a próxima para que você evolua sem estudar conteúdos fora do seu momento.",
     Icon: IconRoad,
-    accent: true,
+    image: "/system/roadmap.jpg",
   },
   {
     benefit: "Estude no formato que preferir",
@@ -28,7 +28,7 @@ const ITEMS = [
     description:
       "Leia, assista ou ouça o mesmo conhecimento em diferentes formatos, mantendo sempre o mesmo objetivo.",
     Icon: IconBooks,
-    accent: false,
+    image: "/system/biblioteca.jpg",
   },
   {
     benefit: "Acompanhe sua evolução",
@@ -36,7 +36,7 @@ const ITEMS = [
     description:
       "Veja seu progresso crescer ao longo da jornada e valide o conhecimento adquirido ao final da trilha.",
     Icon: IconTrophy,
-    accent: true,
+    image: "/system/progressao.jpg",
   },
 ];
 
@@ -54,7 +54,7 @@ export default function SystemSection() {
           <h2 className="mc-display mc-system-heading">
             Um sistema,
             <br />
-            muito além da leitura isolada
+            muito além da leitura
           </h2>
         </Reveal>
         <Reveal delay={0.15}>
@@ -75,7 +75,7 @@ export default function SystemSection() {
             return (
               <motion.div
                 key={item.feature}
-                className={`mc-system-card${item.accent ? " is-accent" : ""}`}
+                className="mc-system-card"
                 animate={{
                   scale: reduced ? 1 : isFocused ? 1.04 : isDimmed ? 0.97 : 1,
                   opacity: isDimmed ? 0.5 : 1,
@@ -89,9 +89,16 @@ export default function SystemSection() {
                 tabIndex={0}
                 transition={{ duration: reduced ? 0 : 0.3, ease: [0.21, 0.47, 0.32, 0.98] }}
               >
-                <div className="mc-system-icon-wrap">
+                <img
+                  src={item.image}
+                  alt=""
+                  aria-hidden="true"
+                  className="mc-system-image"
+                  loading="lazy"
+                />
+                <span className="mc-system-icon-badge" aria-hidden="true">
                   <Icon className="mc-system-icon" />
-                </div>
+                </span>
                 <div className="mc-system-card-body">
                   <span className="mc-tag">{item.benefit}</span>
                   <h3 className="mc-display">{item.feature}</h3>
