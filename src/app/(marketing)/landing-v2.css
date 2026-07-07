@@ -466,12 +466,24 @@
   outline: none;
 }
 .mcv2 .mc-system-card.is-accent { background: var(--mc-accent-deep); border-color: transparent; }
-.mcv2 .mc-system-image-wrap { aspect-ratio: 16 / 11; overflow: clip; }
-.mcv2 .mc-system-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: grayscale(0.2) brightness(0.85);
+.mcv2 .mc-system-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 0 4px;
+}
+.mcv2 .mc-system-icon {
+  width: 40px;
+  height: 40px;
+  color: var(--mc-accent);
+}
+.mcv2 .mc-system-card.is-accent .mc-system-icon { color: #fff; }
+.mcv2 .mc-system-intro {
+  max-width: 620px;
+  margin-top: 20px;
+  color: var(--mc-gray);
+  font-size: 1.05rem;
+  line-height: 1.7;
 }
 .mcv2 .mc-system-card-body {
   padding: 24px;
@@ -956,22 +968,6 @@
   color: var(--mc-gray);
   font-size: 1.05rem;
 }
-.mcv2 .mc-library-formats {
-  margin-top: 28px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px 20px;
-  color: var(--mc-gray);
-}
-.mcv2 .mc-library-format b { color: var(--mc-white); }
-.mcv2 .mc-library-format-icon {
-  display: inline-block;
-  width: 0.95em;
-  height: 0.95em;
-  margin-right: 4px;
-  vertical-align: -0.15em;
-  color: var(--mc-accent);
-}
 .mcv2 .mc-library-badge-icon {
   display: inline-block;
   width: 0.9em;
@@ -979,8 +975,39 @@
   vertical-align: -0.12em;
   color: var(--mc-accent);
 }
+.mcv2 .mc-library-living {
+  margin-top: 32px;
+  padding: 20px 24px;
+  border: 1px solid var(--mc-line);
+  border-radius: var(--mc-radius);
+  background: rgba(124, 92, 255, 0.05);
+  max-width: 620px;
+}
+.mcv2 .mc-library-living-title { color: var(--mc-accent); }
+.mcv2 .mc-library-living p { margin-top: 8px; color: var(--mc-gray); font-size: 0.95rem; line-height: 1.65; }
+.mcv2 .mc-library-latest-title {
+  display: block;
+  margin-top: 48px;
+  color: var(--mc-gray);
+}
+.mcv2 .mc-library-new {
+  color: var(--mc-accent);
+  font-size: 0.68rem;
+  font-weight: 700;
+  border: 1px solid rgba(124, 92, 255, 0.4);
+  border-radius: 999px;
+  padding: 1px 8px;
+}
+.mcv2 .mc-library-action {
+  margin-top: 4px;
+  color: var(--mc-accent);
+  font-size: 0.72rem;
+  text-decoration: none;
+  align-self: flex-start;
+}
+.mcv2 .mc-library-action:hover { text-decoration: underline; }
 .mcv2 .mc-library-grid {
-  margin-top: 40px;
+  margin-top: 24px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
