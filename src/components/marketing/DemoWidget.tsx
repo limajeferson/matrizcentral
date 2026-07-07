@@ -62,15 +62,15 @@ export default function DemoWidget() {
         <div>
           {active === "quiz" && (
             <div>
-              <span className="create-label mono">Diagnóstico inicial · 1 de 7</span>
+              <span className="create-label mono">Diagnóstico inicial · 2 de 7</span>
               <div className="quiz-progress">
-                <span style={{ width: "15%" }} />
+                <span style={{ width: "29%" }} />
               </div>
               <p className="quiz-question">
                 Qual sua principal ferramenta de IA?
               </p>
               <div className="quiz-options">
-                {["ChatGPT", "Gemini", "Claude", "Outra"].map((option) => (
+                {["ChatGPT-5.6 Sol", "Gemini 3.1 Pro", "Claude Opus 4.8", "Outra"].map((option) => (
                   <div key={option} className="quiz-option">
                     {option}
                   </div>

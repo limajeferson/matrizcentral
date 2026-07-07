@@ -53,7 +53,7 @@
   margin: 0;
 }
 
-.mcv2 h1.mc-display { font-size: clamp(3rem, 9vw, 7.25rem); }
+.mcv2 h1.mc-display { font-size: clamp(2.31rem, 6.93vw, 5.5825rem); }
 .mcv2 h2.mc-display { font-size: clamp(2.25rem, 5.5vw, 4.25rem); }
 .mcv2 h3.mc-display { font-size: clamp(1.5rem, 3vw, 2.5rem); }
 
@@ -744,19 +744,39 @@
 }
 
 /* ---- Palavra rotativa (hero) ---- */
+/* Fonte pixel/terminal 16-bit — teste visual, trocar depois se não pegar bem. */
 .mcv2 .mc-rotating-word {
   position: relative;
   display: inline-flex;
   flex-wrap: wrap;
   align-items: baseline;
   color: var(--mc-accent);
+  font-family: var(--font-mc-pixel), var(--font-mc-display), monospace;
+  font-size: 0.6em;
+  letter-spacing: 0;
 }
 .mcv2 .mc-rotating-word-inner { display: inline-block; }
+.mcv2 .mc-rotating-cursor-wrap {
+  position: relative;
+  display: inline-block;
+}
+.mcv2 .mc-rotating-last-char { display: inline-block; }
 .mcv2 .mc-rotating-cursor {
   display: inline-block;
-  margin-left: 4px;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--mc-accent);
+  mix-blend-mode: difference;
   animation: mc-cursor-blink 1s step-start infinite;
-  color: var(--mc-accent);
+}
+/* Sem letra digitada ainda (início/fim da troca de palavra): cursor vira um bloco sozinho. */
+.mcv2 .mc-rotating-cursor-wrap:not(:has(.mc-rotating-last-char)) .mc-rotating-cursor {
+  position: static;
+  width: 0.5em;
+  height: 0.82em;
+  mix-blend-mode: normal;
 }
 @keyframes mc-cursor-blink {
   50% { opacity: 0; }

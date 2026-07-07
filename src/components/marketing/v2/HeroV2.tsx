@@ -6,7 +6,7 @@ import { Reveal } from "./motion-primitives";
 import HeroObserver from "./HeroObserver";
 import { formatCounts } from "@/lib/content-stats";
 
-const ROTATING_WORDS = ["do GPT", "do Claude", "do Gemini", "de aluguel de servidor", "de VPS"];
+const ROTATING_WORDS = ["do GPT", "do Claude", "do Gemini", "de servidores", "de VPS"];
 
 // Backlog de sub-headline (teste A/B via PostHog quando a landing for divulgada).
 // Variante 1 (ativa hoje) já está no JSX abaixo.

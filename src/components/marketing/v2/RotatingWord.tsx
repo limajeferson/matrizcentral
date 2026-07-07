@@ -54,15 +54,21 @@ export default function RotatingWord({
     return (
       <span className={className}>
         {words[0]}
-        <span className="mc-rotating-cursor" aria-hidden="true">|</span>
+        <span className="mc-rotating-cursor" aria-hidden="true" />
       </span>
     );
   }
 
+  const head = text.slice(0, -1);
+  const lastChar = text.slice(-1);
+
   return (
     <span className={`mc-rotating-word ${className ?? ""}`}>
-      <span className="mc-rotating-word-inner">{text}</span>
-      <span className="mc-rotating-cursor" aria-hidden="true">|</span>
+      <span className="mc-rotating-word-inner">{head}</span>
+      <span className="mc-rotating-cursor-wrap">
+        {lastChar && <span className="mc-rotating-last-char">{lastChar}</span>}
+        <span className="mc-rotating-cursor" aria-hidden="true" />
+      </span>
     </span>
   );
 }

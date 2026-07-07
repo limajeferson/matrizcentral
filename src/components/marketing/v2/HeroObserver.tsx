@@ -47,7 +47,8 @@ export default function HeroObserver() {
     let size = 0;
     let cx = 0;
     let cy = 0;
-    let R = 0; // raio do anel (contorno)
+    let R = 0; // raio de referência (brilho externo, esfera de caracteres)
+    let Rring = 0; // raio do anel (contorno) — 16% menor que o de referência
     let Rs = 0; // raio da esfera de caracteres — menor que o anel
     let charPx = 0;
     let cellW = 0;
@@ -68,6 +69,7 @@ export default function HeroObserver() {
       cx = size / 2;
       cy = size / 2;
       R = size * 0.44;
+      Rring = R * 0.84; // anel 16% menor que o raio de referência
       Rs = R * 0.66; // caracteres ocupam área menor que o anel (margem estruturada)
       charPx = size * 0.026;
       cellW = charPx * 0.62;
@@ -166,7 +168,7 @@ export default function HeroObserver() {
       ctx.strokeStyle = `rgba(150, 122, 255, ${0.2 + pulse * 0.11})`;
       ctx.lineWidth = 1.2;
       ctx.beginPath();
-      ctx.arc(cx + gx, cy, R, 0, Math.PI * 2);
+      ctx.arc(cx + gx, cy, Rring, 0, Math.PI * 2);
       ctx.stroke();
 
       // núcleo luminoso (a "pupila" — dá o ar de olho observador)

@@ -1,4 +1,4 @@
-import { Archivo_Black, Inter } from "next/font/google";
+import { Archivo_Black, Inter, Press_Start_2P } from "next/font/google";
 import "./landing-v2.css";
 
 import PixelGridBackground from "@/components/marketing/v2/PixelGridBackground";
@@ -27,9 +27,16 @@ const inter = Inter({
   variable: "--font-mc-sans",
 });
 
+// Fonte pixel/16-bit para o texto animado do hero (teste).
+const pressStart2P = Press_Start_2P({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-mc-pixel",
+});
+
 export default function HomePage() {
   return (
-    <div className={`${archivoBlack.variable} ${inter.variable} mcv2`}>
+    <div className={`${archivoBlack.variable} ${inter.variable} ${pressStart2P.variable} mcv2`}>
       <PixelGridBackground />
       <noscript>
         <style>{`.mcv2 [style*="opacity"], .mcv2 [style*="opacity:0"] { opacity: 1 !important; transform: none !important; filter: none !important; height: auto !important; overflow: visible !important; }`}</style>
