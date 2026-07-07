@@ -1078,3 +1078,15 @@ a.mcv2 .mc-footer-link:hover, .mcv2 a.mc-footer-link:hover { color: var(--mc-whi
   position: relative;
   z-index: 1;
 }
+
+/* ---- Páginas legais (/legal/privacidade, /legal/termos) ---- */
+.mcv2 .mc-legal { max-width: 760px; margin: 0 auto; padding: 64px 0 40px; }
+.mcv2 .mc-legal h1 { font-size: clamp(2rem, 5vw, 3.2rem); }
+.mcv2 .mc-legal .mc-legal-updated { color: var(--mc-gray); font-size: 0.8rem; margin: 12px 0 40px; }
+.mcv2 .mc-legal h2 { font-size: 1.3rem; color: var(--mc-white); margin: 40px 0 12px; scroll-margin-top: 90px; }
+.mcv2 .mc-legal p, .mcv2 .mc-legal li { color: var(--mc-gray); font-size: 0.95rem; line-height: 1.75; }
+.mcv2 .mc-legal ul { margin: 12px 0 12px 20px; display: flex; flex-direction: column; gap: 8px; }
+.mcv2 .mc-legal .mc-legal-note {
+  margin-top: 40px; padding: 16px 20px; border: 1px solid var(--mc-line);
+  border-radius: 12px; font-size: 0.85rem;
+}
