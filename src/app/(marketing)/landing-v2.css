@@ -779,7 +779,7 @@
   color: var(--mc-gray); font-size: 0.85rem; text-decoration: none;
   transition: color 0.2s; display: inline-flex; align-items: center; gap: 8px;
 }
-a.mcv2 .mc-footer-link:hover, .mcv2 a.mc-footer-link:hover { color: var(--mc-white); }
+.mcv2 a.mc-footer-link:hover { color: var(--mc-white); }
 .mcv2 .mc-footer-link.is-soon { color: var(--mc-gray); opacity: 0.65; cursor: default; }
 .mcv2 .mc-footer-soon {
   font-size: 0.6rem; font-weight: 700; color: var(--mc-warn);

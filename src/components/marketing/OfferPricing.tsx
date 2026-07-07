@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import type { WaitlistPlanId } from "@/types";
-
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+import { isValidEmail } from "@/lib/email-validation";
 
 function WaitlistForm({ planId }: { planId: WaitlistPlanId }) {
   const [email, setEmail] = useState("");
@@ -15,7 +14,7 @@ function WaitlistForm({ planId }: { planId: WaitlistPlanId }) {
       setValidationError("Informe seu e-mail para continuar.");
       return;
     }
-    if (!EMAIL_REGEX.test(email)) {
+    if (!isValidEmail(email)) {
       setValidationError("Informe um e-mail válido.");
       return;
     }
@@ -64,7 +63,7 @@ function EbookAvulsoCheckout() {
       setError("Informe seu e-mail para continuar.");
       return;
     }
-    if (!EMAIL_REGEX.test(email)) {
+    if (!isValidEmail(email)) {
       setError("Informe um e-mail válido.");
       return;
     }

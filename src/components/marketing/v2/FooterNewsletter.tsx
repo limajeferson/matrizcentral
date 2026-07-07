@@ -38,7 +38,13 @@ export default function FooterNewsletter() {
           ✓ Pronto! Você vai receber nossas novidades.
         </p>
       ) : (
-        <div className="mc-footer-newsletter-form">
+        <form
+          className="mc-footer-newsletter-form"
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit();
+          }}
+        >
           <input
             type="email"
             placeholder="seu@email.com"
@@ -47,9 +53,8 @@ export default function FooterNewsletter() {
             aria-label="Seu e-mail"
           />
           <button
-            type="button"
+            type="submit"
             className="mc-btn mc-btn-accent"
-            onClick={handleSubmit}
             disabled={status === "loading"}
           >
             {status === "loading" ? "..." : "Inscrever-se"}
@@ -58,7 +63,7 @@ export default function FooterNewsletter() {
           {status === "error" && (
             <p className="mc-footer-newsletter-error">Não deu certo, tente de novo.</p>
           )}
-        </div>
+        </form>
       )}
     </div>
   );

@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
   const supabase = getSupabaseServerClient();
   const { error } = await supabase
     .from("newsletter_subscribers")
-    .upsert({ email }, { onConflict: "email", ignoreDuplicates: true });
+    .upsert({ email: email.toLowerCase() }, { onConflict: "email", ignoreDuplicates: true });
 
   if (error) {
     return NextResponse.json(

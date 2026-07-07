@@ -3,7 +3,7 @@ import { CONTENT_HUB, type ContentItem, type ContentType } from "@/data/content-
 export interface FormatStat {
   type: ContentType | "apresentacao";
   label: string;
-  /** Chave usada para escolher o ícone SVG (ver `IconByFormat` em components/marketing/v2/icons). */
+  /** Chave usada para escolher o ícone SVG (ver `FORMAT_ICON`/`FormatIcon` em components/marketing/v2/icons). */
   icon: ContentType | "apresentacao";
   count: number;
 }
