@@ -71,7 +71,7 @@ export default function DemoWidget() {
                 Qual sua principal ferramenta de IA?
               </p>
               <div className="quiz-options">
-                {["ChatGPT-5.6 Sol", "Gemini 3.1 Pro", "Claude Opus 4.8", "Outra"].map((option) => (
+                {["ChatGPT-5.6 Sol", "Gemini 3.1 Pro", "Claude Opus 4.8", "Outro modelo"].map((option) => (
                   <div key={option} className="quiz-option">
                     {option}
                   </div>
