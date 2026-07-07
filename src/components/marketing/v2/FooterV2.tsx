@@ -26,7 +26,7 @@ function FooterNavLink({ link }: { link: FooterLink }) {
     return (
       <span className="mc-footer-link is-soon">
         {link.label}
-        <span className="mc-footer-soon mc-mono">em breve</span>
+        <span className="mc-footer-soon mc-mono">breve</span>
       </span>
     );
   }
