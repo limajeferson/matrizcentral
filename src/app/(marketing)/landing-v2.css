@@ -1056,6 +1056,16 @@ a.mcv2 .mc-footer-link:hover, .mcv2 a.mc-footer-link:hover { color: var(--mc-whi
   .mcv2 .mc-strategy-grid { grid-template-columns: 1fr; }
 }
 
+/* ---- Página /sobre ---- */
+.mcv2 .mc-about-title { font-size: clamp(2.2rem, 6vw, 4.5rem); margin-top: 16px; }
+.mcv2 .mc-about-lead { max-width: 640px; margin-top: 24px; color: var(--mc-gray); font-size: 1.05rem; line-height: 1.7; }
+.mcv2 .mc-about-block { max-width: 560px; }
+.mcv2 .mc-about-text { margin-top: 14px; color: var(--mc-gray); font-size: 1rem; line-height: 1.7; }
+.mcv2 .mc-about-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+.mcv2 .mc-about-values-title { margin: 12px 0 40px; font-size: clamp(1.6rem, 4vw, 2.6rem); }
+.mcv2 .mc-about-cta { display: flex; justify-content: center; }
+@media (max-width: 760px) { .mcv2 .mc-about-grid2 { grid-template-columns: 1fr; gap: 32px; } }
+
 /* ---- Fundo pixel glow (fundo único do site) ---- */
 .mcv2 .mc-pixel-bg {
   position: fixed;
