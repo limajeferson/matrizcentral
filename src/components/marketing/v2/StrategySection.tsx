@@ -1,20 +1,21 @@
 "use client";
 
 import { Reveal } from "./motion-primitives";
+import { IconChat, IconCompass, IconLock } from "./icons";
 
 const PILLARS = [
   {
-    icon: "💬",
+    icon: IconChat,
     title: "Zero jargão técnico",
     desc: "Tudo em português claro. A gente parte do seu objetivo e do seu contexto — nunca do seu nível de programação.",
   },
   {
-    icon: "🧭",
+    icon: IconCompass,
     title: "Passo a passo guiado",
     desc: "Você instala e coloca sua IA para rodar seguindo instruções simples, na ordem certa. Sem escrever uma linha de código.",
   },
   {
-    icon: "🔒",
+    icon: IconLock,
     title: "Feito para usar, não construir",
     desc: "O foco é você usando IA no dia a dia — offline, privada e sem mensalidade. Você no controle, do primeiro dia.",
   },
@@ -47,7 +48,7 @@ export default function StrategySection() {
           {PILLARS.map((p, i) => (
             <Reveal key={p.title} delay={0.05 * i}>
               <div className="mc-strategy-card">
-                <span className="mc-strategy-icon" aria-hidden="true">{p.icon}</span>
+                <p.icon className="mc-strategy-icon" />
                 <h3>{p.title}</h3>
                 <p>{p.desc}</p>
               </div>

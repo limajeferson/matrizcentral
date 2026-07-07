@@ -1,15 +1,21 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import type { ComponentType } from "react";
 
 export interface ProductBannerProps {
-  icon: string;
+  icon: ComponentType<{ className?: string }>;
   label: string;
   description: string;
   index: number;
 }
 
-export default function ProductBanner({ icon, label, description, index }: ProductBannerProps) {
+export default function ProductBanner({
+  icon: Icon,
+  label,
+  description,
+  index,
+}: ProductBannerProps) {
   const reduced = useReducedMotion();
 
   return (
@@ -23,9 +29,7 @@ export default function ProductBanner({ icon, label, description, index }: Produ
       <div className="mc-product-banner-aurora" aria-hidden="true" />
       <div className="mc-product-banner-grid" aria-hidden="true" />
       <div className="mc-product-banner-content">
-        <span className="mc-product-banner-icon" aria-hidden="true">
-          {icon}
-        </span>
+        <Icon className="mc-product-banner-icon" />
         <div className="mc-product-banner-text">
           <h3 className="mc-display">{label}</h3>
           <p>{description}</p>

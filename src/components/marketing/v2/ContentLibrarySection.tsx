@@ -3,19 +3,13 @@
 import { CONTENT_HUB, type ContentType } from "@/data/content-hub";
 import { formatCounts } from "@/lib/content-stats";
 import { Reveal } from "./motion-primitives";
+import { FormatIcon } from "./icons";
 
 const TYPE_LABEL: Record<ContentType, string> = {
   relatorio: "Relatório",
   podcast: "Podcast",
   video: "Vídeo",
   pesquisa: "Pesquisa",
-};
-
-const TYPE_ICON: Record<ContentType, string> = {
-  relatorio: "📄",
-  podcast: "🎙️",
-  video: "🎬",
-  pesquisa: "📊",
 };
 
 export default function ContentLibrarySection() {
@@ -46,7 +40,7 @@ export default function ContentLibrarySection() {
           <div className="mc-library-formats mc-mono">
             {stats.map((f) => (
               <span className="mc-library-format" key={f.type}>
-                <span className="mc-library-format-icon" aria-hidden="true">{f.icon}</span>
+                <FormatIcon type={f.icon} className="mc-library-format-icon" />
                 <b>{f.count}</b> · {f.label}
               </span>
             ))}
@@ -65,7 +59,7 @@ export default function ContentLibrarySection() {
                 <article className="mc-library-card">
                   <div className="mc-library-card-head">
                     <span className="mc-library-badge mc-mono">
-                      <span aria-hidden="true">{TYPE_ICON[item.type]}</span> {TYPE_LABEL[item.type]}
+                      <FormatIcon type={item.type} className="mc-library-badge-icon" /> {TYPE_LABEL[item.type]}
                     </span>
                     {comingSoon && <span className="mc-library-soon mc-mono">em breve</span>}
                   </div>
