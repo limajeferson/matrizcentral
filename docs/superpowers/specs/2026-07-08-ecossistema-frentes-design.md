@@ -72,7 +72,28 @@ A seção "Fases & Checkpoints" (tabela manual) é substituída por uma lista si
 
 A seção "Status atual" do hub permanece (é o resumo executivo do que está no ar), mas não duplica o detalhe de cada frente — isso já mora no README de cada uma.
 
-### 5. Convenção para frentes novas
+### 5. Gatilho automático no `CLAUDE.md` (o que resolve "continue de onde paramos")
+
+`CLAUDE.md` é lido automaticamente pelo Claude Code em toda sessão nova — isso já acontece hoje, sem ação nenhuma do usuário. O que falta é uma instrução *acionável*, não só um ponteiro genérico. Adicionar ao `CLAUDE.md`, em destaque (não enterrada no meio do texto), um bloco assim:
+
+```markdown
+## Retomando trabalho entre sessões
+
+Se o usuário pedir para continuar, perguntar "qual a próxima frente/etapa",
+ou pedir alinhamento com a última entrega:
+1. Leia `docs/ECOSSISTEMA.md`, seção "Frentes já trabalhadas".
+2. Identifique a frente mais recente com status 🔄 (em andamento) — se
+   nenhuma, a última ✅ concluída (cronologicamente, é a de data mais recente
+   na lista).
+3. Abra o `README.md` dessa frente (`docs/frentes/<slug>/README.md`) — ele
+   tem o "Próximo passo" exato (task do plano, ou o que falta decidir).
+4. Responda ao usuário com esse contexto já resumido, sem pedir pra ele
+   repetir o que já está documentado.
+```
+
+Isso transforma o ecossistema de "documentação que existe" em "documentação que o Claude é instruído a consultar no gatilho certo" — a lacuna que motivou a pergunta do usuário nesta sessão.
+
+### 6. Convenção para frentes novas
 
 Adicionar ao `CLAUDE.md`, na seção que já aponta pro hub, a instrução: *specs e planos novos vão em `docs/frentes/<slug>/spec.md` e `/plano.md`, não mais em `docs/superpowers/specs|plans/`*. As skills `superpowers:brainstorming` e `superpowers:writing-plans` já respeitam preferência de localização do usuário/projeto — essa linha no `CLAUDE.md` é o que uma sessão nova lê pra saber onde salvar.
 
