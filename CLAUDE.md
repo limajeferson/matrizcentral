@@ -4,6 +4,22 @@ Contexto para sessões do Claude Code neste repositório. Mantenha conciso.
 
 > **› Contexto completo e navegação:** leia [`docs/ECOSSISTEMA.md`](docs/ECOSSISTEMA.md) primeiro — é o hub que indexa specs, arquitetura, memória e o fluxo de deploy.
 
+## Retomando trabalho entre sessões
+
+Se o usuário pedir para continuar, perguntar "qual a próxima frente/etapa",
+ou pedir alinhamento com a última entrega:
+1. Leia `docs/ECOSSISTEMA.md`, seção "Frentes já trabalhadas".
+2. Identifique a frente mais recente com status 🔄 (em andamento) — se
+   nenhuma, a última ✅ concluída (a de data mais recente na lista).
+3. Abra o `README.md` dessa frente (`docs/frentes/<slug>/README.md`) — ele
+   tem o "Próximo passo" exato (task do plano, ou o que falta decidir).
+4. Responda já com esse contexto resumido, sem pedir pro usuário repetir o
+   que já está documentado.
+
+**Specs e planos novos vão em `docs/frentes/<slug>/spec.md` e `/plano.md`**
+— não mais em `docs/superpowers/specs|plans/` (estrutura antiga, só histórico
+já migrado).
+
 ## Produto (não é um ebook)
 
 - O produto é uma **plataforma multi-formato de IA local**: relatórios, podcasts, vídeos, apresentações e pesquisas da comunidade, num **feed/hub** com gamificação (XP/níveis/certificado). O ebook é material de apoio, não o produto.
