@@ -1,3 +1,5 @@
+import type { RoadmapStageKey } from "@/data/roadmap-stages";
+
 export type ContentType = "relatorio" | "podcast" | "video" | "pesquisa";
 
 export interface SurveyOption {
@@ -12,6 +14,8 @@ export interface ContentItem {
   description: string;
   durationMinutes: number;
   xpReward: number;
+  /** Etapa do roadmap em que este item é recomendado como próximo passo. */
+  recommendedStage?: RoadmapStageKey;
   /** Caminho do arquivo markdown (só para type="relatorio"). */
   bodyPath?: string;
   /** URL de embed (Spotify/YouTube). null = ainda não publicado ("em breve"). */
@@ -29,6 +33,7 @@ export const CONTENT_HUB: ContentItem[] = [
       "O mapa dos modelos locais que mais entregam em 2026 — e quais já não valem o seu tempo.",
     durationMinutes: 12,
     xpReward: 30,
+    recommendedStage: "fundacao_local",
     bodyPath: "content/relatorios/panorama-estrategico-llms-locais.md",
     embedUrl: null,
   },
@@ -40,6 +45,7 @@ export const CONTENT_HUB: ContentItem[] = [
       "Qual modelo realmente roda bem no seu hardware, comparado lado a lado e sem marketing.",
     durationMinutes: 10,
     xpReward: 30,
+    recommendedStage: "modelos_performance",
     bodyPath: "content/relatorios/comparativo-modelos-llm-locais.md",
     embedUrl: null,
   },
@@ -51,6 +57,7 @@ export const CONTENT_HUB: ContentItem[] = [
       "Como colocar uma IA de verdade rodando na sua máquina sem pagar mensalidade.",
     durationMinutes: 18,
     xpReward: 20,
+    recommendedStage: "fundacao_local",
     embedUrl: null,
   },
   {
@@ -60,6 +67,7 @@ export const CONTENT_HUB: ContentItem[] = [
     description: "O setup que transforma um computador comum em uma central de IA para o dia a dia.",
     durationMinutes: 16,
     xpReward: 20,
+    recommendedStage: "fluxo_trabalho",
     embedUrl: null,
   },
   {
@@ -70,6 +78,7 @@ export const CONTENT_HUB: ContentItem[] = [
       "O organograma que usamos para decidir qual IA instalar em menos de dois minutos.",
     durationMinutes: 20,
     xpReward: 20,
+    recommendedStage: "modelos_performance",
     embedUrl: null,
   },
   {
@@ -79,6 +88,7 @@ export const CONTENT_HUB: ContentItem[] = [
     description: "Os erros mais comuns que travam a IA local — e como evitá-los antes de instalar.",
     durationMinutes: 15,
     xpReward: 20,
+    recommendedStage: "automacoes",
     embedUrl: null,
   },
   {
@@ -88,6 +98,7 @@ export const CONTENT_HUB: ContentItem[] = [
     description: "Por que alguns modelos locais já superam serviços pagos em determinados cenários.",
     durationMinutes: 8,
     xpReward: 25,
+    recommendedStage: "fluxo_trabalho",
     embedUrl: null,
   },
   {
@@ -97,6 +108,7 @@ export const CONTENT_HUB: ContentItem[] = [
     description: "A linha do tempo que mostra como a IA local passou de curiosidade a substituta de serviço pago.",
     durationMinutes: 10,
     xpReward: 25,
+    recommendedStage: "automacoes",
     embedUrl: null,
   },
   {
@@ -107,6 +119,7 @@ export const CONTENT_HUB: ContentItem[] = [
       "Descubra em 5 segundos com qual hardware a comunidade está rodando IA local hoje.",
     durationMinutes: 1,
     xpReward: 15,
+    recommendedStage: "missao_final",
     embedUrl: null,
     surveyOptions: [
       { id: "gpu_dedicada", label: "GPU dedicada (RTX ou similar)" },
