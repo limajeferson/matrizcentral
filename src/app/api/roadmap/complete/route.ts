@@ -5,6 +5,7 @@ import { ROADMAP_STAGE_KEYS } from "@/data/roadmap-stages";
 import { grantBadges } from "@/lib/grant-badges";
 import { issueCertificateIfEligible } from "@/lib/certificates";
 import { sendCertificateEmail } from "@/lib/email";
+import { notifyLevelUpIfNeeded } from "@/lib/notify-level-up";
 
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
@@ -72,47 +73,54 @@ export async function POST(req: NextRequest) {
     }
 
     await grantBadges(supabase, purchase.user_id);
+    if (!existingXpEvent) {
+      await notifyLevelUpIfNeeded(supabase, purchase.user_id, 50);
+    }
 
     if (stageKey === "missao_final") {
-      const { data: allProgress } = await supabase
-        .from("roadmap_progress")
-        .select("stage_key")
-        .eq("token", token);
+      try {
+        const { data: allProgress } = await supabase
+          .from("roadmap_progress")
+          .select("stage_key")
+          .eq("token", token);
 
-      const { data: validacaoEvent } = await supabase
-        .from("xp_events")
-        .select("id")
-        .eq("user_id", purchase.user_id)
-        .eq("action_type", "validacao")
-        .limit(1);
+        const { data: validacaoEvent } = await supabase
+          .from("xp_events")
+          .select("id")
+          .eq("user_id", purchase.user_id)
+          .eq("action_type", "validacao")
+          .limit(1);
 
-      const { data: profileRow } = await supabase
-        .from("profiles")
-        .select("name")
-        .eq("id", tokenRow.profile_id ?? "")
-        .maybeSingle();
+        const { data: profileRow } = await supabase
+          .from("profiles")
+          .select("name")
+          .eq("id", tokenRow.profile_id ?? "")
+          .maybeSingle();
 
-      const certificateResult = await issueCertificateIfEligible(supabase, {
-        userId: purchase.user_id,
-        profileName: profileRow?.name ?? "Matriz Central",
-        roadmapStagesCompleted: (allProgress ?? []).map((p) => p.stage_key),
-        quizValidacaoPassed: (validacaoEvent ?? []).length > 0,
-      });
+        const certificateResult = await issueCertificateIfEligible(supabase, {
+          userId: purchase.user_id,
+          profileName: profileRow?.name ?? "Matriz Central",
+          roadmapStagesCompleted: (allProgress ?? []).map((p) => p.stage_key),
+          quizValidacaoPassed: (validacaoEvent ?? []).length > 0,
+        });
 
-      if (certificateResult?.created) {
-        const { data: userRow } = await supabase
-          .from("users")
-          .select("email")
-          .eq("id", purchase.user_id)
-          .single();
+        if (certificateResult?.created) {
+          const { data: userRow } = await supabase
+            .from("users")
+            .select("email")
+            .eq("id", purchase.user_id)
+            .single();
 
-        if (userRow) {
-          await sendCertificateEmail({
-            to: userRow.email,
-            title: `Certificado de Conclusão — Trilha ${profileRow?.name ?? "Matriz Central"}`,
-            verificationCode: certificateResult.verificationCode,
-          }).catch((err) => console.error("Falha ao enviar e-mail de certificado:", err));
+          if (userRow) {
+            await sendCertificateEmail({
+              to: userRow.email,
+              title: `Certificado de Conclusão — Trilha ${profileRow?.name ?? "Matriz Central"}`,
+              verificationCode: certificateResult.verificationCode,
+            }).catch((err) => console.error("Falha ao enviar e-mail de certificado:", err));
+          }
         }
+      } catch (err) {
+        console.error("Falha ao processar certificado de missao_final:", err);
       }
     }
   }

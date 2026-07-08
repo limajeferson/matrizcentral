@@ -1,6 +1,7 @@
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { isTokenExpired } from "@/lib/tokens";
 import GlassCard from "@/components/ui/glass-card";
+import LeaderboardOptIn from "@/components/dashboard/LeaderboardOptIn";
 
 export default async function RankingPage({ params }: { params: { token: string } }) {
   const supabase = getSupabaseServerClient();
@@ -20,6 +21,14 @@ export default async function RankingPage({ params }: { params: { token: string 
     .eq("id", tokenRow.purchase_id)
     .single();
 
+  const { data: currentUser } = purchase
+    ? await supabase
+        .from("users")
+        .select("display_name, leaderboard_opt_in")
+        .eq("id", purchase.user_id)
+        .single()
+    : { data: null };
+
   const { data: topUsers } = await supabase
     .from("users")
     .select("id, display_name, total_xp")
@@ -38,6 +47,14 @@ export default async function RankingPage({ params }: { params: { token: string 
           Top 20 alunos que optaram por aparecer publicamente no ranking.
         </p>
       </div>
+
+      {purchase && (
+        <LeaderboardOptIn
+          token={params.token}
+          initialOptIn={currentUser?.leaderboard_opt_in ?? false}
+          initialDisplayName={currentUser?.display_name ?? null}
+        />
+      )}
 
       <GlassCard className="p-4">
         <ol className="space-y-2">

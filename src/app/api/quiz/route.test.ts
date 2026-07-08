@@ -8,7 +8,6 @@ function buildSupabaseMock(
 ) {
   const inserted: Record<string, unknown[]> = { quiz_responses: [], xp_events: [] };
   const updated: Record<string, unknown>[] = [];
-  let usersQueryCount = 0;
 
   const from = (table: string) => {
     if (table === "tokens") {
@@ -48,17 +47,16 @@ function buildSupabaseMock(
       };
     }
     if (table === "users") {
+      // notifyLevelUpIfNeeded faz uma única leitura de total_xp (já refletindo o
+      // XP recém-concedido, via trigger de banco) e reconstrói o "antes"
+      // subtraindo o xpJustGranted — por isso o mock retorna sempre `after`.
       return {
         select: () => ({
           eq: () => ({
-            single: async () => {
-              usersQueryCount += 1;
-              const totalXp = usersQueryCount === 1 ? userTotalXp.before : userTotalXp.after;
-              return {
-                data: { total_xp: totalXp, email: userTotalXp.email ?? "user@example.com" },
-                error: null,
-              };
-            },
+            single: async () => ({
+              data: { total_xp: userTotalXp.after, email: userTotalXp.email ?? "user@example.com" },
+              error: null,
+            }),
           }),
         }),
       };

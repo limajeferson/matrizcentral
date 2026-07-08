@@ -3,6 +3,7 @@ import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { isTokenExpired } from "@/lib/tokens";
 import { getCurrentChallenge, getIsoWeekKey, getIsoWeekStart } from "@/lib/challenges";
 import { grantBadges } from "@/lib/grant-badges";
+import { notifyLevelUpIfNeeded } from "@/lib/notify-level-up";
 
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
@@ -84,6 +85,7 @@ export async function POST(req: NextRequest) {
   });
 
   await grantBadges(supabase, purchase.user_id);
+  await notifyLevelUpIfNeeded(supabase, purchase.user_id, challenge.xpReward);
 
   return NextResponse.json({ ok: true, xpAwarded: challenge.xpReward });
 }
