@@ -43,13 +43,29 @@ export async function issueCertificateIfEligible(
 
   const verificationCode = buildVerificationCode();
 
-  await supabase.from("certificates").insert({
+  const { error: insertError } = await supabase.from("certificates").insert({
     user_id: params.userId,
     certificate_type: "roadmap_completion",
     reference_id: params.profileName,
     title: `Certificado de Conclusão — Trilha ${params.profileName}`,
     verification_code: verificationCode,
   });
+
+  if (insertError) {
+    if (insertError.code === "23505") {
+      const { data: concurrentlyCreated } = await supabase
+        .from("certificates")
+        .select("verification_code")
+        .eq("user_id", params.userId)
+        .eq("certificate_type", "roadmap_completion")
+        .single();
+
+      if (concurrentlyCreated) {
+        return { verificationCode: concurrentlyCreated.verification_code };
+      }
+    }
+    throw new Error(`Falha ao emitir certificado: ${insertError.message}`);
+  }
 
   return { verificationCode };
 }

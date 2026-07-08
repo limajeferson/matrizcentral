@@ -1,5 +1,7 @@
-import { describe, expect, it } from "vitest";
-import { isEligibleForCertificate } from "@/lib/certificates";
+import { describe, expect, it, vi } from "vitest";
+import { isEligibleForCertificate, issueCertificateIfEligible } from "@/lib/certificates";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import type { Database } from "@/types";
 
 describe("isEligibleForCertificate", () => {
   it("não é elegível sem a etapa final do roadmap", () => {
@@ -27,5 +29,35 @@ describe("isEligibleForCertificate", () => {
         quizValidacaoPassed: true,
       })
     ).toBe(true);
+  });
+});
+
+describe("issueCertificateIfEligible - idempotência", () => {
+  it("retorna o certificado existente e não chama insert quando já existe", async () => {
+    const insertMock = vi.fn();
+    const existing = { verification_code: "EXISTINGCODE1" };
+
+    const supabaseMock = {
+      from: vi.fn(() => ({
+        select: vi.fn(() => ({
+          eq: vi.fn(() => ({
+            eq: vi.fn(() => ({
+              maybeSingle: vi.fn(async () => ({ data: existing, error: null })),
+            })),
+          })),
+        })),
+        insert: insertMock,
+      })),
+    } as unknown as SupabaseClient<Database>;
+
+    const result = await issueCertificateIfEligible(supabaseMock, {
+      userId: "user-1",
+      profileName: "fundacao_local",
+      roadmapStagesCompleted: ["missao_final"],
+      quizValidacaoPassed: true,
+    });
+
+    expect(result).toEqual({ verificationCode: "EXISTINGCODE1" });
+    expect(insertMock).not.toHaveBeenCalled();
   });
 });
