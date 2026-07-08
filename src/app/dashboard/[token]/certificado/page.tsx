@@ -18,7 +18,7 @@ export default async function CertificadoPage({ params }: { params: { token: str
     .from("purchases")
     .select("user_id")
     .eq("id", tokenRow.purchase_id)
-    .single();
+    .maybeSingle();
 
   if (!purchase) {
     notFound();
