@@ -34,9 +34,9 @@
 - [`src/lib/content-stats.ts`](../src/lib/content-stats.ts) — contagem de formatos.
 - [`notebooklm/`](../notebooklm/) — assets brutos (áudios `.m4a`, vídeos `.mp4`, relatórios `.md`, apresentações). O que já está produzido vs "em breve".
 
-**Specs & Plans (por fase)** — ver tabela em "Fases & Checkpoints".
-- [`docs/superpowers/specs/`](superpowers/specs/) — o "porquê/o quê" de cada fase.
-- [`docs/superpowers/plans/`](superpowers/plans/) — o "como" (passo a passo).
+**Specs & Plans (por frente)** — ver lista em "Frentes já trabalhadas".
+- [`docs/frentes/<slug>/spec.md`](frentes/) — o "porquê/o quê" de cada frente.
+- [`docs/frentes/<slug>/plano*.md`](frentes/) — o "como" (passo a passo).
 
 **Memória (fora do repo, persiste entre sessões)**
 - `C:\Users\jefer\.claude\projects\C--Users-jefer-Documents-Projetos-matrizcentral\memory\MEMORY.md` — índice das memórias persistentes.
@@ -45,16 +45,23 @@
 - [`.env.example`](../.env.example) — env vars necessárias.
 - [`supabase/migrations/`](../supabase/migrations/) — migrations (0001→0011).
 
-## 🔀 Fases & Checkpoints
+## 🔀 Frentes já trabalhadas
 
-| Fase | Status | Spec / Plan | Commit / Tag |
-|---|---|---|---|
-| Fase 1 — triagem + /oferta redesign | ✅ | [spec](superpowers/specs/2026-07-05-oferta-redesign-design.md) | `3500f6a` |
-| Hero — esfera ASCII + pixel bg | ✅ | (commits) | `a82266d` |
-| Footer institucional — /sobre, /legal, newsletter | ✅ | [spec](superpowers/specs/2026-07-07-footer-institucional-design.md) | tag `checkpoint-footer-institucional` |
-| Seções método × experiência + fascinations | ✅ | [spec](superpowers/specs/2026-07-07-secoes-metodo-experiencia-design.md) | `72b87a1` |
-| Ecossistema de contexto (este) | ✅ | [spec](superpowers/specs/2026-07-07-ecossistema-contexto-design.md) | — |
-| Deploy no domínio | 🔜 | — | — |
+Cada frente vive em `docs/frentes/<slug>/` com `spec.md` (o quê/porquê), `plano*.md` (o como) e `README.md` (status + próximo passo). **Ao retomar trabalho, abra o README da frente relevante antes de perguntar ao usuário o que já foi feito.**
+
+- ✅ [fase-1-mvp](frentes/fase-1-mvp/README.md) — MVP: compra → triagem → dashboard → validação → XP
+- ✅ [identidade-visual](frentes/identidade-visual/README.md) — paleta violeta + glassmorphism
+- ✅ [landing-v2-enriquecimento](frentes/landing-v2-enriquecimento/README.md) — landing rica a partir do modelo-guia
+- ✅ [triagem-democratizada](frentes/triagem-democratizada/README.md) — quiz ramificado, 8 perfis, sem jargão
+- ✅ [landing-redesign-v3-dark](frentes/landing-redesign-v3-dark/README.md) — landing dark/violeta, hero + animações
+- ✅ [visual-treatments](frentes/visual-treatments/README.md) — 6 tratamentos visuais (21st.dev)
+- ✅ [polimento-landing-oferta](frentes/polimento-landing-oferta/README.md) — bugs de conversão + oferta
+- ✅ [conteudo-conversao-hub](frentes/conteudo-conversao-hub/README.md) — reposicionamento multi-formato + seções método/experiência
+- ✅ [footer-institucional](frentes/footer-institucional/README.md) — rodapé institucional + /sobre + /legal
+- ✅ [ecossistema-documentacao](frentes/ecossistema-documentacao/README.md) — hub de contexto v1
+- ✅ [gamificacao-avancada](frentes/gamificacao-avancada/README.md) — níveis, badges, certificado, leaderboard, desafios, notificações
+- ✅ [feed-conteudo-recomendado](frentes/feed-conteudo-recomendado/README.md) — seção recomendada no hub de conteúdo
+- ✅ [ecossistema-frentes](frentes/ecossistema-frentes/README.md) — este próprio reorganização (você está aqui)
 
 ## ➡️ Fluxo de necessidades (próximos passos até o site no ar)
 
@@ -65,4 +72,4 @@
 
 ---
 
-_Ao concluir uma nova fase, adicione uma linha em "Fases & Checkpoints" e atualize "Status atual"._
+_Ao concluir uma nova frente: crie `docs/frentes/<slug>/README.md`, adicione uma linha nesta lista, e atualize "Status atual" se algo novo foi ao ar. Tudo no mesmo commit de finalização._
