@@ -3,6 +3,7 @@ import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { isTokenExpired } from "@/lib/tokens";
 import { ROADMAP_STAGE_KEYS } from "@/data/roadmap-stages";
 import { grantBadges } from "@/lib/grant-badges";
+import { issueCertificateIfEligible } from "@/lib/certificates";
 
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
@@ -70,6 +71,33 @@ export async function POST(req: NextRequest) {
     }
 
     await grantBadges(supabase, purchase.user_id);
+
+    if (stageKey === "missao_final") {
+      const { data: allProgress } = await supabase
+        .from("roadmap_progress")
+        .select("stage_key")
+        .eq("token", token);
+
+      const { data: validacaoEvent } = await supabase
+        .from("xp_events")
+        .select("id")
+        .eq("user_id", purchase.user_id)
+        .eq("action_type", "validacao")
+        .limit(1);
+
+      const { data: profileRow } = await supabase
+        .from("profiles")
+        .select("name")
+        .eq("id", tokenRow.profile_id ?? "")
+        .maybeSingle();
+
+      await issueCertificateIfEligible(supabase, {
+        userId: purchase.user_id,
+        profileName: profileRow?.name ?? "Matriz Central",
+        roadmapStagesCompleted: (allProgress ?? []).map((p) => p.stage_key),
+        quizValidacaoPassed: (validacaoEvent ?? []).length > 0,
+      });
+    }
   }
 
   return NextResponse.json({ ok: true });

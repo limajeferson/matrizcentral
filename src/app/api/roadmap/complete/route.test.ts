@@ -4,7 +4,8 @@ import { NextRequest } from "next/server";
 function buildSupabaseMock(
   tokenRow: Record<string, unknown> | null,
   existingXpEvent: Record<string, unknown> | null = null,
-  progressUpsertError: Record<string, unknown> | null = null
+  progressUpsertError: Record<string, unknown> | null = null,
+  validacaoEvents: Record<string, unknown>[] = []
 ) {
   const inserted: Record<string, unknown>[] = [];
 
@@ -26,6 +27,29 @@ function buildSupabaseMock(
           inserted.push(row);
           return { data: null, error: null };
         },
+        select: () => ({
+          eq: async () => ({ data: [{ stage_key: "missao_final" }], error: null }),
+        }),
+      };
+    }
+    if (table === "profiles") {
+      return {
+        select: () => ({
+          eq: () => ({ maybeSingle: async () => ({ data: { name: "Perfil Teste" }, error: null }) }),
+        }),
+      };
+    }
+    if (table === "certificates") {
+      return {
+        select: () => ({
+          eq: () => ({
+            eq: () => ({ maybeSingle: async () => ({ data: null, error: null }) }),
+          }),
+        }),
+        insert: async (row: Record<string, unknown>) => {
+          inserted.push({ __certificate: row });
+          return { data: null, error: null };
+        },
       };
     }
     if (table === "purchases") {
@@ -41,7 +65,7 @@ function buildSupabaseMock(
       const chain = {
         eq: () => chain,
         maybeSingle: async () => ({ data: existingXpEvent, error: null }),
-        limit: async () => ({ data: [], error: null }),
+        limit: async () => ({ data: validacaoEvents, error: null }),
       };
       return {
         select: () => chain,
@@ -219,5 +243,51 @@ describe("POST /api/roadmap/complete", () => {
         (row) => (row as { __xp?: { action_type: string } }).__xp?.action_type === "roadmap"
       )
     ).toHaveLength(0);
+  });
+
+  it("emite certificado ao concluir missao_final com quiz de validação aprovado", async () => {
+    mockSupabase = buildSupabaseMock(
+      { token: "ABC123", purchase_id: "purchase-1", valid_until: "2099-01-01T00:00:00.000Z" },
+      null,
+      null,
+      [{ id: "xp-event-validacao" }]
+    );
+
+    const req = new NextRequest("http://localhost/api/roadmap/complete", {
+      method: "POST",
+      body: JSON.stringify({ token: "ABC123", stageKey: "missao_final" }),
+    });
+    const res = await POST(req);
+    const body = await res.json();
+
+    expect(res.status).toBe(200);
+    expect(body).toEqual({ ok: true });
+    expect(
+      mockSupabase.inserted.some(
+        (row) => (row as { __certificate?: unknown }).__certificate !== undefined
+      )
+    ).toBe(true);
+  });
+
+  it("não emite certificado ao concluir missao_final sem o quiz de validação aprovado", async () => {
+    mockSupabase = buildSupabaseMock(
+      { token: "ABC123", purchase_id: "purchase-1", valid_until: "2099-01-01T00:00:00.000Z" },
+      null,
+      null,
+      []
+    );
+
+    const req = new NextRequest("http://localhost/api/roadmap/complete", {
+      method: "POST",
+      body: JSON.stringify({ token: "ABC123", stageKey: "missao_final" }),
+    });
+    const res = await POST(req);
+
+    expect(res.status).toBe(200);
+    expect(
+      mockSupabase.inserted.some(
+        (row) => (row as { __certificate?: unknown }).__certificate !== undefined
+      )
+    ).toBe(false);
   });
 });
