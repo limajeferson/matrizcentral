@@ -93,7 +93,9 @@ vi.mock("@/lib/supabase/server", () => ({
   getSupabaseServerClient: () => mockSupabase,
 }));
 
-const sendLevelUpEmail = vi.fn(async (_params: unknown) => {});
+const sendLevelUpEmail = vi.fn(async (params: unknown) => {
+  void params;
+});
 vi.mock("@/lib/email", () => ({
   sendLevelUpEmail: (params: unknown) => sendLevelUpEmail(params),
 }));

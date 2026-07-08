@@ -106,7 +106,9 @@ vi.mock("@/lib/supabase/server", () => ({
   getSupabaseServerClient: () => mockSupabase,
 }));
 
-const sendCertificateEmail = vi.fn(async (_params: unknown) => {});
+const sendCertificateEmail = vi.fn(async (params: unknown) => {
+  void params;
+});
 vi.mock("@/lib/email", () => ({
   sendCertificateEmail: (params: unknown) => sendCertificateEmail(params),
 }));
