@@ -6,4 +6,4 @@
 
 **Documentos:** [spec.md](spec.md) · [plano.md](plano.md)
 
-**Commits-chave:** `2608285`..`0ad730c` — spec do footer institucional, plano de implementação, integração de newsletter. Tag `checkpoint-footer-institucional`.
+**Commits-chave:** `2608285`..`e4dadb4` — spec do footer institucional, plano de implementação, integração de newsletter. Tag `checkpoint-footer-institucional`.

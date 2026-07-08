@@ -6,4 +6,4 @@
 
 **Documentos:** [spec.md](spec.md) · [plano.md](plano.md)
 
-**Commits-chave:** `e50aef9`..`0ad730c` — spec de tratamentos visuais, implementação de botão skeuomórfico, starfield, blobs, rede ambiente, cards em stack, logo scramble.
+**Commits-chave:** `e50aef9`..`5c4cfcc` — spec de tratamentos visuais, implementação de botão skeuomórfico, starfield, blobs, rede ambiente, cards em stack, logo scramble.
