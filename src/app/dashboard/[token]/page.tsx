@@ -11,6 +11,8 @@ import QuizValidacaoContainer from "@/components/quiz/QuizValidacaoContainer";
 import GlassCard from "@/components/ui/glass-card";
 import CategoryBadge from "@/components/ui/category-badge";
 import BadgeShelf from "@/components/dashboard/BadgeShelf";
+import ChallengeWidget from "@/components/dashboard/ChallengeWidget";
+import { getCurrentChallenge, getIsoWeekKey } from "@/lib/challenges";
 
 export default async function DashboardPage({ params }: { params: { token: string } }) {
   const supabase = getSupabaseServerClient();
@@ -82,6 +84,35 @@ export default async function DashboardPage({ params }: { params: { token: strin
     earnedBadgeIds = (badgeRows ?? []).map((row) => row.badge_id);
   }
 
+  const now = new Date();
+  const currentChallenge = getCurrentChallenge(now);
+  const weekKey = getIsoWeekKey(now);
+  let challengeProgress = 0;
+  let challengeClaimed = false;
+
+  if (purchase) {
+    const weekStart = new Date(now);
+    weekStart.setUTCDate(weekStart.getUTCDate() - 7);
+
+    const { data: relevantEvents } = await supabase
+      .from("xp_events")
+      .select("id")
+      .eq("user_id", purchase.user_id)
+      .eq("action_type", currentChallenge.targetActionType)
+      .gte("created_at", weekStart.toISOString());
+
+    challengeProgress = (relevantEvents ?? []).length;
+
+    const { data: claimRow } = await supabase
+      .from("challenge_claims")
+      .select("id")
+      .eq("user_id", purchase.user_id)
+      .eq("week_key", weekKey)
+      .maybeSingle();
+
+    challengeClaimed = !!claimRow;
+  }
+
   return (
     <div className="mx-auto max-w-4xl space-y-8 p-6">
       <GlassCard className="p-4">
@@ -108,6 +139,16 @@ export default async function DashboardPage({ params }: { params: { token: strin
       </GlassCard>
 
       <BadgeShelf earnedBadgeIds={earnedBadgeIds} />
+
+      <ChallengeWidget
+        token={params.token}
+        title={currentChallenge.title}
+        description={currentChallenge.description}
+        xpReward={currentChallenge.xpReward}
+        progress={challengeProgress}
+        target={currentChallenge.targetCount}
+        alreadyClaimed={challengeClaimed}
+      />
 
       <GlassCard className="p-6">
         <div className="mb-4 flex items-center gap-2">
