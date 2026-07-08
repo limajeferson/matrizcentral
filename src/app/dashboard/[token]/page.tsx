@@ -1,5 +1,6 @@
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { isTokenExpired } from "@/lib/tokens";
+import { getLevelProgress } from "@/lib/levels";
 import RoadmapCard from "@/components/dashboard/RoadmapCard";
 import {
   ROADMAP_STAGE_KEYS,
@@ -52,16 +53,16 @@ export default async function DashboardPage({ params }: { params: { token: strin
 
   let totalXp = 0;
   if (purchase) {
-    const { data: xpEvents } = await supabase
-      .from("xp_events")
-      .select("xp_amount")
-      .eq("user_id", purchase.user_id);
+    const { data: userRow } = await supabase
+      .from("users")
+      .select("total_xp")
+      .eq("id", purchase.user_id)
+      .single();
 
-    totalXp = (xpEvents ?? []).reduce(
-      (sum: number, event: { xp_amount: number }) => sum + event.xp_amount,
-      0
-    );
+    totalXp = userRow?.total_xp ?? 0;
   }
+
+  const levelProgress = getLevelProgress(totalXp);
 
   const { data: progressRows } = await supabase
     .from("roadmap_progress")
@@ -72,9 +73,28 @@ export default async function DashboardPage({ params }: { params: { token: strin
 
   return (
     <div className="mx-auto max-w-4xl space-y-8 p-6">
-      <CategoryBadge variant="xp" className="text-sm">
-        ⭐ {totalXp} XP
-      </CategoryBadge>
+      <GlassCard className="p-4">
+        <div className="mb-2 flex items-center justify-between">
+          <CategoryBadge variant="xp">
+            Nível {levelProgress.level} — {levelProgress.name}
+          </CategoryBadge>
+          <span className="text-xs text-zinc-500">{totalXp} XP total</span>
+        </div>
+        <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-200">
+          <div
+            className="h-full rounded-full bg-violet-600 transition-all"
+            style={{ width: `${levelProgress.progressPercent}%` }}
+          />
+        </div>
+        {levelProgress.nextLevelName ? (
+          <p className="mt-1 text-xs text-zinc-500">
+            {levelProgress.xpToNext} XP para o nível {levelProgress.level + 1} —{" "}
+            {levelProgress.nextLevelName}
+          </p>
+        ) : (
+          <p className="mt-1 text-xs text-zinc-500">Nível máximo alcançado!</p>
+        )}
+      </GlassCard>
 
       <GlassCard className="p-6">
         <div className="mb-4 flex items-center gap-2">
