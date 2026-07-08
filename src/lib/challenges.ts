@@ -16,6 +16,13 @@ export function getIsoWeekKey(date: Date): string {
   return `${target.getUTCFullYear()}-W${String(weekNumber).padStart(2, "0")}`;
 }
 
+export function getIsoWeekStart(date: Date): Date {
+  const target = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+  const dayNumber = (target.getUTCDay() + 6) % 7;
+  target.setUTCDate(target.getUTCDate() - dayNumber);
+  return target;
+}
+
 export function getCurrentChallenge(date: Date): ChallengeDefinition {
   const weekKey = getIsoWeekKey(date);
   const weekNumber = parseInt(weekKey.split("-W")[1], 10);

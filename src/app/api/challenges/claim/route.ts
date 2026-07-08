@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { isTokenExpired } from "@/lib/tokens";
-import { getCurrentChallenge, getIsoWeekKey } from "@/lib/challenges";
+import { getCurrentChallenge, getIsoWeekKey, getIsoWeekStart } from "@/lib/challenges";
 import { grantBadges } from "@/lib/grant-badges";
 
 export async function POST(req: NextRequest) {
@@ -37,8 +37,7 @@ export async function POST(req: NextRequest) {
   const weekKey = getIsoWeekKey(now);
   const challenge = getCurrentChallenge(now);
 
-  const weekStart = new Date(now);
-  weekStart.setUTCDate(weekStart.getUTCDate() - 7);
+  const weekStart = getIsoWeekStart(now);
 
   const { data: relevantEvents } = await supabase
     .from("xp_events")
@@ -67,11 +66,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "desafio já resgatado esta semana" }, { status: 409 });
   }
 
-  await supabase.from("challenge_claims").insert({
+  const { error: claimError } = await supabase.from("challenge_claims").insert({
     user_id: purchase.user_id,
     week_key: weekKey,
     challenge_id: challenge.id,
   });
+
+  if (claimError) {
+    return NextResponse.json({ error: "desafio já resgatado esta semana" }, { status: 409 });
+  }
 
   await supabase.from("xp_events").insert({
     user_id: purchase.user_id,

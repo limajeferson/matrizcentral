@@ -12,7 +12,7 @@ import GlassCard from "@/components/ui/glass-card";
 import CategoryBadge from "@/components/ui/category-badge";
 import BadgeShelf from "@/components/dashboard/BadgeShelf";
 import ChallengeWidget from "@/components/dashboard/ChallengeWidget";
-import { getCurrentChallenge, getIsoWeekKey } from "@/lib/challenges";
+import { getCurrentChallenge, getIsoWeekKey, getIsoWeekStart } from "@/lib/challenges";
 
 export default async function DashboardPage({ params }: { params: { token: string } }) {
   const supabase = getSupabaseServerClient();
@@ -91,8 +91,7 @@ export default async function DashboardPage({ params }: { params: { token: strin
   let challengeClaimed = false;
 
   if (purchase) {
-    const weekStart = new Date(now);
-    weekStart.setUTCDate(weekStart.getUTCDate() - 7);
+    const weekStart = getIsoWeekStart(now);
 
     const { data: relevantEvents } = await supabase
       .from("xp_events")
