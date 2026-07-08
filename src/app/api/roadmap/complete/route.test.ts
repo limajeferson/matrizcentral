@@ -78,7 +78,9 @@ function buildSupabaseMock(
     if (table === "users") {
       return {
         select: () => ({
-          eq: () => ({ single: async () => ({ data: { total_xp: 0 }, error: null }) }),
+          eq: () => ({
+            single: async () => ({ data: { total_xp: 0, email: "user@example.com" }, error: null }),
+          }),
         }),
       };
     }
@@ -104,10 +106,16 @@ vi.mock("@/lib/supabase/server", () => ({
   getSupabaseServerClient: () => mockSupabase,
 }));
 
+const sendCertificateEmail = vi.fn(async (_params: unknown) => {});
+vi.mock("@/lib/email", () => ({
+  sendCertificateEmail: (params: unknown) => sendCertificateEmail(params),
+}));
+
 import { POST } from "./route";
 
 describe("POST /api/roadmap/complete", () => {
   beforeEach(() => {
+    vi.clearAllMocks();
     mockSupabase = buildSupabaseMock({
       token: "ABC123",
       purchase_id: "purchase-1",
@@ -267,6 +275,9 @@ describe("POST /api/roadmap/complete", () => {
         (row) => (row as { __certificate?: unknown }).__certificate !== undefined
       )
     ).toBe(true);
+    expect(sendCertificateEmail).toHaveBeenCalledWith(
+      expect.objectContaining({ to: "user@example.com" })
+    );
   });
 
   it("não emite certificado ao concluir missao_final sem o quiz de validação aprovado", async () => {
@@ -289,5 +300,6 @@ describe("POST /api/roadmap/complete", () => {
         (row) => (row as { __certificate?: unknown }).__certificate !== undefined
       )
     ).toBe(false);
+    expect(sendCertificateEmail).not.toHaveBeenCalled();
   });
 });

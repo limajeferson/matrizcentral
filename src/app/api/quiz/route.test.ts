@@ -3,10 +3,12 @@ import { NextRequest } from "next/server";
 
 function buildSupabaseMock(
   tokenRow: Record<string, unknown> | null,
-  existingXpEvent: Record<string, unknown> | null = null
+  existingXpEvent: Record<string, unknown> | null = null,
+  userTotalXp: { before: number; after: number; email?: string } = { before: 0, after: 0 }
 ) {
   const inserted: Record<string, unknown[]> = { quiz_responses: [], xp_events: [] };
   const updated: Record<string, unknown>[] = [];
+  let usersQueryCount = 0;
 
   const from = (table: string) => {
     if (table === "tokens") {
@@ -48,7 +50,16 @@ function buildSupabaseMock(
     if (table === "users") {
       return {
         select: () => ({
-          eq: () => ({ single: async () => ({ data: { total_xp: 0 }, error: null }) }),
+          eq: () => ({
+            single: async () => {
+              usersQueryCount += 1;
+              const totalXp = usersQueryCount === 1 ? userTotalXp.before : userTotalXp.after;
+              return {
+                data: { total_xp: totalXp, email: userTotalXp.email ?? "user@example.com" },
+                error: null,
+              };
+            },
+          }),
         }),
       };
     }
@@ -82,6 +93,11 @@ function buildSupabaseMock(
 let mockSupabase: ReturnType<typeof buildSupabaseMock>;
 vi.mock("@/lib/supabase/server", () => ({
   getSupabaseServerClient: () => mockSupabase,
+}));
+
+const sendLevelUpEmail = vi.fn(async (_params: unknown) => {});
+vi.mock("@/lib/email", () => ({
+  sendLevelUpEmail: (params: unknown) => sendLevelUpEmail(params),
 }));
 
 describe("POST /api/quiz", () => {
@@ -177,6 +193,52 @@ describe("POST /api/quiz", () => {
     expect(response.status).toBe(200);
     expect(json.passed).toBe(true);
     expect(mockSupabase.inserted.xp_events).toHaveLength(0);
+  });
+
+  it("envia e-mail de level up quando o XP de validação cruza um threshold de nível", async () => {
+    mockSupabase = buildSupabaseMock(
+      {
+        token: "ABC1234567",
+        purchase_id: "purchase-1",
+        triaged: true,
+      },
+      null,
+      { before: 450, after: 550, email: "levelup@example.com" }
+    );
+
+    const { POST } = await import("./route");
+    const request = new NextRequest("http://localhost/api/quiz", {
+      method: "POST",
+      body: JSON.stringify({ token: "ABC1234567", quizType: "validacao", score: 100, passed: true }),
+    });
+
+    const response = await POST(request);
+    expect(response.status).toBe(200);
+    expect(sendLevelUpEmail).toHaveBeenCalledWith(
+      expect.objectContaining({ to: "levelup@example.com", level: 2 })
+    );
+  });
+
+  it("não envia e-mail de level up quando o XP de validação não cruza um threshold", async () => {
+    mockSupabase = buildSupabaseMock(
+      {
+        token: "ABC1234567",
+        purchase_id: "purchase-1",
+        triaged: true,
+      },
+      null,
+      { before: 0, after: 100, email: "nolevelup@example.com" }
+    );
+
+    const { POST } = await import("./route");
+    const request = new NextRequest("http://localhost/api/quiz", {
+      method: "POST",
+      body: JSON.stringify({ token: "ABC1234567", quizType: "validacao", score: 100, passed: true }),
+    });
+
+    const response = await POST(request);
+    expect(response.status).toBe(200);
+    expect(sendLevelUpEmail).not.toHaveBeenCalled();
   });
 
   it("retorna 404 se o token não existe", async () => {

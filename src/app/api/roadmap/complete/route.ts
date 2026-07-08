@@ -4,6 +4,7 @@ import { isTokenExpired } from "@/lib/tokens";
 import { ROADMAP_STAGE_KEYS } from "@/data/roadmap-stages";
 import { grantBadges } from "@/lib/grant-badges";
 import { issueCertificateIfEligible } from "@/lib/certificates";
+import { sendCertificateEmail } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
@@ -91,12 +92,28 @@ export async function POST(req: NextRequest) {
         .eq("id", tokenRow.profile_id ?? "")
         .maybeSingle();
 
-      await issueCertificateIfEligible(supabase, {
+      const certificateResult = await issueCertificateIfEligible(supabase, {
         userId: purchase.user_id,
         profileName: profileRow?.name ?? "Matriz Central",
         roadmapStagesCompleted: (allProgress ?? []).map((p) => p.stage_key),
         quizValidacaoPassed: (validacaoEvent ?? []).length > 0,
       });
+
+      if (certificateResult) {
+        const { data: userRow } = await supabase
+          .from("users")
+          .select("email")
+          .eq("id", purchase.user_id)
+          .single();
+
+        if (userRow) {
+          await sendCertificateEmail({
+            to: userRow.email,
+            title: `Certificado de Conclusão — Trilha ${profileRow?.name ?? "Matriz Central"}`,
+            verificationCode: certificateResult.verificationCode,
+          }).catch((err) => console.error("Falha ao enviar e-mail de certificado:", err));
+        }
+      }
     }
   }
 

@@ -3,6 +3,8 @@ import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { scoreTriagem, type TriagemAnswer } from "@/lib/quiz-scoring";
 import { QUIZ_TRIAGEM } from "@/data/quiz-triagem";
 import { grantBadges } from "@/lib/grant-badges";
+import { getLevelProgress } from "@/lib/levels";
+import { sendLevelUpEmail } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
@@ -87,6 +89,14 @@ export async function POST(req: NextRequest) {
         .maybeSingle();
 
       if (!existingXpEvent) {
+        const { data: userBefore } = await supabase
+          .from("users")
+          .select("total_xp, email")
+          .eq("id", purchase.user_id)
+          .single();
+
+        const levelBefore = userBefore ? getLevelProgress(userBefore.total_xp).level : 1;
+
         await supabase.from("xp_events").insert({
           user_id: purchase.user_id,
           xp_amount: 100,
@@ -94,6 +104,23 @@ export async function POST(req: NextRequest) {
           reference_id: token,
         });
         await grantBadges(supabase, purchase.user_id);
+
+        if (userBefore) {
+          const { data: userAfter } = await supabase
+            .from("users")
+            .select("total_xp")
+            .eq("id", purchase.user_id)
+            .single();
+
+          const progressAfter = getLevelProgress(userAfter?.total_xp ?? 0);
+          if (progressAfter.level > levelBefore) {
+            await sendLevelUpEmail({
+              to: userBefore.email,
+              level: progressAfter.level,
+              levelName: progressAfter.name,
+            }).catch((err) => console.error("Falha ao enviar e-mail de level up:", err));
+          }
+        }
       }
     }
   }
