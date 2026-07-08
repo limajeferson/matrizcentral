@@ -99,7 +99,7 @@ export async function POST(req: NextRequest) {
         quizValidacaoPassed: (validacaoEvent ?? []).length > 0,
       });
 
-      if (certificateResult) {
+      if (certificateResult?.created) {
         const { data: userRow } = await supabase
           .from("users")
           .select("email")

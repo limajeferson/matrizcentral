@@ -25,7 +25,7 @@ export async function issueCertificateIfEligible(
     roadmapStagesCompleted: string[];
     quizValidacaoPassed: boolean;
   }
-): Promise<{ verificationCode: string } | null> {
+): Promise<{ verificationCode: string; created: boolean } | null> {
   if (!isEligibleForCertificate(params)) {
     return null;
   }
@@ -38,7 +38,7 @@ export async function issueCertificateIfEligible(
     .maybeSingle();
 
   if (existing) {
-    return { verificationCode: existing.verification_code };
+    return { verificationCode: existing.verification_code, created: false };
   }
 
   const verificationCode = buildVerificationCode();
@@ -61,11 +61,11 @@ export async function issueCertificateIfEligible(
         .single();
 
       if (concurrentlyCreated) {
-        return { verificationCode: concurrentlyCreated.verification_code };
+        return { verificationCode: concurrentlyCreated.verification_code, created: false };
       }
     }
     throw new Error(`Falha ao emitir certificado: ${insertError.message}`);
   }
 
-  return { verificationCode };
+  return { verificationCode, created: true };
 }

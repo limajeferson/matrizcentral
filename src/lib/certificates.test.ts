@@ -57,7 +57,32 @@ describe("issueCertificateIfEligible - idempotência", () => {
       quizValidacaoPassed: true,
     });
 
-    expect(result).toEqual({ verificationCode: "EXISTINGCODE1" });
+    expect(result).toEqual({ verificationCode: "EXISTINGCODE1", created: false });
     expect(insertMock).not.toHaveBeenCalled();
+  });
+
+  it("cria um novo certificado e sinaliza created quando não existe", async () => {
+    const supabaseMock = {
+      from: vi.fn(() => ({
+        select: vi.fn(() => ({
+          eq: vi.fn(() => ({
+            eq: vi.fn(() => ({
+              maybeSingle: vi.fn(async () => ({ data: null, error: null })),
+            })),
+          })),
+        })),
+        insert: vi.fn(async () => ({ error: null })),
+      })),
+    } as unknown as SupabaseClient<Database>;
+
+    const result = await issueCertificateIfEligible(supabaseMock, {
+      userId: "user-1",
+      profileName: "fundacao_local",
+      roadmapStagesCompleted: ["missao_final"],
+      quizValidacaoPassed: true,
+    });
+
+    expect(result).toMatchObject({ created: true });
+    expect(typeof result?.verificationCode).toBe("string");
   });
 });
