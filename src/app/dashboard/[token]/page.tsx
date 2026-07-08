@@ -10,6 +10,7 @@ import {
 import QuizValidacaoContainer from "@/components/quiz/QuizValidacaoContainer";
 import GlassCard from "@/components/ui/glass-card";
 import CategoryBadge from "@/components/ui/category-badge";
+import BadgeShelf from "@/components/dashboard/BadgeShelf";
 
 export default async function DashboardPage({ params }: { params: { token: string } }) {
   const supabase = getSupabaseServerClient();
@@ -71,6 +72,16 @@ export default async function DashboardPage({ params }: { params: { token: strin
 
   const completedStages = (progressRows ?? []).map((row: { stage_key: string }) => row.stage_key);
 
+  let earnedBadgeIds: string[] = [];
+  if (purchase) {
+    const { data: badgeRows } = await supabase
+      .from("badges_earned")
+      .select("badge_id")
+      .eq("user_id", purchase.user_id);
+
+    earnedBadgeIds = (badgeRows ?? []).map((row) => row.badge_id);
+  }
+
   return (
     <div className="mx-auto max-w-4xl space-y-8 p-6">
       <GlassCard className="p-4">
@@ -95,6 +106,8 @@ export default async function DashboardPage({ params }: { params: { token: strin
           <p className="mt-1 text-xs text-zinc-500">Nível máximo alcançado!</p>
         )}
       </GlassCard>
+
+      <BadgeShelf earnedBadgeIds={earnedBadgeIds} />
 
       <GlassCard className="p-6">
         <div className="mb-4 flex items-center gap-2">
