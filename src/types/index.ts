@@ -1,5 +1,5 @@
 export type QuizType = "triagem" | "validacao";
-export type XpActionType = "compra" | "triagem" | "download" | "validacao" | "conteudo" | "roadmap";
+export type XpActionType = "compra" | "triagem" | "download" | "validacao" | "conteudo" | "roadmap" | "desafio";
 export type WaitlistPlanId = "mensal_97" | "anual_497";
 
 export interface Database {
@@ -11,6 +11,8 @@ export interface Database {
           email: string;
           stripe_customer_id: string | null;
           total_xp: number;
+          display_name: string | null;
+          leaderboard_opt_in: boolean;
           created_at: string;
         };
         Insert: {
@@ -18,6 +20,8 @@ export interface Database {
           email: string;
           stripe_customer_id?: string | null;
           total_xp?: number;
+          display_name?: string | null;
+          leaderboard_opt_in?: boolean;
           created_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["users"]["Insert"]>;
@@ -201,6 +205,62 @@ export interface Database {
           completed_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["roadmap_progress"]["Insert"]>;
+        Relationships: [];
+      };
+      badges_earned: {
+        Row: {
+          id: string;
+          user_id: string;
+          badge_id: string;
+          earned_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          badge_id: string;
+          earned_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["badges_earned"]["Insert"]>;
+        Relationships: [];
+      };
+      certificates: {
+        Row: {
+          id: string;
+          user_id: string;
+          certificate_type: string;
+          reference_id: string;
+          title: string;
+          issued_at: string;
+          verification_code: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          certificate_type: string;
+          reference_id: string;
+          title: string;
+          issued_at?: string;
+          verification_code: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["certificates"]["Insert"]>;
+        Relationships: [];
+      };
+      challenge_claims: {
+        Row: {
+          id: string;
+          user_id: string;
+          week_key: string;
+          challenge_id: string;
+          claimed_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          week_key: string;
+          challenge_id: string;
+          claimed_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["challenge_claims"]["Insert"]>;
         Relationships: [];
       };
     };
