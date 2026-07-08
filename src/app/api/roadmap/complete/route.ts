@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { isTokenExpired } from "@/lib/tokens";
 import { ROADMAP_STAGE_KEYS } from "@/data/roadmap-stages";
+import { grantBadges } from "@/lib/grant-badges";
 
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
@@ -67,6 +68,8 @@ export async function POST(req: NextRequest) {
         reference_id: referenceId,
       });
     }
+
+    await grantBadges(supabase, purchase.user_id);
   }
 
   return NextResponse.json({ ok: true });

@@ -30,6 +30,7 @@ function buildSupabaseMock(
           eq: () => ({
             eq: () => ({ maybeSingle: async () => ({ data: existingCompletion, error: null }) }),
           }),
+          in: async () => ({ data: [], error: null }),
         }),
         insert: async (rows: unknown) => {
           inserted.content_completions.push(rows);
@@ -39,10 +40,33 @@ function buildSupabaseMock(
     }
     if (table === "xp_events") {
       return {
+        select: () => ({
+          eq: () => ({
+            eq: () => ({ limit: async () => ({ data: [], error: null }) }),
+          }),
+        }),
         insert: async (rows: unknown) => {
           inserted.xp_events.push(rows);
           return { data: null, error: null };
         },
+      };
+    }
+    if (table === "users") {
+      return {
+        select: () => ({
+          eq: () => ({ single: async () => ({ data: { total_xp: 0 }, error: null }) }),
+        }),
+      };
+    }
+    if (table === "roadmap_progress") {
+      return {
+        select: () => ({ in: async () => ({ data: [], error: null }) }),
+      };
+    }
+    if (table === "badges_earned") {
+      return {
+        select: () => ({ eq: async () => ({ data: [], error: null }) }),
+        insert: async () => ({ data: null, error: null }),
       };
     }
     throw new Error(`tabela inesperada: ${table}`);

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { scoreTriagem, type TriagemAnswer } from "@/lib/quiz-scoring";
 import { QUIZ_TRIAGEM } from "@/data/quiz-triagem";
+import { grantBadges } from "@/lib/grant-badges";
 
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
@@ -60,6 +61,7 @@ export async function POST(req: NextRequest) {
         action_type: "triagem",
         reference_id: token,
       });
+      await grantBadges(supabase, purchase.user_id);
     }
 
     return NextResponse.json({ profileId });
@@ -91,6 +93,7 @@ export async function POST(req: NextRequest) {
           action_type: "validacao",
           reference_id: token,
         });
+        await grantBadges(supabase, purchase.user_id);
       }
     }
   }

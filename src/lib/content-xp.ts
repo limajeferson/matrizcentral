@@ -1,5 +1,6 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/types";
+import { grantBadges } from "@/lib/grant-badges";
 
 /**
  * Marca um content_id como concluído para o token e concede XP, se ainda não
@@ -41,6 +42,8 @@ export async function grantContentXp(
     action_type: "conteudo",
     reference_id: contentId,
   });
+
+  await grantBadges(supabase, purchase.user_id);
 
   return xpReward;
 }

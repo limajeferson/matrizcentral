@@ -35,6 +35,7 @@ function buildSupabaseMock(
       const chain = {
         eq: () => chain,
         maybeSingle: async () => ({ data: existingXpEvent, error: null }),
+        limit: async () => ({ data: [], error: null }),
       };
       return {
         select: () => chain,
@@ -42,6 +43,29 @@ function buildSupabaseMock(
           inserted.xp_events.push(rows);
           return { data: null, error: null };
         },
+      };
+    }
+    if (table === "users") {
+      return {
+        select: () => ({
+          eq: () => ({ single: async () => ({ data: { total_xp: 0 }, error: null }) }),
+        }),
+      };
+    }
+    if (table === "content_completions") {
+      return {
+        select: () => ({ in: async () => ({ data: [], error: null }) }),
+      };
+    }
+    if (table === "roadmap_progress") {
+      return {
+        select: () => ({ in: async () => ({ data: [], error: null }) }),
+      };
+    }
+    if (table === "badges_earned") {
+      return {
+        select: () => ({ eq: async () => ({ data: [], error: null }) }),
+        insert: async () => ({ data: null, error: null }),
       };
     }
     return {
