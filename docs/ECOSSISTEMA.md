@@ -63,6 +63,10 @@ Cada frente vive em `docs/frentes/<slug>/` com `spec.md` (o quê/porquê), `plan
 - ✅ [feed-conteudo-recomendado](frentes/feed-conteudo-recomendado/README.md) — seção recomendada no hub de conteúdo
 - ✅ [ecossistema-frentes](frentes/ecossistema-frentes/README.md) — este próprio reorganização (você está aqui)
 
+### 🔜 Planejadas
+
+- 🔜 [comunidade-identidade-feed](frentes/comunidade-identidade-feed/README.md) — login real + feed central (rede social de IA) + portal de fórum. Tem prompt de retomada pronto, aguardando sessão dedicada (modelo Opus).
+
 ## ➡️ Fluxo de necessidades (próximos passos até o site no ar)
 
 1. **Migration:** aplicar `0011_newsletter_subscribers.sql` no Supabase (`supabase db push` — projeto já linkado em `supabase/.temp/linked-project.json`).
