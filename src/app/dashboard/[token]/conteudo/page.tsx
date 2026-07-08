@@ -4,6 +4,9 @@ import { isTokenExpired } from "@/lib/tokens";
 import { CONTENT_HUB, type ContentType } from "@/data/content-hub";
 import GlassCard from "@/components/ui/glass-card";
 import CategoryBadge from "@/components/ui/category-badge";
+import { deriveRoadmapView } from "@/lib/roadmap-progress";
+import { ROADMAP_STAGE_KEYS, ROADMAP_STAGE_LABELS } from "@/data/roadmap-stages";
+import { getRecommendedContent } from "@/lib/content-feed";
 
 const TYPE_LABEL: Record<ContentType, string> = {
   relatorio: "📄 Relatório",
@@ -31,6 +34,22 @@ export default async function ConteudoHubPage({ params }: { params: { token: str
 
   const completedIds = new Set((completions ?? []).map((c: { content_id: string }) => c.content_id));
 
+  const { data: progressRows } = await supabase
+    .from("roadmap_progress")
+    .select("stage_key")
+    .eq("token", params.token);
+
+  const completedStages = (progressRows ?? []).map((row: { stage_key: string }) => row.stage_key);
+  const roadmapView = deriveRoadmapView(completedStages);
+  const activeStageKey =
+    roadmapView.activeIndex === -1 ? null : ROADMAP_STAGE_KEYS[roadmapView.activeIndex];
+
+  const recommended = getRecommendedContent(
+    CONTENT_HUB,
+    activeStageKey,
+    Array.from(completedIds)
+  );
+
   return (
     <div className="mx-auto max-w-4xl space-y-6 p-6">
       <div>
@@ -42,7 +61,35 @@ export default async function ConteudoHubPage({ params }: { params: { token: str
         </p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      {recommended.length > 0 && activeStageKey && (
+        <div>
+          <CategoryBadge variant="roadmap">
+            Recomendado pra você agora — {ROADMAP_STAGE_LABELS[activeStageKey]}
+          </CategoryBadge>
+          <div className="mt-3 grid gap-4 sm:grid-cols-2">
+            {recommended.map((item) => (
+              <Link key={item.id} href={`/dashboard/${params.token}/conteudo/${item.id}`}>
+                <GlassCard className="h-full border-2 border-violet-300 bg-violet-50 p-5 transition hover:-translate-y-0.5">
+                  <div className="mb-2 flex items-center justify-between">
+                    <CategoryBadge variant="hub">{TYPE_LABEL[item.type]}</CategoryBadge>
+                  </div>
+                  <h2 className="font-bold text-zinc-900">{item.title}</h2>
+                  <p className="mt-1 text-sm text-zinc-600">{item.description}</p>
+                  <div className="mt-3 text-xs text-zinc-500">
+                    {item.durationMinutes} min · +{item.xpReward} XP
+                  </div>
+                </GlassCard>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div>
+        <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-zinc-500">
+          Explore mais
+        </h2>
+        <div className="grid gap-4 sm:grid-cols-2">
         {CONTENT_HUB.map((item) => {
           const done = completedIds.has(item.id);
           const comingSoon =
@@ -65,6 +112,7 @@ export default async function ConteudoHubPage({ params }: { params: { token: str
             </Link>
           );
         })}
+        </div>
       </div>
     </div>
   );
