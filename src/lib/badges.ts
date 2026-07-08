@@ -24,6 +24,10 @@ function meetsCondition(
       return stats.quizValidacaoPassed;
     case "purchase_count":
       return stats.purchaseCount >= condition.value;
+    default: {
+      const exhaustiveCheck: never = condition;
+      throw new Error(`Condição de badge desconhecida: ${JSON.stringify(exhaustiveCheck)}`);
+    }
   }
 }
 
