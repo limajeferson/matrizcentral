@@ -29,12 +29,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "evento incompleto" }, { status: 400 });
   }
 
+  const normalizedEmail = email.toLowerCase().trim();
+
   const supabase = getSupabaseServerClient();
 
   // 1. Usuário (idempotente por e-mail).
   const { data: user, error: userError } = await supabase
     .from("users")
-    .upsert({ email, stripe_customer_id: session.customer as string }, { onConflict: "email" })
+    .upsert({ email: normalizedEmail, stripe_customer_id: session.customer as string }, { onConflict: "email" })
     .select()
     .single();
 

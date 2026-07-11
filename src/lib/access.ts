@@ -52,11 +52,12 @@ export async function resolveQuizUrlBySessionId(
 export async function resendAccessByEmail(email: string): Promise<boolean> {
   try {
     const supabase = getSupabaseServerClient();
+    const normalized = email.toLowerCase().trim();
 
     const { data: user } = await supabase
       .from("users")
       .select("id")
-      .eq("email", email)
+      .eq("email", normalized)
       .maybeSingle();
     if (!user) return false;
 
