@@ -69,7 +69,7 @@ Cada frente vive em `docs/frentes/<slug>/` com `spec.md` (o quê/porquê), `plan
 
 > Fonte de verdade do andamento: [`ESTADO-ATUAL.md`](ESTADO-ATUAL.md).
 
-- 🔄 [login-real](frentes/login-real/README.md) — **frente ativa (próxima)**: fundação de identidade (conviver token + magic link Supabase Auth, sem NFT). Destrava assinaturas/feed/fórum/CRM. Engatilhada, aguardando brainstorm.
+- 🔄 [login-real](frentes/login-real/README.md) — **código completo e revisado** (na master, `tsc` 0 / 118 testes): magic link **próprio** (zero deps, `crypto` nativo — reabriu a decisão "Supabase Auth"), token+login convivem, sessão revogável, `ContentGate`. **Pendente aceitação ao vivo** (aplicar migrations 0015/0016 + E2E do e-mail real + decidir landing dinâmica).
 - 🔜 Assinaturas (Regular/Advanced) + e-mails de ciclo/CRM — depende de login-real.
 - 🔜 Feed central (rede social de IA) — depende de login-real.
 - 🔜 Fórum (portal de tópicos) — depende de login-real.

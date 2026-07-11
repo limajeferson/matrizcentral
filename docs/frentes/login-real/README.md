@@ -1,6 +1,38 @@
 # Frente 1 — Login real (fundação de identidade)
 
-**Status:** 🔄 Em andamento — **brainstorm concluído, spec aprovado** ([`spec.md`](spec.md)). Próximo: escrever o plano de implementação (`writing-plans`).
+**Status:** 🔄 **Código completo e revisado** (11 tasks + hardening pós-review, na
+master, `tsc` 0 / 118 testes) — **pendente aceitação ao vivo** (aplicar migrations
+0015+0016 no Supabase e testar o magic link com e-mail real). Spec e plano:
+[`spec.md`](spec.md) · [`plano.md`](plano.md).
+
+## ✅ O que foi entregue
+
+- Migrations `0015` (tabelas `magic_links`, `sessions`) e `0016` (backfill de
+  e-mail) — **ainda não aplicadas no remoto**.
+- Lógica pura testada: `auth-tokens.ts` (segredo/hash/expiração), `safe-redirect.ts`
+  (anti open-redirect).
+- Camada de dados `auth-session.ts`: emissão/verificação de magic link (uso único
+  atômico, 15 min), sessão (cookie `mc_session` httpOnly, 30 dias, revogável), o
+  porteiro `getSessionUser()`.
+- Rotas: `POST /api/auth/request-link`, `GET /entrar/verificar` (callback + cookie),
+  `POST /api/auth/logout`. Telas `/entrar` e `/conta`. Botão Entrar/Minha conta no
+  header. Componente `ContentGate` (tranca, ainda não plugado).
+- Fix de consistência de e-mail no write path (webhook) + resend.
+
+## ⏳ Pendências antes de fechar
+
+1. **Aplicar migrations no Supabase remoto:** `npx supabase db push` (aplica
+   0011+0015+0016) — precisa da auth local do Supabase CLI.
+2. **E2E ao vivo:** pedir link em `/entrar` com e-mail real → clicar no e-mail
+   (Brevo) → cair logado em `/conta` → "ir para meu painel" → logout. Reusar link
+   (uso único) e e-mail inexistente (aviso + Adquirir).
+3. **Decisão pendente (#7):** a landing `/` virou dinâmica (SSR por request) porque
+   o `SessionNav` lê cookies. Manter assim, ou mover a pílula de sessão pra
+   client-side e preservar a landing estática?
+4. **Minors rastreados (não bloqueiam):** rate-limit check-then-act; 2 testes de
+   borda (`isExpired`, throttle). Ver ledger `.superpowers/sdd/progress.md`.
+5. **Deep-return do `next`** do ContentGate: deferido para a frente de deploy do
+   gate (ver "Fora de escopo" no spec).
 
 **Por que primeiro:** é pré-requisito de tudo que gera receita e comunidade —
 assinaturas, feed, fórum, perfil e CRM precisam saber "quem é esse usuário" ao

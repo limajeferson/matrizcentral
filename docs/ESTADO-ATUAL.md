@@ -8,7 +8,7 @@
 > Ordem de leitura ao retomar: **este arquivo → `CLAUDE.md` → o `README.md` da
 > frente ativa → o código fonte-de-verdade.**
 
-_Última atualização: 2026-07-11 (brainstorm + spec da Frente 1 aprovados)_
+_Última atualização: 2026-07-11 (Frente 1 — código completo e revisado, pendente aceitação ao vivo)_
 
 ---
 
@@ -24,23 +24,30 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
 
 - **Concluído antes:** auditoria completa (5 frentes) + hardening dos 4 críticos
   (verificado, na master, commit `0aee161`).
-- **Concluído nesta rodada:** **brainstorm da Frente 1 (Login real) + spec
-  aprovado** pelo usuário → [`docs/frentes/login-real/spec.md`](frentes/login-real/spec.md).
-  Decisões-chave: **magic link próprio** (portaria caseira, zero deps, `crypto`
-  nativo — reabrimos conscientemente a decisão "Supabase Auth"); token e login
-  convivem; login alcança tudo via `/conta`; tranca de preview com 2 caminhos
-  (Adquirir + Entrar); sessão revogável (tabela `sessions`).
-- **➡️ PRÓXIMA AÇÃO:** rodar **`superpowers:writing-plans`** a partir do
-  `spec.md` para o plano de implementação, depois
-  `superpowers:subagent-driven-development` para executar com revisão por task.
+- **Concluído nesta rodada:** **Frente 1 (Login real) implementada ponta a ponta**
+  via subagent-driven-development — 11 tasks + fix de normalização + hardening
+  pós-revisão-final, **tudo na master**, `tsc` 0 / **118 testes**. Spec + plano em
+  [`docs/frentes/login-real/`](frentes/login-real/). Entregue: migrations
+  0015/0016, `auth-tokens`/`safe-redirect` (puros, testados), `auth-session`
+  (magic link uso-único + sessão revogável + porteiro), rotas
+  `/api/auth/*` + `/entrar/verificar`, telas `/entrar` e `/conta`, botão no
+  header, `ContentGate`. Revisão final ampla (opus) passou com fixes aplicados.
+- **➡️ PRÓXIMA AÇÃO — ACEITAÇÃO AO VIVO (precisa do usuário):**
+  1. Aplicar migrations no Supabase remoto: `npx supabase db push` (0011+0015+0016).
+  2. E2E do magic link com e-mail real (Brevo): `/entrar` → link → `/conta` → logout.
+  3. Decidir **#7** (landing virou dinâmica por causa do `SessionNav`; manter ou
+     pílula client-side).
+  Detalhes e checklist em [`docs/frentes/login-real/README.md`](frentes/login-real/README.md).
+  Depois disso: marcar Frente 1 ✅ e iniciar a **Frente 2 (Assinaturas)**.
 
 ## 🌿 Estado do git
 
-- **Branch ativa:** `master`, **sincronizada com `origin/master`** (push feito
-  nesta rodada, até o commit `16b7195`). O outro computador recebe tudo com
-  `git pull origin master`.
-- **Inclui:** grant service_role, hardening dos 4 críticos, infra (gitignore +
-  supabase CLI) e este sistema de continuidade.
+- **Branch ativa:** `master`. **Commits da Frente 1 estão locais, ainda NÃO
+  enviados** (`git push origin master` pendente — o outro computador só recebe
+  depois do push). Último commit: `aa65e63`.
+- **Inclui (nesta rodada):** spec+plano do login, migrations 0015/0016, toda a
+  implementação do login (auth-tokens, safe-redirect, auth-session, rotas, telas,
+  header, ContentGate), fix de normalização de e-mail e hardening pós-review.
 - **Não versionado (local, de propósito):** `.env.local` (segredos),
   `SETUP.md`, `claude-chat.md`, `CLAUDE.local-draft.md`.
 
@@ -51,7 +58,7 @@ Ordem escolhida pelo usuário: **receita primeiro**.
 | # | Frente | Status | README |
 |---|--------|--------|--------|
 | 0 | Auditoria + Hardening dos 4 críticos | ✅ concluída | [hardening-criticos](frentes/hardening-criticos/README.md) |
-| 1 | **Login real** (fundação de identidade) | 🔄 **em andamento** (spec aprovado; falta plano+execução) | [login-real](frentes/login-real/README.md) |
+| 1 | **Login real** (fundação de identidade) | 🔄 **código completo+revisado** (pendente aceitação ao vivo: migrations + E2E) | [login-real](frentes/login-real/README.md) |
 | 2 | Assinaturas (Regular/Advanced) + e-mails de ciclo/CRM | 🔜 planejada (depende de #1) | criar ao iniciar |
 | 3 | Feed central (rede social de IA) | 🔜 planejada (depende de #1) | criar ao iniciar |
 | 4 | Fórum (portal de tópicos) | 🔜 planejada (depende de #1) | criar ao iniciar |
@@ -90,6 +97,16 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
 
+- **2026-07-11 (Opus) — Frente 1 implementada:** executada via
+  `subagent-driven-development` — 11 tasks (migration+tipos, auth-tokens,
+  safe-redirect, e-mail, auth-session, rotas request-link/verificar/logout,
+  telas /entrar e /conta, header, ContentGate), cada uma com implementer +
+  reviewer subagente. Fix de normalização de e-mail (webhook/resend) e revisão
+  final ampla (opus) com hardening (backfill 0016, try/catch nas rotas, flags de
+  cookie). `tsc` 0, 118 testes. Ledger em `.superpowers/sdd/progress.md`.
+  **Pendente:** aplicar migrations no remoto + E2E ao vivo do magic link +
+  decisão da landing dinâmica. **Não commitado/pushado ainda? Commitado sim;
+  push pendente.**
 - **2026-07-11 (Opus) — Frente 1 brainstorm:** rodado `brainstorming` da Frente 1
   (Login real). Decisões travadas na sessão: **magic link próprio** (zero deps,
   reabrindo a decisão "Supabase Auth" após trade-off explicado ao usuário em

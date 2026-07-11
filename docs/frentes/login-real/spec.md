@@ -189,7 +189,16 @@ validar o componente ponta a ponta.
   porteiro (`getSessionUser`) que elas vão chamar.
 - Escolha editorial de **quais** 2-3 conteúdos viram isca e **onde** na landing/
   hub — decisão de marketing, afinada depois. Aqui entregamos o componente
-  `ContentGate` e um ponto de uso mínimo de validação.
+  `ContentGate` (ainda **não plugado** em nenhuma superfície).
+- **Deep-return do `next`** (voltar ao conteúdo que a pessoa tentou consumir
+  após logar): o `ContentGate` já monta `/entrar?next=<path>` e o callback
+  `/entrar/verificar` já valida `next` com `safeNextPath`, **mas o `next` não é
+  propagado** pelo formulário → API → e-mail do magic link (o link do e-mail é
+  fixo em `?c=<secret>`), então hoje todo login cai em `/conta`. Fechar essa
+  ponta (threading do `next` do form ao e-mail, provavelmente guardando-o na
+  linha `magic_links`) fica para a **frente de deploy do ContentGate**, quando
+  houver um ponto de entrada vivo. A infra de segurança (`safeNextPath`) já está
+  pronta para isso.
 - RLS por `auth.uid()` / policies por usuário — não há `auth.uid()` neste
   desenho; segue `service_role` + gating no código.
 - Migração do `/dashboard/[token]` para ser cookie-gated — o token segue como
