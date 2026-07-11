@@ -1,11 +1,27 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { NextRequest } from "next/server";
+import { QUIZ_LLM_LOCAL } from "@/data/quiz-llm-local";
+
+type Letter = "A" | "B" | "C" | "D";
+
+// Respostas que passam (todas corretas) e que reprovam (todas erradas),
+// derivadas do gabarito real. O servidor recalcula a nota — o cliente não a envia.
+const allCorrectAnswers = () =>
+  QUIZ_LLM_LOCAL.map((q) => ({ questionId: q.id, selected: q.correctAnswer as Letter }));
+const allWrongAnswers = () =>
+  QUIZ_LLM_LOCAL.map((q) => ({
+    questionId: q.id,
+    selected: (q.correctAnswer === "A" ? "B" : "A") as Letter,
+  }));
 
 function buildSupabaseMock(
   tokenRow: Record<string, unknown> | null,
   existingXpEvent: Record<string, unknown> | null = null,
   userTotalXp: { before: number; after: number; email?: string } = { before: 0, after: 0 }
 ) {
+  if (tokenRow && tokenRow.valid_until === undefined) {
+    tokenRow = { ...tokenRow, valid_until: "2099-01-01T00:00:00.000Z" };
+  }
   const inserted: Record<string, unknown[]> = { quiz_responses: [], xp_events: [] };
   const updated: Record<string, unknown>[] = [];
 
@@ -68,7 +84,17 @@ function buildSupabaseMock(
     }
     if (table === "roadmap_progress") {
       return {
-        select: () => ({ in: async () => ({ data: [], error: null }) }),
+        select: () => ({
+          in: async () => ({ data: [], error: null }),
+          eq: async () => ({ data: [], error: null }),
+        }),
+      };
+    }
+    if (table === "profiles") {
+      return {
+        select: () => ({
+          eq: () => ({ maybeSingle: async () => ({ data: null, error: null }) }),
+        }),
       };
     }
     if (table === "badges_earned") {
@@ -150,7 +176,7 @@ describe("POST /api/quiz", () => {
     expect(response.status).toBe(409);
   });
 
-  it("concede XP de validação apenas quando passed=true", async () => {
+  it("reprova (sem XP) quando a nota real é baixa, ignorando forja de passed=true", async () => {
     mockSupabase = buildSupabaseMock({
       token: "ABC1234567",
       purchase_id: "purchase-1",
@@ -160,7 +186,14 @@ describe("POST /api/quiz", () => {
     const { POST } = await import("./route");
     const request = new NextRequest("http://localhost/api/quiz", {
       method: "POST",
-      body: JSON.stringify({ token: "ABC1234567", quizType: "validacao", score: 40, passed: false }),
+      body: JSON.stringify({
+        token: "ABC1234567",
+        quizType: "validacao",
+        // Forja: o cliente afirma que passou. O servidor ignora e recalcula.
+        passed: true,
+        score: 100,
+        answers: allWrongAnswers(),
+      }),
     });
 
     const response = await POST(request);
@@ -169,6 +202,31 @@ describe("POST /api/quiz", () => {
     expect(response.status).toBe(200);
     expect(json.passed).toBe(false);
     expect(mockSupabase.inserted.xp_events).toHaveLength(0);
+  });
+
+  it("concede XP quando as respostas realmente passam", async () => {
+    mockSupabase = buildSupabaseMock({
+      token: "ABC1234567",
+      purchase_id: "purchase-1",
+      triaged: true,
+    });
+
+    const { POST } = await import("./route");
+    const request = new NextRequest("http://localhost/api/quiz", {
+      method: "POST",
+      body: JSON.stringify({
+        token: "ABC1234567",
+        quizType: "validacao",
+        answers: allCorrectAnswers(),
+      }),
+    });
+
+    const response = await POST(request);
+    const json = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(json.passed).toBe(true);
+    expect(mockSupabase.inserted.xp_events).toHaveLength(1);
   });
 
   it("não concede XP de validação duplicado se já existe evento para o token", async () => {
@@ -184,7 +242,11 @@ describe("POST /api/quiz", () => {
     const { POST } = await import("./route");
     const request = new NextRequest("http://localhost/api/quiz", {
       method: "POST",
-      body: JSON.stringify({ token: "ABC1234567", quizType: "validacao", score: 100, passed: true }),
+      body: JSON.stringify({
+        token: "ABC1234567",
+        quizType: "validacao",
+        answers: allCorrectAnswers(),
+      }),
     });
 
     const response = await POST(request);
@@ -209,7 +271,11 @@ describe("POST /api/quiz", () => {
     const { POST } = await import("./route");
     const request = new NextRequest("http://localhost/api/quiz", {
       method: "POST",
-      body: JSON.stringify({ token: "ABC1234567", quizType: "validacao", score: 100, passed: true }),
+      body: JSON.stringify({
+        token: "ABC1234567",
+        quizType: "validacao",
+        answers: allCorrectAnswers(),
+      }),
     });
 
     const response = await POST(request);
@@ -233,7 +299,11 @@ describe("POST /api/quiz", () => {
     const { POST } = await import("./route");
     const request = new NextRequest("http://localhost/api/quiz", {
       method: "POST",
-      body: JSON.stringify({ token: "ABC1234567", quizType: "validacao", score: 100, passed: true }),
+      body: JSON.stringify({
+        token: "ABC1234567",
+        quizType: "validacao",
+        answers: allCorrectAnswers(),
+      }),
     });
 
     const response = await POST(request);

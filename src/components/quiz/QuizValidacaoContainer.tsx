@@ -7,11 +7,13 @@ interface Props {
 }
 
 export default function QuizValidacaoContainer({ token }: Props) {
-  const handleComplete = async (score: number, passed: boolean) => {
+  const handleComplete = async (
+    answers: { questionId: number; selected: "A" | "B" | "C" | "D" }[]
+  ) => {
     await fetch("/api/quiz", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token, quizType: "validacao", score, passed }),
+      body: JSON.stringify({ token, quizType: "validacao", answers }),
     });
   };
 

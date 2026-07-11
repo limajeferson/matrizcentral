@@ -75,3 +75,59 @@ export function scoreTriagem(
     scores[profileId] > scores[winner] ? profileId : winner
   );
 }
+
+// ---------------------------------------------------------------------------
+// Quiz de validação (correção server-side)
+//
+// A nota NUNCA deve ser calculada no cliente e enviada como `passed`: qualquer
+// comprador poderia forjar a aprovação (e, por consequência, o certificado).
+// O servidor recebe apenas as respostas escolhidas e recalcula aqui, contra o
+// gabarito real.
+// ---------------------------------------------------------------------------
+
+export type QuizLetter = "A" | "B" | "C" | "D";
+
+export interface ValidacaoAnswer {
+  questionId: number;
+  selected: QuizLetter;
+}
+
+export interface GradedValidacaoAnswer extends ValidacaoAnswer {
+  isCorrect: boolean;
+}
+
+export interface ValidacaoResult {
+  correctCount: number;
+  totalQuestions: number;
+  scorePercent: number;
+  passed: boolean;
+  graded: GradedValidacaoAnswer[];
+}
+
+/**
+ * Corrige o quiz de validação no servidor a partir do gabarito.
+ * `passingScorePercent` é o mínimo (ex.: 70) para aprovação.
+ * Respostas com `questionId` inexistente contam como incorretas.
+ */
+export function scoreValidacao(
+  questions: { id: number; correctAnswer: QuizLetter }[],
+  answers: ValidacaoAnswer[],
+  passingScorePercent: number
+): ValidacaoResult {
+  const total = questions.length;
+
+  const graded: GradedValidacaoAnswer[] = answers.map((answer) => {
+    const question = questions.find((q) => q.id === answer.questionId);
+    return {
+      questionId: answer.questionId,
+      selected: answer.selected,
+      isCorrect: question ? question.correctAnswer === answer.selected : false,
+    };
+  });
+
+  const correctCount = graded.filter((g) => g.isCorrect).length;
+  const scorePercent = total > 0 ? Math.round((correctCount / total) * 100) : 0;
+  const passed = scorePercent >= passingScorePercent;
+
+  return { correctCount, totalQuestions: total, scorePercent, passed, graded };
+}

@@ -1,9 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
-import { scoreTriagem, type TriagemAnswer } from "@/lib/quiz-scoring";
+import {
+  scoreTriagem,
+  scoreValidacao,
+  type TriagemAnswer,
+  type ValidacaoAnswer,
+} from "@/lib/quiz-scoring";
 import { QUIZ_TRIAGEM } from "@/data/quiz-triagem";
+import { QUIZ_LLM_LOCAL, QUIZ_CONFIG } from "@/data/quiz-llm-local";
 import { grantBadges } from "@/lib/grant-badges";
 import { notifyLevelUpIfNeeded } from "@/lib/notify-level-up";
+import { issueCertificateForToken } from "@/lib/issue-certificate";
+import { isTokenExpired } from "@/lib/tokens";
 
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
@@ -22,7 +30,7 @@ export async function POST(req: NextRequest) {
     .eq("token", token)
     .maybeSingle();
 
-  if (!tokenRow) {
+  if (!tokenRow || isTokenExpired(tokenRow.valid_until)) {
     return NextResponse.json({ error: "token não encontrado" }, { status: 404 });
   }
 
@@ -68,10 +76,24 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ profileId });
   }
 
-  const score = body.score as number;
-  const passed = body.passed as boolean;
+  // Validação: a nota é recalculada AQUI, no servidor, a partir das respostas
+  // enviadas. Nunca confiar em `passed`/`score` do cliente (forjaria o
+  // certificado). O cliente envia apenas `answers: [{ questionId, selected }]`.
+  const answers = (body.answers ?? []) as ValidacaoAnswer[];
+  const result = scoreValidacao(QUIZ_LLM_LOCAL, answers, QUIZ_CONFIG.passingScore);
 
-  if (passed) {
+  const responseRows = result.graded.map((g) => ({
+    token,
+    quiz_type: "validacao" as const,
+    question_id: g.questionId,
+    answer: g.selected,
+    is_correct: g.isCorrect,
+  }));
+  if (responseRows.length > 0) {
+    await supabase.from("quiz_responses").insert(responseRows);
+  }
+
+  if (result.passed) {
     const { data: purchase } = await supabase
       .from("purchases")
       .select("user_id")
@@ -97,8 +119,16 @@ export async function POST(req: NextRequest) {
         await grantBadges(supabase, purchase.user_id);
         await notifyLevelUpIfNeeded(supabase, purchase.user_id, 100);
       }
+
+      // Gatilho 2 de emissão do certificado (o outro é concluir missao_final
+      // em /api/roadmap/complete). Cobre quem conclui a trilha ANTES do quiz.
+      await issueCertificateForToken(supabase, {
+        userId: purchase.user_id,
+        token,
+        profileId: tokenRow.profile_id,
+      });
     }
   }
 
-  return NextResponse.json({ ok: true, score, passed });
+  return NextResponse.json({ ok: true, score: result.scorePercent, passed: result.passed });
 }

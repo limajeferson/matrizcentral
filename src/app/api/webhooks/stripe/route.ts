@@ -31,16 +31,7 @@ export async function POST(req: NextRequest) {
 
   const supabase = getSupabaseServerClient();
 
-  const { data: existingPurchase } = await supabase
-    .from("purchases")
-    .select("id")
-    .eq("stripe_payment_id", stripePaymentId)
-    .maybeSingle();
-
-  if (existingPurchase) {
-    return NextResponse.json({ received: true, deduped: true });
-  }
-
+  // 1. Usuário (idempotente por e-mail).
   const { data: user, error: userError } = await supabase
     .from("users")
     .upsert({ email, stripe_customer_id: session.customer as string }, { onConflict: "email" })
@@ -52,41 +43,108 @@ export async function POST(req: NextRequest) {
   }
 
   const now = new Date();
-  const { data: purchase, error: purchaseError } = await supabase
-    .from("purchases")
-    .insert({
-      user_id: user.id,
-      product_id: productId,
-      price_cents: session.amount_total ?? 0,
-      status: "paid",
-      stripe_payment_id: stripePaymentId,
-      refund_window_expires: refundWindowExpiry(now).toISOString(),
-    })
-    .select()
-    .single();
 
-  if (purchaseError || !purchase) {
+  // 2. Compra (idempotente por stripe_payment_id). O XP de "compra" só é
+  //    concedido na criação — reentregas da Stripe não duplicam.
+  let purchaseId: string | null = null;
+  let purchaseWasCreated = false;
+
+  const { data: existingPurchase } = await supabase
+    .from("purchases")
+    .select("id")
+    .eq("stripe_payment_id", stripePaymentId)
+    .maybeSingle();
+
+  if (existingPurchase) {
+    purchaseId = existingPurchase.id;
+  } else {
+    const { data: created, error: purchaseError } = await supabase
+      .from("purchases")
+      .insert({
+        user_id: user.id,
+        product_id: productId,
+        price_cents: session.amount_total ?? 0,
+        status: "paid",
+        stripe_payment_id: stripePaymentId,
+        refund_window_expires: refundWindowExpiry(now).toISOString(),
+      })
+      .select("id")
+      .single();
+
+    if (purchaseError || !created) {
+      // Pode ser corrida com outra reentrega (unique em stripe_payment_id):
+      // relê antes de desistir.
+      const { data: reread } = await supabase
+        .from("purchases")
+        .select("id")
+        .eq("stripe_payment_id", stripePaymentId)
+        .maybeSingle();
+      if (!reread) {
+        return NextResponse.json({ error: "falha ao salvar compra" }, { status: 500 });
+      }
+      purchaseId = reread.id;
+    } else {
+      purchaseId = created.id;
+      purchaseWasCreated = true;
+      await supabase.from("xp_events").insert({
+        user_id: user.id,
+        xp_amount: 100,
+        action_type: "compra",
+        reference_id: purchaseId,
+      });
+    }
+  }
+
+  if (!purchaseId) {
     return NextResponse.json({ error: "falha ao salvar compra" }, { status: 500 });
   }
 
-  const token = generateToken();
-  await supabase.from("tokens").insert({
-    token,
-    purchase_id: purchase.id,
-    valid_until: tokenAccessExpiry(now).toISOString(),
-  });
+  // 3. Token de acesso (idempotente por purchase_id). Se a criação falhar,
+  //    retornamos 500 para a Stripe REENTREGAR o evento — como usuário e compra
+  //    já existem, a reentrega cai direto aqui e completa o passo que faltou.
+  //    É isto que impede o cenário "cliente pagou e ficou sem acesso".
+  let accessToken: string | null = null;
+  let tokenWasCreated = false;
 
-  await supabase.from("xp_events").insert({
-    user_id: user.id,
-    xp_amount: 100,
-    action_type: "compra",
-    reference_id: purchase.id,
-  });
+  const { data: existingToken } = await supabase
+    .from("tokens")
+    .select("token")
+    .eq("purchase_id", purchaseId)
+    .maybeSingle();
 
+  if (existingToken) {
+    accessToken = existingToken.token;
+  } else {
+    const newToken = generateToken();
+    const { error: tokenError } = await supabase.from("tokens").insert({
+      token: newToken,
+      purchase_id: purchaseId,
+      valid_until: tokenAccessExpiry(now).toISOString(),
+    });
+    if (tokenError) {
+      return NextResponse.json({ error: "falha ao gerar token de acesso" }, { status: 500 });
+    }
+    accessToken = newToken;
+    tokenWasCreated = true;
+  }
+
+  // Evento já totalmente processado antes (reentrega benigna): não reenvia
+  // e-mail, para não spammar o cliente.
+  if (!purchaseWasCreated && !tokenWasCreated) {
+    return NextResponse.json({ received: true, deduped: true });
+  }
+
+  // 4. E-mail (best-effort). O token já está persistido; se o e-mail falhar, o
+  //    cliente ainda recupera o acesso pela página de sucesso (resolvida pelo
+  //    session_id) ou por /api/resend-access. Falha de e-mail não derruba o
+  //    webhook — senão a Stripe reentregaria só por causa do e-mail.
   try {
-    await sendTokenEmail({ to: email, token });
+    await sendTokenEmail({ to: email, token: accessToken });
   } catch (err) {
-    console.error("Falha ao enviar e-mail de token, requer reenvio manual:", err);
+    console.error(
+      "Falha ao enviar e-mail de token (recuperável via página de sucesso ou /api/resend-access):",
+      err
+    );
   }
 
   return NextResponse.json({ received: true });

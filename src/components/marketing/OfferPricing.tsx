@@ -130,15 +130,16 @@ export default function OfferPricing() {
           </div>
           <EbookAvulsoCheckout />
           <ul>
-            <li>1 ebook completo com todos os capítulos sobre rodar LLMs localmente</li>
-            <li>Passo a passo de instalação e uso dos modelos</li>
-            <li>Avaliação de qual o melhor modelo para o seu objetivo</li>
-            <li>Triagem de perfil + roadmap personalizado — indica o melhor plano para assinar</li>
+            <li>Diagnóstico inicial + roadmap personalizado para o seu contexto</li>
+            <li>Acesso à plataforma-feed com biblioteca multi-formato (relatórios, podcasts, vídeos) — em expansão</li>
+            <li>Gamificação: XP, níveis e ranking da comunidade</li>
+            <li>Certificado de conclusão verificável ao terminar sua trilha</li>
+            <li>Ebook técnico completo (bônus): rodar LLMs localmente, do zero ao uso prático</li>
             <li>1 cupom de R$47 para migrar para o plano Regular ou o Advanced</li>
             <li>Garantia de 7 dias — não gostou, devolvemos</li>
           </ul>
           <span className="foot">
-            Por R$47, uma vez: um diagnóstico, um plano de ação e o fim das mensalidades.
+            Por R$47, uma vez: acesso à plataforma, um diagnóstico, um plano de ação e o fim das mensalidades.
           </span>
         </div>
 
@@ -179,13 +180,11 @@ export default function OfferPricing() {
           </div>
           <WaitlistForm planId="anual_497" />
           <ul>
-            <li>Acesso completo à plataforma</li>
-            <li>Todos os ebooks lançados durante os 12 meses</li>
-            <li>Triagem de perfil + roadmap personalizado</li>
-            <li>Quiz de validação com certificado de conclusão</li>
-            <li>Gamificação de perfil para medir a profundidade do seu aprendizado</li>
-            <li>Hub completo: relatórios, podcasts, pesquisas, apresentações, conteúdo personalizado e avaliação de novas ferramentas</li>
-            <li>≈ R$19 por ebook — o mais barato do catálogo (2 lançamentos por mês)</li>
+            <li>Tudo do Start, com o catálogo completo liberado</li>
+            <li>Todos os conteúdos lançados durante os 12 meses (≈ 2 lançamentos por mês)</li>
+            <li>Hub completo: relatórios, podcasts, vídeos, pesquisas, apresentações e avaliação de novas ferramentas</li>
+            <li>Conteúdo e trilhas personalizados conforme novos temas</li>
+            <li>≈ R$19 por conteúdo — o mais barato do catálogo</li>
           </ul>
           <span className="foot">Pra quem já sabe que vai estudar o ano inteiro</span>
         </div>

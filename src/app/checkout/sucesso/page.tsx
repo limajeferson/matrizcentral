@@ -1,7 +1,14 @@
 import NeuralBackdrop from "@/components/marketing/v2/NeuralBackdrop";
+import AccessReveal from "./AccessReveal";
 import "../checkout-dark.css";
 
-export default function CheckoutSucessoPage() {
+export default function CheckoutSucessoPage({
+  searchParams,
+}: {
+  searchParams: { session_id?: string };
+}) {
+  const sessionId = searchParams.session_id ?? null;
+
   return (
     <div className="mc-checkout">
       <NeuralBackdrop />
@@ -12,7 +19,7 @@ export default function CheckoutSucessoPage() {
           </svg>
         </span>
         <h1>Compra confirmada!</h1>
-        <p>Verifique seu e-mail para receber o link do seu quiz de triagem.</p>
+        <AccessReveal sessionId={sessionId} />
       </div>
     </div>
   );

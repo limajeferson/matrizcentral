@@ -51,6 +51,61 @@
   text-decoration: underline;
 }
 
+/* Acesso liberado na própria tela de sucesso (não depende do e-mail) */
+.mc-checkout-cta {
+  display: inline-block;
+  margin: 4px 0 14px;
+  padding: 12px 22px;
+  border-radius: 12px;
+  background: #7c5cff;
+  color: #fff !important;
+  font-weight: 700;
+  text-decoration: none !important;
+}
+.mc-checkout-cta:hover { background: #6a4cf0; }
+.mc-checkout-hint { font-size: 0.85rem; color: #6f6a82 !important; }
+.mc-resend {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.mc-resend input {
+  flex: 1 1 180px;
+  min-width: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+  font-size: 0.9rem;
+}
+.mc-resend input::placeholder { color: #6f6a82; }
+.mc-resend button {
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(124, 92, 255, 0.5);
+  background: rgba(124, 92, 255, 0.12);
+  color: #cdbfff;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.mc-resend button:disabled { opacity: 0.6; cursor: default; }
+.mc-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .mc-neural-blob-wrap {
   position: absolute;
   will-change: transform;

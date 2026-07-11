@@ -14,7 +14,9 @@ interface UserAnswer {
 
 interface QuizProps {
   token: string;
-  onComplete: (score: number, passed: boolean) => void;
+  onComplete: (
+    answers: { questionId: number; selected: "A" | "B" | "C" | "D" }[]
+  ) => void;
 }
 
 export default function QuizValidacao({ token, onComplete }: QuizProps) {
@@ -66,8 +68,12 @@ export default function QuizValidacao({ token, onComplete }: QuizProps) {
 
   useEffect(() => {
     if (quizFinished) {
-      onComplete(scorePercent, passed);
+      // Enviamos apenas as respostas escolhidas; o servidor recalcula a nota.
+      onComplete(
+        answers.map((a) => ({ questionId: a.questionId, selected: a.selected }))
+      );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quizFinished]);
 
   // Tela de Resultado Final
