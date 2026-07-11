@@ -89,9 +89,6 @@ Funções sem I/O, testadas com Vitest (mesmo padrão de `tokens.ts`/`levels.ts`
   unicidade em N chamadas.
 - `hashAuthSecret(secret: string): string` — SHA-256 hex (`crypto.createHash`).
   Testes: determinístico, muda com input, formato hex.
-- `safeCompareHash(a: string, b: string): boolean` — wrapper timing-safe sobre
-  `crypto.timingSafeEqual` (com guarda de comprimento). Testes: igual→true,
-  diferente→false, comprimentos diferentes→false sem lançar.
 - `magicLinkExpiry(from?: Date): Date` — `from + 15 min`.
 - `sessionExpiry(from?: Date): Date` — `from + 30 dias`.
 - `isExpired(at: string | Date, now?: Date): boolean` — reaproveita o padrão de
@@ -114,9 +111,9 @@ pela verificação no navegador.
      `${NEXT_PUBLIC_URL}/entrar/verificar?c=<cartão-cru>` via `email.ts`.
   4. Retorna `'sent'`.
 - `verifyMagicLink(rawSecret): Promise<{ userId } | null>`
-  - Faz `hashAuthSecret`, busca por `token_hash`, valida `used_at is null` e não
-    expirado (comparação de hash via `safeCompareHash`). Válido → marca
-    `used_at = now()`, cria `sessions` (carteirinha), retorna `{ userId }`.
+  - Faz `hashAuthSecret`, busca por `token_hash` (índice), valida `used_at is
+    null` e não expirado. Válido → marca `used_at = now()` (trava condicional
+    para uso único), cria `sessions` (carteirinha), retorna `{ userId }`.
     Qualquer falha → `null`.
 - `createSession(userId): Promise<rawSessionSecret>` — gera carteirinha, grava
   hash + `expires_at` (30 dias). Retorna o segredo cru (vai pro cookie).
@@ -165,7 +162,7 @@ validar o componente ponta a ponta.
 | Cartão adivinhável | `crypto.randomBytes(32)` (256 bits), base64url |
 | Vazamento do banco | Guardar só `token_hash` (SHA-256), nunca o segredo cru |
 | Reuso do link | `used_at` (uso único) + `expires_at` 15 min |
-| Falsificação por tentativa | `safeCompareHash` (timing-safe) |
+| Falsificação por tentativa | Segredo de 256 bits + busca por hash indexado (brute-force/timing inviáveis; sem comparação em app) |
 | Roubo da carteirinha | Cookie `httpOnly` + `secure` + `sameSite=lax` |
 | Acesso após reembolso/logout | Apagar linha em `sessions` |
 | Spam de e-mails de login | Rate-limit 60s por usuário |

@@ -164,11 +164,15 @@ git commit -m "feat(login): tabelas magic_links e sessions + tipos"
 - Produces:
   - `generateAuthSecret(): string` — 256 bits em base64url (43 chars).
   - `hashAuthSecret(secret: string): string` — SHA-256 hex (64 chars).
-  - `safeCompareHash(a: string, b: string): boolean` — timing-safe, guarda de comprimento.
   - `magicLinkExpiry(from?: Date): Date` — `from + 15 min`.
   - `sessionExpiry(from?: Date): Date` — `from + 30 dias`.
   - `isExpired(at: string | Date, now?: Date): boolean`.
   - `REQUEST_LINK_THROTTLE_MS: number` — 60000.
+
+> **Nota de segurança:** a verificação é por **busca do hash indexado** no banco
+> (`WHERE token_hash = $hash`), não por comparação em código. O segredo tem 256
+> bits aleatórios → brute-force e timing-attack são inviáveis; não é preciso
+> comparação timing-safe em app.
 
 - [ ] **Step 1: Escrever os testes que falham**
 
@@ -179,7 +183,6 @@ import { describe, it, expect } from "vitest";
 import {
   generateAuthSecret,
   hashAuthSecret,
-  safeCompareHash,
   magicLinkExpiry,
   sessionExpiry,
   isExpired,
@@ -203,19 +206,6 @@ describe("hashAuthSecret", () => {
   });
   it("muda com input diferente", () => {
     expect(hashAuthSecret("abc")).not.toBe(hashAuthSecret("abd"));
-  });
-});
-
-describe("safeCompareHash", () => {
-  it("true para iguais", () => {
-    const h = hashAuthSecret("x");
-    expect(safeCompareHash(h, h)).toBe(true);
-  });
-  it("false para diferentes de mesmo comprimento", () => {
-    expect(safeCompareHash(hashAuthSecret("x"), hashAuthSecret("y"))).toBe(false);
-  });
-  it("false, sem lançar, para comprimentos diferentes", () => {
-    expect(safeCompareHash("abc", "abcd")).toBe(false);
   });
 });
 
@@ -250,7 +240,7 @@ Expected: FAIL ("Cannot find module './auth-tokens'").
 Create `src/lib/auth-tokens.ts`:
 
 ```ts
-import { randomBytes, createHash, timingSafeEqual } from "crypto";
+import { randomBytes, createHash } from "crypto";
 
 const MAGIC_LINK_TTL_MS = 15 * 60 * 1000; // 15 minutos
 const SESSION_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 dias
@@ -264,16 +254,6 @@ export function generateAuthSecret(): string {
 /** SHA-256 hex do segredo. Guardamos SEMPRE o hash, nunca o segredo cru. */
 export function hashAuthSecret(secret: string): string {
   return createHash("sha256").update(secret).digest("hex");
-}
-
-/** Comparação timing-safe de dois hashes hex (defesa em profundidade). */
-export function safeCompareHash(a: string, b: string): boolean {
-  if (a.length !== b.length) return false;
-  try {
-    return timingSafeEqual(Buffer.from(a), Buffer.from(b));
-  } catch {
-    return false;
-  }
 }
 
 export function magicLinkExpiry(from: Date = new Date()): Date {
@@ -473,7 +453,6 @@ import { sendMagicLinkEmail } from "@/lib/email";
 import {
   generateAuthSecret,
   hashAuthSecret,
-  safeCompareHash,
   magicLinkExpiry,
   sessionExpiry,
   isExpired,
@@ -530,11 +509,10 @@ export async function verifyMagicLink(
 
   const { data: link } = await supabase
     .from("magic_links")
-    .select("id, user_id, token_hash, expires_at, used_at")
+    .select("id, user_id, expires_at, used_at")
     .eq("token_hash", hash)
     .maybeSingle();
   if (!link) return null;
-  if (!safeCompareHash(link.token_hash, hash)) return null; // defesa em profundidade
   if (link.used_at) return null;
   if (isExpired(link.expires_at)) return null;
 
