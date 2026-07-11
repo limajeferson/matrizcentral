@@ -6,15 +6,22 @@ Contexto para sessões do Claude Code neste repositório. Mantenha conciso.
 
 ## Retomando trabalho entre sessões
 
-Se o usuário pedir para continuar, perguntar "qual a próxima frente/etapa",
-ou pedir alinhamento com a última entrega:
-1. Leia `docs/ECOSSISTEMA.md`, seção "Frentes já trabalhadas".
-2. Identifique a frente mais recente com status 🔄 (em andamento) — se
-   nenhuma, a última ✅ concluída (a de data mais recente na lista).
-3. Abra o `README.md` dessa frente (`docs/frentes/<slug>/README.md`) — ele
-   tem o "Próximo passo" exato (task do plano, ou o que falta decidir).
-4. Responda já com esse contexto resumido, sem pedir pro usuário repetir o
-   que já está documentado.
+Se o usuário disser **"continue de onde paramos"**, pedir para continuar,
+perguntar "qual a próxima frente/etapa", ou pedir alinhamento com a última
+entrega:
+1. **Leia [`docs/ESTADO-ATUAL.md`](docs/ESTADO-ATUAL.md) PRIMEIRO** — é o pino
+   "você está aqui": objetivo, frente ativa, última ação, **próxima ação**,
+   estado do git, decisões travadas e pendências. Ele é a fonte de verdade da
+   retomada (as tasks do painel não sobrevivem ao `/clear`).
+2. Abra o `README.md` da frente ativa indicada lá (`docs/frentes/<slug>/README.md`)
+   — tem o "Próximo passo" exato e as decisões já travadas.
+3. Responda já com esse contexto resumido e siga a próxima ação, sem pedir pro
+   usuário repetir o que já está documentado.
+4. **Ao FIM de cada bloco de trabalho, atualize `docs/ESTADO-ATUAL.md`** (seção
+   "Onde paramos AGORA", "Estado do git" e o "Log de sessões") e commite junto —
+   é isso que mantém a continuidade viva entre sessões e entre computadores.
+
+O guia humano de retomada (pro usuário) é [`COMO-CONTINUAR.md`](COMO-CONTINUAR.md).
 
 **Specs e planos novos vão em `docs/frentes/<slug>/spec.md` e `/plano.md`**
 — não mais em `docs/superpowers/specs|plans/` (estrutura antiga, só histórico

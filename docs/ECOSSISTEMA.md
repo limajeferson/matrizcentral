@@ -4,9 +4,10 @@
 
 ## 🧭 Comece aqui (regras de navegação)
 
+- **Retomando trabalho / "continue de onde paramos"?** Leia [`ESTADO-ATUAL.md`](ESTADO-ATUAL.md) — é o pino "você está aqui" (frente ativa + próxima ação + estado do git). Ele tem prioridade sobre este hub na retomada.
 - Leia este hub e **siga apenas os links necessários** para a tarefa atual. Não abra tudo — abrir sob demanda economiza tokens.
 - Cada fato tem **um lugar canônico** (indicado abaixo). Ao precisar de um detalhe, **confirme no arquivo linkado** em vez de supor — isso evita alucinação.
-- Ordem recomendada num início do zero: este hub → `CLAUDE.md` → o spec da fase atual → o código fonte-de-verdade.
+- Ordem recomendada num início do zero: [`ESTADO-ATUAL.md`](ESTADO-ATUAL.md) → este hub → `CLAUDE.md` → o README da frente ativa → o código fonte-de-verdade.
 
 ## 📊 Status atual
 
@@ -62,10 +63,20 @@ Cada frente vive em `docs/frentes/<slug>/` com `spec.md` (o quê/porquê), `plan
 - ✅ [gamificacao-avancada](frentes/gamificacao-avancada/README.md) — níveis, badges, certificado, leaderboard, desafios, notificações
 - ✅ [feed-conteudo-recomendado](frentes/feed-conteudo-recomendado/README.md) — seção recomendada no hub de conteúdo
 - ✅ [ecossistema-frentes](frentes/ecossistema-frentes/README.md) — este próprio reorganização (você está aqui)
+- ✅ [hardening-criticos](frentes/hardening-criticos/README.md) — auditoria completa (5 subagentes) + conserto dos 4 críticos (certificado forjável, paga-e-não-recebe, certificado inalcançável, promessa desalinhada). Na master, verificado.
 
-### 🔜 Planejadas
+### 🔄 / 🔜 Roadmap por frentes (receita primeiro)
 
-- 🔜 [comunidade-identidade-feed](frentes/comunidade-identidade-feed/README.md) — login real + feed central (rede social de IA) + portal de fórum. Tem prompt de retomada pronto, aguardando sessão dedicada (modelo Opus).
+> Fonte de verdade do andamento: [`ESTADO-ATUAL.md`](ESTADO-ATUAL.md).
+
+- 🔄 [login-real](frentes/login-real/README.md) — **frente ativa (próxima)**: fundação de identidade (conviver token + magic link Supabase Auth, sem NFT). Destrava assinaturas/feed/fórum/CRM. Engatilhada, aguardando brainstorm.
+- 🔜 Assinaturas (Regular/Advanced) + e-mails de ciclo/CRM — depende de login-real.
+- 🔜 Feed central (rede social de IA) — depende de login-real.
+- 🔜 Fórum (portal de tópicos) — depende de login-real.
+- 🔜 Blog + Marketing (calendário/sazonalidade/funil).
+- 🔜 Suporte/autoatendimento + CRM/pós-venda.
+
+> A frente antiga [comunidade-identidade-feed](frentes/comunidade-identidade-feed/README.md) foi **desmembrada**: a fundação virou `login-real`; feed e fórum são frentes próprias acima.
 
 ## ➡️ Fluxo de necessidades (próximos passos até o site no ar)
 
