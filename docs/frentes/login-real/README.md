@@ -1,6 +1,6 @@
 # Frente 1 — Login real (fundação de identidade)
 
-**Status:** 🔄 Próxima (engatilhada — decisões travadas, aguardando brainstorm numa sessão dedicada)
+**Status:** 🔄 Em andamento — **brainstorm concluído, spec aprovado** ([`spec.md`](spec.md)). Próximo: escrever o plano de implementação (`writing-plans`).
 
 **Por que primeiro:** é pré-requisito de tudo que gera receita e comunidade —
 assinaturas, feed, fórum, perfil e CRM precisam saber "quem é esse usuário" ao
@@ -21,22 +21,22 @@ persistente.
   atrito cripto ao público. O login já entrega o "amarrado à identidade, difícil
   de transferir" que o usuário queria.
 
-## ❓ Perguntas em aberto (resolver no brainstorm)
+## ✅ Perguntas em aberto — RESOLVIDAS no brainstorm (ver [`spec.md`](spec.md))
 
-1. **O que exatamente o login "protege"** (gating): só as áreas novas (assinatura,
-   feed, fórum, perfil), ou também o dashboard atual? O token some com o tempo ou
-   coexiste para sempre?
-2. **Migração da identidade:** quando um comprador-por-token faz login pela
-   primeira vez com o mesmo e-mail, como ligamos a conta ao histórico dele
-   (compras, XP, certificado) sem duplicar `users`?
-3. **Modelo de sessão:** cookie de sessão do Supabase Auth (SSR) — como conviver
-   com as rotas atuais que resolvem tudo por `token`? Middleware? Server actions?
-4. **UX de entrada:** onde vive a tela de login? Header? Uma rota `/entrar`? O
-   dashboard por token ganha um "criar minha conta para voltar depois"?
-5. **RLS e segurança:** hoje o acesso é server-side com `service_role` (ignora
-   RLS). Com identidade real, vale introduzir policies por `auth.uid()` para as
-   áreas novas? (o backlog da auditoria — forja de XP, revogação em reembolso —
-   se resolve melhor com identidade real).
+1. **O que o login protege:** alcança **tudo** — o aluno logado volta ao painel
+   de hoje (via `/conta`, que resolve o token nos bastidores) e às áreas novas. O
+   token **coexiste para sempre** como atalho pós-compra.
+2. **Migração da identidade:** trivial — a identidade fica **só na `users`** já
+   existente, achada por e-mail. **Sem `auth.users` para reconciliar.**
+3. **Modelo de sessão:** cookie próprio assinado (`mc_session`, `httpOnly`),
+   resolvido server-side pelo porteiro `getSessionUser()` — mesmo padrão do token.
+   Sem middleware; server actions + route handler no callback.
+4. **UX de entrada:** botão "Entrar"/"Minha conta" no header, rota `/entrar`
+   (e-mail → magic link), `/entrar/verificar` (callback), `/conta` (lar do aluno).
+5. **RLS e segurança:** **decidido reabrir a decisão "Supabase Auth"** → magic
+   link **próprio** (zero deps, `crypto` nativo). Seguimos com `service_role` +
+   gating no código (sem `auth.uid()`). Segurança coberta pelo checklist do spec
+   (hash, uso único, timing-safe, cookie protegido, sessão revogável).
 
 ## Restrições que já valem
 
@@ -47,10 +47,10 @@ persistente.
 
 ## ➡️ Próximo passo
 
-Rodar **`superpowers:brainstorming`** a partir deste README (responder às
-perguntas em aberto, uma de cada vez), depois **`superpowers:writing-plans`**
-para o plano de implementação, e **`superpowers:subagent-driven-development`**
-para executar com revisão a cada task. Ao concluir, atualizar
+Brainstorm ✅ e spec ✅ ([`spec.md`](spec.md), aprovado pelo usuário). Agora rodar
+**`superpowers:writing-plans`** para o plano de implementação a partir do spec, e
+depois **`superpowers:subagent-driven-development`** para executar com revisão a
+cada task. Ao concluir cada bloco, atualizar
 [`docs/ESTADO-ATUAL.md`](../../ESTADO-ATUAL.md) e este README.
 
 ## Prompt de retomada (colar numa sessão nova)
