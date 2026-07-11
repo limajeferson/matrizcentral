@@ -88,3 +88,35 @@ export async function sendCertificateEmail(params: {
     throw new Error(`Falha ao enviar e-mail de certificado via Brevo: ${response.status} ${responseBody}`);
   }
 }
+
+export async function sendMagicLinkEmail(params: {
+  to: string;
+  secret: string;
+}): Promise<void> {
+  const loginUrl = `${process.env.NEXT_PUBLIC_URL}/entrar/verificar?c=${params.secret}`;
+
+  const response = await fetch(BREVO_API_URL, {
+    method: "POST",
+    headers: {
+      "api-key": process.env.BREVO_API_KEY!,
+      "Content-Type": "application/json",
+      accept: "application/json",
+    },
+    body: JSON.stringify({
+      sender: { name: "Matriz Central", email: "contato@matrizcentral.com.br" },
+      to: [{ email: params.to }],
+      subject: "Seu link de acesso à Matriz Central 🔑",
+      htmlContent: `
+        <p>Recebemos um pedido para entrar na sua conta.</p>
+        <p>Clique no link abaixo para acessar (válido por 15 minutos, uso único):</p>
+        <p><a href="${loginUrl}">${loginUrl}</a></p>
+        <p>Se não foi você, pode ignorar este e-mail.</p>
+      `,
+    }),
+  });
+
+  if (!response.ok) {
+    const responseBody = await response.text();
+    throw new Error(`Falha ao enviar magic link via Brevo: ${response.status} ${responseBody}`);
+  }
+}
