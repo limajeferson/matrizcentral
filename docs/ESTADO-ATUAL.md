@@ -42,9 +42,8 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
 
 ## 🌿 Estado do git
 
-- **Branch ativa:** `master`. **Commits da Frente 1 estão locais, ainda NÃO
-  enviados** (`git push origin master` pendente — o outro computador só recebe
-  depois do push). Último commit: `aa65e63`.
+- **Branch ativa:** `master`, **sincronizada com `origin/master`** (push feito,
+  até `59e7ea8`). O outro computador recebe tudo com `git pull origin master`.
 - **Inclui (nesta rodada):** spec+plano do login, migrations 0015/0016, toda a
   implementação do login (auth-tokens, safe-redirect, auth-session, rotas, telas,
   header, ContentGate), fix de normalização de e-mail e hardening pós-review.
@@ -104,9 +103,9 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
   reviewer subagente. Fix de normalização de e-mail (webhook/resend) e revisão
   final ampla (opus) com hardening (backfill 0016, try/catch nas rotas, flags de
   cookie). `tsc` 0, 118 testes. Ledger em `.superpowers/sdd/progress.md`.
-  **Pendente:** aplicar migrations no remoto + E2E ao vivo do magic link +
-  decisão da landing dinâmica. **Não commitado/pushado ainda? Commitado sim;
-  push pendente.**
+  **Na master e pushado** (`59e7ea8`). Decisão travada: landing fica dinâmica
+  (sem mudança). **Pendente:** aplicar migrations no remoto + E2E ao vivo do
+  magic link com e-mail real.
 - **2026-07-11 (Opus) — Frente 1 brainstorm:** rodado `brainstorming` da Frente 1
   (Login real). Decisões travadas na sessão: **magic link próprio** (zero deps,
   reabrindo a decisão "Supabase Auth" após trade-off explicado ao usuário em
