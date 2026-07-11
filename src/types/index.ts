@@ -263,6 +263,46 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["challenge_claims"]["Insert"]>;
         Relationships: [];
       };
+      magic_links: {
+        Row: {
+          id: string;
+          user_id: string;
+          token_hash: string;
+          expires_at: string;
+          used_at: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          token_hash: string;
+          expires_at: string;
+          used_at?: string | null;
+          created_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["magic_links"]["Insert"]>;
+        Relationships: [];
+      };
+      sessions: {
+        Row: {
+          id: string;
+          user_id: string;
+          token_hash: string;
+          expires_at: string;
+          last_seen_at: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          token_hash: string;
+          expires_at: string;
+          last_seen_at?: string;
+          created_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["sessions"]["Insert"]>;
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
