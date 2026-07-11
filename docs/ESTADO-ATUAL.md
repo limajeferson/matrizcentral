@@ -35,12 +35,13 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
 
 ## 🌿 Estado do git
 
-- **Branch ativa:** `master`. O hardening já foi mergeado (fast-forward).
-- **Commits locais à frente do `origin/master`:** `b56aa9f` (grant service_role),
-  `0aee161` (hardening 4 críticos), `7ea8181` (chore infra), e o commit de docs
-  desta rodada. **Ver "Pendências" abaixo sobre o push.**
+- **Branch ativa:** `master`, **sincronizada com `origin/master`** (push feito
+  nesta rodada, até o commit `16b7195`). O outro computador recebe tudo com
+  `git pull origin master`.
+- **Inclui:** grant service_role, hardening dos 4 críticos, infra (gitignore +
+  supabase CLI) e este sistema de continuidade.
 - **Não versionado (local, de propósito):** `.env.local` (segredos),
-  `SETUP.md`, `claude-chat.md`, `CLAUDE.local-draft.md`, `prompt-pedido.md`.
+  `SETUP.md`, `claude-chat.md`, `CLAUDE.local-draft.md`.
 
 ## 🗂️ Frentes (o mapa mestre)
 
@@ -79,9 +80,6 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
 
 ## ⏳ Pendências / decisões em aberto
 
-- **Push para o `origin/master`:** o usuário pediu o push. Se falhar por
-  autenticação (o `gh` pode não estar logado nesta máquina), rodar
-  `! gh auth login` (ou configurar credencial git) e então `git push origin master`.
 - **Crítico #4 (copy):** o alinhamento da `/oferta` é de posicionamento/marca —
   o usuário deve revisar o texto do card Start/Advanced e ajustar as palavras.
 - **Backlog da auditoria (altos/médios):** revogação de acesso em reembolso,
