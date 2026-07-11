@@ -11,7 +11,11 @@ const LINKS = [
   { href: "#faq", label: "FAQ" },
 ];
 
-export default function LandingHeader() {
+export default function LandingHeader({
+  accountSlot,
+}: {
+  accountSlot?: React.ReactNode;
+}) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -21,16 +25,19 @@ export default function LandingHeader() {
           <span className="mc-logo mc-display">
             <ScrambleText text="Matriz/Central" />
           </span>
-          <button
-            type="button"
-            className="mc-menu-toggle"
-            aria-label={open ? "Fechar menu" : "Abrir menu"}
-            aria-expanded={open}
-            onClick={() => setOpen((v) => !v)}
-          >
-            <span className={`mc-menu-line${open ? " open-top" : ""}`} />
-            <span className={`mc-menu-line${open ? " open-bottom" : ""}`} />
-          </button>
+          <div className="mc-header-actions">
+            {accountSlot}
+            <button
+              type="button"
+              className="mc-menu-toggle"
+              aria-label={open ? "Fechar menu" : "Abrir menu"}
+              aria-expanded={open}
+              onClick={() => setOpen((v) => !v)}
+            >
+              <span className={`mc-menu-line${open ? " open-top" : ""}`} />
+              <span className={`mc-menu-line${open ? " open-bottom" : ""}`} />
+            </button>
+          </div>
         </div>
       </header>
 

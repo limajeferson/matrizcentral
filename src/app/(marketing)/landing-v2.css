@@ -1139,3 +1139,24 @@
   margin-top: 40px; padding: 16px 20px; border: 1px solid var(--mc-line);
   border-radius: 12px; font-size: 0.85rem;
 }
+
+.mcv2 .mc-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.mcv2 .mc-session-nav {
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  color: var(--mc-ink, #fff);
+  opacity: 0.85;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  padding: 0.35rem 0.9rem;
+  transition: opacity 0.2s, border-color 0.2s;
+}
+.mcv2 .mc-session-nav:hover {
+  opacity: 1;
+  border-color: var(--mc-accent, #7c5cff);
+}

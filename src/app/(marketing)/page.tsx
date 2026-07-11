@@ -3,6 +3,7 @@ import "./landing-v2.css";
 
 import PixelGridBackground from "@/components/marketing/v2/PixelGridBackground";
 import LandingHeader from "@/components/marketing/v2/LandingHeader";
+import SessionNav from "@/components/auth/SessionNav";
 import FixedCta from "@/components/marketing/v2/FixedCta";
 import HeroV2 from "@/components/marketing/v2/HeroV2";
 import OpportunitySection from "@/components/marketing/v2/OpportunitySection";
@@ -41,7 +42,7 @@ export default function HomePage() {
       <noscript>
         <style>{`.mcv2 [style*="opacity"], .mcv2 [style*="opacity:0"] { opacity: 1 !important; transform: none !important; filter: none !important; height: auto !important; overflow: visible !important; }`}</style>
       </noscript>
-      <LandingHeader />
+      <LandingHeader accountSlot={<SessionNav />} />
       <FixedCta />
       <div className="mc-canvas">
         <HeroV2 />
