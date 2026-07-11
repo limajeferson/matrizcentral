@@ -22,11 +22,15 @@ export async function requestMagicLink(
   const supabase = getSupabaseServerClient();
   const normalized = email.trim().toLowerCase();
 
-  const { data: user } = await supabase
+  const { data: user, error: lookupError } = await supabase
     .from("users")
     .select("id, email")
     .eq("email", normalized)
     .maybeSingle();
+  if (lookupError) {
+    console.error("Falha ao buscar usuário para magic link:", lookupError);
+    return "no-account";
+  }
   if (!user) return "no-account";
 
   // Rate-limit: já existe link recente para este usuário? não reenvia.

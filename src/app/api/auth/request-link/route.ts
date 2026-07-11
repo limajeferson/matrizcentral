@@ -10,6 +10,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "e-mail inválido" }, { status: 400 });
   }
 
-  const status = await requestMagicLink(email);
-  return NextResponse.json({ status });
+  try {
+    const status = await requestMagicLink(email);
+    return NextResponse.json({ status });
+  } catch (err) {
+    console.error("Falha ao processar pedido de magic link:", err);
+    return NextResponse.json(
+      { error: "Não foi possível enviar o link agora. Tente novamente." },
+      { status: 500 }
+    );
+  }
 }

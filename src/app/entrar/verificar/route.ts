@@ -15,19 +15,24 @@ export async function GET(req: NextRequest) {
     return NextResponse.redirect(new URL("/entrar?erro=link", req.url));
   }
 
-  const user = await verifyMagicLink(secret);
-  if (!user) {
+  try {
+    const user = await verifyMagicLink(secret);
+    if (!user) {
+      return NextResponse.redirect(new URL("/entrar?erro=link", req.url));
+    }
+
+    const sessionSecret = await createSession(user.id);
+    const res = NextResponse.redirect(new URL(next, req.url));
+    res.cookies.set(SESSION_COOKIE, sessionSecret, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: SESSION_MAX_AGE_SECONDS,
+    });
+    return res;
+  } catch (err) {
+    console.error("Falha ao verificar magic link / criar sessão:", err);
     return NextResponse.redirect(new URL("/entrar?erro=link", req.url));
   }
-
-  const sessionSecret = await createSession(user.id);
-  const res = NextResponse.redirect(new URL(next, req.url));
-  res.cookies.set(SESSION_COOKIE, sessionSecret, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    path: "/",
-    maxAge: SESSION_MAX_AGE_SECONDS,
-  });
-  return res;
 }
