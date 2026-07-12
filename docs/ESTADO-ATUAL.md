@@ -8,7 +8,7 @@
 > Ordem de leitura ao retomar: **este arquivo → `CLAUDE.md` → o `README.md` da
 > frente ativa → o código fonte-de-verdade.**
 
-_Última atualização: 2026-07-11 (Frente 1 — código completo e revisado, pendente aceitação ao vivo)_
+_Última atualização: 2026-07-12 (Frente 1 — LOGIN VALIDADO AO VIVO em produção)_
 
 ---
 
@@ -32,13 +32,20 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
   (magic link uso-único + sessão revogável + porteiro), rotas
   `/api/auth/*` + `/entrar/verificar`, telas `/entrar` e `/conta`, botão no
   header, `ContentGate`. Revisão final ampla (opus) passou com fixes aplicados.
-- **➡️ PRÓXIMA AÇÃO — ACEITAÇÃO AO VIVO (precisa do usuário):**
-  1. Aplicar migrations no Supabase remoto: `npx supabase db push` (0011+0015+0016).
-  2. E2E do magic link com e-mail real (Brevo): `/entrar` → link → `/conta` → logout.
-  3. Decidir **#7** (landing virou dinâmica por causa do `SessionNav`; manter ou
-     pílula client-side).
-  Detalhes e checklist em [`docs/frentes/login-real/README.md`](frentes/login-real/README.md).
-  Depois disso: marcar Frente 1 ✅ e iniciar a **Frente 2 (Assinaturas)**.
+- **ACEITAÇÃO AO VIVO CONCLUÍDA (2026-07-12):** migrations 0015/0016 aplicadas no
+  Supabase de produção (via SQL Editor — `db push` travou por histórico de
+  migrations divergente, ver pendência). Login testado ponta a ponta no navegador
+  com conta real: no-account, envio, verify→`/conta` logado, "ir para meu painel"
+  →`/dashboard/{token}`, uso único (`?erro=link`), logout, header reativo,
+  proteção de `/conta`. **Tudo passou.** Decisão #7: landing fica dinâmica.
+- **⚠️ ACHADO (não-bloqueante, fora do login):** o Brevo **aceita** o envio
+  (API 2xx) mas o e-mail **não chegou** no inbox em 4 min — provável domínio
+  remetente não verificado (SPF/DKIM) ou spam. **Afeta também o e-mail de token
+  da compra** (mesmo `email.ts`). Investigar config do Brevo separadamente.
+- **➡️ PRÓXIMA AÇÃO:** iniciar a **Frente 2 — Assinaturas** (Regular/Advanced +
+  e-mails de ciclo/CRM), agora que a fundação de identidade está viva. Antes,
+  opcional: (a) config de e-mail do Brevo; (b) reconciliar o histórico de
+  migrations do Supabase (ver pendência).
 
 ## 🌿 Estado do git
 
@@ -57,7 +64,7 @@ Ordem escolhida pelo usuário: **receita primeiro**.
 | # | Frente | Status | README |
 |---|--------|--------|--------|
 | 0 | Auditoria + Hardening dos 4 críticos | ✅ concluída | [hardening-criticos](frentes/hardening-criticos/README.md) |
-| 1 | **Login real** (fundação de identidade) | 🔄 **código completo+revisado** (pendente aceitação ao vivo: migrations + E2E) | [login-real](frentes/login-real/README.md) |
+| 1 | **Login real** (fundação de identidade) | ✅ **concluída** (implementada, revisada, migrations aplicadas, E2E validado ao vivo) | [login-real](frentes/login-real/README.md) |
 | 2 | Assinaturas (Regular/Advanced) + e-mails de ciclo/CRM | 🔜 planejada (depende de #1) | criar ao iniciar |
 | 3 | Feed central (rede social de IA) | 🔜 planejada (depende de #1) | criar ao iniciar |
 | 4 | Fórum (portal de tópicos) | 🔜 planejada (depende de #1) | criar ao iniciar |
@@ -87,6 +94,15 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
 
 ## ⏳ Pendências / decisões em aberto
 
+- **E-mail (Brevo) não entrega:** app envia OK (API 2xx) mas o e-mail não chega —
+  verificar domínio remetente `matrizcentral.com.br` (SPF/DKIM) e reputação no
+  Brevo. Afeta login **e** e-mail de token da compra.
+- **Histórico de migrations do Supabase divergente:** remoto tem versões com
+  timestamp; local usa `000N_`. Por isso `supabase db push` falha. Reconciliar
+  com cuidado (sem re-rodar seeds) antes de depender do CLI para novas migrations.
+- **Deep-return do `next`** (ContentGate): deferido para a frente de deploy do gate.
+
+
 - **Crítico #4 (copy):** o alinhamento da `/oferta` é de posicionamento/marca —
   o usuário deve revisar o texto do card Start/Advanced e ajustar as palavras.
 - **Backlog da auditoria (altos/médios):** revogação de acesso em reembolso,
@@ -95,6 +111,15 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
   dentro das frentes seguintes.
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
+
+- **2026-07-12 (Opus) — Frente 1 aceitação ao vivo:** migrations 0015/0016
+  aplicadas no Supabase de produção pelo SQL Editor (o `supabase db push` falhou
+  por histórico de migrations divergente — versões timestamp no remoto vs
+  numeração 000N local; **pendência de reconciliação**). Login testado ponta a
+  ponta no navegador com conta real (simulada via SQL): todos os caminhos
+  passaram. Descoberto que o Brevo aceita o envio mas o e-mail não chega
+  (deliverability — domínio/spam; afeta o e-mail de token da compra também).
+  Frente 1 marcada ✅.
 
 - **2026-07-11 (Opus) — Frente 1 implementada:** executada via
   `subagent-driven-development` — 11 tasks (migration+tipos, auth-tokens,

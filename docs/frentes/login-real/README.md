@@ -1,9 +1,14 @@
 # Frente 1 — Login real (fundação de identidade)
 
-**Status:** 🔄 **Código completo e revisado** (11 tasks + hardening pós-review, na
-master, `tsc` 0 / 118 testes) — **pendente aceitação ao vivo** (aplicar migrations
-0015+0016 no Supabase e testar o magic link com e-mail real). Spec e plano:
+**Status:** ✅ **Concluída** — implementada (11 tasks + hardening), revisada, na
+master (`tsc` 0 / 118 testes), migrations 0015/0016 **aplicadas em produção**, e
+**validada ao vivo** no navegador (no-account, envio, verify→`/conta`, painel,
+uso único, logout, proteção de rota — tudo passou). Spec e plano:
 [`spec.md`](spec.md) · [`plano.md`](plano.md).
+
+> ⚠️ **Achado fora do login (não-bloqueante):** o Brevo aceita o envio (API 2xx)
+> mas o e-mail não chega ao inbox — deliverability (domínio remetente/spam), que
+> afeta também o e-mail de token da compra. Investigar config do Brevo à parte.
 
 ## ✅ O que foi entregue
 
