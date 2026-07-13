@@ -4,7 +4,8 @@ import { computeDueEmails } from "@/lib/email-cycle";
 import { sendNewCycleEmail, sendExpiryEmail } from "@/lib/email";
 
 export async function GET(req: NextRequest) {
-  if (req.headers.get("authorization") !== `Bearer ${process.env.CRON_SECRET}`) {
+  // Se CRON_SECRET não estiver setado, nega tudo (evita passar com "Bearer undefined").
+  if (!process.env.CRON_SECRET || req.headers.get("authorization") !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: "não autorizado" }, { status: 401 });
   }
 
