@@ -87,9 +87,16 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
   há próxima frente planejada — o que resta é **coordenação de ambiente**
   (abaixo) e o que o usuário priorizar em seguida (não há "próxima ação"
   automática; alinhar com o usuário ao retomar).
-- **Coordenação de runtime acumulada (hand-off):** aplicar migrations
-  `0019`/`0020`/`0021` no remoto; deploy + `CRON_SECRET` (cron); E2E Stripe
-  (CLI); verificação visual de `/feed`, `/forum` e `/suporte`.
+- ✅ **Migrations `0019`/`0020`/`0021` APLICADAS no Supabase de produção**
+  (2026-07-13, via SQL Editor pelo navegador). Verificado: `/forum` 200 (0020),
+  `POST /api/suporte` → `{ok:true}` (0021), 0019 no mesmo paste. **Fluxo de
+  suporte validado E2E** (validação + gravação + e-mail entregue ao time).
+- **Coordenação de runtime restante (hand-off de ambiente — não dá pra fazer só
+  pelo navegador):** deploy na Vercel + `CRON_SECRET` (destrava o cron de e-mails);
+  E2E do Stripe modo teste (precisa do **Stripe CLI** encaminhando o webhook);
+  verificação visual dos estados gated de `/feed` e `/forum` (precisa de sessão
+  logada com passe — dá pra fazer no navegador com dado de teste, mas o screenshot
+  do tool está com glitch nesta sessão).
 - **Pendências de ambiente (hand-off):** reconfirmar migration `0019`; aplicar
   `0021` (support_messages); deploy + `CRON_SECRET` na Vercel (cron de
   e-mails); E2E Stripe modo teste (Stripe CLI).
