@@ -61,7 +61,9 @@ Passes **não recorrentes** (preserva "sem mensalidade"), em escada:
 
 ## ➡️ Próximo passo
 
-Executar [`plano-1.md`](plano-1.md) com `superpowers:subagent-driven-development`
-(12 tasks; Stripe em modo teste). Depois escrever/executar o Plano 2 (e-mails de
-ciclo). Fontes antigas divergentes (`copywriter-brief`, `VERSAO-COMPLETA`,
-`plan_waitlist`) estão **superadas** pelo spec — alinhar/anotar ao implementar.
+Plano 1 ✅ (código+revisão). **Plano 2 ([`plano-2.md`](plano-2.md), 7 tasks) escrito
+— em execução** via `superpowers:subagent-driven-development`: `sent_emails` +
+`computeDueEmails` (puro) + funções de e-mail + cron Vercel + confirmação no webhook
++ endpoint "novos conteúdos". Pendente também: E2E ao vivo do Plano 1 (Stripe CLI).
+Fontes antigas divergentes (`copywriter-brief`, `VERSAO-COMPLETA`, `plan_waitlist`)
+estão **superadas** pelo spec.
