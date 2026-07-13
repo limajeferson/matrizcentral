@@ -60,9 +60,16 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
   `/conta`. Revisão final OK + 2 fixes. Spec/plano/ledger em
   [`docs/frentes/feed/`](frentes/feed/). Pendente: verificação visual dos 3
   estados (coordenação runtime).
-- **➡️ PRÓXIMA AÇÃO:** **Frente 4 — Fórum** (brainstorm→spec→plano→SDD, com
-  autonomia). Depois Frentes 5 (Blog+Marketing) e 6 (Suporte/CRM). Roadmap em
+- **Frente 4 (Fórum) — CÓDIGO COMPLETO E REVISADO** (na master, `tsc` 0 / 158
+  testes): tabelas 0020, `/forum` + `/forum/[id]`, escrita gated (sessão+passe),
+  sem XP. Revisão final **Ready to merge**. Docs em
+  [`docs/frentes/forum/`](frentes/forum/). Pendente: aplicar 0020 + visual.
+- **➡️ PRÓXIMA AÇÃO:** **Frente 5 — Blog + Marketing** (brainstorm→spec→plano→SDD,
+  autonomia). Depois **Frente 6 — Suporte/CRM**. Roadmap em
   [`docs/ROADMAP-EXECUCAO.md`](ROADMAP-EXECUCAO.md).
+- **Coordenação de runtime acumulada (hand-off):** aplicar migrations
+  `0019`/`0020` no remoto; deploy + `CRON_SECRET` (cron); E2E Stripe (CLI);
+  verificação visual de `/feed` e `/forum`.
 - **Pendências de ambiente (hand-off):** reconfirmar migration `0019`; deploy +
   `CRON_SECRET` na Vercel (cron de e-mails); E2E Stripe modo teste (Stripe CLI).
 
