@@ -5,6 +5,7 @@ import { getSessionUser } from "@/lib/auth-session";
 import { getAccessContext } from "@/lib/entitlement-access";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import ContentGate from "@/components/auth/ContentGate";
+import DiagnosticoInline from "@/components/quiz/DiagnosticoInline";
 import { BADGES } from "@/data/badges";
 
 async function resolveToken(userId: string): Promise<string | undefined> {
@@ -22,6 +23,14 @@ function badgeLabel(id: string): string {
 
 export default async function FeedPage() {
   const user = await getSessionUser();
+
+  let profileId: string | null = null;
+  if (user) {
+    const sb = getSupabaseServerClient();
+    const { data: urow } = await sb.from("users").select("profile_id").eq("id", user.id).maybeSingle();
+    profileId = (urow?.profile_id as string | null) ?? null;
+  }
+
   const token = user ? await resolveToken(user.id) : undefined;
   const access = user ? (await getAccessContext(user.id)).access : "view";
 
@@ -35,6 +44,8 @@ export default async function FeedPage() {
   return (
     <div className="mx-auto max-w-2xl space-y-6 p-6">
       <h1 className="text-2xl font-bold">Feed</h1>
+
+      {user && !profileId && <DiagnosticoInline />}
 
       {/* Atividade da comunidade — só Advanced */}
       <section>
