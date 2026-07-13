@@ -88,6 +88,7 @@ export default async function ConteudoDetailPage({
         <ContentGate
           title={item.title}
           nextPath={nextPath}
+          reason={decision.reason}
         />
       </div>
     );
