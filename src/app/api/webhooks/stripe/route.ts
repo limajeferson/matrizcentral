@@ -3,7 +3,7 @@ import type Stripe from "stripe";
 import { stripe } from "@/lib/stripe";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { generateToken, tokenAccessExpiry, refundWindowExpiry } from "@/lib/tokens";
-import { sendTokenEmail } from "@/lib/email";
+import { sendTokenEmail, sendPassPurchaseEmail } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
   const signature = req.headers.get("stripe-signature");
@@ -163,6 +163,9 @@ export async function POST(req: NextRequest) {
   //    webhook — senão a Stripe reentregaria só por causa do e-mail.
   try {
     await sendTokenEmail({ to: email, token: accessToken });
+    if (entitlementWasCreated && plan) {
+      await sendPassPurchaseEmail({ to: email, plan });
+    }
   } catch (err) {
     console.error(
       "Falha ao enviar e-mail de token (recuperável via página de sucesso ou /api/resend-access):",
