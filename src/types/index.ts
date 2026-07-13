@@ -14,6 +14,8 @@ export interface Database {
           display_name: string | null;
           leaderboard_opt_in: boolean;
           created_at: string;
+          profile_id: string | null;
+          diagnosed_at: string | null;
         };
         Insert: {
           id?: string;
@@ -23,6 +25,8 @@ export interface Database {
           display_name?: string | null;
           leaderboard_opt_in?: boolean;
           created_at?: string;
+          profile_id?: string | null;
+          diagnosed_at?: string | null;
         };
         Update: Partial<Database["public"]["Tables"]["users"]["Insert"]>;
         Relationships: [];
