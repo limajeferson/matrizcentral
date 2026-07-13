@@ -51,12 +51,19 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
   (na master, `tsc` 0 / **145 testes**): `sent_emails`, `computeDueEmails`
   (level-triggered pós-review), 4 e-mails Brevo, cron diário (Vercel Cron),
   confirmação no webhook, endpoint de novos conteúdos. Revisão final (opus) OK.
-- **➡️ PRÓXIMA AÇÃO — validações de runtime (coordenação):** (1) reconfirmar a
-  migration `0019_sent_emails` no Supabase (rodada, mas o browser deu glitch na
-  confirmação); (2) **deploy** p/ o cron disparar + setar `CRON_SECRET` na Vercel;
-  (3) **E2E do Stripe modo teste** (Stripe CLI encaminhando o webhook). Depois:
-  **Frente 3 (Feed)**, que já chama o entitlement/`ContentGate` desta frente.
-  Gate de go-live: amarrar o cupom à sessão (Issue 3).
+- **Issue 3 (go-live) RESOLVIDO:** cupom amarrado à sessão autenticada (commit
+  `5cf89e3`, revisado). Roadmap das próximas frentes em
+  [`docs/ROADMAP-EXECUCAO.md`](ROADMAP-EXECUCAO.md).
+- **Frente 3 (Feed) EM EXECUÇÃO:** spec + plano prontos
+  ([`docs/frentes/feed/`](frentes/feed/)); MVP = `/feed` (cards de conteúdo +
+  strip de comunidade gated a Advanced). **F3-Task 1 (`feed.ts` puro) concluída**
+  (commit `b185458`, revisada). Ledger: `.superpowers/sdd/progress.md`.
+- **➡️ PRÓXIMA AÇÃO:** continuar o plano da Frente 3 (`docs/frentes/feed/plano.md`)
+  — **F3-Task 2** (`feed-data.ts`) → Task 3 (`/feed` page) → 4 (link) → 5 (verif).
+  Depois: **Frentes 4 (Fórum), 5 (Blog+Marketing), 6 (Suporte/CRM)** — cada uma
+  brainstorm→spec→plano→SDD, conforme o roadmap.
+- **Pendências de ambiente (hand-off):** reconfirmar migration `0019`; deploy +
+  `CRON_SECRET` na Vercel (cron de e-mails); E2E Stripe modo teste (Stripe CLI).
 
 ## 🌿 Estado do git
 
