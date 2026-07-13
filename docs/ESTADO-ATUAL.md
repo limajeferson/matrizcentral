@@ -114,18 +114,31 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
   estrutura da rota). **Caminho de receita OK.** Achado lateral: `BREVO_API_KEY`
   no Vercel está **inválido (401 "Key not found")** → e-mails pós-compra não
   saem (recuperável via página de sucesso/resend; hand-off: repor a chave).
-- 🔴 **BUG ao vivo achado + nova frente:** o pós-compra entra num **loop** — o
-  comprador cai no `/dashboard/[token]` da era do ebook (mundo errado), e o
-  `POST /api/quiz` **retorna 200 mesmo quando o `tokens.update` falha** →
-  `triaged`/`profile_id` não persistem → loop. Brainstorm (2026-07-13) travou 4
-  decisões-âncora (plataforma é a casa; feed-first; personalização leve;
-  gamificação por sessão) e gerou **`docs/frentes/casa-unificada/spec.md`**
-  (rota por tipo de usuário + mapa da oferta + primeiro momento + backlog de
-  conteúdo + decomposição SP1–SP5). **Próxima ação:** revisão do spec pelo
-  usuário → `writing-plans` do **SP1** (casa unificada + diagnóstico por sessão).
-- **Pendências de ambiente (hand-off):** repor `BREVO_API_KEY` válido no Vercel;
-  verificação visual gated (`/feed` strip Advanced, `/forum` postando como
-  assinante).
+- ✅ **FRENTE CASA-UNIFICADA — SP1 IMPLEMENTADO E REVISADO (2026-07-13):** o
+  pós-compra entrava num **loop** (comprador caía no `/dashboard/[token]` do
+  ebook, e `/api/quiz` retornava 200 mesmo com o `tokens.update` falhando).
+  Brainstorm travou 4 âncoras (plataforma é a casa; feed-first; personalização
+  leve; gamificação por sessão) → spec + plano em
+  **`docs/frentes/casa-unificada/`** (rota por tipo de usuário, mapa da oferta,
+  primeiro momento, backlog de conteúdo, decomposição SP1–SP5). **SP1 executado
+  via subagent-driven-development (6 tasks, `tsc` 0 / 183 testes), revisão ampla
+  final (opus) = Ready to merge, sem Critical/Important.** Entregue: migration
+  0022 (`users.profile_id`/`diagnosed_at`+backfill) e 0023 (`checkout_logins`);
+  `POST /api/diagnostico` por sessão (checa erro; XP atômico via claim em
+  `diagnosed_at`); fix do bug 200-em-falha no `/api/quiz`; bloco de boas-vindas +
+  `DiagnosticoInline` no `/feed`; **auto-login pós-compra** por `session_id`
+  (paid + janela 30min + uso único) → `/feed`. Commits `7527cca`..`325007d`.
+  **Próxima ação:** aplicar migrations 0022/0023 no remoto → E2E (compra teste →
+  auto-login → `/feed` → diagnóstico grava perfil). Depois: **SP2** (gamificação
+  por sessão + aposentar `/dashboard/[token]`).
+- **Pendências de ambiente (hand-off):** aplicar migrations **0022** e **0023**
+  no Supabase remoto (SQL Editor); repor `BREVO_API_KEY` válido no Vercel;
+  verificação visual gated (`/feed` strip Advanced, `/forum` como assinante).
+- **Follow-ups SP2 (do review final):** aposentar o fluxo token (`/api/quiz`
+  triagem + `/dashboard/[token]`) — hoje um comprador que force a URL antiga
+  poderia ganhar XP de triagem em dois lugares (sem dedup entre token e sessão);
+  podar `resolveQuizUrlBySessionId`/`/api/access-status` (mortos); mint-then-
+  consume no auto-login (hoje consume antes de `createSession`).
 
 ## 🌿 Estado do git
 
