@@ -1,7 +1,8 @@
 # Frente 2 — Assinaturas (passes Regular/Advanced) + e-mails de ciclo
 
-**Status:** 🔄 **Spec escrito** ([`spec.md`](spec.md)) — aguardando revisão do
-usuário antes do plano (`writing-plans`).
+**Status:** 🔄 **Spec + Plano 1 escritos** ([`spec.md`](spec.md) ·
+[`plano-1.md`](plano-1.md)) — Plano 1 (núcleo de receita, 12 tasks) pronto para
+executar; Plano 2 (e-mails/CRM) a escrever depois. Aguardando aval do usuário.
 
 **Por que agora:** a fundação de identidade (Frente 1, login) está viva e o
 Brevo entrega — as duas dependências que destravam assinatura e e-mails de ciclo.
@@ -36,7 +37,7 @@ Passes **não recorrentes** (preserva "sem mensalidade"), em escada:
 
 ## ➡️ Próximo passo
 
-Usuário revisa [`spec.md`](spec.md) → `superpowers:writing-plans` → 
-`superpowers:subagent-driven-development`. Fontes antigas divergentes
-(`copywriter-brief`, `VERSAO-COMPLETA`, `plan_waitlist`) estão **superadas** por
-este spec — alinhar/anotar ao implementar.
+Executar [`plano-1.md`](plano-1.md) com `superpowers:subagent-driven-development`
+(12 tasks; Stripe em modo teste). Depois escrever/executar o Plano 2 (e-mails de
+ciclo). Fontes antigas divergentes (`copywriter-brief`, `VERSAO-COMPLETA`,
+`plan_waitlist`) estão **superadas** pelo spec — alinhar/anotar ao implementar.
