@@ -94,9 +94,13 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
 
 ## ⏳ Pendências / decisões em aberto
 
-- **E-mail (Brevo) não entrega:** app envia OK (API 2xx) mas o e-mail não chega —
-  verificar domínio remetente `matrizcentral.com.br` (SPF/DKIM) e reputação no
-  Brevo. Afeta login **e** e-mail de token da compra.
+- ✅ **E-mail (Brevo) — RESOLVIDO (2026-07-13):** causa raiz era o remetente
+  `contato@matrizcentral.com.br` **não validado** no Brevo (log de evento:
+  "sender is not valid"). Corrigido **autenticando o domínio** `matrizcentral.com.br`
+  no Brevo (DKIM b1/b2 CNAME + TXT brevo-code + DMARC, registros adicionados no
+  registro.br). `authenticated: true`. Envio de teste passou de `error` →
+  `delivered`. **Sem mudança de código** (o app já enviava desse endereço).
+  Vale a compra funcionar depende disso, agora ok.
 - **Histórico de migrations do Supabase divergente:** remoto tem versões com
   timestamp; local usa `000N_`. Por isso `supabase db push` falha. Reconciliar
   com cuidado (sem re-rodar seeds) antes de depender do CLI para novas migrations.
@@ -111,6 +115,16 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
   dentro das frentes seguintes.
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
+
+- **2026-07-13 (Opus) — Brevo resolvido + brainstorm Frente 2:** diagnosticado
+  (via API do Brevo) que o remetente `contato@matrizcentral.com.br` não estava
+  validado → autenticado o domínio `matrizcentral.com.br` no Brevo (DNS no
+  registro.br: DKIM b1/b2, brevo-code, DMARC). Envio de teste `delivered`.
+  E-mail transacional agora funciona (login/compra/ciclos). Iniciado o
+  brainstorm da **Frente 2 (Assinaturas)**: modelo canônico travado — passes
+  (não recorrente) Start(R$47 view-only)/Regular(R$97, 1 conteúdo/mês,
+  acumula)/Advanced(R$497 ou 12x47, tudo); entitlement + ContentGate + Stripe
+  (modo teste) + e-mails de ciclo (Vercel Cron). Spec a escrever.
 
 - **2026-07-12 (Opus) — Frente 1 aceitação ao vivo:** migrations 0015/0016
   aplicadas no Supabase de produção pelo SQL Editor (o `supabase db push` falhou

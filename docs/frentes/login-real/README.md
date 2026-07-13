@@ -6,9 +6,11 @@ master (`tsc` 0 / 118 testes), migrations 0015/0016 **aplicadas em produção**,
 uso único, logout, proteção de rota — tudo passou). Spec e plano:
 [`spec.md`](spec.md) · [`plano.md`](plano.md).
 
-> ⚠️ **Achado fora do login (não-bloqueante):** o Brevo aceita o envio (API 2xx)
-> mas o e-mail não chega ao inbox — deliverability (domínio remetente/spam), que
-> afeta também o e-mail de token da compra. Investigar config do Brevo à parte.
+> ✅ **Deliverability do Brevo — RESOLVIDO (2026-07-13):** o remetente
+> `contato@matrizcentral.com.br` não estava validado no Brevo (o envio dava
+> `error: sender not valid`). Corrigido autenticando o **domínio** no Brevo
+> (DKIM/brevo-code/DMARC no registro.br). Teste de envio agora `delivered`. O
+> magic link do login passa a chegar de verdade. Sem mudança de código.
 
 ## ✅ O que foi entregue
 
