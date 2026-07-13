@@ -10,6 +10,7 @@ const LINKS = [
   { href: "#preco", label: "Preço" },
   { href: "/feed", label: "Feed" },
   { href: "/forum", label: "Fórum" },
+  { href: "/blog", label: "Blog" },
   { href: "#faq", label: "FAQ" },
 ];
 

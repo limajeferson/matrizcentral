@@ -8,7 +8,7 @@
 > Ordem de leitura ao retomar: **este arquivo → `CLAUDE.md` → o `README.md` da
 > frente ativa → o código fonte-de-verdade.**
 
-_Última atualização: 2026-07-12 (Frente 1 — LOGIN VALIDADO AO VIVO em produção)_
+_Última atualização: 2026-07-13 (Frente 5 — Blog + Marketing concluída)_
 
 ---
 
@@ -64,9 +64,16 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
   testes): tabelas 0020, `/forum` + `/forum/[id]`, escrita gated (sessão+passe),
   sem XP. Revisão final **Ready to merge**. Docs em
   [`docs/frentes/forum/`](frentes/forum/). Pendente: aplicar 0020 + visual.
-- **➡️ PRÓXIMA AÇÃO:** **Frente 5 — Blog + Marketing** (brainstorm→spec→plano→SDD,
-  autonomia). Depois **Frente 6 — Suporte/CRM**. Roadmap em
-  [`docs/ROADMAP-EXECUCAO.md`](ROADMAP-EXECUCAO.md).
+- **Frente 5 (Blog + Marketing) — CONCLUÍDA:** `/blog` + `/blog/[slug]`
+  (SEO via `generateMetadata` + CTA para `/oferta`, posts em markdown +
+  manifesto `src/data/blog.ts`, `src/lib/blog.ts` puro testado), link no
+  header e footer, + doc de estratégia
+  [`docs/frentes/blog-marketing/marketing.md`](frentes/blog-marketing/marketing.md)
+  (funil topo/meio/fundo/upsell, calendário editorial, sazonalidade, SEO/e-mail
+  Brevo/prova social). Sem login/entitlement, sem migration. Docs em
+  [`docs/frentes/blog-marketing/`](frentes/blog-marketing/).
+- **➡️ PRÓXIMA AÇÃO:** **Frente 6 — Suporte/CRM** (brainstorm→spec→plano→SDD,
+  autonomia). Roadmap em [`docs/ROADMAP-EXECUCAO.md`](ROADMAP-EXECUCAO.md).
 - **Coordenação de runtime acumulada (hand-off):** aplicar migrations
   `0019`/`0020` no remoto; deploy + `CRON_SECRET` (cron); E2E Stripe (CLI);
   verificação visual de `/feed` e `/forum`.
@@ -94,7 +101,7 @@ Ordem escolhida pelo usuário: **receita primeiro**.
 | 2 | Assinaturas (Regular/Advanced) + e-mails de ciclo/CRM | 🔄 **em andamento** (Plano 1 código completo+revisado; falta E2E Stripe + Plano 2 e-mails) | [assinaturas](frentes/assinaturas/README.md) |
 | 3 | Feed central (rede social de IA) | 🔜 planejada (depende de #1) | criar ao iniciar |
 | 4 | Fórum (portal de tópicos) | 🔜 planejada (depende de #1) | criar ao iniciar |
-| 5 | Blog + Marketing (calendário/sazonalidade/funil) | 🔜 planejada | criar ao iniciar |
+| 5 | Blog + Marketing (calendário/sazonalidade/funil) | ✅ **concluída** (blog público + doc de estratégia) | [blog-marketing](frentes/blog-marketing/README.md) |
 | 6 | Suporte/autoatendimento + CRM/pós-venda | 🔜 planejada | criar ao iniciar |
 
 > As tasks do painel do Claude Code **não sobrevivem ao `/clear`** — esta tabela
@@ -142,6 +149,13 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
 
+- **2026-07-13 (Opus) — Frente 5 (Blog + Marketing) implementada:** via
+  subagent-driven-development (4 tasks) — manifesto `src/data/blog.ts` + 2
+  posts-semente markdown, `src/lib/blog.ts` puro testado, `/blog` +
+  `/blog/[slug]` (SEO + CTA `/oferta`), link no header e footer, e o doc de
+  estratégia `docs/frentes/blog-marketing/marketing.md` (funil, calendário
+  editorial, sazonalidade, SEO/e-mail/prova social). Sem login/entitlement,
+  sem migration. `tsc` 0. Frente 5 marcada ✅.
 - **2026-07-13 (Opus) — Frente 2 Plano 2 (e-mails) implementado:** via
   subagent-driven-development — 6 tasks (sent_emails, computeDueEmails puro,
   4 e-mails Brevo, cron Vercel, confirmação no webhook, endpoint novos-conteúdos)

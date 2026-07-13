@@ -25,7 +25,7 @@ export const FOOTER_COLUMNS: FooterColumn[] = [
   {
     title: "Conteúdo",
     links: [
-      { label: "Blog", soon: true },
+      { label: "Blog", href: "/blog" },
       { label: "Artigos", soon: true },
       { label: "Guias", soon: true },
       { label: "Novidades", soon: true },

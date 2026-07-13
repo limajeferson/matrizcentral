@@ -1,11 +1,15 @@
 # Frente 5 — Blog + Marketing
 
-**Status:** 🔄 Spec + plano prontos ([`spec.md`](spec.md) · [`plano.md`](plano.md)) — em execução (SDD).
+**Status:** ✅ **concluída** — código + doc de estratégia entregues via SDD
+(spec [`spec.md`](spec.md) · plano [`plano.md`](plano.md)).
 
-MVP: **Blog público** (`/blog` + `/blog/[slug]`, SEO + CTA de funil, posts em
-markdown) + **doc de estratégia de marketing** ([`marketing.md`](marketing.md) —
-funil, calendário editorial, sazonalidade). Sem login/entitlement (topo de funil),
-sem migration. Decisões com autonomia, no spec.
+Entregue: **Blog público** (`/blog` + `/blog/[slug]`, SEO via `generateMetadata`
++ CTA de funil para `/oferta`, posts em markdown com manifesto `src/data/blog.ts`,
+lógica pura `src/lib/blog.ts` testada) + link no header e footer + **doc de
+estratégia de marketing** ([`marketing.md`](marketing.md) — funil de vendas,
+calendário editorial, sazonalidade, estratégias de SEO/e-mail/prova social).
+Sem login/entitlement (topo de funil), sem migration.
 
 ## Próximo passo
-Executar [`plano.md`](plano.md) (4 tasks) via `subagent-driven-development`.
+Nenhum nesta frente. Próxima frente: **Frente 6 — Suporte/CRM** (ver
+[`docs/ROADMAP-EXECUCAO.md`](../../ROADMAP-EXECUCAO.md)).

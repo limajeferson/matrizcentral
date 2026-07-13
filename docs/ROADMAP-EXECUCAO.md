@@ -29,9 +29,11 @@ gamificação de leitura. **Autônomo** (design + código). brainstorm→spec→
 Depende de: login (✅). Escopo: tópicos, respostas, moderação básica, XP por
 participação. **Autônomo**. brainstorm→spec→plano→SDD.
 
-### 🟢 Frente 5 — Blog + Marketing (calendário/sazonalidade/funil)
-Escopo: blog (SEO/conteúdo), captura de funil, calendário de marketing.
-**Autônomo**. brainstorm→spec→plano→SDD.
+### ✅ Frente 5 — Blog + Marketing (calendário/sazonalidade/funil) — CONCLUÍDA
+Escopo: blog (`/blog` + `/blog/[slug]`, SEO/conteúdo, link no header/footer) +
+doc de estratégia (`docs/frentes/blog-marketing/marketing.md`: funil, calendário
+editorial, sazonalidade, SEO/e-mail/prova social). **Autônomo**, entregue via
+brainstorm→spec→plano→SDD.
 
 ### 🟢 Frente 6 — Suporte/autoatendimento + CRM/pós-venda
 Depende de: login (✅) + assinaturas (✅). Escopo: canal de autoatendimento,
