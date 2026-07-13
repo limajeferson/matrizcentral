@@ -96,8 +96,8 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
 
 ## 🌿 Estado do git
 
-- **Branch ativa:** `master`, **sincronizada com `origin/master`** (push feito,
-  até `59e7ea8`). O outro computador recebe tudo com `git pull origin master`.
+- **Branch ativa:** `master`, **sincronizada com `origin/master`** (push feito, HEAD c45de36,
+  sincronizado). O outro computador recebe tudo com `git pull origin master`.
 - **Inclui (nesta rodada):** Frente 6 completa — migration `0021`
   (`support_messages`), `suporte.ts` (lógica pura testada), e-mail de
   notificação + `support-data.ts`, rota `/api/suporte` + página `/suporte` +
