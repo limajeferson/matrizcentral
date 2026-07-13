@@ -122,12 +122,17 @@ alter table content_unlocks enable row level security;
   resolve user pelo token → `getAccessFor` → `tryConsume`; se não pode, renderiza
   **`<ContentGate>`** com a mensagem certa (`gated`→Adquirir/Entrar; `cycle-used`→
   "seu conteúdo do mês já foi usado, volta dia X ou vire Advanced"); se pode, entrega.
-- **Feed** (rede social de IA — quando existir a página): leitura exige **Advanced**
-  (decisão a confirmar, ver "Decisões a confirmar"). Start/Regular veem preview,
-  consumo/leitura do feed → `ContentGate`.
-- O **preview visual** (cards, thumbnails, descrição do `CONTENT_HUB`) segue aberto
-  a todos — só o **consumo** é travado. É o que liga o `ContentGate` da Frente 1 a
-  um entitlement real (a peça que faltava).
+- **Feed** (rede social de IA — quando existir a página): **leitura/consumo exige
+  Advanced.** Start/Regular veem só a prévia (regra abaixo).
+
+**Regra "prévia sempre, consumo travado" (transversal a feed + biblioteca):**
+o **preview é aberto a todos** e o **consumo** é o que a tranca protege. Concretamente:
+- **Sempre visível (qualquer nível):** manchete/título, **imagem de capa** (só
+  mostragem, sem clicar pra expandir), descrição curta e um **"ler mais…"**.
+- **Travado sem entitlement suficiente:** expandir/ler o conteúdo completo, **dar play**
+  em áudio/podcast/vídeo, abrir relatórios/resenhas/apresentações, e **abrir qualquer
+  post** do feed. Ao tentar → `ContentGate` com a mensagem certa.
+- É o que liga o `ContentGate` da Frente 1 a um entitlement real (a peça que faltava).
 
 ### 3. Stripe (Regular, Advanced, parcelado, cupom) — modo teste
 
@@ -181,8 +186,9 @@ autenticado):**
   `sent_emails` + `now`, retorna a lista de e-mails a enviar hoje:
   - `dueNewCycle(entitlement, now, sent)` — Regular cujo aniversário mensal caiu hoje
     e ainda não recebeu o `novo_ciclo` deste `cycle_key`.
-  - `dueExpiry(entitlement, now, sent, daysBefore)` — expira em `daysBefore` e não
-    recebeu `expiracao` desta referência.
+  - `dueExpiry(entitlement, now, sent)` — dispara em **7 dias** e em **1 dia** antes
+    de `expires_at`; cada um com `reference` própria (`expiry-7d` / `expiry-1d`) para
+    dedup, sem redisparar.
   - Testes cobrindo: dispara no dia certo; não redispara (dedup); ignora expirados.
 - A rota chama a lógica pura, envia via `email.ts`, grava `sent_emails`.
 
@@ -247,10 +253,10 @@ autenticado):**
 2. **Camada de e-mails/CRM:** Bloco 4 — transacionais (imediato) + cron (valida em
    deploy). Brevo já entrega.
 
-## Decisões a confirmar na revisão do spec
+## Decisões confirmadas na revisão do spec
 
-- **Feed:** proposto **leitura = Advanced** (Regular é metrado a 1 conteúdo/mês; o
-  feed é fluxo contínuo que não encaixa em "1/mês"). Confirmar, ou permitir feed a
-  qualquer passe vigente.
-- **Ciclo mensal:** proposto **aniversário da compra** (vs dia-1 do calendário).
-- **Janela do "expiração próxima":** proposto **7 dias antes** (e opcionalmente 1 dia).
+- ✅ **Feed = só Advanced.** Prévia (manchete + capa + "ler mais…") aberta a todos;
+  consumo/abrir post exige Advanced. Regra "prévia sempre, consumo travado" no Bloco 2.
+- ✅ **Ciclo mensal = aniversário da compra** (comprou dia 5 → novo slot dia 5).
+- ✅ **Aviso de expiração = 7 dias antes + 1 dia antes** (dois lembretes; `sent_emails`
+  distingue por `reference` `expiry-7d` / `expiry-1d`).
