@@ -20,3 +20,5 @@ notebooklm/apresentacoes/
 # Arquivos de rascunho/referência locais (não fazem parte do produto)
 new-prompt.md
 modelo-esfera.ia.png
+.vercel
+.env*
