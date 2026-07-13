@@ -25,8 +25,20 @@ describe("computeDueEmails", () => {
     expect(due.find((d) => d.email_type === "novo_ciclo")).toBeUndefined();
   });
 
-  it("Regular: fora do dia de aniversário, sem novo ciclo", () => {
+  it("Regular: dispara no meio do ciclo se ainda não enviado (catch-up)", () => {
+    const now = new Date("2026-02-10T12:00:00.000Z"); // starts 2026-01-05 -> cycle-1, meio do ciclo
+    const due = computeDueEmails([mkEnt({})], [], now);
+    expect(due).toContainEqual({ user_id: "u1", email_type: "novo_ciclo", reference: "cycle-1" });
+  });
+
+  it("Advanced nunca gera novo_ciclo", () => {
     const now = new Date("2026-02-10T12:00:00.000Z");
+    const due = computeDueEmails([mkEnt({ plan: "advanced" })], [], now);
+    expect(due.find((d) => d.email_type === "novo_ciclo")).toBeUndefined();
+  });
+
+  it("cycle-0 (primeiro mês) não dispara novo_ciclo", () => {
+    const now = new Date("2026-01-20T12:00:00.000Z");
     const due = computeDueEmails([mkEnt({})], [], now);
     expect(due.find((d) => d.email_type === "novo_ciclo")).toBeUndefined();
   });
@@ -41,6 +53,13 @@ describe("computeDueEmails", () => {
     const now = new Date("2026-12-30T12:00:00.000Z");
     const sent = [{ user_id: "u1", email_type: "expiracao", reference: "expiry-7d" }];
     const due = computeDueEmails([mkEnt({})], sent, now);
+    expect(due.find((d) => d.reference === "expiry-7d")).toBeUndefined();
+  });
+
+  it("expiração: 1 dia antes dispara só expiry-1d (não 7d)", () => {
+    const now = new Date("2027-01-04T12:00:00.000Z"); // expira 2027-01-05 -> ~1 dia
+    const due = computeDueEmails([mkEnt({})], [], now);
+    expect(due).toContainEqual({ user_id: "u1", email_type: "expiracao", reference: "expiry-1d" });
     expect(due.find((d) => d.reference === "expiry-7d")).toBeUndefined();
   });
 });

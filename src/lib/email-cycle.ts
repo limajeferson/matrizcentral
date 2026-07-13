@@ -29,12 +29,12 @@ export function computeDueEmails(
     const expires = new Date(e.expires_at);
     if (expires.getTime() <= now.getTime()) continue; // expirado
 
-    // Regular: novo ciclo mensal (aniversário da compra cruzado hoje).
+    // Regular: novo ciclo mensal. Level-triggered — dispara em qualquer dia do
+    // ciclo (>= cycle-1) ainda não enviado, então um cron perdido no aniversário
+    // recupera no dia seguinte. A dedup por cycle_key garante 1x por ciclo.
     if (e.plan === "regular") {
-      const starts = new Date(e.starts_at);
-      const today = cycleKeyFor(starts, now);
-      const yesterday = cycleKeyFor(starts, new Date(now.getTime() - DAY_MS));
-      if (today !== yesterday) {
+      const today = cycleKeyFor(new Date(e.starts_at), now);
+      if (today !== "cycle-0") {
         const key = `${e.user_id}|novo_ciclo|${today}`;
         if (!sentKeys.has(key)) due.push({ user_id: e.user_id, email_type: "novo_ciclo", reference: today });
       }
@@ -42,11 +42,12 @@ export function computeDueEmails(
 
     // Expiração: 7 e 1 dias antes (cada um dispara uma vez, primeira vez na janela).
     const daysLeft = Math.ceil((expires.getTime() - now.getTime()) / DAY_MS);
-    for (const d of [7, 1]) {
+    for (const d of [1, 7]) {
       if (daysLeft <= d && daysLeft >= 1) {
         const ref = `expiry-${d}d`;
         const key = `${e.user_id}|expiracao|${ref}`;
         if (!sentKeys.has(key)) due.push({ user_id: e.user_id, email_type: "expiracao", reference: ref });
+        break; // só o limiar mais urgente que casa — evita 7d e 1d no mesmo run
       }
     }
   }
