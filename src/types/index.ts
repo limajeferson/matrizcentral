@@ -303,6 +303,18 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["sessions"]["Insert"]>;
         Relationships: [];
       };
+      entitlements: {
+        Row: { id: string; user_id: string; plan: "regular" | "advanced"; starts_at: string; expires_at: string; stripe_payment_id: string | null; created_at: string };
+        Insert: { id?: string; user_id: string; plan: "regular" | "advanced"; starts_at?: string; expires_at: string; stripe_payment_id?: string | null; created_at?: string };
+        Update: Partial<Database["public"]["Tables"]["entitlements"]["Insert"]>;
+        Relationships: [];
+      };
+      content_unlocks: {
+        Row: { id: string; user_id: string; content_id: string; cycle_key: string; unlocked_at: string };
+        Insert: { id?: string; user_id: string; content_id: string; cycle_key: string; unlocked_at?: string };
+        Update: Partial<Database["public"]["Tables"]["content_unlocks"]["Insert"]>;
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
