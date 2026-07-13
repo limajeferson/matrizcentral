@@ -47,9 +47,16 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
   cupom/parcelas) + webhook + `/oferta` real. Revisão final (opus) confirmou os
   invariantes de dinheiro; 2 Important corrigidos; migrations 0017/0018 aplicadas.
   Spec/plano em [`docs/frentes/assinaturas/`](frentes/assinaturas/).
-- **➡️ PRÓXIMA AÇÃO:** **E2E ao vivo do Plano 1 em modo teste do Stripe** (precisa
-  do Stripe CLI encaminhando o webhook) → depois escrever/executar o **Plano 2
-  (e-mails de ciclo/CRM)**. Gate de go-live: amarrar o cupom à sessão (Issue 3).
+- **Frente 2 — Plano 2 (e-mails de ciclo) TAMBÉM código completo e revisado**
+  (na master, `tsc` 0 / **145 testes**): `sent_emails`, `computeDueEmails`
+  (level-triggered pós-review), 4 e-mails Brevo, cron diário (Vercel Cron),
+  confirmação no webhook, endpoint de novos conteúdos. Revisão final (opus) OK.
+- **➡️ PRÓXIMA AÇÃO — validações de runtime (coordenação):** (1) reconfirmar a
+  migration `0019_sent_emails` no Supabase (rodada, mas o browser deu glitch na
+  confirmação); (2) **deploy** p/ o cron disparar + setar `CRON_SECRET` na Vercel;
+  (3) **E2E do Stripe modo teste** (Stripe CLI encaminhando o webhook). Depois:
+  **Frente 3 (Feed)**, que já chama o entitlement/`ContentGate` desta frente.
+  Gate de go-live: amarrar o cupom à sessão (Issue 3).
 
 ## 🌿 Estado do git
 
@@ -120,6 +127,13 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
 
+- **2026-07-13 (Opus) — Frente 2 Plano 2 (e-mails) implementado:** via
+  subagent-driven-development — 6 tasks (sent_emails, computeDueEmails puro,
+  4 e-mails Brevo, cron Vercel, confirmação no webhook, endpoint novos-conteúdos)
+  + 1 fix de review (cron CRON_SECRET guard) + revisão final (opus) com fix
+  Important (novo_ciclo edge→level-triggered) + M1/M4. `tsc` 0 / 145 testes.
+  0019 rodada no SQL Editor (confirmação visual falhou por glitch do browser —
+  reconfirmar). Pendente: deploy p/ cron + E2E Stripe. Ledger em `.superpowers/sdd/`.
 - **2026-07-13 (Opus) — Frente 2 Plano 1 implementado:** executado via
   subagent-driven-development — 11 tasks (migrations 0017/0018 + entitlements,
   consumption, coupon puros; entitlement-access; Stripe produtos/checkout/cupom;

@@ -59,11 +59,30 @@ Passes **não recorrentes** (preserva "sem mensalidade"), em escada:
 
 - Feed = Advanced? · ciclo = aniversário da compra? · janela de expiração = 7 dias?
 
+## Plano 2 — ✅ código completo e revisado
+
+`sent_emails` + `computeDueEmails` (puro, TDD, **level-triggered** pós-review) +
+4 funções de e-mail + cron diário (Vercel Cron, guard de `CRON_SECRET` unset) +
+confirmação de compra no webhook + endpoint `/api/admin/notify-new-content`
+(Advanced). `tsc` 0 / **145 testes**. Revisão final (opus) confirmou dedup/auth/
+recipiente corretos; 1 Important corrigido (novo_ciclo edge→level-triggered).
+
+## ⏳ Pendências / coordenação de deploy
+
+- **Migration `0019_sent_emails`:** rodada no SQL Editor, mas a **confirmação
+  visual falhou (glitch do browser)** — reconfirmar (é idempotente, `create table
+  if not exists`).
+- **Validação de runtime dos e-mails:** o **cron só dispara em deploy** (Vercel).
+  Configurar `CRON_SECRET` nas env da Vercel; o cron chega em `/api/cron/emails-diarios`.
+  Localmente dá pra chamar a rota à mão com o header.
+- **E2E ao vivo do Plano 1 (Stripe modo teste):** ainda pendente — precisa do Stripe
+  CLI encaminhando o webhook.
+- **Gate de go-live:** amarrar o cupom à sessão (Issue 3 do Plano 1).
+- **Minors rastreados** (ledger): notify sem idempotência, cron fetch-all sem
+  paginação, compare não timing-safe, copy "1 dia".
+
 ## ➡️ Próximo passo
 
-Plano 1 ✅ (código+revisão). **Plano 2 ([`plano-2.md`](plano-2.md), 7 tasks) escrito
-— em execução** via `superpowers:subagent-driven-development`: `sent_emails` +
-`computeDueEmails` (puro) + funções de e-mail + cron Vercel + confirmação no webhook
-+ endpoint "novos conteúdos". Pendente também: E2E ao vivo do Plano 1 (Stripe CLI).
-Fontes antigas divergentes (`copywriter-brief`, `VERSAO-COMPLETA`, `plan_waitlist`)
-estão **superadas** pelo spec.
+Fechar as validações de runtime (0019 confirmado + deploy p/ cron + E2E Stripe),
+depois seguir para a **Frente 3 (Feed)** — que já pode chamar o entitlement
+(`resolveAccess`/`ContentGate`) construído aqui.
