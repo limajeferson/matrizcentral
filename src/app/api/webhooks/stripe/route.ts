@@ -131,6 +131,7 @@ export async function POST(req: NextRequest) {
   }
 
   // 3.5 Entitlement para passes (Regular/Advanced). Idempotente por stripe_payment_id.
+  let entitlementWasCreated = false;
   const plan = productId === "regular_pass" ? "regular" : productId === "advanced_pass" ? "advanced" : null;
   if (plan) {
     const { data: existingEnt } = await supabase
@@ -144,13 +145,15 @@ export async function POST(req: NextRequest) {
         const { data: reread } = await supabase
           .from("entitlements").select("id").eq("stripe_payment_id", stripePaymentId).maybeSingle();
         if (!reread) return NextResponse.json({ error: "falha ao criar entitlement" }, { status: 500 });
+      } else {
+        entitlementWasCreated = true;
       }
     }
   }
 
   // Evento já totalmente processado antes (reentrega benigna): não reenvia
   // e-mail, para não spammar o cliente.
-  if (!purchaseWasCreated && !tokenWasCreated) {
+  if (!purchaseWasCreated && !tokenWasCreated && !entitlementWasCreated) {
     return NextResponse.json({ received: true, deduped: true });
   }
 
