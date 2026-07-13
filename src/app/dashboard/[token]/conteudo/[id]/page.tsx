@@ -7,6 +7,8 @@ import { CONTENT_HUB } from "@/data/content-hub";
 import GlassCard from "@/components/ui/glass-card";
 import CategoryBadge from "@/components/ui/category-badge";
 import CompleteContentButton from "@/components/content/CompleteContentButton";
+import ContentGate from "@/components/auth/ContentGate";
+import { resolveUserIdByToken, tryConsume } from "@/lib/entitlement-access";
 import PesquisaForm from "@/components/content/PesquisaForm";
 import PesquisaResults from "@/components/content/PesquisaResults";
 
@@ -70,6 +72,25 @@ export default async function ConteudoDetailPage({
 
   if (!tokenRow || isTokenExpired(tokenRow.valid_until)) {
     return <p className="max-w-md mx-auto p-8 text-center">Token inválido ou expirado.</p>;
+  }
+
+  const userId = await resolveUserIdByToken(params.token);
+  const decision = userId
+    ? await tryConsume(userId, item.id, item.startIncluded === true)
+    : { allowed: false, reason: "gated" };
+
+  if (!decision.allowed) {
+    const nextPath = `/dashboard/${params.token}/conteudo/${item.id}`;
+    return (
+      <div className="mx-auto max-w-3xl space-y-6 p-6">
+        <CategoryBadge variant="hub">{item.title}</CategoryBadge>
+        <p className="text-sm text-zinc-500">{item.description}</p>
+        <ContentGate
+          title={item.title}
+          nextPath={nextPath}
+        />
+      </div>
+    );
   }
 
   const { data: existingCompletion } = await supabase
