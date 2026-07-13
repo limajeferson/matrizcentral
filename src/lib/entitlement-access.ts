@@ -42,7 +42,17 @@ export async function tryConsume(userId: string, contentId: string, startInclude
     const supabase = getSupabaseServerClient();
     const cycle_key = cycleKeyFor(ctx.startsAt, now);
     // Idempotente por (user_id, content_id); relê o ciclo para não furar a cota numa corrida.
-    await supabase.from("content_unlocks").insert({ user_id: userId, content_id: contentId, cycle_key });
+    const { error: insertError } = await supabase
+      .from("content_unlocks").insert({ user_id: userId, content_id: contentId, cycle_key });
+    if (insertError) {
+      // 23505 = unique violation → o conteúdo já estava desbloqueado (idempotente, benigno): libera.
+      if ((insertError as { code?: string }).code === "23505") {
+        return { allowed: true, reason: "already-unlocked" };
+      }
+      // Erro real (transitório/FK/RLS): não persistiu → nega (fail-closed) + log.
+      console.error("Falha ao gravar content_unlock:", insertError);
+      return { allowed: false, reason: "error" };
+    }
     const { data: sameCycle } = await supabase
       .from("content_unlocks").select("content_id").eq("user_id", userId).eq("cycle_key", cycle_key);
     if ((sameCycle ?? []).length > 1) {
