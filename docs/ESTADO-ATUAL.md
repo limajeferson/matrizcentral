@@ -98,7 +98,7 @@ Ordem escolhida pelo usuário: **receita primeiro**.
 |---|--------|--------|--------|
 | 0 | Auditoria + Hardening dos 4 críticos | ✅ concluída | [hardening-criticos](frentes/hardening-criticos/README.md) |
 | 1 | **Login real** (fundação de identidade) | ✅ **concluída** (implementada, revisada, migrations aplicadas, E2E validado ao vivo) | [login-real](frentes/login-real/README.md) |
-| 2 | Assinaturas (Regular/Advanced) + e-mails de ciclo/CRM | 🔄 **em andamento** (Plano 1 código completo+revisado; falta E2E Stripe + Plano 2 e-mails) | [assinaturas](frentes/assinaturas/README.md) |
+| 2 | Assinaturas (Regular/Advanced) + e-mails de ciclo/CRM | 🔄 código completo+revisado (Planos 1 e 2; falta E2E Stripe/deploy) | [assinaturas](frentes/assinaturas/README.md) |
 | 3 | Feed central (rede social de IA) | 🔜 planejada (depende de #1) | criar ao iniciar |
 | 4 | Fórum (portal de tópicos) | 🔜 planejada (depende de #1) | criar ao iniciar |
 | 5 | Blog + Marketing (calendário/sazonalidade/funil) | ✅ **concluída** (blog público + doc de estratégia) | [blog-marketing](frentes/blog-marketing/README.md) |
