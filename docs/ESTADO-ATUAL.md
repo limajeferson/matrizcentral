@@ -91,15 +91,26 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
   (2026-07-13, via SQL Editor pelo navegador). Verificado: `/forum` 200 (0020),
   `POST /api/suporte` → `{ok:true}` (0021), 0019 no mesmo paste. **Fluxo de
   suporte validado E2E** (validação + gravação + e-mail entregue ao time).
-- **Coordenação de runtime restante (hand-off de ambiente — não dá pra fazer só
-  pelo navegador):** deploy na Vercel + `CRON_SECRET` (destrava o cron de e-mails);
-  E2E do Stripe modo teste (precisa do **Stripe CLI** encaminhando o webhook);
+- ✅ **DEPLOY + CRON DE E-MAILS RESOLVIDOS (2026-07-13, via Vercel CLI):** o
+  projeto **já estava no ar** em `www.matrizcentral.com.br` (Git conectado,
+  auto-deploy no push; team `promobest`, projeto `matrizcentral`,
+  `prj_uyy6wQMfAn91yR8OYXyFStsHIT9Z`). As **7 env vars já estavam configuradas**
+  (Production+Preview). Faltava só o **`CRON_SECRET`** — criado via
+  `vercel env add` (valor aleatório de 64 chars, encriptado, Prod+Preview),
+  seguido de `vercel redeploy` da produção. Cron testado ponta a ponta com
+  `vercel crons run /api/cron/emails-diarios` → runtime log **`GET
+  /api/cron/emails-diarios 200`** (autenticação Bearer passou). **Cron de
+  e-mails de ciclo está vivo** (agenda `0 12 * * *`). Login local do CLI feito
+  (`vercel login`, usuário `limajeferson`); `.vercel/` linkado.
+- **Coordenação de runtime restante (hand-off de ambiente):** E2E do Stripe modo
+  teste — agora dá pra apontar o webhook da Stripe pro endpoint **publicado**
+  (`https://www.matrizcentral.com.br/api/webhooks/stripe`) e colar o
+  `STRIPE_WEBHOOK_SECRET` via `vercel env add`, sem precisar do Stripe CLI local;
   verificação visual dos estados gated de `/feed` e `/forum` (precisa de sessão
-  logada com passe — dá pra fazer no navegador com dado de teste, mas o screenshot
-  do tool está com glitch nesta sessão).
-- **Pendências de ambiente (hand-off):** reconfirmar migration `0019`; aplicar
-  `0021` (support_messages); deploy + `CRON_SECRET` na Vercel (cron de
-  e-mails); E2E Stripe modo teste (Stripe CLI).
+  logada com passe).
+- **Pendências de ambiente (hand-off):** E2E Stripe modo teste (webhook →
+  endpoint publicado + `STRIPE_WEBHOOK_SECRET`); verificação visual gated
+  (`/feed` strip Advanced, `/forum` postando como assinante).
 
 ## 🌿 Estado do git
 
