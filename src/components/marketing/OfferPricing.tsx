@@ -1,115 +1,37 @@
 "use client";
 
 import { useState } from "react";
-import type { WaitlistPlanId } from "@/types";
 import { isValidEmail } from "@/lib/email-validation";
 
-function WaitlistForm({ planId }: { planId: WaitlistPlanId }) {
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
-  const [validationError, setValidationError] = useState<string | null>(null);
-
-  const handleSubmit = async () => {
-    if (!email) {
-      setValidationError("Informe seu e-mail para continuar.");
-      return;
-    }
-    if (!isValidEmail(email)) {
-      setValidationError("Informe um e-mail válido.");
-      return;
-    }
-    setValidationError(null);
-    setStatus("loading");
-
-    const response = await fetch("/api/waitlist", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, planId }),
-    });
-
-    setStatus(response.ok ? "done" : "error");
-  };
-
-  if (status === "done") {
-    return <p className="waitlist-done">✓ Anotado! Avisamos assim que abrir.</p>;
-  }
-
-  return (
-    <div>
-      <div className="waitlist-form">
-        <input
-          type="email"
-          placeholder="seu@email.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <button type="button" className="btn btn-ghost" onClick={handleSubmit} disabled={status === "loading"}>
-          {status === "loading" ? "..." : "Avise-me"}
-        </button>
-      </div>
-      {validationError && <p className="hero-error">{validationError}</p>}
-      {status === "error" && <p className="hero-error">Não deu certo, tenta de novo.</p>}
-    </div>
-  );
-}
-
-function EbookAvulsoCheckout() {
+function PlanCheckout({ plan, cta }: { plan: "ebook" | "regular" | "advanced"; cta: string }) {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleCheckout = async () => {
-    if (!email) {
-      setError("Informe seu e-mail para continuar.");
-      return;
-    }
-    if (!isValidEmail(email)) {
+    if (!email || !isValidEmail(email)) {
       setError("Informe um e-mail válido.");
       return;
     }
-    setLoading(true);
-    setError(null);
-
-    const response = await fetch("/api/checkout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
+    setLoading(true); setError(null);
+    const res = await fetch("/api/checkout", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, plan }),
     });
-
-    if (!response.ok) {
-      setLoading(false);
-      setError("Não foi possível iniciar o checkout. Tente novamente.");
-      return;
-    }
-
-    const { url } = await response.json();
+    if (!res.ok) { setLoading(false); setError("Não foi possível iniciar o checkout. Tente novamente."); return; }
+    const { url } = await res.json();
     window.location.href = url;
   };
 
   return (
     <div>
       <div className="waitlist-form">
-        <input
-          type="email"
-          placeholder="seu@email.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        <input type="email" placeholder="seu@email.com" value={email} onChange={(e) => setEmail(e.target.value)} />
       </div>
-      <button
-        type="button"
-        className="btn btn-dark"
-        style={{ width: "100%", justifyContent: "center", marginBottom: 20 }}
-        onClick={handleCheckout}
-        disabled={loading}
-      >
-        {loading ? "Redirecionando..." : "Comprar agora"}
+      <button type="button" className="btn btn-dark" style={{ width: "100%", justifyContent: "center", marginBottom: 20 }} onClick={handleCheckout} disabled={loading}>
+        {loading ? "Redirecionando..." : cta}
       </button>
-      {error && (
-        <p className="hero-error" style={{ marginBottom: 12 }}>
-          {error}
-        </p>
-      )}
+      {error && <p className="hero-error" style={{ marginBottom: 12 }}>{error}</p>}
     </div>
   );
 }
@@ -120,81 +42,44 @@ export default function OfferPricing() {
       <div className="plans-grid">
         <div className="plan">
           <h3>Start</h3>
-          <div className="price">
-            <b>R$47</b>
-            <small>
-              pagamento único
-              <br />
-              você vira dono da sua IA
-            </small>
-          </div>
-          <EbookAvulsoCheckout />
+          <div className="price"><b>R$47</b><small>pagamento único<br />acesso vitalício ao seu núcleo</small></div>
+          <PlanCheckout plan="ebook" cta="Comprar agora" />
           <ul>
-            <li>Diagnóstico inicial + roadmap personalizado para o seu contexto</li>
-            <li>Acesso à plataforma-feed com biblioteca multi-formato (relatórios, podcasts, vídeos) — em expansão</li>
-            <li>Gamificação: XP, níveis e ranking da comunidade</li>
-            <li>Certificado de conclusão verificável ao terminar sua trilha</li>
-            <li>Ebook técnico completo (bônus): rodar LLMs localmente, do zero ao uso prático</li>
-            <li>1 cupom de R$47 para migrar para o plano Regular ou o Advanced</li>
-            <li>Garantia de 7 dias — não gostou, devolvemos</li>
+            <li>Ebook técnico completo + diagnóstico (triagem) + roadmap personalizado</li>
+            <li>Relatório de benchmark do seu perfil e certificado ao concluir a trilha</li>
+            <li>Acesso à plataforma para <strong>visualizar</strong> toda a biblioteca (prévias)</li>
+            <li>Gamificação da sua trilha do ebook (XP, níveis)</li>
+            <li><strong>Cupom de R$47</strong> (válido 30 dias) para migrar ao Regular ou Advanced</li>
+            <li>Garantia condicional de 7 dias (ver termos)</li>
           </ul>
-          <span className="foot">
-            Por R$47, uma vez: acesso à plataforma, um diagnóstico, um plano de ação e o fim das mensalidades.
-          </span>
+          <span className="foot">Por R$47, uma vez: seu núcleo de aprendizado — e a plataforma pra explorar o resto.</span>
         </div>
 
         <div className="plan">
-          <span className="plan-badge-soon mono">Em breve</span>
-          <h3 style={{ marginTop: 20 }}>Regular</h3>
-          <div className="price">
-            <b>R$97</b>
-            <small>
-              pagamento único
-              <br />
-              acesso por 12 meses
-            </small>
-          </div>
-          <WaitlistForm planId="mensal_97" />
+          <h3>Regular</h3>
+          <div className="price"><b>R$97</b><small>passe de 12 meses<br />1 conteúdo por mês</small></div>
+          <PlanCheckout plan="regular" cta="Assinar o Regular" />
           <ul>
-            <li>Todos os benefícios do Start</li>
-            <li>Acesso ao hub/portal por 12 meses</li>
-            <li>1 benefício liberado por mês, você escolhe: um podcast, um relatório, uma apresentação ou uma pesquisa</li>
-            <li>Cancela quando quiser — o reembolso segue as mesmas condições do Start (ver termos)</li>
+            <li>Tudo do Start</li>
+            <li><strong>Consome 1 conteúdo por mês</strong> (escolhe entre todos) — desbloqueios acumulam pelos 12 meses</li>
+            <li>Passe de 12 meses, sem renovação automática</li>
           </ul>
-          <span className="foot">Pra quem quer estudar no seu ritmo, sem assinatura</span>
+          <span className="foot">Pra estudar no seu ritmo, sem mensalidade</span>
         </div>
 
         <div className="plan recommended">
-          <span className="plan-badge-soon mono">Em breve</span>
           <span className="plan-tag mono plan-tag-hot">Mais procurado</span>
           <h3 style={{ marginTop: 20 }}>Advanced</h3>
-          <div className="price">
-            <b>
-              <span style={{ fontSize: "0.5em", fontWeight: 400, verticalAlign: "middle" }}>12x</span> R$47
-            </b>
-            <small>
-              ou R$497 à vista
-              <br />
-              acesso completo 12 meses
-            </small>
-          </div>
-          <WaitlistForm planId="anual_497" />
+          <div className="price"><b><span style={{ fontSize: "0.5em", fontWeight: 400, verticalAlign: "middle" }}>12x</span> R$47</b><small>ou R$497 à vista<br />acesso completo 12 meses</small></div>
+          <PlanCheckout plan="advanced" cta="Assinar o Advanced" />
           <ul>
-            <li>Tudo do Start, com o catálogo completo liberado</li>
-            <li>Todos os conteúdos lançados durante os 12 meses (≈ 2 lançamentos por mês)</li>
-            <li>Hub completo: relatórios, podcasts, vídeos, pesquisas, apresentações e avaliação de novas ferramentas</li>
-            <li>Conteúdo e trilhas personalizados conforme novos temas</li>
-            <li>≈ R$19 por conteúdo — o mais barato do catálogo</li>
+            <li>Tudo do Start, com <strong>a plataforma inteira liberada</strong></li>
+            <li>Consumo ilimitado: relatórios, podcasts, vídeos, apresentações e o <strong>feed</strong></li>
+            <li>Gamificação plena + novos conteúdos durante os 12 meses</li>
           </ul>
-          <span className="foot">Pra quem já sabe que vai estudar o ano inteiro</span>
+          <span className="foot">Pra quem vai estudar o ano inteiro</span>
         </div>
       </div>
-
-      <p className="plan-note" style={{ maxWidth: 640, margin: "24px auto 0" }}>
-        Funciona sem placa de vídeo dedicada? Sim — o capítulo sobre Ollama e
-        quantização mostra modelos que rodam só na CPU, incluindo em notebooks
-        comuns.
-      </p>
     </div>
   );
 }
