@@ -321,6 +321,18 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["sent_emails"]["Insert"]>;
         Relationships: [];
       };
+      forum_topics: {
+        Row: { id: string; user_id: string; title: string; body: string; created_at: string };
+        Insert: { id?: string; user_id: string; title: string; body: string; created_at?: string };
+        Update: Partial<Database["public"]["Tables"]["forum_topics"]["Insert"]>;
+        Relationships: [];
+      };
+      forum_replies: {
+        Row: { id: string; topic_id: string; user_id: string; body: string; created_at: string };
+        Insert: { id?: string; topic_id: string; user_id: string; body: string; created_at?: string };
+        Update: Partial<Database["public"]["Tables"]["forum_replies"]["Insert"]>;
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
