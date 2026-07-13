@@ -175,10 +175,22 @@ export async function sendExpiryEmail(params: { to: string; daysLeft: number }):
   );
 }
 
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 export async function sendSupportNotification(params: { fromEmail: string; message: string }): Promise<void> {
+  // Escapa o input do usuário — evita injeção de HTML no inbox do time.
+  const from = escapeHtml(params.fromEmail);
+  const msg = escapeHtml(params.message).replace(/\n/g, "<br>");
   await sendBrevo(
     "contato@matrizcentral.com.br",
     `Nova mensagem de suporte de ${params.fromEmail}`,
-    `<p><strong>De:</strong> ${params.fromEmail}</p><p><strong>Mensagem:</strong></p><p>${params.message}</p>`
+    `<p><strong>De:</strong> ${from}</p><p><strong>Mensagem:</strong></p><p>${msg}</p>`
   );
 }

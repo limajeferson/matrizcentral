@@ -10,12 +10,16 @@ export default function ContatoForm() {
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setState("loading"); setError(null);
-    const res = await fetch("/api/suporte", {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, message }),
-    });
-    if (!res.ok) { const d = await res.json().catch(() => ({})); setError(d.error ?? "Erro ao enviar."); setState("error"); return; }
-    setState("done");
+    try {
+      const res = await fetch("/api/suporte", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, message }),
+      });
+      if (!res.ok) { const d = await res.json().catch(() => ({})); setError(d.error ?? "Erro ao enviar."); setState("error"); return; }
+      setState("done");
+    } catch {
+      setError("Falha de conexão. Tente novamente."); setState("error");
+    }
   }
 
   if (state === "done") return <p className="rounded-lg bg-green-50 p-4 text-green-800">Recebemos sua mensagem! Responderemos por e-mail em breve.</p>;
