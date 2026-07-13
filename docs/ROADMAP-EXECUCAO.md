@@ -19,7 +19,7 @@
 | A3 | **E2E Stripe (modo teste)**: compra → webhook → entitlement → tranca | 🔴 bloqueado (Stripe CLI) | preparar guia + hand-off |
 | A4 | Deploy + `CRON_SECRET` na Vercel → cron de e-mails disparando | 🔴 bloqueado (deploy) | preparar guia + hand-off |
 
-### 🟢 Frente 3 — Feed (rede social de aprendizado de IA)
+### ✅ Frente 3 — Feed (rede social de aprendizado de IA) — CÓDIGO COMPLETO
 Depende de: login (✅) + entitlement (✅, leitura = Advanced; prévia p/ todos).
 Escopo: página de feed com posts (manchete + capa + "ler mais"), enforcement
 via `ContentGate` (regra "prévia sempre, consumo travado"), fonte de conteúdo,

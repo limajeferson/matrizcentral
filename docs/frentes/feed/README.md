@@ -1,6 +1,11 @@
 # Frente 3 — Feed (rede social de IA)
 
-**Status:** 🔄 Spec + plano prontos ([`spec.md`](spec.md) · [`plano.md`](plano.md)) — em execução (SDD).
+**Status:** ✅ **Código completo e revisado** (na master, `tsc` 0 / 149 testes).
+`feed.ts` (puro, TDD) + `feed-data.ts` + `/feed` page + link no header (anônimo) e
+no `/conta`. Revisão final (sonnet) OK após 2 fixes (link anônimo; strip=badges,
+níveis v2). **Pendente:** verificação visual dos 3 estados de `/feed` (deslogado/
+view/advanced) — com dado de comunidade de teste; entra na coordenação de runtime.
+Minors rastreados no ledger.
 
 MVP: página `/feed` (timeline de descoberta) = cards de conteúdo (prévia p/ todos,
 "ler mais" → detalhe já gated pela Frente 2) + strip de atividade da comunidade
