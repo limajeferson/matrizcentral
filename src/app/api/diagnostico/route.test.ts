@@ -6,27 +6,37 @@ vi.mock("@/lib/auth-session", () => ({
   getSessionUser: async () => sessionUser,
 }));
 
-function buildSupabaseMock(opts: { updateError?: unknown; existingXp?: unknown } = {}) {
+function buildSupabaseMock(opts: { updateError?: unknown; claimed?: unknown } = {}) {
   const inserted: Record<string, unknown[]> = { xp_events: [] };
   const updated: Record<string, unknown>[] = [];
   const from = (table: string) => {
     if (table === "users") {
       return {
-        update: (payload: Record<string, unknown>) => ({
-          eq: async () => {
-            updated.push(payload);
-            return { data: null, error: opts.updateError ?? null };
-          },
-        }),
+        update: (payload: Record<string, unknown>) => {
+          // Update do perfil (sem diagnosed_at): grava e checa erro.
+          if (!("diagnosed_at" in payload)) {
+            return {
+              eq: async () => {
+                updated.push(payload);
+                return { data: null, error: opts.updateError ?? null };
+              },
+            };
+          }
+          // Claim atômico (com diagnosed_at): só "ganha" quem o mock indicar.
+          return {
+            eq: () => ({
+              is: () => ({
+                select: () => ({
+                  maybeSingle: async () => ({ data: opts.claimed ?? null, error: null }),
+                }),
+              }),
+            }),
+          };
+        },
       };
     }
     if (table === "xp_events") {
-      const chain = {
-        eq: () => chain,
-        maybeSingle: async () => ({ data: opts.existingXp ?? null, error: null }),
-      };
       return {
-        select: () => chain,
         insert: async (rows: unknown) => {
           inserted.xp_events.push(rows);
           return { data: null, error: null };
@@ -69,9 +79,9 @@ describe("POST /api/diagnostico", () => {
     expect(res.status).toBe(400);
   });
 
-  it("grava perfil + XP e retorna profileId", async () => {
+  it("primeiro diagnóstico: grava perfil + XP e retorna profileId", async () => {
     sessionUser = { id: "u1", email: "a@b.com" };
-    mockSupabase = buildSupabaseMock();
+    mockSupabase = buildSupabaseMock({ claimed: { id: "u1" } });
     const { POST } = await import("./route");
     // Q1/opção 0 ("Todos os dias") pontua profissional_produtividade.
     const res = await POST(req({ answers: [{ questionId: 1, selectedOptionIndexes: [0] }] }));
@@ -91,12 +101,15 @@ describe("POST /api/diagnostico", () => {
     expect(mockSupabase.inserted.xp_events).toHaveLength(0);
   });
 
-  it("não duplica XP se já existe evento de triagem", async () => {
+  it("re-diagnóstico: atualiza perfil sem conceder XP novo", async () => {
     sessionUser = { id: "u1", email: "a@b.com" };
-    mockSupabase = buildSupabaseMock({ existingXp: { id: "x1" } });
+    mockSupabase = buildSupabaseMock({ claimed: null });
     const { POST } = await import("./route");
     const res = await POST(req({ answers: [{ questionId: 1, selectedOptionIndexes: [0] }] }));
+    const json = await res.json();
     expect(res.status).toBe(200);
+    expect(json.profileId).toBe("profissional_produtividade");
+    expect(mockSupabase.updated[0]).toMatchObject({ profile_id: "profissional_produtividade" });
     expect(mockSupabase.inserted.xp_events).toHaveLength(0);
   });
 });

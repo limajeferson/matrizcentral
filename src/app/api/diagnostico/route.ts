@@ -20,31 +20,39 @@ export async function POST(req: NextRequest) {
   const profileId = scoreTriagem(QUIZ_TRIAGEM, answers);
   const supabase = getSupabaseServerClient();
 
-  // Grava o perfil na CONTA e CHECA o erro — nunca finge sucesso (era a
-  // causa-raiz do loop pós-compra no fluxo antigo).
+  // Grava o perfil na conta e CHECA o erro — nunca finge sucesso (era a
+  // causa-raiz do loop pós-compra). Re-diagnóstico atualiza o perfil.
   const { error: updateError } = await supabase
     .from("users")
-    .update({ profile_id: profileId, diagnosed_at: new Date().toISOString() })
+    .update({ profile_id: profileId })
     .eq("id", user.id);
   if (updateError) {
     console.error("Falha ao gravar diagnóstico na conta:", updateError);
     return NextResponse.json({ error: "não foi possível salvar" }, { status: 500 });
   }
 
-  // XP de diagnóstico, idempotente por usuário (só a primeira vez).
-  const { data: existingXp } = await supabase
-    .from("xp_events")
+  // XP concedido no MÁXIMO uma vez, de forma atômica: só quem "reivindicar"
+  // diagnosed_at (null -> agora) num único UPDATE condicional ganha o XP.
+  // Duplo-clique concorrente não duplica (mesmo idioma do uso-único do magic
+  // link em auth-session).
+  const { data: claimed } = await supabase
+    .from("users")
+    .update({ diagnosed_at: new Date().toISOString() })
+    .eq("id", user.id)
+    .is("diagnosed_at", null)
     .select("id")
-    .eq("user_id", user.id)
-    .eq("action_type", "triagem")
     .maybeSingle();
-  if (!existingXp) {
-    await supabase.from("xp_events").insert({
+
+  if (claimed) {
+    const { error: xpError } = await supabase.from("xp_events").insert({
       user_id: user.id,
       xp_amount: 50,
       action_type: "triagem",
       reference_id: user.id,
     });
+    if (xpError) {
+      console.error("Falha ao conceder XP de diagnóstico (perfil já salvo):", xpError);
+    }
   }
 
   return NextResponse.json({ profileId });
