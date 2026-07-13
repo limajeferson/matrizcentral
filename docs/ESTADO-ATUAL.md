@@ -108,9 +108,24 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
   `STRIPE_WEBHOOK_SECRET` via `vercel env add`, sem precisar do Stripe CLI local;
   verificação visual dos estados gated de `/feed` e `/forum` (precisa de sessão
   logada com passe).
-- **Pendências de ambiente (hand-off):** E2E Stripe modo teste (webhook →
-  endpoint publicado + `STRIPE_WEBHOOK_SECRET`); verificação visual gated
-  (`/feed` strip Advanced, `/forum` postando como assinante).
+- ✅ **E2E STRIPE VALIDADO (2026-07-13):** produção está em **modo teste**
+  (`cs_test_`); compra Advanced real → webhook `checkout.session.completed`
+  **200** → `user`+`purchase`+`token`+`entitlement` criados (provado por log +
+  estrutura da rota). **Caminho de receita OK.** Achado lateral: `BREVO_API_KEY`
+  no Vercel está **inválido (401 "Key not found")** → e-mails pós-compra não
+  saem (recuperável via página de sucesso/resend; hand-off: repor a chave).
+- 🔴 **BUG ao vivo achado + nova frente:** o pós-compra entra num **loop** — o
+  comprador cai no `/dashboard/[token]` da era do ebook (mundo errado), e o
+  `POST /api/quiz` **retorna 200 mesmo quando o `tokens.update` falha** →
+  `triaged`/`profile_id` não persistem → loop. Brainstorm (2026-07-13) travou 4
+  decisões-âncora (plataforma é a casa; feed-first; personalização leve;
+  gamificação por sessão) e gerou **`docs/frentes/casa-unificada/spec.md`**
+  (rota por tipo de usuário + mapa da oferta + primeiro momento + backlog de
+  conteúdo + decomposição SP1–SP5). **Próxima ação:** revisão do spec pelo
+  usuário → `writing-plans` do **SP1** (casa unificada + diagnóstico por sessão).
+- **Pendências de ambiente (hand-off):** repor `BREVO_API_KEY` válido no Vercel;
+  verificação visual gated (`/feed` strip Advanced, `/forum` postando como
+  assinante).
 
 ## 🌿 Estado do git
 
