@@ -25,7 +25,7 @@ Escopo: página de feed com posts (manchete + capa + "ler mais"), enforcement
 via `ContentGate` (regra "prévia sempre, consumo travado"), fonte de conteúdo,
 gamificação de leitura. **Autônomo** (design + código). brainstorm→spec→plano→SDD.
 
-### 🟢 Frente 4 — Fórum (portal de tópicos)
+### ✅ Frente 4 — Fórum (portal de tópicos) — CÓDIGO COMPLETO
 Depende de: login (✅). Escopo: tópicos, respostas, moderação básica, XP por
 participação. **Autônomo**. brainstorm→spec→plano→SDD.
 
