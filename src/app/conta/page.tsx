@@ -32,18 +32,26 @@ export default async function ContaPage() {
       <h1 className="mb-1 text-2xl font-bold">Minha conta</h1>
       <p className="mb-6 text-gray-600">Olá, {user.email}</p>
 
-      {dashboardToken ? (
+      <div className="flex gap-4">
+        {dashboardToken ? (
+          <a
+            href={`/dashboard/${dashboardToken}`}
+            className="inline-block rounded-lg bg-violet-600 px-5 py-3 font-semibold text-white"
+          >
+            Ir para meu painel de conteúdo
+          </a>
+        ) : (
+          <p className="text-gray-500">
+            Nenhuma compra encontrada nesta conta ainda.
+          </p>
+        )}
         <a
-          href={`/dashboard/${dashboardToken}`}
+          href="/feed"
           className="inline-block rounded-lg bg-violet-600 px-5 py-3 font-semibold text-white"
         >
-          Ir para meu painel de conteúdo
+          Ver o feed
         </a>
-      ) : (
-        <p className="text-gray-500">
-          Nenhuma compra encontrada nesta conta ainda.
-        </p>
-      )}
+      </div>
 
       <section className="mt-10 rounded-lg border border-dashed p-6 text-gray-500">
         <h2 className="mb-1 font-semibold text-gray-700">Em breve</h2>
