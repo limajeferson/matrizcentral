@@ -333,6 +333,12 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["forum_replies"]["Insert"]>;
         Relationships: [];
       };
+      support_messages: {
+        Row: { id: string; user_id: string | null; email: string; message: string; status: string; created_at: string };
+        Insert: { id?: string; user_id?: string | null; email: string; message: string; status?: string; created_at?: string };
+        Update: Partial<Database["public"]["Tables"]["support_messages"]["Insert"]>;
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
