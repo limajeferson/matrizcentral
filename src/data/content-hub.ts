@@ -50,6 +50,7 @@ export const CONTENT_HUB: ContentItem[] = [
     recommendedStage: "modelos_performance",
     bodyPath: "content/relatorios/comparativo-modelos-llm-locais.md",
     embedUrl: null,
+    startIncluded: true,
   },
   {
     id: "podcast-rode-ia-potente",
