@@ -17,7 +17,8 @@ const allWrongAnswers = () =>
 function buildSupabaseMock(
   tokenRow: Record<string, unknown> | null,
   existingXpEvent: Record<string, unknown> | null = null,
-  userTotalXp: { before: number; after: number; email?: string } = { before: 0, after: 0 }
+  userTotalXp: { before: number; after: number; email?: string } = { before: 0, after: 0 },
+  triageUpdateError: unknown = null
 ) {
   if (tokenRow && tokenRow.valid_until === undefined) {
     tokenRow = { ...tokenRow, valid_until: "2099-01-01T00:00:00.000Z" };
@@ -34,7 +35,7 @@ function buildSupabaseMock(
         update: (payload: Record<string, unknown>) => ({
           eq: async () => {
             updated.push(payload);
-            return { data: null, error: null };
+            return { data: null, error: triageUpdateError };
           },
         }),
       };
@@ -322,5 +323,27 @@ describe("POST /api/quiz", () => {
 
     const response = await POST(request);
     expect(response.status).toBe(404);
+  });
+
+  it("retorna 500 (sem fingir sucesso) quando o update da triagem falha", async () => {
+    mockSupabase = buildSupabaseMock(
+      { token: "ABC1234567", purchase_id: "purchase-1", triaged: false },
+      null,
+      { before: 0, after: 0 },
+      { message: "boom" }
+    );
+
+    const { POST } = await import("./route");
+    const request = new NextRequest("http://localhost/api/quiz", {
+      method: "POST",
+      body: JSON.stringify({
+        token: "ABC1234567",
+        quizType: "triagem",
+        answers: [{ questionId: 1, selectedOptionIndexes: [0] }],
+      }),
+    });
+
+    const response = await POST(request);
+    expect(response.status).toBe(500);
   });
 });

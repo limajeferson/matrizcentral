@@ -52,10 +52,14 @@ export async function POST(req: NextRequest) {
 
     const profileId = scoreTriagem(QUIZ_TRIAGEM, answers);
 
-    await supabase
+    const { error: triageError } = await supabase
       .from("tokens")
       .update({ profile_id: profileId, triaged: true, triaged_at: new Date().toISOString() })
       .eq("token", token);
+    if (triageError) {
+      console.error("Falha ao marcar triagem no token:", triageError);
+      return NextResponse.json({ error: "não foi possível salvar a triagem" }, { status: 500 });
+    }
 
     const { data: purchase } = await supabase
       .from("purchases")
