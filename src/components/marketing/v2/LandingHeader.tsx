@@ -8,6 +8,7 @@ const LINKS = [
   { href: "#sistema", label: "O Sistema" },
   { href: "#processo", label: "Como Funciona" },
   { href: "#preco", label: "Preço" },
+  { href: "/feed", label: "Feed" },
   { href: "#faq", label: "FAQ" },
 ];
 

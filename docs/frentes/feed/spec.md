@@ -26,11 +26,14 @@ ainda):
    como **prévia**; "ler mais" leva à página de detalhe do conteúdo, que **já é
    gated** pelo entitlement (Frente 2) — Start vê prévia, paga consome conforme
    plano. Reusa a regra "prévia sempre, consumo travado".
-2. **Strip de atividade da comunidade** (prova social): conquistas recentes
-   (badges ganhos, subidas de nível) de usuários que optaram por aparecer
+2. **Strip de atividade da comunidade** (prova social): **badges recentes**
+   (`badges_earned`) de usuários que optaram por aparecer
    (`leaderboard_opt_in = true`), mostrando `display_name`. **Ler o strip da
    comunidade exige Advanced** (o "feed de usuários" do modelo); Start/Regular
    veem o `ContentGate` ("vire Advanced para acompanhar a comunidade").
+   > **MVP = só badges.** "Subidas de nível" ficam para v2 — hoje o nível é
+   > derivado de `total_xp` (não há evento persistido do momento da subida), então
+   > surfaçá-las exige reconstruir os cruzamentos do histórico de `xp_events`.
 
 Ou seja: o feed é **read-only e curado** (conteúdo + atividade), no formato
 timeline. É a rede social "em modo leitura" — postagem por usuário (UGC) fica
