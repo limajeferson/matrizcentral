@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { stripe, PLANOS, type PlanoId } from "@/lib/stripe";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { getSessionUser } from "@/lib/auth-session";
 import { couponEligible, UPGRADE_COUPON_CENTS } from "@/lib/coupon";
 
 export async function POST(req: NextRequest) {
@@ -15,17 +16,20 @@ export async function POST(req: NextRequest) {
 
   const produto = PLANOS[plan];
   let unitAmount = produto.priceCents;
+  let customerEmail = email;
 
-  // Cupom automático de upgrade (Start < 30 dias, sem passe) — só para regular/advanced.
+  // Cupom de upgrade: SÓ para o usuário AUTENTICADO (não o e-mail postado) — evita
+  // que alguém obtenha o desconto usando o e-mail de um terceiro. Quando logado, o
+  // passe também atacha à identidade real (customer_email = e-mail da sessão).
   if (plan !== "ebook") {
-    const supabase = getSupabaseServerClient();
-    const normalized = email.toLowerCase().trim();
-    const { data: user } = await supabase.from("users").select("id").eq("email", normalized).maybeSingle();
-    if (user) {
+    const sessionUser = await getSessionUser();
+    if (sessionUser) {
+      customerEmail = sessionUser.email;
+      const supabase = getSupabaseServerClient();
       const { data: ebook } = await supabase
-        .from("purchases").select("created_at").eq("user_id", user.id).eq("product_id", "ebook_llm_local")
+        .from("purchases").select("created_at").eq("user_id", sessionUser.id).eq("product_id", "ebook_llm_local")
         .order("created_at", { ascending: false }).limit(1).maybeSingle();
-      const { data: ent } = await supabase.from("entitlements").select("id").eq("user_id", user.id).limit(1).maybeSingle();
+      const { data: ent } = await supabase.from("entitlements").select("id").eq("user_id", sessionUser.id).limit(1).maybeSingle();
       if (couponEligible(ebook?.created_at ?? null, !!ent)) {
         unitAmount = Math.max(0, unitAmount - UPGRADE_COUPON_CENTS);
       }
@@ -40,7 +44,7 @@ export async function POST(req: NextRequest) {
     mode: "payment",
     success_url: `${process.env.NEXT_PUBLIC_URL}/checkout/sucesso?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${process.env.NEXT_PUBLIC_URL}/checkout/cancelado`,
-    customer_email: email,
+    customer_email: customerEmail,
     metadata: { product_id: produto.productId },
   };
 
