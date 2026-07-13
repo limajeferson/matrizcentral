@@ -22,6 +22,8 @@ export interface ContentItem {
   embedUrl: string | null;
   /** Opções de resposta (só para type="pesquisa"). */
   surveyOptions?: SurveyOption[];
+  /** Se true, consumível no nível "view" (incluído no Start, ex.: relatório de benchmark). Ausente = biblioteca paga. */
+  startIncluded?: boolean;
 }
 
 export const CONTENT_HUB: ContentItem[] = [
