@@ -315,6 +315,12 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["content_unlocks"]["Insert"]>;
         Relationships: [];
       };
+      sent_emails: {
+        Row: { id: string; user_id: string; email_type: string; reference: string; sent_at: string };
+        Insert: { id?: string; user_id: string; email_type: string; reference: string; sent_at?: string };
+        Update: Partial<Database["public"]["Tables"]["sent_emails"]["Insert"]>;
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
