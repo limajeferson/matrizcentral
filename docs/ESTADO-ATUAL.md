@@ -42,10 +42,14 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
   (API 2xx) mas o e-mail **não chegou** no inbox em 4 min — provável domínio
   remetente não verificado (SPF/DKIM) ou spam. **Afeta também o e-mail de token
   da compra** (mesmo `email.ts`). Investigar config do Brevo separadamente.
-- **➡️ PRÓXIMA AÇÃO:** iniciar a **Frente 2 — Assinaturas** (Regular/Advanced +
-  e-mails de ciclo/CRM), agora que a fundação de identidade está viva. Antes,
-  opcional: (a) config de e-mail do Brevo; (b) reconciliar o histórico de
-  migrations do Supabase (ver pendência).
+- **Frente 2 (Assinaturas) — Plano 1 código completo e revisado** (na master,
+  `tsc` 0 / 136 testes): entitlement + consumo/`ContentGate` + Stripe (modo teste,
+  cupom/parcelas) + webhook + `/oferta` real. Revisão final (opus) confirmou os
+  invariantes de dinheiro; 2 Important corrigidos; migrations 0017/0018 aplicadas.
+  Spec/plano em [`docs/frentes/assinaturas/`](frentes/assinaturas/).
+- **➡️ PRÓXIMA AÇÃO:** **E2E ao vivo do Plano 1 em modo teste do Stripe** (precisa
+  do Stripe CLI encaminhando o webhook) → depois escrever/executar o **Plano 2
+  (e-mails de ciclo/CRM)**. Gate de go-live: amarrar o cupom à sessão (Issue 3).
 
 ## 🌿 Estado do git
 
@@ -65,7 +69,7 @@ Ordem escolhida pelo usuário: **receita primeiro**.
 |---|--------|--------|--------|
 | 0 | Auditoria + Hardening dos 4 críticos | ✅ concluída | [hardening-criticos](frentes/hardening-criticos/README.md) |
 | 1 | **Login real** (fundação de identidade) | ✅ **concluída** (implementada, revisada, migrations aplicadas, E2E validado ao vivo) | [login-real](frentes/login-real/README.md) |
-| 2 | Assinaturas (Regular/Advanced) + e-mails de ciclo/CRM | 🔜 planejada (depende de #1) | criar ao iniciar |
+| 2 | Assinaturas (Regular/Advanced) + e-mails de ciclo/CRM | 🔄 **em andamento** (Plano 1 código completo+revisado; falta E2E Stripe + Plano 2 e-mails) | [assinaturas](frentes/assinaturas/README.md) |
 | 3 | Feed central (rede social de IA) | 🔜 planejada (depende de #1) | criar ao iniciar |
 | 4 | Fórum (portal de tópicos) | 🔜 planejada (depende de #1) | criar ao iniciar |
 | 5 | Blog + Marketing (calendário/sazonalidade/funil) | 🔜 planejada | criar ao iniciar |
@@ -116,6 +120,14 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
 
+- **2026-07-13 (Opus) — Frente 2 Plano 1 implementado:** executado via
+  subagent-driven-development — 11 tasks (migrations 0017/0018 + entitlements,
+  consumption, coupon puros; entitlement-access; Stripe produtos/checkout/cupom;
+  webhook entitlement; enforcement ContentGate; /oferta real) + 2 fixes de review
+  de task + revisão final (opus) com 2 fixes Important (ContentGate cycle-used;
+  benchmark startIncluded). `tsc` 0 / 136 testes. Migrations aplicadas no remoto.
+  Invariantes de dinheiro confirmados. **Pendente:** E2E Stripe modo teste (Stripe
+  CLI) + Plano 2 (e-mails). Ledger em `.superpowers/sdd/progress.md`.
 - **2026-07-13 (Opus) — Brevo resolvido + brainstorm Frente 2:** diagnosticado
   (via API do Brevo) que o remetente `contato@matrizcentral.com.br` não estava
   validado → autenticado o domínio `matrizcentral.com.br` no Brevo (DNS no
