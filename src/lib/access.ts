@@ -84,3 +84,41 @@ export async function resendAccessByEmail(email: string): Promise<boolean> {
     return false;
   }
 }
+
+/**
+ * Resolve o usuário dono de uma compra a partir do `session_id` da Stripe,
+ * SÓ se a sessão estiver paga. Base do auto-login pós-compra (a página de
+ * sucesso troca isto por uma sessão logada, sem depender de e-mail).
+ */
+export async function resolveUserBySessionId(
+  sessionId: string
+): Promise<{ userId: string; email: string } | null> {
+  try {
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+    if (session.payment_status !== "paid") return null;
+
+    const paymentIntent =
+      typeof session.payment_intent === "string"
+        ? session.payment_intent
+        : session.payment_intent?.id;
+    if (!paymentIntent) return null;
+
+    const supabase = getSupabaseServerClient();
+    const { data: purchase } = await supabase
+      .from("purchases")
+      .select("user_id")
+      .eq("stripe_payment_id", paymentIntent)
+      .maybeSingle();
+    if (!purchase) return null;
+
+    const { data: user } = await supabase
+      .from("users")
+      .select("id, email")
+      .eq("id", purchase.user_id)
+      .maybeSingle();
+    return user ? { userId: user.id, email: user.email } : null;
+  } catch (err) {
+    console.error("Falha ao resolver usuário por session_id:", err);
+    return null;
+  }
+}

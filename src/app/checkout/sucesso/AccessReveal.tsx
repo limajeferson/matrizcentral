@@ -5,33 +5,35 @@ import { useEffect, useState, type FormEvent } from "react";
 type ResendState = "idle" | "sending" | "done" | "error";
 
 /**
- * Revela o link de acesso na própria tela de sucesso, resolvendo pelo
- * `session_id` da Stripe (via /api/access-status). Enquanto o webhook ainda
- * está criando o token, faz polling curto. Sempre oferece o reenvio por e-mail
- * como rede de segurança — assim o cliente NUNCA fica sem caminho para o
- * acesso, mesmo que o e-mail automático falhe.
+ * Após a compra, tenta LOGAR o usuário automaticamente pelo session_id da
+ * Stripe (o webhook cria a conta; aqui a sessão é minted sem depender de
+ * e-mail) e leva para /feed. Enquanto o webhook processa, faz polling curto.
+ * O reenvio por e-mail continua como rede de segurança.
  */
 export default function AccessReveal({ sessionId }: { sessionId: string | null }) {
-  const [quizUrl, setQuizUrl] = useState<string | null>(null);
   const [checking, setChecking] = useState<boolean>(Boolean(sessionId));
   const [email, setEmail] = useState("");
   const [resend, setResend] = useState<ResendState>("idle");
 
   useEffect(() => {
-    if (!sessionId) return;
+    if (!sessionId) {
+      setChecking(false);
+      return;
+    }
     let active = true;
     let tries = 0;
 
     const poll = async () => {
       tries += 1;
       try {
-        const res = await fetch(
-          `/api/access-status?session_id=${encodeURIComponent(sessionId)}`
-        );
+        const res = await fetch("/api/checkout-login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sessionId }),
+        });
         const data = await res.json().catch(() => null);
-        if (active && data?.ready && data.quizUrl) {
-          setQuizUrl(data.quizUrl as string);
-          setChecking(false);
+        if (active && data?.ready) {
+          window.location.href = "/feed"; // navegação cheia: o cookie novo passa a valer no servidor
           return;
         }
       } catch {
@@ -66,36 +68,25 @@ export default function AccessReveal({ sessionId }: { sessionId: string | null }
     }
   };
 
-  if (quizUrl) {
-    return (
-      <>
-        <p>Seu acesso está pronto:</p>
-        <a className="mc-checkout-cta" href={quizUrl}>
-          Começar meu diagnóstico →
-        </a>
-        <p className="mc-checkout-hint">
-          Também enviamos este link para o seu e-mail.
-        </p>
-      </>
-    );
-  }
-
   return (
     <>
       <p>
         {checking
-          ? "Preparando seu acesso — só um instante…"
-          : "Enviamos o link de acesso para o seu e-mail."}
+          ? "Preparando seu acesso — entrando na sua conta…"
+          : "Sua conta está pronta. Entre para acessar seu feed."}
       </p>
+      {!checking && (
+        <a className="mc-checkout-cta" href="/entrar">
+          Entrar na minha conta →
+        </a>
+      )}
       {resend === "done" ? (
         <p className="mc-checkout-hint">
           ✓ Se este e-mail tiver uma compra, o link de acesso foi reenviado.
         </p>
       ) : (
         <form className="mc-resend" onSubmit={handleResend}>
-          <label htmlFor="resend-email" className="mc-sr-only">
-            Seu e-mail
-          </label>
+          <label htmlFor="resend-email" className="mc-sr-only">Seu e-mail</label>
           <input
             id="resend-email"
             type="email"
