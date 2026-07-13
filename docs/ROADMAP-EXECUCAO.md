@@ -14,7 +14,7 @@
 
 | # | Item | Tipo | Ação |
 |---|---|---|---|
-| A1 | **Issue 3 — cupom amarrado à sessão** (hoje confia no e-mail do request) | 🟢 autônomo (código) | plano curto + SDD |
+| A1 | ✅ Issue 3 — cupom amarrado à sessão (commit 5cf89e3) | 🟢 feito | concluído |
 | A2 | Reconfirmar migration `0019_sent_emails` no Supabase | 🟡 ambiente (browser) | reexecutar/confirmar |
 | A3 | **E2E Stripe (modo teste)**: compra → webhook → entitlement → tranca | 🔴 bloqueado (Stripe CLI) | preparar guia + hand-off |
 | A4 | Deploy + `CRON_SECRET` na Vercel → cron de e-mails disparando | 🔴 bloqueado (deploy) | preparar guia + hand-off |
