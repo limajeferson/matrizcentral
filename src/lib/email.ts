@@ -174,3 +174,11 @@ export async function sendExpiryEmail(params: { to: string; daysLeft: number }):
      <p>Renove em <a href="${process.env.NEXT_PUBLIC_URL}/oferta">${process.env.NEXT_PUBLIC_URL}/oferta</a> para não perder o consumo.</p>`
   );
 }
+
+export async function sendSupportNotification(params: { fromEmail: string; message: string }): Promise<void> {
+  await sendBrevo(
+    "contato@matrizcentral.com.br",
+    `Nova mensagem de suporte de ${params.fromEmail}`,
+    `<p><strong>De:</strong> ${params.fromEmail}</p><p><strong>Mensagem:</strong></p><p>${params.message}</p>`
+  );
+}
