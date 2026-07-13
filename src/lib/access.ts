@@ -2,6 +2,8 @@ import { stripe } from "@/lib/stripe";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { sendTokenEmail } from "@/lib/email";
 
+const AUTO_LOGIN_WINDOW_MS = 30 * 60 * 1000; // 30 min
+
 /**
  * Resolve o link de acesso (quiz de triagem) a partir do `session_id` da
  * Stripe. Usado pela página de sucesso para MOSTRAR o acesso na tela assim que
@@ -97,6 +99,15 @@ export async function resolveUserBySessionId(
     const session = await stripe.checkout.sessions.retrieve(sessionId);
     if (session.payment_status !== "paid") return null;
 
+    // Janela de tempo: o auto-login só vale por ~30 min após a criação da
+    // sessão de checkout; depois disso, o comprador entra por magic link.
+    if (
+      typeof session.created === "number" &&
+      Date.now() - session.created * 1000 > AUTO_LOGIN_WINDOW_MS
+    ) {
+      return null;
+    }
+
     const paymentIntent =
       typeof session.payment_intent === "string"
         ? session.payment_intent
@@ -116,7 +127,16 @@ export async function resolveUserBySessionId(
       .select("id, email")
       .eq("id", purchase.user_id)
       .maybeSingle();
-    return user ? { userId: user.id, email: user.email } : null;
+    if (!user) return null;
+
+    // Uso único: consome o session_id atomicamente (PK). Se já foi consumido
+    // (replay), o insert conflita e negamos — não minta a sessão de novo.
+    const { error: consumeError } = await supabase
+      .from("checkout_logins")
+      .insert({ session_id: sessionId, user_id: user.id });
+    if (consumeError) return null;
+
+    return { userId: user.id, email: user.email };
   } catch (err) {
     console.error("Falha ao resolver usuário por session_id:", err);
     return null;

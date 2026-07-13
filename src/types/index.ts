@@ -343,6 +343,12 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["support_messages"]["Insert"]>;
         Relationships: [];
       };
+      checkout_logins: {
+        Row: { session_id: string; user_id: string; consumed_at: string };
+        Insert: { session_id: string; user_id: string; consumed_at?: string };
+        Update: Partial<Database["public"]["Tables"]["checkout_logins"]["Insert"]>;
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
