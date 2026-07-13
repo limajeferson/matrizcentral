@@ -120,3 +120,57 @@ export async function sendMagicLinkEmail(params: {
     throw new Error(`Falha ao enviar magic link via Brevo: ${response.status} ${responseBody}`);
   }
 }
+
+async function sendBrevo(to: string, subject: string, htmlContent: string): Promise<void> {
+  const response = await fetch(BREVO_API_URL, {
+    method: "POST",
+    headers: { "api-key": process.env.BREVO_API_KEY!, "Content-Type": "application/json", accept: "application/json" },
+    body: JSON.stringify({
+      sender: { name: "Matriz Central", email: "contato@matrizcentral.com.br" },
+      to: [{ email: to }],
+      subject,
+      htmlContent,
+    }),
+  });
+  if (!response.ok) {
+    const body = await response.text();
+    throw new Error(`Falha ao enviar e-mail via Brevo: ${response.status} ${body}`);
+  }
+}
+
+export async function sendPassPurchaseEmail(params: { to: string; plan: "regular" | "advanced" }): Promise<void> {
+  const nome = params.plan === "advanced" ? "Advanced" : "Regular";
+  await sendBrevo(
+    params.to,
+    `Seu passe ${nome} está ativo 🎉`,
+    `<p>Seu passe <strong>${nome}</strong> foi ativado — 12 meses de acesso.</p>
+     <p>Entre pela sua conta em <a href="${process.env.NEXT_PUBLIC_URL}/entrar">${process.env.NEXT_PUBLIC_URL}/entrar</a> e comece a consumir.</p>`
+  );
+}
+
+export async function sendNewCycleEmail(params: { to: string }): Promise<void> {
+  await sendBrevo(
+    params.to,
+    "Novo ciclo: escolha seu conteúdo do mês 📅",
+    `<p>Seu novo ciclo abriu — você pode desbloquear <strong>mais 1 conteúdo</strong> este mês.</p>
+     <p>Escolha em <a href="${process.env.NEXT_PUBLIC_URL}/conta">sua conta</a>.</p>`
+  );
+}
+
+export async function sendNewContentEmail(params: { to: string; contentTitle: string }): Promise<void> {
+  await sendBrevo(
+    params.to,
+    "Novo conteúdo disponível na Matriz Central 🚀",
+    `<p>Acabou de sair: <strong>${params.contentTitle}</strong>.</p>
+     <p>Como Advanced, já está liberado pra você em <a href="${process.env.NEXT_PUBLIC_URL}/conta">sua conta</a>.</p>`
+  );
+}
+
+export async function sendExpiryEmail(params: { to: string; daysLeft: number }): Promise<void> {
+  await sendBrevo(
+    params.to,
+    `Seu passe expira em ${params.daysLeft} dia(s) ⏳`,
+    `<p>Seu acesso termina em <strong>${params.daysLeft} dia(s)</strong>.</p>
+     <p>Renove em <a href="${process.env.NEXT_PUBLIC_URL}/oferta">${process.env.NEXT_PUBLIC_URL}/oferta</a> para não perder o consumo.</p>`
+  );
+}
