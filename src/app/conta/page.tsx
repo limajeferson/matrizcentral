@@ -51,6 +51,12 @@ export default async function ContaPage() {
         >
           Ver o feed
         </a>
+        <a
+          href="/forum"
+          className="inline-block rounded-lg bg-violet-600 px-5 py-3 font-semibold text-white"
+        >
+          Ver o fórum
+        </a>
       </div>
 
       <section className="mt-10 rounded-lg border border-dashed p-6 text-gray-500">
