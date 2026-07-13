@@ -36,8 +36,8 @@ export const FOOTER_COLUMNS: FooterColumn[] = [
   {
     title: "Suporte",
     links: [
-      { label: "Central de Ajuda", soon: true },
-      { label: "Contato", soon: true },
+      { label: "Central de Ajuda", href: "/suporte" },
+      { label: "Contato", href: "/suporte" },
       { label: "Garantia", href: "/legal/termos#garantia" },
       { label: "Política de Reembolso", href: "/legal/termos#reembolso" },
       { label: "Status da Plataforma", soon: true },

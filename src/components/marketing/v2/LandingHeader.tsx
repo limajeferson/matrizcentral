@@ -11,6 +11,7 @@ const LINKS = [
   { href: "/feed", label: "Feed" },
   { href: "/forum", label: "Fórum" },
   { href: "/blog", label: "Blog" },
+  { href: "/suporte", label: "Suporte" },
   { href: "#faq", label: "FAQ" },
 ];
 

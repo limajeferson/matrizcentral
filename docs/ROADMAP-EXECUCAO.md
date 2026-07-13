@@ -35,9 +35,14 @@ doc de estratégia (`docs/frentes/blog-marketing/marketing.md`: funil, calendár
 editorial, sazonalidade, SEO/e-mail/prova social). **Autônomo**, entregue via
 brainstorm→spec→plano→SDD.
 
-### 🟢 Frente 6 — Suporte/autoatendimento + CRM/pós-venda
-Depende de: login (✅) + assinaturas (✅). Escopo: canal de autoatendimento,
-jornada de CRM, pós-venda. **Autônomo**. brainstorm→spec→plano→SDD.
+### ✅ Frente 6 — Suporte/autoatendimento + CRM/pós-venda — CONCLUÍDA
+Depende de: login (✅) + assinaturas (✅). Escopo: `/suporte` (FAQ + formulário
+de contato → `support_messages` + notificação por e-mail, migration `0021`) +
+doc de estratégia (`docs/frentes/suporte-crm/crm.md`: onboarding, retenção,
+reativação/win-back, suporte com SLA, métricas por etapa). **Autônomo**,
+entregue via brainstorm→spec→plano→SDD.
+
+**Com a Frente 6, as 6 frentes do roadmap estão entregues (código + revisão).**
 
 ## Método por frente (travado no projeto)
 `superpowers:brainstorming` (com autonomia — decisões recomendadas documentadas

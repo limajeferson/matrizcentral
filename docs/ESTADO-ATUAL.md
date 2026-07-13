@@ -8,7 +8,8 @@
 > Ordem de leitura ao retomar: **este arquivo → `CLAUDE.md` → o `README.md` da
 > frente ativa → o código fonte-de-verdade.**
 
-_Última atualização: 2026-07-13 (Frente 5 — Blog + Marketing concluída)_
+_Última atualização: 2026-07-13 (Frente 6 — Suporte/CRM concluída — **todas as
+6 frentes do roadmap entregues, código + revisão**)_
 
 ---
 
@@ -72,21 +73,35 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
   (funil topo/meio/fundo/upsell, calendário editorial, sazonalidade, SEO/e-mail
   Brevo/prova social). Sem login/entitlement, sem migration. Docs em
   [`docs/frentes/blog-marketing/`](frentes/blog-marketing/).
-- **➡️ PRÓXIMA AÇÃO:** **Frente 6 — Suporte/CRM** (brainstorm→spec→plano→SDD,
-  autonomia). Roadmap em [`docs/ROADMAP-EXECUCAO.md`](ROADMAP-EXECUCAO.md).
+- **Frente 6 (Suporte/CRM) — CONCLUÍDA:** via `subagent-driven-development` (5
+  tasks) — `support_messages` (migration `0021`), `validateContactInput` puro
+  testado, `sendSupportNotification` (Brevo) + `createSupportMessage`, rota
+  `POST /api/suporte`, página `/suporte` (FAQ + `ContatoForm`), link no header
+  e footer, e o doc de estratégia
+  [`docs/frentes/suporte-crm/crm.md`](frentes/suporte-crm/crm.md) (onboarding
+  compra→token→triagem→primeiro valor, retenção via ciclo de e-mails +
+  feed/fórum, reativação/win-back de passe expirado, suporte com SLA simples,
+  métricas por etapa do funil pós-venda). `tsc` 0. Docs em
+  [`docs/frentes/suporte-crm/`](frentes/suporte-crm/).
+- **🏁 TODAS AS 6 FRENTES DO ROADMAP ESTÃO ENTREGUES (código + revisão).** Não
+  há próxima frente planejada — o que resta é **coordenação de ambiente**
+  (abaixo) e o que o usuário priorizar em seguida (não há "próxima ação"
+  automática; alinhar com o usuário ao retomar).
 - **Coordenação de runtime acumulada (hand-off):** aplicar migrations
-  `0019`/`0020` no remoto; deploy + `CRON_SECRET` (cron); E2E Stripe (CLI);
-  verificação visual de `/feed` e `/forum`.
-- **Pendências de ambiente (hand-off):** reconfirmar migration `0019`; deploy +
-  `CRON_SECRET` na Vercel (cron de e-mails); E2E Stripe modo teste (Stripe CLI).
+  `0019`/`0020`/`0021` no remoto; deploy + `CRON_SECRET` (cron); E2E Stripe
+  (CLI); verificação visual de `/feed`, `/forum` e `/suporte`.
+- **Pendências de ambiente (hand-off):** reconfirmar migration `0019`; aplicar
+  `0021` (support_messages); deploy + `CRON_SECRET` na Vercel (cron de
+  e-mails); E2E Stripe modo teste (Stripe CLI).
 
 ## 🌿 Estado do git
 
 - **Branch ativa:** `master`, **sincronizada com `origin/master`** (push feito,
   até `59e7ea8`). O outro computador recebe tudo com `git pull origin master`.
-- **Inclui (nesta rodada):** spec+plano do login, migrations 0015/0016, toda a
-  implementação do login (auth-tokens, safe-redirect, auth-session, rotas, telas,
-  header, ContentGate), fix de normalização de e-mail e hardening pós-review.
+- **Inclui (nesta rodada):** Frente 6 completa — migration `0021`
+  (`support_messages`), `suporte.ts` (lógica pura testada), e-mail de
+  notificação + `support-data.ts`, rota `/api/suporte` + página `/suporte` +
+  `ContatoForm`, link no header/footer, doc `crm.md`.
 - **Não versionado (local, de propósito):** `.env.local` (segredos),
   `SETUP.md`, `claude-chat.md`, `CLAUDE.local-draft.md`.
 
@@ -102,7 +117,7 @@ Ordem escolhida pelo usuário: **receita primeiro**.
 | 3 | Feed central (rede social de IA) | 🔄 código completo+revisado (falta visual) | [feed](frentes/feed/README.md) |
 | 4 | Fórum (portal de tópicos) | 🔄 código completo+revisado (falta 0020+visual) | [forum](frentes/forum/README.md) |
 | 5 | Blog + Marketing (calendário/sazonalidade/funil) | ✅ **concluída** (blog público + doc de estratégia) | [blog-marketing](frentes/blog-marketing/README.md) |
-| 6 | Suporte/autoatendimento + CRM/pós-venda | 🔜 planejada | criar ao iniciar |
+| 6 | Suporte/autoatendimento + CRM/pós-venda | ✅ **concluída** (código+revisão; `/suporte` + doc `crm.md`) | [suporte-crm](frentes/suporte-crm/README.md) |
 
 > As tasks do painel do Claude Code **não sobrevivem ao `/clear`** — esta tabela
 > é a fonte de verdade das frentes. Ao retomar, recrie as tasks a partir daqui
@@ -149,6 +164,20 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
 
+- **2026-07-13 (Opus) — Frente 6 (Suporte/CRM) implementada — ÚLTIMA FRENTE:**
+  via `subagent-driven-development` (5 tasks) — migration `0021`
+  (`support_messages`) + tipos, `suporte.ts`/`validateContactInput` puro
+  testado (TDD), `sendSupportNotification` (Brevo, com escape de HTML no
+  input do usuário — fix pós-review) + `createSupportMessage`, rota
+  `POST /api/suporte` + página `/suporte` (FAQ + `ContatoForm`), link no
+  header (`LandingHeader`) e footer (`footer-nav.ts`, coluna "Suporte"), e o
+  doc de estratégia `docs/frentes/suporte-crm/crm.md` (onboarding
+  compra→token→triagem→primeiro valor, retenção via ciclo de e-mails +
+  feed/fórum, reativação/win-back de passe expirado com e-mails de 7d/1d,
+  suporte com SLA simples e escalada ao contato humano, métricas por etapa
+  do funil pós-venda). `tsc` 0. **Com esta frente, as 6 frentes do roadmap
+  estão entregues (código + revisão).** Pendente: aplicar migration `0021`
+  no remoto (SQL Editor).
 - **2026-07-13 (Opus) — Frente 5 (Blog + Marketing) implementada:** via
   subagent-driven-development (4 tasks) — manifesto `src/data/blog.ts` + 2
   posts-semente markdown, `src/lib/blog.ts` puro testado, `/blog` +
