@@ -54,14 +54,15 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
 - **Issue 3 (go-live) RESOLVIDO:** cupom amarrado à sessão autenticada (commit
   `5cf89e3`, revisado). Roadmap das próximas frentes em
   [`docs/ROADMAP-EXECUCAO.md`](ROADMAP-EXECUCAO.md).
-- **Frente 3 (Feed) EM EXECUÇÃO:** spec + plano prontos
-  ([`docs/frentes/feed/`](frentes/feed/)); MVP = `/feed` (cards de conteúdo +
-  strip de comunidade gated a Advanced). **F3-Task 1 (`feed.ts` puro) concluída**
-  (commit `b185458`, revisada). Ledger: `.superpowers/sdd/progress.md`.
-- **➡️ PRÓXIMA AÇÃO:** continuar o plano da Frente 3 (`docs/frentes/feed/plano.md`)
-  — **F3-Task 2** (`feed-data.ts`) → Task 3 (`/feed` page) → 4 (link) → 5 (verif).
-  Depois: **Frentes 4 (Fórum), 5 (Blog+Marketing), 6 (Suporte/CRM)** — cada uma
-  brainstorm→spec→plano→SDD, conforme o roadmap.
+- **Frente 3 (Feed) — CÓDIGO COMPLETO E REVISADO** (na master, `tsc` 0 / 149
+  testes): `/feed` (cards de conteúdo prévia p/ todos + strip de comunidade
+  badges gated a Advanced), `feed.ts` puro, `feed-data.ts`, link no header e
+  `/conta`. Revisão final OK + 2 fixes. Spec/plano/ledger em
+  [`docs/frentes/feed/`](frentes/feed/). Pendente: verificação visual dos 3
+  estados (coordenação runtime).
+- **➡️ PRÓXIMA AÇÃO:** **Frente 4 — Fórum** (brainstorm→spec→plano→SDD, com
+  autonomia). Depois Frentes 5 (Blog+Marketing) e 6 (Suporte/CRM). Roadmap em
+  [`docs/ROADMAP-EXECUCAO.md`](ROADMAP-EXECUCAO.md).
 - **Pendências de ambiente (hand-off):** reconfirmar migration `0019`; deploy +
   `CRON_SECRET` na Vercel (cron de e-mails); E2E Stripe modo teste (Stripe CLI).
 
