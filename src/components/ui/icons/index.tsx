@@ -152,6 +152,13 @@ export const IconChevron = makeIcon(<path d="M6 9l6 6 6-6" />);
 
 export const IconClose = makeIcon(<path d="M6 6l12 12M18 6L6 18" />);
 
+export const IconLock = makeIcon(
+  <>
+    <rect x="4" y="11" width="16" height="9" rx="2" />
+    <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+  </>
+);
+
 // Ícones de conquista (badges) — usados por src/data/badges.ts + BadgeShelf
 export const IconCompass = makeIcon(
   <>

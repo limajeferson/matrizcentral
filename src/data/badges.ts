@@ -1,4 +1,5 @@
 import type { ContentType } from "@/data/content-hub";
+import type { BadgeIconId } from "@/components/ui/icons";
 
 export type BadgeCondition =
   | { type: "xp_total"; value: number }
@@ -11,7 +12,7 @@ export interface BadgeDefinition {
   id: string;
   name: string;
   description: string;
-  icon: string;
+  icon: BadgeIconId;
   rarity: "common" | "rare" | "epic" | "legendary";
   condition: BadgeCondition;
 }
@@ -21,7 +22,7 @@ export const BADGES: BadgeDefinition[] = [
     id: "autoconhecimento",
     name: "Autoconhecimento",
     description: "Completou o diagnóstico inicial.",
-    icon: "🧭",
+    icon: "compass",
     rarity: "common",
     condition: { type: "xp_total", value: 50 },
   },
@@ -29,7 +30,7 @@ export const BADGES: BadgeDefinition[] = [
     id: "primeiro_relatorio",
     name: "Primeira Leitura",
     description: "Concluiu o primeiro relatório do hub de conteúdo.",
-    icon: "📄",
+    icon: "report",
     rarity: "common",
     condition: { type: "content_type_count", contentType: "relatorio", value: 1 },
   },
@@ -37,7 +38,7 @@ export const BADGES: BadgeDefinition[] = [
     id: "ouvinte_dedicado",
     name: "Ouvinte Dedicado",
     description: "Concluiu 3 podcasts do hub de conteúdo.",
-    icon: "🎧",
+    icon: "headphones",
     rarity: "rare",
     condition: { type: "content_type_count", contentType: "podcast", value: 3 },
   },
@@ -45,7 +46,7 @@ export const BADGES: BadgeDefinition[] = [
     id: "iniciado",
     name: "Iniciado",
     description: "Atingiu 500 XP.",
-    icon: "⭐",
+    icon: "star",
     rarity: "rare",
     condition: { type: "xp_total", value: 500 },
   },
@@ -53,7 +54,7 @@ export const BADGES: BadgeDefinition[] = [
     id: "missao_cumprida",
     name: "Missão Cumprida",
     description: "Concluiu a etapa final do roadmap.",
-    icon: "🏁",
+    icon: "flag",
     rarity: "epic",
     condition: { type: "roadmap_stage", stageKey: "missao_final" },
   },
@@ -61,7 +62,7 @@ export const BADGES: BadgeDefinition[] = [
     id: "validado",
     name: "Conhecimento Validado",
     description: "Foi aprovado no quiz de validação.",
-    icon: "✅",
+    icon: "check",
     rarity: "epic",
     condition: { type: "quiz_validacao_passed" },
   },
@@ -69,7 +70,7 @@ export const BADGES: BadgeDefinition[] = [
     id: "especialista",
     name: "Especialista",
     description: "Atingiu 2000 XP.",
-    icon: "🔥",
+    icon: "flame",
     rarity: "legendary",
     condition: { type: "xp_total", value: 2000 },
   },

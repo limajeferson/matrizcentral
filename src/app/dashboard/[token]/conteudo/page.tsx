@@ -7,13 +7,27 @@ import CategoryBadge from "@/components/ui/category-badge";
 import { deriveRoadmapView } from "@/lib/roadmap-progress";
 import { ROADMAP_STAGE_KEYS, ROADMAP_STAGE_LABELS } from "@/data/roadmap-stages";
 import { getRecommendedContent } from "@/lib/content-feed";
+import { CONTENT_ICON } from "@/lib/content-icons";
+import { IconCheck } from "@/components/ui/icons";
 
 const TYPE_LABEL: Record<ContentType, string> = {
-  relatorio: "📄 Relatório",
-  podcast: "🎙️ Podcast",
-  video: "🎬 Vídeo",
-  pesquisa: "📊 Pesquisa",
+  relatorio: "Relatório",
+  podcast: "Podcast",
+  video: "Vídeo",
+  pesquisa: "Pesquisa",
 };
+
+function TypeBadge({ type }: { type: ContentType }) {
+  const Icon = CONTENT_ICON[type];
+  return (
+    <CategoryBadge variant="hub">
+      <span className="flex items-center gap-1">
+        <Icon size={14} />
+        {TYPE_LABEL[type]}
+      </span>
+    </CategoryBadge>
+  );
+}
 
 export default async function ConteudoHubPage({ params }: { params: { token: string } }) {
   const supabase = getSupabaseServerClient();
@@ -71,7 +85,7 @@ export default async function ConteudoHubPage({ params }: { params: { token: str
               <Link key={item.id} href={`/dashboard/${params.token}/conteudo/${item.id}`}>
                 <GlassCard className="h-full border-2 border-violet-300 bg-violet-50 p-5 transition hover:-translate-y-0.5">
                   <div className="mb-2 flex items-center justify-between">
-                    <CategoryBadge variant="hub">{TYPE_LABEL[item.type]}</CategoryBadge>
+                    <TypeBadge type={item.type} />
                   </div>
                   <h2 className="font-bold text-zinc-900">{item.title}</h2>
                   <p className="mt-1 text-sm text-zinc-600">{item.description}</p>
@@ -99,8 +113,13 @@ export default async function ConteudoHubPage({ params }: { params: { token: str
             <Link key={item.id} href={`/dashboard/${params.token}/conteudo/${item.id}`}>
               <GlassCard className="h-full p-5 transition hover:-translate-y-0.5">
                 <div className="mb-2 flex items-center justify-between">
-                  <CategoryBadge variant="hub">{TYPE_LABEL[item.type]}</CategoryBadge>
-                  {done && <span className="text-sm font-semibold text-emerald-600">✔ concluído</span>}
+                  <TypeBadge type={item.type} />
+                  {done && (
+                    <span className="flex items-center gap-1 text-sm font-semibold text-emerald-600">
+                      <IconCheck size={14} />
+                      concluído
+                    </span>
+                  )}
                 </div>
                 <h2 className="font-bold text-zinc-900">{item.title}</h2>
                 <p className="mt-1 text-sm text-zinc-600">{item.description}</p>

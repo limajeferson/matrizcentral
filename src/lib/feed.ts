@@ -2,11 +2,7 @@ import type { ContentItem, ContentType } from "@/data/content-hub";
 
 export type FeedCard = {
   id: string; title: string; description: string; type: ContentType;
-  emoji: string; href: string; emBreve: boolean;
-};
-
-const EMOJI: Record<ContentType, string> = {
-  relatorio: "📄", podcast: "🎧", video: "🎬", pesquisa: "📊",
+  href: string; emBreve: boolean;
 };
 
 function isEmBreve(item: ContentItem): boolean {
@@ -19,7 +15,6 @@ export function buildContentFeed(items: ContentItem[], token?: string): FeedCard
     title: item.title,
     description: item.description,
     type: item.type,
-    emoji: EMOJI[item.type],
     emBreve: isEmBreve(item),
     href: token ? `/dashboard/${token}/conteudo/${item.id}` : "/oferta",
   }));

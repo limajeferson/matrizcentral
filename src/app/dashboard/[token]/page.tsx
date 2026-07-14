@@ -13,6 +13,7 @@ import CategoryBadge from "@/components/ui/category-badge";
 import BadgeShelf from "@/components/dashboard/BadgeShelf";
 import ChallengeWidget from "@/components/dashboard/ChallengeWidget";
 import { getCurrentChallenge, getIsoWeekKey, getIsoWeekStart } from "@/lib/challenges";
+import { IconArrow } from "@/components/ui/icons";
 
 export default async function DashboardPage({ params }: { params: { token: string } }) {
   const supabase = getSupabaseServerClient();
@@ -192,9 +193,10 @@ export default async function DashboardPage({ params }: { params: { token: strin
         <h2 className="mb-3 font-bold text-zinc-900">Seu primeiro ebook</h2>
         <a
           href={`/api/download?token=${params.token}`}
-          className="inline-block rounded-xl bg-violet-600 px-6 py-2 font-semibold text-white transition hover:bg-violet-700"
+          className="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-6 py-2 font-semibold text-white transition hover:bg-violet-700"
         >
-          📥 Baixar Ebook LLM Local
+          Baixar Ebook LLM Local
+          <IconArrow size={16} />
         </a>
       </GlassCard>
 
@@ -208,9 +210,10 @@ export default async function DashboardPage({ params }: { params: { token: strin
         </p>
         <a
           href={`/dashboard/${params.token}/conteudo`}
-          className="inline-block rounded-xl bg-violet-600 px-6 py-2 font-semibold text-white transition hover:bg-violet-700"
+          className="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-6 py-2 font-semibold text-white transition hover:bg-violet-700"
         >
-          🚀 Explorar hub de conteúdo
+          Explorar hub de conteúdo
+          <IconArrow size={16} />
         </a>
       </GlassCard>
 
@@ -221,9 +224,10 @@ export default async function DashboardPage({ params }: { params: { token: strin
         <h2 className="mb-3 font-bold text-zinc-900">Veja sua posição</h2>
         <a
           href={`/dashboard/${params.token}/ranking`}
-          className="inline-block rounded-xl bg-violet-600 px-6 py-2 font-semibold text-white transition hover:bg-violet-700"
+          className="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-6 py-2 font-semibold text-white transition hover:bg-violet-700"
         >
-          🏆 Ver ranking
+          Ver ranking
+          <IconArrow size={16} />
         </a>
       </GlassCard>
 

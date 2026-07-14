@@ -1,5 +1,6 @@
 import { CONTENT_HUB } from "@/data/content-hub";
 import { buildContentFeed, formatActivity } from "@/lib/feed";
+import { CONTENT_ICON } from "@/lib/content-icons";
 import { getCommunityActivity } from "@/lib/feed-data";
 import { getSessionUser } from "@/lib/auth-session";
 import { getAccessContext } from "@/lib/entitlement-access";
@@ -7,6 +8,7 @@ import { getSupabaseServerClient } from "@/lib/supabase/server";
 import ContentGate from "@/components/auth/ContentGate";
 import DiagnosticoInline from "@/components/quiz/DiagnosticoInline";
 import { BADGES } from "@/data/badges";
+import { IconBadge } from "@/components/ui/icons";
 
 async function resolveToken(userId: string): Promise<string | undefined> {
   const supabase = getSupabaseServerClient();
@@ -54,8 +56,9 @@ export default async function FeedPage() {
           activity.length > 0 ? (
             <ul className="space-y-2">
               {activity.map((a, i) => (
-                <li key={i} className="rounded-lg border border-zinc-200 bg-white/60 px-4 py-2 text-sm text-zinc-700">
-                  🏅 {a.text}
+                <li key={i} className="flex items-center gap-2 rounded-lg border border-zinc-200 bg-white/60 px-4 py-2 text-sm text-zinc-700">
+                  <IconBadge size={16} className="shrink-0 text-violet-600" />
+                  {a.text}
                 </li>
               ))}
             </ul>
@@ -70,18 +73,24 @@ export default async function FeedPage() {
       {/* Cards de conteúdo — prévia para todos */}
       <section className="space-y-3">
         <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-zinc-500">Descubra</h2>
-        {cards.map((c) => (
-          <article key={c.id} className="rounded-xl border border-zinc-200 bg-white p-4">
-            <div className="mb-1 text-sm text-zinc-500">{c.emoji} {c.type}{c.emBreve ? " · em breve" : ""}</div>
-            <h3 className="font-semibold text-zinc-900">{c.title}</h3>
-            <p className="mt-1 text-sm text-zinc-600">{c.description}</p>
-            {!c.emBreve && (
-              <a href={c.href} className="mt-2 inline-block text-sm font-medium text-violet-600">
-                Ler mais →
-              </a>
-            )}
-          </article>
-        ))}
+        {cards.map((c) => {
+          const Icon = CONTENT_ICON[c.type];
+          return (
+            <article key={c.id} className="rounded-xl border border-zinc-200 bg-white p-4">
+              <div className="mb-1 flex items-center gap-1.5 text-sm text-zinc-500">
+                <Icon size={16} className="shrink-0" />
+                {c.type}{c.emBreve ? " · em breve" : ""}
+              </div>
+              <h3 className="font-semibold text-zinc-900">{c.title}</h3>
+              <p className="mt-1 text-sm text-zinc-600">{c.description}</p>
+              {!c.emBreve && (
+                <a href={c.href} className="mt-2 inline-block text-sm font-medium text-violet-600">
+                  Ler mais →
+                </a>
+              )}
+            </article>
+          );
+        })}
       </section>
     </div>
   );

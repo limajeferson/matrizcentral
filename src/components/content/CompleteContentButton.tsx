@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { IconCheck } from "@/components/ui/icons";
 
 interface Props {
   token: string;
@@ -26,7 +27,12 @@ export default function CompleteContentButton({ token, contentId, initiallyCompl
   };
 
   if (completed) {
-    return <p className="font-semibold text-emerald-600">✔ Concluído</p>;
+    return (
+      <p className="flex items-center gap-1.5 font-semibold text-emerald-600">
+        <IconCheck size={18} />
+        Concluído
+      </p>
+    );
   }
 
   return (

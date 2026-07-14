@@ -116,7 +116,7 @@ export default async function ConteudoDetailPage({
 
       {!body && item.embedUrl === null && (
         <GlassCard className="p-6 text-center">
-          <p className="font-semibold text-amber-600">Em breve 🎧</p>
+          <p className="font-semibold text-amber-600">Em breve</p>
           <p className="mt-1 text-zinc-600">{item.description}</p>
         </GlassCard>
       )}

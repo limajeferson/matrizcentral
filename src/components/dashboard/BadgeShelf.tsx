@@ -1,5 +1,6 @@
 import { BADGES } from "@/data/badges";
 import GlassCard from "@/components/ui/glass-card";
+import { BADGE_ICONS } from "@/components/ui/icons";
 import { cn } from "@/lib/utils";
 
 interface BadgeShelfProps {
@@ -15,6 +16,7 @@ export default function BadgeShelf({ earnedBadgeIds }: BadgeShelfProps) {
       <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
         {BADGES.map((badge) => {
           const earned = earnedSet.has(badge.id);
+          const Icon = BADGE_ICONS[badge.icon];
           return (
             <div
               key={badge.id}
@@ -26,7 +28,7 @@ export default function BadgeShelf({ earnedBadgeIds }: BadgeShelfProps) {
                   : "border-zinc-200 bg-zinc-50 opacity-40 grayscale"
               )}
             >
-              <span className="text-2xl">{badge.icon}</span>
+              <Icon size={24} className={earned ? "text-violet-600" : "text-zinc-400"} />
               <span className="mt-1 text-xs font-semibold text-zinc-800">{badge.name}</span>
             </div>
           );

@@ -1,5 +1,7 @@
 "use client";
 
+import { IconLock } from "@/components/ui/icons";
+
 export default function ContentGate({
   title,
   nextPath,
@@ -14,8 +16,8 @@ export default function ContentGate({
 
   return (
     <div className="mx-auto max-w-sm rounded-2xl border border-white/10 bg-black/40 p-6 text-center backdrop-blur">
-      <div className="mb-3 text-3xl" aria-hidden>
-        🔒
+      <div className="mb-3 flex justify-center text-white/70" aria-hidden>
+        <IconLock size={28} />
       </div>
       {title && <p className="mb-1 font-semibold text-white">{title}</p>}
       {cycleUsed ? (
