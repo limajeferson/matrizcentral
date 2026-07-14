@@ -34,6 +34,34 @@ Tabela de todos os emojis removidos da UI e dos e-mails, e o que os substituiu.
 | 📊 | `src/app/dashboard/[token]/conteudo/page.tsx` — `TYPE_LABEL.pesquisa` | texto limpo "Pesquisa" + `CONTENT_ICON.pesquisa` |
 | ✔ | `src/app/dashboard/[token]/conteudo/page.tsx` — selo "✔ concluído" no card | `IconCheck` + texto "concluído" |
 | 🎧 | `src/app/dashboard/[token]/conteudo/[id]/page.tsx` — "Em breve 🎧" | removido, só texto ("Em breve") |
+| 🔒 | `src/components/dashboard/RoadmapCard.tsx` — etapa bloqueada ("🔒 {label}") | `IconLock` (via `src/components/ui/icons`) |
+| ✓ | `src/components/dashboard/RoadmapCard.tsx` — etapa concluída ("✓ {label}") | `IconCheck` |
+| ✔ | `src/components/dashboard/ChallengeWidget.tsx` — "✔ Resgatado" | `IconCheck` + texto |
+| ✔ | `src/components/dashboard/LeaderboardOptIn.tsx` — "✔ Preferência salva." | `IconCheck` + texto |
+| 👋 | `src/components/quiz/DiagnosticoInline.tsx` — "Boas-vindas 👋" | removido, só texto |
+| 🎉 | `src/components/quiz/QuizValidacao.tsx` — "Parabéns! 🎉" (tela de resultado) | removido, só texto (Trophy do lucide-react já ilustra o resultado acima) |
+| ✅ | `src/components/quiz/QuizValidacao.tsx` — "Badge: Validador ✅" | ícone `CheckCircle` (lucide-react, já importado no arquivo) + texto |
+| 🎓 | `src/components/quiz/QuizValidacao.tsx` — "Certificado 🎓" | ícone `GraduationCap` (lucide-react) + texto |
+| 💡 | `src/components/quiz/QuizValidacao.tsx` — dica na revisão de erros | ícone `Lightbulb` (lucide-react, já usado no hint do quiz) |
+| ✅/❌ | `src/components/quiz/QuizValidacao.tsx` — contador "corretas/erros" em tempo real | ícones `CheckCircle`/`XCircle` (lucide-react) |
+| ✅/❌ | `src/components/quiz/QuizValidacao.tsx` — feedback "Correto!/Incorreto" após responder | ícones `CheckCircle`/`XCircle` (lucide-react) |
+| 🏆 | `src/components/quiz/QuizValidacao.tsx` — botão "Ver Resultado Final 🏆" | ícone `Trophy` (lucide-react) ao lado do texto |
+| ✕ / ☰ | `src/components/marketing/Header.tsx` — botão de menu mobile (abrir/fechar) | `IconMenu` / `IconClose` (novos, em `src/components/marketing/v2/icons.tsx`) |
+| ✓ | `src/components/marketing/DemoWidget.tsx` — selo "✓ 120+ páginas..." (aba Ebook) | `IconCheck` (novo, em `marketing/v2/icons.tsx`) |
+| ✓ | `src/components/marketing/v2/PricingV2.tsx` — 4 badges de preço (pagamento único, acesso imediato...) | `IconCheck` |
+| ✓ | `src/components/marketing/v2/FooterNewsletter.tsx` — "✓ Pronto! Você vai receber..." | `IconCheck` |
+| ✦ | `src/components/marketing/v2/HeroV2.tsx` — tag "✦ Para quem cansou de assinaturas..." | `IconSpark` (novo, sparkle 4 pontas) |
+| ✦ | `src/app/(marketing)/oferta/page.tsx` — tag "✦ Escolha seu plano" | `IconSpark` |
+| ✓ | `src/app/checkout/sucesso/AccessReveal.tsx` — "✓ Se este e-mail tiver uma compra..." | `IconCheck` (via `src/components/ui/icons`) |
+| ✓ | `src/app/certificado/[code]/page.tsx` — "Certificado válido ✓" | `IconCheck` (via `src/components/ui/icons`) |
+
+Ícones novos adicionados em `src/components/marketing/v2/icons.tsx` nesta varredura:
+`IconCheck`, `IconSpark`, `IconMenu`, `IconClose` (mesmo estilo dos ícones já existentes no
+arquivo — `viewBox="0 0 24 24"`, `stroke`/`fill` em `currentColor`, `aria-hidden="true"`).
+Em `QuizValidacao.tsx` os emojis viraram ícones `lucide-react` (`GraduationCap` novo import;
+`CheckCircle`, `XCircle`, `Lightbulb`, `Trophy` já eram usados no arquivo) — dependência já
+existente no projeto, mantendo consistência com o restante do componente em vez de misturar
+com o SVG set de `ui/icons`.
 
 ## E-mails (`src/lib/email.ts`)
 
@@ -52,17 +80,14 @@ E-mail é texto/HTML puro (sem SVG embutido de forma confiável entre clientes),
 escolha ali foi sempre "remove o emoji, mantém o texto claro" — não faz sentido trocar
 por ícone SVG num corpo de e-mail.
 
-## Fora de escopo (não tocado nesta frente)
+## Fora de escopo (intencional)
 
-Emojis/glifos fora da lista de arquivos da Frente D (`src/lib/feed.ts`,
-`src/data/badges.ts`, `src/components/auth/ContentGate.tsx`,
-`src/components/content/CompleteContentButton.tsx`, `src/app/dashboard/**`,
-`src/app/feed/page.tsx`, `src/lib/email.ts`) foram deixados como estão — por
-exemplo `src/components/quiz/QuizValidacao.tsx`, `src/components/marketing/**`,
-`src/components/dashboard/ChallengeWidget.tsx`, `src/components/dashboard/RoadmapCard.tsx`,
-`src/components/dashboard/LeaderboardOptIn.tsx` e `src/app/certificado/[code]/page.tsx`.
-Marketing/`/oferta` já usam um sistema de ícones próprio (`components/marketing/v2/icons`,
-ver `src/lib/content-stats.ts`) fora do escopo desta frente (tema dark só na área logada).
-Setas tipográficas (`→`) e checks (`✓`) usados como glifo decorativo dentro de frases
-("Ler mais →", "Certificado válido ✓") não são emojis Unicode multicoloridos e não
-entram nesta varredura — não estão na lista de arquivos da Frente D.
+Após a segunda varredura (`src/components/**` + `src/app/**` completos), o único glifo que
+permanece de propósito é a seta tipográfica `→` usada como sufixo decorativo de CTA/link
+("Ler mais →", "Abrir relatório →", "Ver Meu Certificado →", "Entrar na minha conta →",
+comparação "Hoje → Com Matriz Central"). Ocorre em `src/app/feed/page.tsx`,
+`src/components/marketing/v2/ContentLibrarySection.tsx`,
+`src/components/marketing/v2/OpportunitySection.tsx`, `src/components/quiz/QuizValidacao.tsx`
+e `src/app/checkout/sucesso/AccessReveal.tsx`. `→` (U+2192) é um símbolo tipográfico
+monocromático, não um emoji Unicode multicolorido, e é o mesmo padrão visual em todo o site —
+mantido por consistência de design, não por lacuna de varredura.

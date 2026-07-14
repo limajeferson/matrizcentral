@@ -1,4 +1,5 @@
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { IconCheck } from "@/components/ui/icons";
 
 export default async function VerificacaoCertificadoPage({
   params,
@@ -25,7 +26,9 @@ export default async function VerificacaoCertificadoPage({
 
   return (
     <div className="mx-auto max-w-md space-y-4 p-8 text-center">
-      <p className="text-sm uppercase tracking-widest text-emerald-600">Certificado válido ✓</p>
+      <p className="flex items-center justify-center gap-1.5 text-sm uppercase tracking-widest text-emerald-600">
+        <IconCheck size={14} /> Certificado válido
+      </p>
       <h1 className="text-2xl font-bold text-zinc-900">{certificate.title}</h1>
       <p className="text-zinc-600">
         Emitido em{" "}

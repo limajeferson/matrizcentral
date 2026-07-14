@@ -59,7 +59,7 @@ export default function DiagnosticoInline() {
 
   return (
     <div className="rounded-2xl border border-violet-200 bg-violet-50 p-5">
-      <p className="mb-1 text-sm font-semibold text-violet-700">Boas-vindas 👋</p>
+      <p className="mb-1 text-sm font-semibold text-violet-700">Boas-vindas</p>
       <h2 className="mb-3 text-lg font-bold text-zinc-900">
         Responda 1 minuto e personalizamos seu feed
       </h2>

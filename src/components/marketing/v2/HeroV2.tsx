@@ -5,7 +5,7 @@ import RotatingWord from "./RotatingWord";
 import { Reveal } from "./motion-primitives";
 import HeroObserver from "./HeroObserver";
 import { formatCounts } from "@/lib/content-stats";
-import { FormatIcon } from "./icons";
+import { FormatIcon, IconSpark } from "./icons";
 
 const ROTATING_WORDS = ["do GPT", "do Claude", "do Gemini", "de servidores", "de VPS"];
 
@@ -27,7 +27,7 @@ export default function HeroV2() {
       <div className="mc-container mc-hero-content">
         <Reveal>
           <p className="mc-hero-proof mc-mono">
-            ✦ Para quem cansou de assinaturas — e usa IA todos os dias
+            <IconSpark className="mc-hero-proof-icon" /> Para quem cansou de assinaturas — e usa IA todos os dias
           </p>
         </Reveal>
         <Reveal delay={0.1}>

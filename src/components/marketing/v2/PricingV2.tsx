@@ -6,6 +6,7 @@ import ProductBanner from "./ProductBanner";
 import {
   IconBookOpen,
   IconBooks,
+  IconCheck,
   IconCompass,
   IconPuzzle,
   IconRoad,
@@ -43,10 +44,10 @@ export default function PricingV2() {
         </Reveal>
         <Reveal delay={0.2}>
           <div className="mc-price-badges mc-mono">
-            <span><span className="mc-check" aria-hidden="true">✓</span> Pagamento único</span>
-            <span><span className="mc-check" aria-hidden="true">✓</span> Acesso imediato</span>
-            <span><span className="mc-check" aria-hidden="true">✓</span> Sem assinatura</span>
-            <span><span className="mc-check" aria-hidden="true">✓</span> Acesso vitalício à versão adquirida</span>
+            <span><IconCheck className="mc-check" /> Pagamento único</span>
+            <span><IconCheck className="mc-check" /> Acesso imediato</span>
+            <span><IconCheck className="mc-check" /> Sem assinatura</span>
+            <span><IconCheck className="mc-check" /> Acesso vitalício à versão adquirida</span>
           </div>
         </Reveal>
 

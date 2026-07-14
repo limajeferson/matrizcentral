@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { IconMenu, IconClose } from "@/components/marketing/v2/icons";
 
 interface HeaderProps {
   ctaLabel?: string;
@@ -35,7 +36,7 @@ export default function Header({ ctaLabel = "Ver preço", ctaHref = "/oferta" }:
             aria-expanded={open}
             onClick={() => setOpen((value) => !value)}
           >
-            {open ? "✕" : "☰"}
+            {open ? <IconClose /> : <IconMenu />}
           </button>
         </div>
       </div>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import GlassCard from "@/components/ui/glass-card";
 import CategoryBadge from "@/components/ui/category-badge";
+import { IconCheck } from "@/components/ui/icons";
 
 interface ChallengeWidgetProps {
   token: string;
@@ -50,7 +51,10 @@ export default function ChallengeWidget({
         Progresso: {Math.min(progress, target)}/{target} · Recompensa: +{xpReward} XP
       </p>
       {status === "claimed" ? (
-        <p className="mt-3 text-sm font-semibold text-emerald-600">✔ Resgatado</p>
+        <p className="mt-3 flex items-center gap-1.5 text-sm font-semibold text-emerald-600">
+          <IconCheck size={16} />
+          Resgatado
+        </p>
       ) : (
         <button
           onClick={handleClaim}

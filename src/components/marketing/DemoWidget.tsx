@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { IconFire } from "./v2/icons";
+import { IconFire, IconCheck } from "./v2/icons";
 
 const TABS = [
   { id: "quiz", label: "Diagnóstico" },
@@ -104,7 +104,7 @@ export default function DemoWidget() {
                 hardware. Sem enrolação.
               </p>
               <div className="ebook-check">
-                <span>✓</span>
+                <span><IconCheck className="ebook-check-icon" /></span>
                 120+ páginas de conteúdo técnico
               </div>
             </div>

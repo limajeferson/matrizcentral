@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { QUIZ_LLM_LOCAL, QUIZ_CONFIG } from "@/data/quiz-llm-local";
-import { CheckCircle, XCircle, Lightbulb, Trophy, RotateCcw, ChevronRight } from "lucide-react";
+import { CheckCircle, XCircle, Lightbulb, Trophy, RotateCcw, ChevronRight, GraduationCap } from "lucide-react";
 
 type AnswerState = "unanswered" | "correct" | "incorrect";
 
@@ -91,7 +91,7 @@ export default function QuizValidacao({ token, onComplete }: QuizProps) {
             <>
               <Trophy className="w-16 h-16 text-yellow-400 mx-auto mb-4" />
               <h2 className="text-3xl font-bold text-white mb-2">
-                Parabéns! 🎉
+                Parabéns!
               </h2>
               <p className="text-green-300 text-lg mb-6">
                 Você concluiu a validação de conhecimento!
@@ -140,11 +140,11 @@ export default function QuizValidacao({ token, onComplete }: QuizProps) {
                 <span className="bg-yellow-500/20 text-yellow-300 px-3 py-1 rounded-full">
                   +{QUIZ_CONFIG.xpReward} XP
                 </span>
-                <span className="bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full">
-                  Badge: Validador ✅
+                <span className="flex items-center gap-1 bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full">
+                  <CheckCircle className="w-3.5 h-3.5" /> Badge: Validador
                 </span>
-                <span className="bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full">
-                  Certificado 🎓
+                <span className="flex items-center gap-1 bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full">
+                  <GraduationCap className="w-3.5 h-3.5" /> Certificado
                 </span>
               </div>
             </div>
@@ -177,8 +177,9 @@ export default function QuizValidacao({ token, onComplete }: QuizProps) {
                         q.options.find((o) => o.id === q.correctAnswer)?.text
                       }
                     </p>
-                    <p className="text-gray-400 text-xs mt-1">
-                      💡 {q.explanation}
+                    <p className="flex items-start gap-1 text-gray-400 text-xs mt-1">
+                      <Lightbulb className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" />
+                      {q.explanation}
                     </p>
                   </div>
                 );
@@ -259,11 +260,11 @@ export default function QuizValidacao({ token, onComplete }: QuizProps) {
 
         {/* Score em tempo real */}
         <div className="flex justify-between text-xs text-gray-500 mt-1">
-          <span>
-            ✅ {answers.filter((a) => a.isCorrect).length} corretas
+          <span className="flex items-center gap-1">
+            <CheckCircle className="w-3.5 h-3.5" /> {answers.filter((a) => a.isCorrect).length} corretas
           </span>
-          <span>
-            ❌ {answers.filter((a) => !a.isCorrect).length} erros
+          <span className="flex items-center gap-1">
+            <XCircle className="w-3.5 h-3.5" /> {answers.filter((a) => !a.isCorrect).length} erros
           </span>
         </div>
       </div>
@@ -351,11 +352,19 @@ export default function QuizValidacao({ token, onComplete }: QuizProps) {
           }`}
         >
           <p
-            className={`font-semibold text-sm mb-1 ${
+            className={`flex items-center gap-1 font-semibold text-sm mb-1 ${
               answerState === "correct" ? "text-green-300" : "text-red-300"
             }`}
           >
-            {answerState === "correct" ? "✅ Correto!" : "❌ Incorreto"}
+            {answerState === "correct" ? (
+              <>
+                <CheckCircle className="w-4 h-4" /> Correto!
+              </>
+            ) : (
+              <>
+                <XCircle className="w-4 h-4" /> Incorreto
+              </>
+            )}
           </p>
           <p className="text-gray-300 text-sm">{question.explanation}</p>
         </div>
@@ -385,7 +394,9 @@ export default function QuizValidacao({ token, onComplete }: QuizProps) {
                 Próxima <ChevronRight className="w-4 h-4" />
               </>
             ) : (
-              "Ver Resultado Final 🏆"
+              <>
+                Ver Resultado Final <Trophy className="w-4 h-4" />
+              </>
             )}
           </button>
         )}

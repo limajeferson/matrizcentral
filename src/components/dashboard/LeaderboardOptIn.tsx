@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { IconCheck } from "@/components/ui/icons";
 
 interface LeaderboardOptInProps {
   token: string;
@@ -54,7 +55,10 @@ export default function LeaderboardOptIn({
         {status === "saving" ? "Salvando..." : "Salvar preferência"}
       </button>
       {status === "saved" && (
-        <p className="mt-2 text-sm text-emerald-600">✔ Preferência salva.</p>
+        <p className="mt-2 flex items-center gap-1.5 text-sm text-emerald-600">
+          <IconCheck size={16} />
+          Preferência salva.
+        </p>
       )}
       {status === "error" && (
         <p className="mt-2 text-sm text-red-600">Não foi possível salvar. Tente novamente.</p>

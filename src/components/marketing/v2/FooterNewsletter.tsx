@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { isValidEmail } from "@/lib/email-validation";
+import { IconCheck } from "./icons";
 
 type Status = "idle" | "loading" | "done" | "error";
 
@@ -35,7 +36,7 @@ export default function FooterNewsletter() {
       </div>
       {status === "done" ? (
         <p className="mc-footer-newsletter-done mc-mono">
-          ✓ Pronto! Você vai receber nossas novidades.
+          <IconCheck className="mc-footer-newsletter-done-icon" /> Pronto! Você vai receber nossas novidades.
         </p>
       ) : (
         <form

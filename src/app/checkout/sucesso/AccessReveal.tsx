@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, type FormEvent } from "react";
+import { IconCheck } from "@/components/ui/icons";
 
 type ResendState = "idle" | "sending" | "done" | "error";
 
@@ -81,8 +82,8 @@ export default function AccessReveal({ sessionId }: { sessionId: string | null }
         </a>
       )}
       {resend === "done" ? (
-        <p className="mc-checkout-hint">
-          ✓ Se este e-mail tiver uma compra, o link de acesso foi reenviado.
+        <p className="mc-checkout-hint mc-checkout-hint-ok">
+          <IconCheck size={14} /> Se este e-mail tiver uma compra, o link de acesso foi reenviado.
         </p>
       ) : (
         <form className="mc-resend" onSubmit={handleResend}>

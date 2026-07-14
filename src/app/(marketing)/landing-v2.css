@@ -590,7 +590,13 @@
   color: var(--mc-gray);
 }
 /* ✓ em verde-menta = confirmação/permissão; texto segue neutro (aplicação restrita). */
-.mcv2 .mc-price-badges .mc-check { color: var(--mc-success); font-weight: 700; }
+.mcv2 .mc-price-badges .mc-check {
+  display: inline-block;
+  width: 0.9em;
+  height: 0.9em;
+  vertical-align: -0.1em;
+  color: var(--mc-success);
+}
 /* ---- Produtos incluídos (banners ultrawide com loop) ---- */
 .mcv2 .mc-product-banners {
   margin-top: 56px;
@@ -848,7 +854,8 @@
   padding: 10px 14px; color: var(--mc-white); font-size: 0.88rem; min-width: 240px;
 }
 .mcv2 .mc-footer-newsletter-form input:focus { outline: none; border-color: var(--mc-accent); }
-.mcv2 .mc-footer-newsletter-done { color: var(--mc-success, #46d39a); font-size: 0.85rem; }
+.mcv2 .mc-footer-newsletter-done { color: var(--mc-success, #46d39a); font-size: 0.85rem; display: flex; align-items: center; gap: 6px; }
+.mcv2 .mc-footer-newsletter-done-icon { width: 0.95em; height: 0.95em; flex-shrink: 0; }
 .mcv2 .mc-footer-newsletter-error { color: var(--mc-warn); font-size: 0.78rem; width: 100%; }
 @media (max-width: 560px) {
   .mcv2 .mc-footer-newsletter-form input { min-width: 0; flex: 1; }

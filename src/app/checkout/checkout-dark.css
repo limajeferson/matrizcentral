@@ -64,6 +64,7 @@
 }
 .mc-checkout-cta:hover { background: #6a4cf0; }
 .mc-checkout-hint { font-size: 0.85rem; color: #6f6a82 !important; }
+.mc-checkout-hint-ok { display: flex; align-items: center; gap: 6px; color: #46d39a !important; }
 .mc-resend {
   display: flex;
   gap: 8px;
