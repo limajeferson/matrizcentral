@@ -19,6 +19,9 @@
   font-family: var(--font-marketing-sans), system-ui, sans-serif;
   color: var(--ink);
   background: var(--bg);
+  /* Cobre a viewport para o body (dark por padrão) não vazar abaixo do
+     conteúdo curto das páginas claras .lp-guide (/sobre, /legal/*). */
+  min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   line-height: 1.5;
 }
