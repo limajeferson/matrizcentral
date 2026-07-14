@@ -13,7 +13,7 @@ export async function sendTokenEmail(params: { to: string; token: string }): Pro
     body: JSON.stringify({
       sender: { name: "Matriz Central", email: "contato@matrizcentral.com.br" },
       to: [{ email: params.to }],
-      subject: "Seu token chegou! Descubra seu perfil 🚀",
+      subject: "Seu token chegou! Descubra seu perfil",
       htmlContent: `
         <p>Seu ebook está confirmado.</p>
         <p>Descubra seu perfil de aprendizado e desbloqueie seu roadmap personalizado:</p>
@@ -43,7 +43,7 @@ export async function sendLevelUpEmail(params: {
     body: JSON.stringify({
       sender: { name: "Matriz Central", email: "contato@matrizcentral.com.br" },
       to: [{ email: params.to }],
-      subject: `Você subiu de nível! Agora você é ${params.levelName} 🎉`,
+      subject: `Você subiu de nível! Agora você é ${params.levelName}`,
       htmlContent: `
         <p>Parabéns! Você atingiu o Nível ${params.level} — ${params.levelName}.</p>
         <p>Continue estudando para desbloquear o próximo nível.</p>
@@ -74,7 +74,7 @@ export async function sendCertificateEmail(params: {
     body: JSON.stringify({
       sender: { name: "Matriz Central", email: "contato@matrizcentral.com.br" },
       to: [{ email: params.to }],
-      subject: `Seu certificado está pronto: ${params.title} 🏆`,
+      subject: `Seu certificado está pronto: ${params.title}`,
       htmlContent: `
         <p>Parabéns por concluir sua trilha!</p>
         <p>Certificado: ${params.title}</p>
@@ -105,7 +105,7 @@ export async function sendMagicLinkEmail(params: {
     body: JSON.stringify({
       sender: { name: "Matriz Central", email: "contato@matrizcentral.com.br" },
       to: [{ email: params.to }],
-      subject: "Seu link de acesso à Matriz Central 🔑",
+      subject: "Seu link de acesso à Matriz Central",
       htmlContent: `
         <p>Recebemos um pedido para entrar na sua conta.</p>
         <p>Clique no link abaixo para acessar (válido por 15 minutos, uso único):</p>
@@ -142,7 +142,7 @@ export async function sendPassPurchaseEmail(params: { to: string; plan: "regular
   const nome = params.plan === "advanced" ? "Advanced" : "Regular";
   await sendBrevo(
     params.to,
-    `Seu passe ${nome} está ativo 🎉`,
+    `Seu passe ${nome} está ativo`,
     `<p>Seu passe <strong>${nome}</strong> foi ativado — 12 meses de acesso.</p>
      <p>Entre pela sua conta em <a href="${process.env.NEXT_PUBLIC_URL}/entrar">${process.env.NEXT_PUBLIC_URL}/entrar</a> e comece a consumir.</p>`
   );
@@ -151,7 +151,7 @@ export async function sendPassPurchaseEmail(params: { to: string; plan: "regular
 export async function sendNewCycleEmail(params: { to: string }): Promise<void> {
   await sendBrevo(
     params.to,
-    "Novo ciclo: escolha seu conteúdo do mês 📅",
+    "Novo ciclo: escolha seu conteúdo do mês",
     `<p>Seu novo ciclo abriu — você pode desbloquear <strong>mais 1 conteúdo</strong> este mês.</p>
      <p>Escolha em <a href="${process.env.NEXT_PUBLIC_URL}/conta">sua conta</a>.</p>`
   );
@@ -160,7 +160,7 @@ export async function sendNewCycleEmail(params: { to: string }): Promise<void> {
 export async function sendNewContentEmail(params: { to: string; contentTitle: string }): Promise<void> {
   await sendBrevo(
     params.to,
-    "Novo conteúdo disponível na Matriz Central 🚀",
+    "Novo conteúdo disponível na Matriz Central",
     `<p>Acabou de sair: <strong>${params.contentTitle}</strong>.</p>
      <p>Como Advanced, já está liberado pra você em <a href="${process.env.NEXT_PUBLIC_URL}/conta">sua conta</a>.</p>`
   );
@@ -169,7 +169,7 @@ export async function sendNewContentEmail(params: { to: string; contentTitle: st
 export async function sendExpiryEmail(params: { to: string; daysLeft: number }): Promise<void> {
   await sendBrevo(
     params.to,
-    `Seu passe expira em ${params.daysLeft} dia(s) ⏳`,
+    `Seu passe expira em ${params.daysLeft} dia(s)`,
     `<p>Seu acesso termina em <strong>${params.daysLeft} dia(s)</strong>.</p>
      <p>Renove em <a href="${process.env.NEXT_PUBLIC_URL}/oferta">${process.env.NEXT_PUBLIC_URL}/oferta</a> para não perder o consumo.</p>`
   );
