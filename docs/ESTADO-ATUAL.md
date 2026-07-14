@@ -139,6 +139,27 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
   poderia ganhar XP de triagem em dois lugares (sem dedup entre token e sessão);
   podar `resolveQuizUrlBySessionId`/`/api/access-status` (mortos); mint-then-
   consume no auto-login (hoje consume antes de `createSession`).
+- ✅ **FRENTE FEED-REDESIGN (baseline) — CONCLUÍDA E REVISADA (2026-07-14):**
+  a partir do design do usuário no Claude Design (template genérico "Community
+  Feed"), adotada a **estrutura** com a **marca da Matriz** (violeta, não rosa).
+  4 frentes via subagent-driven-development (`tsc` 0 / **187 testes** / next
+  lint sem erros; revisão ampla opus = **Ready to merge**): **A** tema **dark
+  padrão** (só área logada, `ThemeProvider` caseiro anti-flash) + **UserMenu**
+  (avatar → nível/XP · toggle tema · conta · sair); **B** `/feed` vira **shell
+  de 3 colunas** theme-aware com dados reais (content-hub, fórum, comunidade
+  gated a Advanced, perfil/XP), preservando o diagnóstico do SP1; **C** card de
+  perfil flutuante **minimizado** (pill que expande); **D** **emojis→ícones SVG**
+  em todo o site + e-mails (fixtures intactas), `icon-map.md`. Commits
+  `3f89f23`..`dd463e5`. Docs em `docs/frentes/feed-redesign/{spec,plano,icon-map}.md`.
+  **Estratégia (decisão do usuário):** este é o **baseline genérico-mas-branded**
+  aceitável; os **itens do backlog de design** do usuário entram **depois**, um a
+  um, incrementais, com rollback ao baseline.
+- **Hand-offs / verificação do feed-redesign:** (1) **visual LOGADO** do `/feed`
+  (3 colunas em dark, toggle p/ claro, pill do perfil, bloco de diagnóstico) —
+  precisa de sessão logada; (2) conferir páginas claras `/sobre` e `/legal/*`
+  (faixa dark do body corrigida com `min-height`). **Backlog rastreado:** a11y de
+  teclado (Escape/setas) no `UserMenu`/`ProfileCard`; migrar `ContentGate` p/
+  tokens; reavaliar `role="dialog"` do `ProfileCard`; dark no site inteiro.
 
 ## 🌿 Estado do git
 
