@@ -11,9 +11,17 @@ import { BADGES } from "@/data/badges";
 import DiagnosticoInline from "@/components/quiz/DiagnosticoInline";
 import { UserMenu } from "@/components/app/UserMenu";
 import { AppShell } from "@/components/app/AppShell";
+import { ProfileCard, type ProfileCardPlan } from "@/components/app/ProfileCard";
 import { LeftSidebar } from "@/components/app/feed/LeftSidebar";
 import { CenterColumn } from "@/components/app/feed/CenterColumn";
 import { RightSidebar } from "@/components/app/feed/RightSidebar";
+import type { AccessLevel } from "@/lib/entitlements";
+
+const PLAN_LABEL: Record<AccessLevel, ProfileCardPlan> = {
+  view: "Start",
+  regular: "Regular",
+  advanced: "Advanced",
+};
 
 async function resolveToken(userId: string): Promise<string | undefined> {
   const supabase = getSupabaseServerClient();
@@ -69,16 +77,27 @@ export default async function FeedPage() {
   );
 
   return (
-    <AppShell
-      userMenu={userMenu}
-      left={<LeftSidebar />}
-      center={
-        <>
-          {user && !profileId && <DiagnosticoInline />}
-          <CenterColumn cards={cards} threads={threads} access={access} />
-        </>
-      }
-      right={<RightSidebar access={access} activity={activity} />}
-    />
+    <>
+      <AppShell
+        userMenu={userMenu}
+        left={<LeftSidebar />}
+        center={
+          <>
+            {user && !profileId && <DiagnosticoInline />}
+            <CenterColumn cards={cards} threads={threads} access={access} />
+          </>
+        }
+        right={<RightSidebar access={access} activity={activity} />}
+      />
+      {user && (
+        <ProfileCard
+          email={user.email}
+          level={level.level}
+          levelName={level.name}
+          progressPercent={level.progressPercent}
+          plan={PLAN_LABEL[access]}
+        />
+      )}
+    </>
   );
 }
