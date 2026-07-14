@@ -58,15 +58,15 @@ export default function DiagnosticoInline() {
   };
 
   return (
-    <div className="rounded-2xl border border-violet-200 bg-violet-50 p-5">
-      <p className="mb-1 text-sm font-semibold text-violet-700">Boas-vindas</p>
-      <h2 className="mb-3 text-lg font-bold text-zinc-900">
+    <div className="rounded-2xl border border-violet-200 bg-violet-50 p-5 dark:border-violet-800 dark:bg-violet-950/40">
+      <p className="mb-1 text-sm font-semibold text-violet-700 dark:text-violet-300">Boas-vindas</p>
+      <h2 className="mb-3 text-lg font-bold text-zinc-900 dark:text-zinc-100">
         Responda 1 minuto e personalizamos seu feed
       </h2>
-      <p className="mb-1 text-sm text-zinc-500">
+      <p className="mb-1 text-sm text-zinc-500 dark:text-zinc-400">
         Pergunta {currentQ + 1} de {visible.length}
       </p>
-      <h3 className="mb-3 font-semibold text-zinc-900">{question.text}</h3>
+      <h3 className="mb-3 font-semibold text-zinc-900 dark:text-zinc-100">{question.text}</h3>
       <div className="space-y-2">
         {question.options.map((option, index) => (
           <button
@@ -75,15 +75,15 @@ export default function DiagnosticoInline() {
             onClick={() => toggleOption(index)}
             className={`w-full rounded-xl border-2 p-3 text-left transition ${
               selectedIndexes.includes(index)
-                ? "border-violet-500 bg-white"
-                : "border-zinc-200 bg-white hover:border-violet-300"
+                ? "border-violet-500 bg-white dark:bg-zinc-800 dark:text-zinc-100"
+                : "border-zinc-200 bg-white hover:border-violet-300 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:border-violet-500"
             }`}
           >
             {option.text}
           </button>
         ))}
       </div>
-      {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
+      {error && <p className="mt-3 text-sm text-red-600 dark:text-red-400">{error}</p>}
       <button
         type="button"
         onClick={handleNext}
