@@ -1,9 +1,9 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
 
 let stripeSession: Record<string, unknown> = {};
-const mockRetrieve = vi.fn(async (..._args: unknown[]) => stripeSession);
+const mockRetrieve = vi.fn(async () => stripeSession);
 vi.mock("@/lib/stripe", () => ({
-  stripe: { checkout: { sessions: { retrieve: (...args: unknown[]) => mockRetrieve(...args) } } },
+  stripe: { checkout: { sessions: { retrieve: () => mockRetrieve() } } },
 }));
 
 function buildSupabaseMock(
