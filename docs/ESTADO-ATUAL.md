@@ -8,8 +8,9 @@
 > Ordem de leitura ao retomar: **este arquivo → `CLAUDE.md` → o `README.md` da
 > frente ativa → o código fonte-de-verdade.**
 
-_Última atualização: 2026-07-14 (Backlog de design — item 1: **barra de histórias
-do feed** entregue, revisada e verificada ao vivo na produção)_
+_Última atualização: 2026-07-15 (Design v2 — programa de 5 frentes: **Frentes 1
+(Moldura) e 2 (Feed) concluídas/revisadas/deployadas**; Frente 3 desenhada;
+migration `0024` pendente)_
 
 ---
 
@@ -182,16 +183,42 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
   **Próxima ação:** aguardar o **próximo item do backlog de design** do usuário
   (aplicar isolado, com rollback ao baseline), OU checar visualmente o toggle de
   tema/pill quando conveniente.
+- 🔄 **DESIGN v2 (17 modelos 21st.dev) — PROGRAMA EM EXECUÇÃO (2026-07-15):**
+  backlog grande do usuário, decidido no brainstorm: **visual + backend juntos**,
+  **5 frentes por área, commit por item**. Docs em `docs/frentes/design-v2/`
+  (README com as 5 frentes + modelo de dados; spec/plano por frente).
+  - **Frente 1 (Moldura) — CONCLUÍDA, revisada, deployada e verificada ao vivo:**
+    `AppHeader` (esconde ao rolar + drawer mobile), `LeftSidebar` em seções
+    (ativo/colapsável/selos + `formatAvailability` puro), `AppFooter` multi-coluna.
+    Revisão opus: 3 Important corrigidos (commit `194c6b7`).
+  - **Frente 2 (Feed) — CONCLUÍDA, revisada (Ready to merge) e deployada:** posts
+    de usuário (`feed_posts` + `parseNewPost` + rotas), timeline infinita
+    (`buildFeedTimeline` + IntersectionObserver + composer), rail galeria
+    (`RailGallery` wheel→horizontal), `PostCard`+`relativeTime`, `VideoThumb`
+    (play inline YouTube), `ExpandableContentCard` (transição feed→conteúdo).
+    3 minors corrigidos (commit `7bc003c`). **⚠️ HAND-OFF: migration
+    `0024_feed_posts` PENDENTE no remoto** (MCP sem permissão; SPA Supabase não
+    renderiza em aba bg). Aplicar via SQL Editor — SQL em `plano-2-feed.md`/spec.
+    Até aplicar, o feed funciona; só *publicar post* falha.
+  - **Frente 3 (Comunidade) — DESENHADA (spec+plano), a construir:** atividades
+    swipeable-list + ranking mensal animated-list (backend leve de agregação de XP
+    por mês; sem migration nova).
+  - **Frentes 4 (conteúdo/mídia: players+artigo+jornada+share) e 5 (fórum:
+    pergunta+respostas aninhadas) — a desenhar/construir.**
+  - **Próxima ação:** aplicar migration `0024`; construir Frente 3 (Task 1:
+    `leaderboard.ts`); seguir 4 e 5.
 
 ## 🌿 Estado do git
 
 - **Branch ativa:** `master`, **sincronizada com `origin/master`** (push feito,
-  HEAD `80ddd08`, deploy Vercel READY). O outro computador recebe tudo com
+  HEAD `fa48af5`, deploy Vercel READY). O outro computador recebe tudo com
   `git pull origin master`.
-- **Inclui (nesta rodada):** backlog de design item 1 — barra de histórias
-  (`stories.ts` + `StoryBar`/`StoryViewer` + `publishedAt`/seed no content-hub +
-  `contentHref` DRY + montagem no feed), docs `docs/frentes/feed-stories/`.
-  Antes: feed-redesign baseline (4 frentes) + SP1.
+- **Inclui (nesta rodada):** design v2 Frentes 1 (moldura: `AppHeader`/`AppFooter`
+  + `LeftSidebar` client + `format-availability`) e 2 (feed: `feed_posts`/
+  `feed-posts` + `feed-timeline` + `FeedTimeline`/`PostCard`/`VideoThumb`/
+  `RailGallery`/`ExpandableContentCard` + `relative-time` + rotas `/api/feed/*` +
+  migration `0024` a aplicar), docs `docs/frentes/design-v2/`. Antes: barra de
+  histórias, feed-redesign baseline, SP1.
 - **Não versionado (local, de propósito):** `.env.local` (segredos),
   `SETUP.md`, `claude-chat.md`, `CLAUDE.local-draft.md`.
 
