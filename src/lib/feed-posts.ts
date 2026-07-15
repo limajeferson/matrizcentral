@@ -11,6 +11,7 @@ const MAX = 2000;
 function safeUrl(v: unknown): string | null {
   if (typeof v !== "string") return null;
   const s = v.trim();
+  if (s.length > 2048) return null; // teto defensivo p/ não persistir URL gigante
   return /^https?:\/\/\S+$/i.test(s) ? s : null;
 }
 

@@ -31,6 +31,7 @@ export function ExpandableContentCard({ card }: { card: FeedCard }) {
 
   useEffect(() => {
     if (!open) return;
+    const opener = document.activeElement as HTMLElement | null;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false);
     };
@@ -41,6 +42,7 @@ export function ExpandableContentCard({ card }: { card: FeedCard }) {
     return () => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = prev;
+      opener?.focus?.(); // devolve o foco ao gatilho ao fechar
     };
   }, [open]);
 
