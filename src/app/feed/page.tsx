@@ -15,6 +15,8 @@ import { ProfileCard, type ProfileCardPlan } from "@/components/app/ProfileCard"
 import { LeftSidebar } from "@/components/app/feed/LeftSidebar";
 import { CenterColumn } from "@/components/app/feed/CenterColumn";
 import { RightSidebar } from "@/components/app/feed/RightSidebar";
+import { StoryBar } from "@/components/app/stories/StoryBar";
+import { buildStories } from "@/lib/stories";
 import type { AccessLevel } from "@/lib/entitlements";
 
 const PLAN_LABEL: Record<AccessLevel, ProfileCardPlan> = {
@@ -56,6 +58,7 @@ export default async function FeedPage() {
   const access = user ? (await getAccessContext(user.id)).access : "view";
 
   const cards = buildContentFeed(CONTENT_HUB, token);
+  const stories = buildStories(CONTENT_HUB, new Date(), token);
   const threads = await listTopics(10);
 
   let activity: ActivityItem[] = [];
@@ -84,6 +87,7 @@ export default async function FeedPage() {
         center={
           <>
             {user && !profileId && <DiagnosticoInline />}
+            {user && <StoryBar groups={stories} />}
             <CenterColumn cards={cards} threads={threads} access={access} />
           </>
         }
