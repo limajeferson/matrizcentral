@@ -14,6 +14,35 @@ migration `0024` pendente)_
 
 ---
 
+## ⏭️ PRÓXIMA AÇÃO (leia isto primeiro ao retomar)
+
+**Estado agora:** site **no ar** em `www.matrizcentral.com.br` (Vercel, auto-deploy
+na `master`; último deploy READY). `git` limpo e sincronizado com `origin/master`.
+`npx tsc --noEmit` 0 · `npm run test` **207 testes** verdes · `next lint` sem erros.
+Frente ativa: **programa "design v2"** (17 modelos 21st.dev, 5 frentes) — Frentes 1
+(Moldura) e 2 (Feed) **no ar**; Frente 3 (Comunidade) **desenhada**.
+
+**Faça, nesta ordem:**
+1. **Pendência do usuário (lembrar/confirmar):** aplicar a migration
+   **`0024_feed_posts`** no Supabase (SQL Editor — o SQL está em
+   `supabase/migrations/0024_feed_posts.sql` e no `docs/frentes/design-v2/spec-2-feed.md`).
+   O feed funciona sem ela; só **publicar post** falha até aplicar.
+2. **Construir design v2 Frente 3 (Comunidade)** via `subagent-driven-development`:
+   plano em [`docs/frentes/design-v2/plano-3-comunidade.md`](frentes/design-v2/plano-3-comunidade.md)
+   — começar pela **Task 1** (`src/lib/leaderboard.ts` puro + testes → `leaderboard-data.ts`),
+   depois Task 2 (`RankingList`) e Task 3 (`SwipeableActivityList` + montagem).
+   Commit por item; revisão final opus; deploy.
+3. **Seguir para as Frentes 4 (conteúdo/mídia) e 5 (fórum)** — ainda a desenhar
+   (spec+plano) antes de construir. Programa e modelo de dados em
+   [`docs/frentes/design-v2/README.md`](frentes/design-v2/README.md).
+
+**Como trabalhar aqui (harness):** commit por item, gate `tsc` 0 + `npm run test` +
+`next lint` sem erros antes de cada commit; custo zero (sem dep npm nova); área
+logada é dark-aware/violeta; nunca commitar `CLAUDE.local-draft.md`/`SETUP.md`/
+`claude-chat.md`. Ao fim de cada bloco, **atualize este arquivo** (topo + log) e commite.
+
+---
+
 ## 🎯 Objetivo geral
 
 Auditar e completar a plataforma Matriz Central **por frentes, receita primeiro**

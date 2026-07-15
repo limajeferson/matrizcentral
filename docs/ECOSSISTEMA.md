@@ -9,14 +9,16 @@
 - Cada fato tem **um lugar canônico** (indicado abaixo). Ao precisar de um detalhe, **confirme no arquivo linkado** em vez de supor — isso evita alucinação.
 - Ordem recomendada num início do zero: [`ESTADO-ATUAL.md`](ESTADO-ATUAL.md) → este hub → `CLAUDE.md` → o README da frente ativa → o código fonte-de-verdade.
 
-## 📊 Status atual
+## 📊 Status atual (2026-07-15)
 
-- **No ar (master, GitHub):** landing v2 completa — hero (esfera ASCII + pixel bg), Seção 2 "método" (`SystemSection`), Seção 3 "experiência" (`ContentLibrarySection`), footer institucional, páginas `/sobre` e `/legal/{privacidade,termos}`, newsletter.
-- **Repo:** https://github.com/limajeferson/matrizcentral · branch `master` · checkpoint mais recente: tag `checkpoint-footer-institucional`.
-- **Bloqueios para ir ao ar no domínio:**
-  1. Aplicar a migration `supabase/migrations/0011_newsletter_subscribers.sql` no Supabase (senão `/api/newsletter` retorna 500).
-  2. Configurar as env vars na hospedagem (ver [`.env.example`](../.env.example)).
-  3. Deploy + apontar o domínio (comprado).
+- **No ar (produção):** **`www.matrizcentral.com.br`** (Vercel, auto-deploy a cada push na `master`; último deploy READY). Muito além da landing: **todas as 6 frentes do roadmap** (login real, assinaturas, feed, fórum, blog/marketing, suporte/CRM), **SP1** (casa unificada + diagnóstico por sessão), o **redesign do feed** (baseline + barra de histórias) e o **programa design v2** (Frentes 1 Moldura e 2 Feed) estão entregues e deployados.
+- **Repo:** https://github.com/limajeferson/matrizcentral · branch `master` · HEAD sincronizado com `origin/master`.
+- **Saúde:** `npx tsc --noEmit` 0 · `npm run test` **207 testes** verdes · `npx next lint` sem erros. (`npm run build` falha só ao coletar `/api/checkout` por falta de `STRIPE_SECRET_KEY` no shell — pré-existente, ver `CLAUDE.md`.)
+- **Fonte de verdade do andamento e da próxima ação:** [`ESTADO-ATUAL.md`](ESTADO-ATUAL.md).
+- **Pendências ativas (detalhe em `ESTADO-ATUAL.md`):**
+  1. **Aplicar a migration `0024_feed_posts`** no Supabase remoto (posts do feed não persistem até lá; MCP sem permissão → SQL Editor).
+  2. **Design v2 Frentes 3–5** (comunidade, conteúdo/mídia, fórum) — 3 desenhada, a construir.
+  3. Stripe em modo **teste** (verificação de empresa pendente); go-live financeiro depende disso.
 
 ## 🗺️ Mapa neural (leia quando…)
 
@@ -40,11 +42,12 @@
 - [`docs/frentes/<slug>/plano*.md`](frentes/) — o "como" (passo a passo).
 
 **Memória (fora do repo, persiste entre sessões)**
-- `C:\Users\jefer\.claude\projects\C--Users-jefer-Documents-Projetos-matrizcentral\memory\MEMORY.md` — índice das memórias persistentes.
+- `C:\Users\Grazi\.claude\projects\C--Users-Grazi-Claude-Projects-matrizcentral\memory\MEMORY.md` — índice das memórias persistentes (carregado automaticamente no início da sessão).
 
 **Deploy**
 - [`.env.example`](../.env.example) — env vars necessárias.
-- [`supabase/migrations/`](../supabase/migrations/) — migrations (0001→0011).
+- [`supabase/migrations/`](../supabase/migrations/) — migrations (0001→**0024**). **Aplicadas via SQL Editor** do Supabase (o MCP não tem permissão nesta conta; `supabase db push` tem histórico divergente). Pendente de aplicar: **`0024_feed_posts`**.
+- Auto-deploy: push na `master` → Vercel builda e publica em `www.matrizcentral.com.br`. O ESLint roda no `npm run build` do Vercel e **barra o deploy** se houver erro de lint.
 
 ## 🔀 Frentes já trabalhadas
 
@@ -65,26 +68,38 @@ Cada frente vive em `docs/frentes/<slug>/` com `spec.md` (o quê/porquê), `plan
 - ✅ [ecossistema-frentes](frentes/ecossistema-frentes/README.md) — este próprio reorganização (você está aqui)
 - ✅ [hardening-criticos](frentes/hardening-criticos/README.md) — auditoria completa (5 subagentes) + conserto dos 4 críticos (certificado forjável, paga-e-não-recebe, certificado inalcançável, promessa desalinhada). Na master, verificado.
 
-### 🔄 / 🔜 Roadmap por frentes (receita primeiro)
+### 🔄 / 🔜 Roadmap por frentes
 
-> Fonte de verdade do andamento: [`ESTADO-ATUAL.md`](ESTADO-ATUAL.md).
+> Fonte de verdade do andamento e da **próxima ação**: [`ESTADO-ATUAL.md`](ESTADO-ATUAL.md).
 
-- ✅ [login-real](frentes/login-real/README.md) — **concluída e validada ao vivo** (na master, `tsc` 0 / 118 testes; migrations 0015/0016 aplicadas em produção): magic link **próprio** (zero deps, `crypto` nativo — reabriu a decisão "Supabase Auth"), token+login convivem, sessão revogável, `ContentGate`. Achado à parte: deliverability do Brevo a investigar.
-- 🔜 Assinaturas (Regular/Advanced) + e-mails de ciclo/CRM — depende de login-real.
-- 🔜 Feed central (rede social de IA) — depende de login-real.
-- 🔜 Fórum (portal de tópicos) — depende de login-real.
-- 🔜 Blog + Marketing (calendário/sazonalidade/funil).
-- 🔜 Suporte/autoatendimento + CRM/pós-venda.
+**Roadmap de produto (receita primeiro) — todas ✅ concluídas, revisadas e deployadas:**
 
-> A frente antiga [comunidade-identidade-feed](frentes/comunidade-identidade-feed/README.md) foi **desmembrada**: a fundação virou `login-real`; feed e fórum são frentes próprias acima.
+- ✅ [login-real](frentes/login-real/README.md) — magic link próprio (zero deps, `crypto` nativo), sessão revogável, `ContentGate`. Migrations 0015/0016 aplicadas.
+- ✅ [assinaturas](frentes/assinaturas/README.md) — Regular/Advanced, entitlement/consumo, Stripe (modo teste), cupom, webhook, `/oferta`, e-mails de ciclo/CRM + cron. Migrations 0017/0018/0019.
+- ✅ [feed](frentes/feed/README.md) — MVP do feed central.
+- ✅ [forum](frentes/forum/README.md) — portal de tópicos. Migration 0020.
+- ✅ [blog-marketing](frentes/blog-marketing/README.md) — `/blog` + estratégia de funil.
+- ✅ [suporte-crm](frentes/suporte-crm/README.md) — `/suporte` + doc CRM. Migration 0021.
 
-## ➡️ Fluxo de necessidades (próximos passos até o site no ar)
+**Evolução da plataforma (pós-roadmap):**
 
-1. **Migration:** aplicar `0011_newsletter_subscribers.sql` no Supabase (`supabase db push` — projeto já linkado em `supabase/.temp/linked-project.json`).
-2. **Env vars:** configurar na hospedagem as chaves de [`.env.example`](../.env.example).
-3. **Deploy:** Vercel é o caminho natural para Next.js. `npm run build` só passa com as env vars presentes (por causa de `src/lib/stripe.ts`, que instancia o Stripe no topo do módulo).
-4. **Domínio:** apontar o domínio comprado para o deploy.
+- ✅ [casa-unificada](frentes/casa-unificada/README.md) (SP1) — plataforma-é-a-casa, diagnóstico por sessão, auto-login pós-compra. Migrations 0022/0023.
+- ✅ [feed-redesign](frentes/feed-redesign/README.md) — baseline dark/violeta, shell 3-col, tema, UserMenu, emojis→ícones SVG.
+- ✅ [feed-stories](frentes/feed-stories/README.md) — barra de histórias (stories) derivada do conteúdo.
+- 🔄 [**design-v2**](frentes/design-v2/README.md) — **programa de 5 frentes** a partir de 17 modelos 21st.dev (visual + backend, commit por item):
+  - ✅ Frente 1 (Moldura: header + sidebar + rodapé) — deployada, verificada ao vivo.
+  - ✅ Frente 2 (Feed: timeline infinita + posts + cards + players + transição) — deployada, revisada. **Migration `0024` a aplicar.**
+  - 📐 Frente 3 (Comunidade: atividades + ranking mensal) — desenhada (spec+plano), a construir.
+  - 🔜 Frente 4 (Conteúdo/mídia: players + artigo + jornada + share) · Frente 5 (Fórum: pergunta + respostas aninhadas) — a desenhar/construir.
+
+## ➡️ Próximos passos (estado atual)
+
+O site **já está no ar** (`www.matrizcentral.com.br`, auto-deploy). Os próximos passos são de evolução, não de "colocar no ar":
+
+1. **Aplicar `0024_feed_posts`** no Supabase (SQL Editor) — desbloqueia publicar posts no feed.
+2. **Construir design v2 Frentes 3 → 4 → 5** (specs/planos em `docs/frentes/design-v2/`; começar pela Frente 3, Task 1 `leaderboard.ts`).
+3. **Go-live financeiro:** sair do modo teste da Stripe (verificação de empresa pendente).
 
 ---
 
-_Ao concluir uma nova frente: crie `docs/frentes/<slug>/README.md`, adicione uma linha nesta lista, e atualize "Status atual" se algo novo foi ao ar. Tudo no mesmo commit de finalização._
+_Ao concluir uma nova frente: crie/atualize `docs/frentes/<slug>/README.md`, adicione/ajuste a linha nesta lista, atualize "Status atual" e o `ESTADO-ATUAL.md`. Tudo no mesmo commit de finalização._

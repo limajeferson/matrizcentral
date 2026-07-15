@@ -52,13 +52,16 @@ saber o que cada um faz:
 
 ## 🗺️ Onde o projeto está (resumo em 1 parágrafo)
 
-Já foram feitos: o setup completo do ambiente, uma **auditoria completa** do
-site, e o conserto dos **4 problemas críticos** que afetavam clientes reais
-(certificado que dava pra falsificar, cliente que podia pagar e não receber
-acesso, certificado que sumia, e a promessa da oferta desalinhada). Tudo está na
-branch `master`, verificado. A **próxima frente é o Login real** — a base que
-libera assinaturas, feed, fórum e CRM. Detalhes sempre atualizados em
-`docs/ESTADO-ATUAL.md`.
+O site **já está no ar** em `www.matrizcentral.com.br` (deploy automático a cada
+push na `master`). Já foram entregues: a auditoria + conserto dos 4 críticos, e
+**todas as 6 frentes do roadmap** (login real, assinaturas, feed, fórum, blog,
+suporte/CRM), mais a evolução da plataforma (casa unificada/SP1, redesign do feed
+com tema dark e barra de histórias). Agora está em andamento o **programa "design
+v2"** — 17 melhorias de design a partir de modelos do 21st.dev, em 5 frentes: as
+**Frentes 1 (Moldura) e 2 (Feed) já estão no ar**; a **3 (Comunidade) está
+desenhada** e as 4 e 5 vêm depois. Há **uma pendência sua**: aplicar a migration
+`0024` no Supabase (o Claude te passa o SQL). A próxima ação exata está sempre em
+`docs/ESTADO-ATUAL.md` — é só dar **"continue de onde paramos"**.
 
 ## ▶️ Comandos úteis (digite no Claude Code)
 
