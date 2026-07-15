@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Galeria horizontal (rail "Comece por aqui"): esconde a barra de rolagem,
+   mantendo o scroll por wheel/drag/snap. */
+@layer utilities {
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 @layer base {
   :root {
     --background: oklch(0.985 0.004 90);

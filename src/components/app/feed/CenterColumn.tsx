@@ -1,19 +1,22 @@
-import Link from "next/link";
-import { IconForum, IconLock } from "@/components/ui/icons";
 import { CONTENT_ICON } from "@/lib/content-icons";
 import { isSubscriber } from "@/lib/forum";
+import { FeedTimeline } from "./FeedTimeline";
 import type { AccessLevel } from "@/lib/entitlements";
 import type { FeedCard } from "@/lib/feed";
+import type { FeedEntry } from "@/lib/feed-timeline";
 import type { ContentType } from "@/data/content-hub";
-import type { TopicListItem } from "@/lib/forum-data";
 
 export type CenterColumnProps = {
-  /** Cards de conteúdo do hub (já resolvidos por `buildContentFeed`). */
+  /** Cards de conteúdo do hub para o rail "Comece por aqui" (`buildContentFeed`). */
   cards: FeedCard[];
-  /** Threads recentes do fórum (`listTopics`). */
-  threads: TopicListItem[];
-  /** Nível de acesso do usuário — controla se as threads do fórum têm link. */
+  /** Timeline inicial (posts + threads + conteúdo) para a lista principal. */
+  timeline: FeedEntry[];
+  /** Cursor da 1ª página (created_at do post mais antigo) ou null se acabou. */
+  timelineCursor: string | null;
+  /** Nível de acesso — controla link de threads e composer. */
   access: AccessLevel;
+  /** Logado pode publicar posts (mostra o composer). */
+  canPost: boolean;
 };
 
 const TYPE_LABEL: Record<ContentType, string> = {
@@ -23,25 +26,10 @@ const TYPE_LABEL: Record<ContentType, string> = {
   pesquisa: "Pesquisa",
 };
 
-type MixedItem =
-  | { kind: "content"; key: string; card: FeedCard }
-  | { kind: "thread"; key: string; thread: TopicListItem };
-
-/** Intercala cards de conteúdo com threads do fórum, alternando as fontes. */
-function mixFeed(cards: FeedCard[], threads: TopicListItem[]): MixedItem[] {
-  const items: MixedItem[] = [];
-  const max = Math.max(cards.length, threads.length);
-  for (let i = 0; i < max; i++) {
-    if (cards[i]) items.push({ kind: "content", key: `c-${cards[i].id}`, card: cards[i] });
-    if (threads[i]) items.push({ kind: "thread", key: `t-${threads[i].id}`, thread: threads[i] });
-  }
-  return items;
-}
-
 function RailCard({ card }: { card: FeedCard }) {
   const Icon = CONTENT_ICON[card.type];
   return (
-    <article className="w-64 shrink-0 rounded-2xl border border-border bg-card p-4 shadow-sm">
+    <article className="w-64 shrink-0 snap-start rounded-2xl border border-border bg-card p-4 shadow-sm">
       <div className="mb-2 flex items-center justify-between gap-2">
         <span className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
           <Icon size={16} />
@@ -62,81 +50,28 @@ function RailCard({ card }: { card: FeedCard }) {
       {card.emBreve ? (
         <span className="text-xs font-medium text-muted-foreground">Em breve</span>
       ) : (
-        <Link href={card.href} className="text-xs font-semibold text-violet-600 hover:underline">
+        <a href={card.href} className="text-xs font-semibold text-violet-600 hover:underline">
           Acessar →
-        </Link>
+        </a>
       )}
     </article>
   );
 }
 
-function ContentListItem({ card }: { card: FeedCard }) {
-  const Icon = CONTENT_ICON[card.type];
-  // buildContentFeed manda para "/oferta" quando não há token de compra —
-  // é o proxy existente para "gated": sem compra, sem acesso ao conteúdo.
-  const locked = !card.emBreve && card.href === "/oferta";
-  return (
-    <li className="rounded-2xl border border-border bg-card p-4 shadow-sm">
-      <div className="mb-1 flex items-center justify-between gap-2">
-        <span className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
-          <Icon size={14} />
-          {TYPE_LABEL[card.type]}
-        </span>
-        {card.emBreve && (
-          <span className="text-[10px] font-semibold uppercase tracking-wide text-amber-600">Em breve</span>
-        )}
-      </div>
-      <Link href={card.href} className="text-sm font-semibold text-foreground hover:text-violet-600">
-        {card.title}
-      </Link>
-      <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{card.description}</p>
-      {locked && (
-        <span className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-violet-600">
-          <IconLock size={12} /> Assine para acessar
-        </span>
-      )}
-    </li>
-  );
-}
-
-function ThreadListItem({ thread, clickable }: { thread: TopicListItem; clickable: boolean }) {
-  return (
-    <li className="rounded-2xl border border-border bg-card p-4 shadow-sm">
-      <div className="mb-1 flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
-        <IconForum size={14} />
-        Fórum
-      </div>
-      {clickable ? (
-        <Link href={`/forum/${thread.id}`} className="text-sm font-semibold text-foreground hover:text-violet-600">
-          {thread.title}
-        </Link>
-      ) : (
-        <span className="text-sm font-semibold text-foreground">{thread.title}</span>
-      )}
-      <p className="mt-1 text-xs text-muted-foreground">
-        por {thread.author} · {thread.replyCount} resposta(s)
-      </p>
-    </li>
-  );
-}
-
 /**
- * Rail horizontal "Comece por aqui" (cards do hub com selo NOVO/em breve) +
- * lista "Do hub e da comunidade" (conteúdo intercalado com threads recentes
- * do fórum). `id="conteudos"` é o alvo dos links de "Conteúdos"/formato da
- * LeftSidebar.
+ * Coluna central do feed: rail "Comece por aqui" (galeria deslizante de cards do
+ * hub) + a lista principal "Do hub e da comunidade" (timeline unificado com
+ * scroll infinito e composer de post, via `FeedTimeline`). `id="conteudos"` é o
+ * alvo dos links de "Conteúdos"/formato da LeftSidebar.
  */
-export function CenterColumn({ cards, threads, access }: CenterColumnProps) {
-  const sub = isSubscriber(access);
-  const mixed = mixFeed(cards, threads);
-
+export function CenterColumn({ cards, timeline, timelineCursor, access, canPost }: CenterColumnProps) {
   return (
     <div id="conteudos" className="space-y-6">
       <section>
         <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
           Comece por aqui
         </h2>
-        <div className="-mx-1 flex gap-4 overflow-x-auto px-1 pb-2">
+        <div className="no-scrollbar -mx-1 flex snap-x snap-mandatory gap-4 overflow-x-auto px-1 pb-2">
           {cards.map((card) => (
             <RailCard key={card.id} card={card} />
           ))}
@@ -148,20 +83,12 @@ export function CenterColumn({ cards, threads, access }: CenterColumnProps) {
         <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
           Do hub e da comunidade
         </h2>
-        <ul className="space-y-3">
-          {mixed.map((item) =>
-            item.kind === "content" ? (
-              <ContentListItem key={item.key} card={item.card} />
-            ) : (
-              <ThreadListItem key={item.key} thread={item.thread} clickable={sub} />
-            )
-          )}
-          {mixed.length === 0 && (
-            <li className="rounded-2xl border border-border bg-card p-4 text-sm text-muted-foreground">
-              Ainda não há novidades por aqui.
-            </li>
-          )}
-        </ul>
+        <FeedTimeline
+          initial={timeline}
+          initialCursor={timelineCursor}
+          canPost={canPost}
+          canOpenThreads={isSubscriber(access)}
+        />
       </section>
     </div>
   );

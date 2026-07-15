@@ -17,6 +17,8 @@ import { CenterColumn } from "@/components/app/feed/CenterColumn";
 import { RightSidebar } from "@/components/app/feed/RightSidebar";
 import { StoryBar } from "@/components/app/stories/StoryBar";
 import { buildStories } from "@/lib/stories";
+import { listPosts } from "@/lib/feed-posts";
+import { buildFeedTimeline } from "@/lib/feed-timeline";
 import type { AccessLevel } from "@/lib/entitlements";
 
 const PLAN_LABEL: Record<AccessLevel, ProfileCardPlan> = {
@@ -59,7 +61,18 @@ export default async function FeedPage() {
 
   const cards = buildContentFeed(CONTENT_HUB, token);
   const stories = buildStories(CONTENT_HUB, new Date(), token);
-  const threads = await listTopics(10);
+  const threads = await listTopics(50);
+
+  // Timeline unificado (1ª página): posts do usuário + threads + conteúdo com
+  // data. Posts são paginados (scroll infinito); threads/conteúdo vão inteiros.
+  const posts = user ? await listPosts(15) : [];
+  const cardById = new Map(cards.map((c) => [c.id, c]));
+  const contentEntries = CONTENT_HUB.flatMap((item) => {
+    const card = item.publishedAt ? cardById.get(item.id) : undefined;
+    return card && item.publishedAt ? [{ card, at: item.publishedAt }] : [];
+  });
+  const timeline = buildFeedTimeline(posts, threads, contentEntries);
+  const timelineCursor = posts.length === 15 ? posts[posts.length - 1].created_at : null;
 
   let activity: ActivityItem[] = [];
   if (access === "advanced") {
@@ -88,7 +101,13 @@ export default async function FeedPage() {
           <>
             {user && !profileId && <DiagnosticoInline />}
             {user && <StoryBar groups={stories} />}
-            <CenterColumn cards={cards} threads={threads} access={access} />
+            <CenterColumn
+              cards={cards}
+              timeline={timeline}
+              timelineCursor={timelineCursor}
+              access={access}
+              canPost={!!user}
+            />
           </>
         }
         right={<RightSidebar access={access} activity={activity} />}
