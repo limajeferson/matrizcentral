@@ -68,7 +68,7 @@ export function StoryBar({ groups }: StoryBarProps) {
                 className={
                   allSeen
                     ? "rounded-full border-2 border-border p-[3px]"
-                    : "rounded-full bg-gradient-to-tr from-violet-500 to-fuchsia-500 p-[3px]"
+                    : "rounded-full bg-gradient-to-tr from-violet-600 to-indigo-400 p-[3px]"
                 }
               >
                 <span className="flex h-16 w-16 items-center justify-center rounded-full bg-card text-violet-600">

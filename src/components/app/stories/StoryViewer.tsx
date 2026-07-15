@@ -29,6 +29,7 @@ export function StoryViewer({ groups, startGroup, onClose, onSlideSeen }: StoryV
   const onCloseRef = useRef(onClose);
   const onSeenRef = useRef(onSlideSeen);
   const pausedRef = useRef(paused);
+  const posRef = useRef({ g: startGroup, s: 0 });
   useEffect(() => {
     onCloseRef.current = onClose;
     onSeenRef.current = onSlideSeen;
@@ -36,15 +37,16 @@ export function StoryViewer({ groups, startGroup, onClose, onSlideSeen }: StoryV
   useEffect(() => {
     pausedRef.current = paused;
   }, [paused]);
+  useEffect(() => {
+    posRef.current = pos;
+  }, [pos]);
 
   const goNext = useCallback(() => {
-    setPos((p) => {
-      const grp = groups[p.g];
-      if (grp && p.s < grp.slides.length - 1) return { g: p.g, s: p.s + 1 };
-      if (p.g < groups.length - 1) return { g: p.g + 1, s: 0 };
-      onCloseRef.current();
-      return p;
-    });
+    const p = posRef.current;
+    const grp = groups[p.g];
+    if (grp && p.s < grp.slides.length - 1) setPos({ g: p.g, s: p.s + 1 });
+    else if (p.g < groups.length - 1) setPos({ g: p.g + 1, s: 0 });
+    else onCloseRef.current();
   }, [groups]);
 
   const goPrev = useCallback(() => {
@@ -96,15 +98,28 @@ export function StoryViewer({ groups, startGroup, onClose, onSlideSeen }: StoryV
     return () => window.removeEventListener("keydown", onKey);
   }, [goNext, goPrev]);
 
+  // Foco inicial no overlay + trava o scroll do fundo enquanto aberto.
+  const containerRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    containerRef.current?.focus();
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, []);
+
   if (!group || !slide) return null;
   const Icon = CONTENT_ICON[slide.type];
 
   return (
     <motion.div
+      ref={containerRef}
+      tabIndex={-1}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.18 }}
-      className="fixed inset-0 z-[100] flex flex-col bg-black/90 backdrop-blur-sm"
+      className="fixed inset-0 z-[100] flex flex-col bg-black/90 outline-none backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
       aria-label={`Histórias de ${group.label}`}
