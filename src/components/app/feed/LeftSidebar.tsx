@@ -1,17 +1,25 @@
+"use client";
+
 import Link from "next/link";
-import type { ComponentType } from "react";
-import { IconAccount, IconContent, IconFeed, IconForum, IconSupport, type IconProps } from "@/components/ui/icons";
+import { usePathname } from "next/navigation";
+import { useState, type ComponentType } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { IconAccount, IconChevron, IconContent, IconFeed, IconForum, IconSupport, type IconProps } from "@/components/ui/icons";
 import { CONTENT_ICON } from "@/lib/content-icons";
-import type { ContentType } from "@/data/content-hub";
+import { CONTENT_HUB, type ContentType } from "@/data/content-hub";
+import { formatAvailability } from "@/lib/format-availability";
 
 type NavItem = { href: string; label: string; icon: ComponentType<IconProps> };
 
 // Rotas reais do app. Não há uma página dedicada "/conteudos" — aponta para
 // o rail/lista de conteúdo dentro do próprio /feed (id="conteudos").
-const NAV_ITEMS: NavItem[] = [
+const NAV_MAIN: NavItem[] = [
   { href: "/feed", label: "Feed", icon: IconFeed },
   { href: "/feed#conteudos", label: "Conteúdos", icon: IconContent },
   { href: "/forum", label: "Fórum", icon: IconForum },
+];
+
+const NAV_ACCOUNT: NavItem[] = [
   { href: "/conta", label: "Conta", icon: IconAccount },
   { href: "/suporte", label: "Suporte", icon: IconSupport },
 ];
@@ -23,45 +31,110 @@ const FORMAT_ITEMS: { type: ContentType; label: string }[] = [
   { type: "pesquisa", label: "Pesquisas" },
 ];
 
-/** Nav lateral (rotas reais) + bloco "Explorar por formato" (tipos do content-hub). */
-export function LeftSidebar() {
+/** Compara só o path (sem hash) contra o pathname atual. */
+function isActiveHref(pathname: string, href: string): boolean {
+  const base = href.split("#")[0];
+  return pathname === base;
+}
+
+function NavSection({ label, items, pathname }: { label: string; items: NavItem[]; pathname: string }) {
   return (
-    <div className="space-y-6">
-      <nav
-        aria-label="Navegação principal"
-        className="space-y-1 rounded-2xl border border-border bg-card p-3 shadow-sm"
-      >
-        {NAV_ITEMS.map(({ href, label, icon: Icon }) => (
+    <nav
+      aria-label={label}
+      className="space-y-1 rounded-2xl border border-border bg-card p-3 shadow-sm"
+    >
+      <h2 className="mb-2 px-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+        {label}
+      </h2>
+      {items.map(({ href, label: itemLabel, icon: Icon }) => {
+        const active = isActiveHref(pathname, href);
+        return (
           <Link
             key={href}
             href={href}
-            className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground transition hover:bg-accent hover:text-accent-foreground"
+            aria-current={active ? "page" : undefined}
+            className={`relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition ${
+              active
+                ? "bg-accent text-foreground"
+                : "text-foreground hover:bg-accent hover:text-accent-foreground"
+            }`}
           >
+            {active && (
+              <motion.span
+                layoutId="sidebar-active"
+                className="absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 rounded-full bg-violet-600"
+                transition={{ type: "spring", stiffness: 500, damping: 40 }}
+              />
+            )}
             <Icon size={18} className="text-muted-foreground" />
-            {label}
+            {itemLabel}
           </Link>
-        ))}
-      </nav>
+        );
+      })}
+    </nav>
+  );
+}
+
+/** Nav lateral em seções (rotas reais) + bloco colapsável "Explorar por formato". */
+export function LeftSidebar() {
+  const pathname = usePathname();
+  const [formatOpen, setFormatOpen] = useState(true);
+  const availability = formatAvailability(CONTENT_HUB);
+
+  return (
+    <div className="space-y-6">
+      <NavSection label="Navegar" items={NAV_MAIN} pathname={pathname} />
+      <NavSection label="Sua conta" items={NAV_ACCOUNT} pathname={pathname} />
 
       <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">
-        <h2 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-          Explorar por formato
-        </h2>
-        <div className="space-y-1">
-          {FORMAT_ITEMS.map(({ type, label }) => {
-            const Icon = CONTENT_ICON[type];
-            return (
-              <Link
-                key={type}
-                href="/feed#conteudos"
-                className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-foreground transition hover:bg-accent hover:text-accent-foreground"
-              >
-                <Icon size={16} className="text-violet-600" />
-                {label}
-              </Link>
-            );
-          })}
-        </div>
+        <button
+          type="button"
+          onClick={() => setFormatOpen((v) => !v)}
+          aria-expanded={formatOpen}
+          className="flex w-full items-center justify-between text-left"
+        >
+          <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            Explorar por formato
+          </span>
+          <motion.span
+            animate={{ rotate: formatOpen ? 180 : 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <IconChevron size={16} className="text-muted-foreground" />
+          </motion.span>
+        </button>
+        <AnimatePresence initial={false}>
+          {formatOpen && (
+            <motion.div
+              key="format-list"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="overflow-hidden"
+            >
+              <div className="mt-3 space-y-1">
+                {FORMAT_ITEMS.map(({ type, label }) => {
+                  const Icon = CONTENT_ICON[type];
+                  const emBreve = availability[type].emBreve;
+                  return (
+                    <Link
+                      key={type}
+                      href="/feed#conteudos"
+                      className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-foreground transition hover:bg-accent hover:text-accent-foreground"
+                    >
+                      <Icon size={16} className="text-violet-600" />
+                      <span className="flex-1">{label}</span>
+                      {emBreve && (
+                        <span className="text-[10px] uppercase text-amber-600">Em breve</span>
+                      )}
+                    </Link>
+                  );
+                })}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );
