@@ -9,6 +9,13 @@ function isEmBreve(item: ContentItem): boolean {
   return item.embedUrl === null && item.type !== "relatorio" && item.type !== "pesquisa";
 }
 
+/** Rota de acesso a um conteúdo: com token vai para o dashboard da compra;
+ *  sem token cai em /oferta (proxy de "gated"). Fonte única reusada pelas
+ *  histórias (`buildStories`) para o CTA respeitar o mesmo gating. */
+export function contentHref(id: string, token?: string): string {
+  return token ? `/dashboard/${token}/conteudo/${id}` : "/oferta";
+}
+
 export function buildContentFeed(items: ContentItem[], token?: string): FeedCard[] {
   return items.map((item) => ({
     id: item.id,
@@ -16,7 +23,7 @@ export function buildContentFeed(items: ContentItem[], token?: string): FeedCard
     description: item.description,
     type: item.type,
     emBreve: isEmBreve(item),
-    href: token ? `/dashboard/${token}/conteudo/${item.id}` : "/oferta",
+    href: contentHref(item.id, token),
   }));
 }
 

@@ -24,6 +24,9 @@ export interface ContentItem {
   surveyOptions?: SurveyOption[];
   /** Se true, consumível no nível "view" (incluído no Start, ex.: relatório de benchmark). Ausente = biblioteca paga. */
   startIncluded?: boolean;
+  /** Data de publicação (ISO). Ausente = não publicado ainda. Um item entra nas
+   *  histórias (stories) se publishedAt estiver dentro de STORY_WINDOW_DAYS. */
+  publishedAt?: string;
 }
 
 export const CONTENT_HUB: ContentItem[] = [
@@ -38,6 +41,7 @@ export const CONTENT_HUB: ContentItem[] = [
     recommendedStage: "fundacao_local",
     bodyPath: "content/relatorios/panorama-estrategico-llms-locais.md",
     embedUrl: null,
+    publishedAt: "2026-07-13",
   },
   {
     id: "relatorio-comparativo-modelos",
@@ -51,6 +55,7 @@ export const CONTENT_HUB: ContentItem[] = [
     bodyPath: "content/relatorios/comparativo-modelos-llm-locais.md",
     embedUrl: null,
     startIncluded: true,
+    publishedAt: "2026-07-11",
   },
   {
     id: "podcast-rode-ia-potente",
@@ -124,6 +129,7 @@ export const CONTENT_HUB: ContentItem[] = [
     xpReward: 15,
     recommendedStage: "missao_final",
     embedUrl: null,
+    publishedAt: "2026-07-12",
     surveyOptions: [
       { id: "gpu_dedicada", label: "GPU dedicada (RTX ou similar)" },
       { id: "apple_silicon", label: "Mac com Apple Silicon (M1/M2/M3/M4)" },
