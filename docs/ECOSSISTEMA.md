@@ -41,8 +41,18 @@
 - [`docs/frentes/<slug>/spec.md`](frentes/) — o "porquê/o quê" de cada frente.
 - [`docs/frentes/<slug>/plano*.md`](frentes/) — o "como" (passo a passo).
 
-**Memória (fora do repo, persiste entre sessões)**
-- `C:\Users\Grazi\.claude\projects\C--Users-Grazi-Claude-Projects-matrizcentral\memory\MEMORY.md` — índice das memórias persistentes (carregado automaticamente no início da sessão).
+**Memória automática (fora do repo — LOCAL de cada máquina, NÃO viaja no `git pull`)**
+- O usuário trabalha de **dois computadores**: **`Grazi`** (da esposa, em uso agora)
+  e **`jefer`** (o dele, para quando voltar de férias). A memória vive em
+  `<home>\.claude\projects\<slug-do-caminho-do-projeto>\memory\MEMORY.md`, que é
+  **diferente em cada máquina** (usuário + local do projeto mudam):
+  - `Grazi`: `C:\Users\Grazi\.claude\projects\C--Users-Grazi-Claude-Projects-matrizcentral\memory\MEMORY.md`
+  - `jefer`: `C:\Users\jefer\.claude\projects\C--Users-jefer-Documents-Projetos-matrizcentral\memory\MEMORY.md`
+  (confirme o slug real com o caminho do projeto na máquina atual).
+- **Consequência para a continuidade:** memórias escritas numa máquina **não
+  aparecem** na outra (ficam fora do git). A continuidade que **atravessa os
+  computadores** é o **repo** — `ESTADO-ATUAL.md`, docs e código, via `git pull`.
+  A memória automática é uma conveniência por-máquina, não a fonte de verdade.
 
 **Deploy**
 - [`.env.example`](../.env.example) — env vars necessárias.

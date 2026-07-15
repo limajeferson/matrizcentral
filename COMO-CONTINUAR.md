@@ -36,6 +36,13 @@ contexto.
 Pronto — o `docs/ESTADO-ATUAL.md` viajou junto no `git pull`, então a nova
 máquina sabe exatamente onde o projeto está.
 
+> **Sobre as duas máquinas (`Grazi` = da esposa, em uso agora; `jefer` = a sua):**
+> tudo que garante a continuidade está **no repositório** e viaja no `git pull` —
+> `ESTADO-ATUAL.md`, docs e código. A única coisa que **não** viaja é a "memória
+> automática" do Claude (fica na pasta local de cada computador), mas ela é só uma
+> conveniência: a fonte de verdade é o repo. Ou seja, ao voltar pro `jefer` e dar
+> `git pull` + `continue de onde paramos`, você retoma sem perder nada.
+
 ## 🧠 Os arquivos que formam o "cérebro" do projeto
 
 Você não precisa editar nenhum deles à mão — o Claude cuida disso. Mas é bom
