@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { AppHeader } from "@/components/app/AppHeader";
+import { AppFooter } from "@/components/app/AppFooter";
 
 export type AppShellProps = {
   /** Nav lateral esquerda (feed/conteúdos/fórum/conta/suporte + formatos). */
@@ -28,6 +29,8 @@ export function AppShell({ left, center, right, userMenu }: AppShellProps) {
         <main className="order-1 min-w-0 space-y-6 lg:order-none">{center}</main>
         <aside className="order-3 lg:sticky lg:top-24 lg:order-none lg:self-start">{right}</aside>
       </div>
+
+      <AppFooter />
     </div>
   );
 }
