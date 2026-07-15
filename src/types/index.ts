@@ -349,6 +349,12 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["checkout_logins"]["Insert"]>;
         Relationships: [];
       };
+      feed_posts: {
+        Row: { id: string; user_id: string; body: string; link_url: string | null; image_url: string | null; created_at: string };
+        Insert: { id?: string; user_id: string; body: string; link_url?: string | null; image_url?: string | null; created_at?: string };
+        Update: Partial<Database["public"]["Tables"]["feed_posts"]["Insert"]>;
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
