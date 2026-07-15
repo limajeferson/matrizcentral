@@ -3,14 +3,13 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { IconForum, IconLock } from "@/components/ui/icons";
-import { CONTENT_ICON } from "@/lib/content-icons";
+import { IconForum } from "@/components/ui/icons";
 import { PostCard } from "./PostCard";
 import { VideoThumb } from "./VideoThumb";
-import { CONTENT_HUB, type ContentType } from "@/data/content-hub";
+import { ExpandableContentCard } from "./ExpandableContentCard";
+import { CONTENT_HUB } from "@/data/content-hub";
 import type { FeedEntry } from "@/lib/feed-timeline";
 import type { FeedPost } from "@/lib/feed-posts";
-import type { FeedCard } from "@/lib/feed";
 import type { TopicListItem } from "@/lib/forum-data";
 
 export type FeedTimelineProps = {
@@ -22,45 +21,10 @@ export type FeedTimelineProps = {
   canOpenThreads: boolean;
 };
 
-const TYPE_LABEL: Record<ContentType, string> = {
-  relatorio: "Relatório",
-  podcast: "Podcast",
-  video: "Vídeo",
-  pesquisa: "Pesquisa",
-};
-
 function entryKey(entry: FeedEntry): string {
   if (entry.kind === "post") return `p-${entry.post.id}`;
   if (entry.kind === "thread") return `t-${entry.thread.id}`;
   return `c-${entry.card.id}`;
-}
-
-function ContentEntryCard({ card }: { card: FeedCard }) {
-  const Icon = CONTENT_ICON[card.type];
-  // buildContentFeed manda para "/oferta" quando não há token — proxy de "gated".
-  const locked = !card.emBreve && card.href === "/oferta";
-  return (
-    <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">
-      <div className="mb-1 flex items-center justify-between gap-2">
-        <span className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
-          <Icon size={14} />
-          {TYPE_LABEL[card.type]}
-        </span>
-        {card.emBreve && (
-          <span className="text-[10px] font-semibold uppercase tracking-wide text-amber-600">Em breve</span>
-        )}
-      </div>
-      <Link href={card.href} className="text-sm font-semibold text-foreground hover:text-violet-600">
-        {card.title}
-      </Link>
-      <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{card.description}</p>
-      {locked && (
-        <span className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-violet-600">
-          <IconLock size={12} /> Assine para acessar
-        </span>
-      )}
-    </div>
-  );
 }
 
 function ThreadEntryCard({ thread, clickable }: { thread: TopicListItem; clickable: boolean }) {
@@ -98,7 +62,7 @@ function EntryCard({ entry, canOpenThreads }: { entry: FeedEntry; canOpenThreads
       />
     );
   }
-  return <ContentEntryCard card={entry.card} />;
+  return <ExpandableContentCard card={entry.card} />;
 }
 
 /**
