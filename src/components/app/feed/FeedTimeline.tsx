@@ -6,11 +6,12 @@ import { motion } from "framer-motion";
 import { IconForum, IconLock } from "@/components/ui/icons";
 import { CONTENT_ICON } from "@/lib/content-icons";
 import { PostCard } from "./PostCard";
+import { VideoThumb } from "./VideoThumb";
+import { CONTENT_HUB, type ContentType } from "@/data/content-hub";
 import type { FeedEntry } from "@/lib/feed-timeline";
 import type { FeedPost } from "@/lib/feed-posts";
 import type { FeedCard } from "@/lib/feed";
 import type { TopicListItem } from "@/lib/forum-data";
-import type { ContentType } from "@/data/content-hub";
 
 export type FeedTimelineProps = {
   initial: FeedEntry[];
@@ -86,6 +87,17 @@ function ThreadEntryCard({ thread, clickable }: { thread: TopicListItem; clickab
 function EntryCard({ entry, canOpenThreads }: { entry: FeedEntry; canOpenThreads: boolean }) {
   if (entry.kind === "post") return <PostCard post={entry.post} />;
   if (entry.kind === "thread") return <ThreadEntryCard thread={entry.thread} clickable={canOpenThreads} />;
+  // Conteúdo tipo vídeo aparece como thumbnail com play inline.
+  if (entry.card.type === "video") {
+    const item = CONTENT_HUB.find((i) => i.id === entry.card.id);
+    return (
+      <VideoThumb
+        title={entry.card.title}
+        embedUrl={item?.embedUrl ?? null}
+        durationMinutes={item?.durationMinutes}
+      />
+    );
+  }
   return <ContentEntryCard card={entry.card} />;
 }
 
