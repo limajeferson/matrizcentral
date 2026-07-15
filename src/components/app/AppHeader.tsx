@@ -68,7 +68,7 @@ export function AppHeader({ userMenu, mobileNav }: AppHeaderProps) {
             type="button"
             aria-label="Abrir menu"
             onClick={() => setOpen(true)}
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-muted-foreground transition hover:bg-accent hover:text-accent-foreground md:hidden"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-muted-foreground transition hover:bg-accent hover:text-accent-foreground lg:hidden"
           >
             <IconMenu size={20} />
           </button>

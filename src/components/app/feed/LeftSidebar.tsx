@@ -31,10 +31,12 @@ const FORMAT_ITEMS: { type: ContentType; label: string }[] = [
   { type: "pesquisa", label: "Pesquisas" },
 ];
 
-/** Compara só o path (sem hash) contra o pathname atual. */
+/** Item é "página atual" só em match exato de path. Âncoras (`/feed#conteudos`)
+ *  nunca são ativas por pathname — senão colidiriam com o item raiz `/feed`
+ *  (dois `aria-current` + dois indicadores ativos na mesma rota). */
 function isActiveHref(pathname: string, href: string): boolean {
-  const base = href.split("#")[0];
-  return pathname === base;
+  if (href.includes("#")) return false;
+  return pathname === href;
 }
 
 function NavSection({ label, items, pathname }: { label: string; items: NavItem[]; pathname: string }) {
@@ -60,11 +62,10 @@ function NavSection({ label, items, pathname }: { label: string; items: NavItem[
             }`}
           >
             {active && (
-              <motion.span
-                layoutId="sidebar-active"
-                className="absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 rounded-full bg-violet-600"
-                transition={{ type: "spring", stiffness: 500, damping: 40 }}
-              />
+              // Barra estática (não `layoutId`): a LeftSidebar é montada 2x
+              // (aside desktop + drawer mobile) e um layoutId compartilhado
+              // colidiria entre as instâncias.
+              <span className="absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 rounded-full bg-violet-600" />
             )}
             <Icon size={18} className="text-muted-foreground" />
             {itemLabel}
