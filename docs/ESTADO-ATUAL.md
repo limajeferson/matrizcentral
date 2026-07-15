@@ -8,8 +8,8 @@
 > Ordem de leitura ao retomar: **este arquivo → `CLAUDE.md` → o `README.md` da
 > frente ativa → o código fonte-de-verdade.**
 
-_Última atualização: 2026-07-13 (Frente 6 — Suporte/CRM concluída — **todas as
-6 frentes do roadmap entregues, código + revisão**)_
+_Última atualização: 2026-07-14 (Backlog de design — item 1: **barra de histórias
+do feed** entregue, revisada e verificada ao vivo na produção)_
 
 ---
 
@@ -160,15 +160,38 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
   (faixa dark do body corrigida com `min-height`). **Backlog rastreado:** a11y de
   teclado (Escape/setas) no `UserMenu`/`ProfileCard`; migrar `ContentGate` p/
   tokens; reavaliar `role="dialog"` do `ProfileCard`; dark no site inteiro.
+- ✅ **BACKLOG DE DESIGN — ITEM 1: BARRA DE HISTÓRIAS (STORIES) — CONCLUÍDA,
+  REVISADA E VERIFICADA AO VIVO (2026-07-14):** primeira frente do backlog
+  incremental, modelo `21st.dev/story-viewer`. **Derivada do conteúdo** (custo
+  zero, sem tabela nova): círculo por categoria, slides = itens do `CONTENT_HUB`
+  com `publishedAt` nos últimos **7 dias**; viewer fullscreen com barrinhas,
+  **auto-avanço de 15s** (rAF pausável), setas/Escape, CTA que respeita o gating.
+  Novo campo `publishedAt` + seed (2 relatórios + 1 pesquisa) → a barra nasce com
+  **Relatórios** e **Pesquisas**; podcasts/vídeos entram ao publicar. Arquivos:
+  `src/lib/stories.ts`(+test), `src/components/app/stories/{StoryBar,StoryViewer}.tsx`,
+  `contentHref` extraído em `feed.ts` (DRY), montada em `feed/page.tsx`. `tsc` 0 /
+  **193 testes** / lint limpo; revisão final (opus) = Ready to merge, 2 Important
+  corrigidos (efeito colateral no updater `setPos`; anel `fuchsia`→violeta).
+  Commits `7cabbed`/`87239ca`/`80ddd08`. Docs em `docs/frentes/feed-stories/`.
+  **Verificado ao vivo na produção** (logado): barra renderiza os 2 círculos
+  corretos; viewer abre com conteúdo/CTA-href certos (gating respeitado),
+  scroll-lock + Escape OK. (O progresso de 15s só não animou na automação porque
+  o browser congela `requestAnimationFrame` em aba de segundo plano — não é bug.)
+  **Minor rastreado:** ao voltar de aba em 2º plano por muito tempo, o slide pode
+  pular direto (rAF acumula o gap) — tratar com `visibilitychange` no backlog.
+  **Próxima ação:** aguardar o **próximo item do backlog de design** do usuário
+  (aplicar isolado, com rollback ao baseline), OU checar visualmente o toggle de
+  tema/pill quando conveniente.
 
 ## 🌿 Estado do git
 
-- **Branch ativa:** `master`, **sincronizada com `origin/master`** (push feito, HEAD c45de36,
-  sincronizado). O outro computador recebe tudo com `git pull origin master`.
-- **Inclui (nesta rodada):** Frente 6 completa — migration `0021`
-  (`support_messages`), `suporte.ts` (lógica pura testada), e-mail de
-  notificação + `support-data.ts`, rota `/api/suporte` + página `/suporte` +
-  `ContatoForm`, link no header/footer, doc `crm.md`.
+- **Branch ativa:** `master`, **sincronizada com `origin/master`** (push feito,
+  HEAD `80ddd08`, deploy Vercel READY). O outro computador recebe tudo com
+  `git pull origin master`.
+- **Inclui (nesta rodada):** backlog de design item 1 — barra de histórias
+  (`stories.ts` + `StoryBar`/`StoryViewer` + `publishedAt`/seed no content-hub +
+  `contentHref` DRY + montagem no feed), docs `docs/frentes/feed-stories/`.
+  Antes: feed-redesign baseline (4 frentes) + SP1.
 - **Não versionado (local, de propósito):** `.env.local` (segredos),
   `SETUP.md`, `claude-chat.md`, `CLAUDE.local-draft.md`.
 
