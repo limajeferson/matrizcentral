@@ -30,7 +30,14 @@ function makeMagicLinksSelectChain(rows: MagicLinkRow[]) {
       filtered = filtered.filter((r) => (r[field] as string) > (value as string));
       return chain;
     },
-    maybeSingle: async () => ({ data: filtered[0] ?? null, error: null }),
+    // Devolve uma cópia (snapshot), não a referência viva da linha: no Postgres real, o
+    // SELECT lê um snapshot no momento da leitura — chamadas concorrentes não veem
+    // mutações de UPDATE de outras chamadas retroativamente. Se devolvêssemos a
+    // referência do array, a segunda chamada concorrente veria `used_at` já setado
+    // pela trava condicional do `.update()` e cairia no guard redundante
+    // (`if (link.used_at) return null` em verifyMagicLink) em vez de exercitar de
+    // fato a trava condicional atômica do `.update()...is("used_at", null)`.
+    maybeSingle: async () => ({ data: filtered[0] ? { ...filtered[0] } : null, error: null }),
   };
   return chain;
 }
@@ -306,6 +313,31 @@ describe("verifyMagicLink", () => {
 
     expect(first).toEqual({ id: "user-1", email: "aluno@example.com" });
     expect(second).toBeNull();
+  });
+
+  it("claim é atômico sob concorrência: duas chamadas simultâneas com o mesmo secret → exatamente uma reivindica (evita corrida de duplo-clique/aba duplicada)", async () => {
+    const secret = "raw-secret-corrida-concorrente";
+    mockSupabase = buildSupabaseMock({
+      users: [{ id: "user-1", email: "aluno@example.com" }],
+      magicLinks: [
+        {
+          id: "ml-1",
+          user_id: "user-1",
+          token_hash: hashAuthSecret(secret),
+          expires_at: iso(10 * MIN),
+          used_at: null,
+          created_at: iso(-1000),
+        },
+      ],
+    });
+
+    const { verifyMagicLink } = await import("./auth-session");
+    const [a, b] = await Promise.all([verifyMagicLink(secret), verifyMagicLink(secret)]);
+
+    const nonNull = [a, b].filter((x) => x !== null);
+    expect(nonNull).toHaveLength(1); // exatamente UMA reivindicação vence
+    expect(nonNull[0]).toEqual({ id: "user-1", email: "aluno@example.com" });
+    expect(mockSupabase.magicLinks[0].used_at).not.toBeNull(); // link marcado como usado só uma vez
   });
 });
 
