@@ -18,8 +18,8 @@ atualizado). Fonte de verdade do andamento: [`../ESTADO-ATUAL.md`](../ESTADO-ATU
 | # | Trilha | Dono | Status | Docs |
 |---|--------|------|--------|------|
 | A | Go-live de receita (Stripe live, BREVO no Vercel) | **Usuário** (externo) | 🔄 **BREVO ✓ resolvido e verificado** (delivered em prod 2026-07-16); **Stripe live pendente** (verificação de empresa) | hand-off |
-| B | **Segurança do dinheiro** (reembolso→revoga, XP dedup, rate limit, validações, testes do caminho pago) | Claude | 🔄 **em execução (2/6 tasks)** | [spec-B](spec-B-seguranca-dinheiro.md) · [plano-B](plano-B-seguranca-dinheiro.md) |
-| C | Dark-aware (27 arquivos; blog force-light + logado→tokens; glass-card cascateia) | Claude | 📐 spec+plano prontos | [spec-C](spec-C-dark-aware.md) · plano-C |
+| B | **Segurança do dinheiro** (reembolso→revoga, XP dedup, rate limit, validações, testes do caminho pago) | Claude | ✅ **COMPLETA e no ar** (6/6, revisão final Ready-to-merge; migrations 0025/0026 aplicadas; 268 testes) | [spec-B](spec-B-seguranca-dinheiro.md) · [plano-B](plano-B-seguranca-dinheiro.md) |
+| C | Dark-aware (27 arquivos; blog force-light + logado→tokens; glass-card cascateia) | Claude | 📐 spec+plano prontos — **próxima** | [spec-C](spec-C-dark-aware.md) · [plano-C](plano-C-dark-aware.md) |
 | D | Design v2 Frente 5 (Fórum: respostas aninhadas `parent_reply_id`) | Claude | 📐 spec+plano prontos | [spec-D](spec-D-forum.md) · plano-D |
 | E | Conteúdo (texto agora; mídia via NotebookLM→hand-off) | Claude + Usuário | 📐 spec+plano prontos (contínuo, paralelo) | [spec-E](spec-E-conteudo.md) · plano-E |
 | F | UX / a11y / CX polish (+ herdados nunca fechados) | Claude (+ RightSidebar do usuário) | 📐 spec+plano prontos | [spec-F](spec-F-polish.md) · plano-F |

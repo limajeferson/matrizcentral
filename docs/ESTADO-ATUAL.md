@@ -23,22 +23,23 @@ na `master`). Design v2 Frentes 1–3 **no ar**; **migration `0024` APLICADA**
 erros. Frente ativa: **design v2 Frente 4 (Conteúdo/mídia)** — **desenhada**
 (spec-4-conteudo + plano-4-conteudo), pronta pra construir.
 
-**Faça, nesta ordem:**
-1. **Desenhar + construir a Frente 5 (Fórum)** — última do programa design v2:
-   pergunta estilo stack-overflow + respostas aninhadas estilo reddit
-   (`forum_replies.parent_reply_id` nullable + render recursivo). Escrever
-   `spec-5.md`+`plano-5.md`, depois `subagent-driven-development`. Migração
-   aditiva (respostas atuais viram raiz).
-2. **Aguardando o usuário:** revisão de design da **`RightSidebar`** (ele está
-   anotando e vai enviar); conferir ao vivo o _feel_ da rolagem da esteira e a
-   transição dos cards (a automação roda em aba de fundo e não observa
-   scroll/framer animados — só estático).
-3. **Frente própria a considerar — dark-aware do marketing/blog:** achado durante
-   a Frente 4 — `/blog/[slug]`, `/oferta`, `/sobre`, `/legal/*` e o `Markdown.tsx`
-   usam cores claras hardcoded (`text-zinc-900`, `bg-violet-50`) mas rodam sob
-   `<html class="dark">` por padrão → títulos quase pretos somem no fundo dark.
-   Precisa de uma frente pra tornar o marketing/blog dark-aware (ou forçar `light`
-   nessas rotas).
+**Frente ativa: PROGRAMA DE LANÇAMENTO FINAL** (`docs/frentes/lancamento-final/`)
+— 7 trilhas planejadas inteiras (specs+planos B–G). Trilha A (Brevo ✅; Stripe com
+o usuário) e **Trilha B (segurança do dinheiro) COMPLETAS e no ar**.
+
+**Faça, nesta ordem (retomar aqui):**
+1. **Trilha C — Dark-aware** (próxima): `plano-C-dark-aware.md`. Blog force-light
+   (Bucket A) + área logada→tokens semânticos (Bucket B). Começar por `glass-card`
+   (cascateia 6 telas) + `dashboard/layout` + `Markdown`. Verificação visual é o gate.
+2. Depois: **D (Fórum, `parent_reply_id`, migration 0027) → E (conteúdo, paralelo)
+   → F (polish + herdados, inclui F6 garantia 7 dias) → G (tech-debt/SP2) →
+   auditoria final.**
+3. **Aguardando o usuário:** anotações de design da **`RightSidebar`** (entram na
+   Trilha F); Stripe live (verificação de empresa); subir a mídia que o Claude
+   gerar no NotebookLM (Trilha E).
+4. **Follow-up não-bloqueante:** E2E ao vivo do refund (Stripe modo teste) —
+   simular `charge.refunded` e confirmar token/entitlement expirados. As migrations
+   do programa: 0025/0026 aplicadas ✅; **0027 (fórum) a aplicar na Trilha D**.
 
 **Como trabalhar aqui (harness):** commit por item, gate `tsc` 0 + `npm run test` +
 `next lint` sem erros antes de cada commit; custo zero (sem dep npm nova); área
@@ -337,6 +338,23 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
 
+- **2026-07-16 (Opus 4.8 1M) — Programa de LANÇAMENTO FINAL: planejado inteiro +
+  Trilha B concluída:** brainstorm "listar tudo p/ o lançamento" → escopo travado
+  (tudo que o Claude controla, pronto+polido; mídia via NotebookLM→hand-off) →
+  **planejado tudo primeiro** (decisão do usuário): 6 specs + 6 planos das trilhas
+  B–G em `docs/frentes/lancamento-final/`, fundamentados em mapas do código real.
+  **Trilha A:** Brevo ✅ resolvido e verificado (delivered em prod); Stripe live
+  segue com o usuário. **Trilha B (segurança do dinheiro) COMPLETA e no ar** via
+  subagent-driven-development (6 tasks, revisão por task + final opus): reembolso/
+  disputa revoga acesso (expira token+entitlement na fonte; 500 p/ Stripe
+  reentregar), XP não-duplicável (0025 + upsert 8 sites), rate limiter
+  (checkout/newsletter/waitlist), validação de e-mail + dedupe waitlist (0026),
+  testes de `entitlement-access` e `auth-session` (incl. claim atômico concorrente
+  anti-replay). **Migrations 0025/0026 aplicadas no remoto** (SQL Editor, dedup
+  por ctid replay-safe, índices verificados) ANTES do push (senão o upsert
+  quebraria). 268 testes. Commits `a25f2ac`..`332f27a`. **Garantia travada: 7 dias
+  condicional** (F6 alinha código+doc+termos+copy). **Próximo:** Trilha C
+  (dark-aware). Ledger em `.superpowers/sdd/progress.md`.
 - **2026-07-16 (Opus 4.8 1M) — Design v2 Frente 4 (Conteúdo/mídia) concluída +
   design pass do feed:** via `subagent-driven-development` (6 tasks + revisão por
   task + revisão final opus whole-branch = **Ready to merge**, 229 testes).
