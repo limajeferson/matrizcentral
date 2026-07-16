@@ -4,6 +4,9 @@ import { stripe, PLANOS, type PlanoId } from "@/lib/stripe";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { getSessionUser } from "@/lib/auth-session";
 import { couponEligible, UPGRADE_COUPON_CENTS } from "@/lib/coupon";
+import { createRateLimiter } from "@/lib/rate-limit";
+
+const limiter = createRateLimiter(10_000);
 
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
@@ -12,6 +15,10 @@ export async function POST(req: NextRequest) {
 
   if (!email || typeof email !== "string") {
     return NextResponse.json({ error: "email é obrigatório" }, { status: 400 });
+  }
+
+  if (!limiter.check(email.toLowerCase(), Date.now())) {
+    return NextResponse.json({ error: "aguarde um instante e tente de novo" }, { status: 429 });
   }
 
   const produto = PLANOS[plan];
