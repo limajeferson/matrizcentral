@@ -3,6 +3,8 @@ import type { ContentItem, ContentType } from "@/data/content-hub";
 export type FeedCard = {
   id: string; title: string; description: string; type: ContentType;
   href: string; emBreve: boolean;
+  /** Metadados para os cards (duração e recompensa) — enriquecem o feed. */
+  durationMinutes: number; xpReward: number;
 };
 
 function isEmBreve(item: ContentItem): boolean {
@@ -24,6 +26,8 @@ export function buildContentFeed(items: ContentItem[], token?: string): FeedCard
     type: item.type,
     emBreve: isEmBreve(item),
     href: contentHref(item.id, token),
+    durationMinutes: item.durationMinutes,
+    xpReward: item.xpReward,
   }));
 }
 

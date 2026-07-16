@@ -12,6 +12,7 @@ const thread = (id: string, at: string): TopicListItem => ({
 });
 const card = (id: string): FeedCard => ({
   id, title: "C", description: "d", type: "relatorio", href: "/oferta", emBreve: false,
+  durationMinutes: 5, xpReward: 10,
 });
 
 describe("buildFeedTimeline", () => {

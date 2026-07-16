@@ -3,30 +3,25 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { IconClose, IconLock } from "@/components/ui/icons";
+import { IconClose, IconLock, IconArrow } from "@/components/ui/icons";
 import { CONTENT_ICON } from "@/lib/content-icons";
+import { CONTENT_ACCENT, contentMeta } from "@/lib/content-accent";
 import type { FeedCard } from "@/lib/feed";
-import type { ContentType } from "@/data/content-hub";
-
-const TYPE_LABEL: Record<ContentType, string> = {
-  relatorio: "Relatório",
-  podcast: "Podcast",
-  video: "Vídeo",
-  pesquisa: "Pesquisa",
-};
 
 /**
  * Card de conteúdo no feed que **expande** para uma camada de detalhe (modelo
  * expandable-card): compartilha `layoutId` único (`content-<id>`) entre o card
- * compacto e o overlay, então o framer-motion anima a transição. O CTA "Abrir
- * conteúdo" navega de fato (respeita o gating via `card.href`). Escape/backdrop
- * fecham; scroll do body travado enquanto aberto.
+ * compacto e o overlay, então o framer-motion anima a transição. Cada card tem
+ * identidade por tipo (chip do ícone colorido, rótulo, brilho e realce no
+ * hover) + metadados (duração/XP) e um CTA persuasivo. O CTA navega de fato
+ * (respeita o gating via `card.href`). Escape/backdrop fecham; scroll travado.
  */
 export function ExpandableContentCard({ card }: { card: FeedCard }) {
   const [open, setOpen] = useState(false);
   const Icon = CONTENT_ICON[card.type];
+  const accent = CONTENT_ACCENT[card.type];
+  const meta = contentMeta(card.durationMinutes, card.xpReward);
   const locked = !card.emBreve && card.href === "/oferta";
-  const layoutId = `content-${card.id}`;
   const dialogRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -48,29 +43,57 @@ export function ExpandableContentCard({ card }: { card: FeedCard }) {
 
   return (
     <>
-      <motion.button
-        layoutId={layoutId}
+      <button
         type="button"
         onClick={() => setOpen(true)}
-        className="block w-full rounded-2xl border border-border bg-card p-4 text-left shadow-sm transition hover:border-violet-500/50"
+        className={`group relative block w-full overflow-hidden rounded-2xl border border-border bg-card p-4 text-left shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg ${accent.hoverBorder}`}
       >
-        <div className="mb-1 flex items-center justify-between gap-2">
-          <span className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
-            <Icon size={14} />
-            {TYPE_LABEL[card.type]}
+        {/* brilho de canto na cor do tipo */}
+        <span
+          aria-hidden="true"
+          className={`pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-gradient-to-br ${accent.glow} to-transparent opacity-70 blur-2xl transition-opacity duration-300 group-hover:opacity-100`}
+        />
+        <div className="relative flex gap-3.5">
+          <span
+            aria-hidden="true"
+            className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${accent.chipBg} ${accent.fg}`}
+          >
+            <Icon size={20} />
           </span>
-          {card.emBreve && (
-            <span className="text-[10px] font-semibold uppercase tracking-wide text-amber-600">Em breve</span>
-          )}
+          <div className="min-w-0 flex-1">
+            <div className="mb-1 flex items-center gap-2">
+              <span className={`text-[11px] font-semibold uppercase tracking-wide ${accent.fg}`}>
+                {accent.label}
+              </span>
+              {card.emBreve && (
+                <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-amber-500">
+                  Em breve
+                </span>
+              )}
+            </div>
+            <h3 className="line-clamp-2 text-[15px] font-semibold leading-snug text-foreground">
+              {card.title}
+            </h3>
+            <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-muted-foreground">
+              {card.description}
+            </p>
+            <div className="mt-3 flex items-center justify-between gap-2">
+              <span className="text-[11px] font-medium text-muted-foreground">{meta}</span>
+              {card.emBreve ? (
+                <span className="text-[11px] font-medium text-muted-foreground">Chega em breve</span>
+              ) : locked ? (
+                <span className="inline-flex items-center gap-1 text-xs font-semibold text-violet-400">
+                  <IconLock size={12} /> Assinar para acessar
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-1 text-xs font-semibold text-violet-400 transition-all group-hover:gap-1.5">
+                  Abrir <IconArrow size={13} />
+                </span>
+              )}
+            </div>
+          </div>
         </div>
-        <h3 className="text-sm font-semibold text-foreground">{card.title}</h3>
-        <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{card.description}</p>
-        {locked && (
-          <span className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-violet-600">
-            <IconLock size={12} /> Assine para acessar
-          </span>
-        )}
-      </motion.button>
+      </button>
 
       <AnimatePresence>
         {open && (
@@ -87,7 +110,10 @@ export function ExpandableContentCard({ card }: { card: FeedCard }) {
           >
               <motion.div
                 ref={dialogRef}
-                layoutId={layoutId}
+                initial={{ opacity: 0, scale: 0.95, y: 8 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.97, y: 4 }}
+                transition={{ duration: 0.18, ease: "easeOut" }}
                 tabIndex={-1}
                 role="dialog"
                 aria-modal="true"
@@ -95,10 +121,17 @@ export function ExpandableContentCard({ card }: { card: FeedCard }) {
                 onClick={(e) => e.stopPropagation()}
                 className="w-full max-w-lg rounded-2xl border border-border bg-card p-6 shadow-2xl outline-none"
               >
-                <div className="mb-2 flex items-center justify-between">
-                  <span className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
-                    <Icon size={16} />
-                    {TYPE_LABEL[card.type]}
+                <div className="mb-3 flex items-center justify-between">
+                  <span className="flex items-center gap-2.5">
+                    <span
+                      aria-hidden="true"
+                      className={`flex h-10 w-10 items-center justify-center rounded-xl ${accent.chipBg} ${accent.fg}`}
+                    >
+                      <Icon size={18} />
+                    </span>
+                    <span className={`text-[11px] font-semibold uppercase tracking-wide ${accent.fg}`}>
+                      {accent.label}
+                    </span>
                   </span>
                   <button
                     type="button"
@@ -109,8 +142,9 @@ export function ExpandableContentCard({ card }: { card: FeedCard }) {
                     <IconClose size={18} />
                   </button>
                 </div>
-                <h2 className="text-lg font-bold text-foreground">{card.title}</h2>
-                <p className="mt-2 text-sm text-muted-foreground">{card.description}</p>
+                <h2 className="text-lg font-bold leading-snug text-foreground">{card.title}</h2>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{card.description}</p>
+                {meta && <p className="mt-2 text-xs font-medium text-muted-foreground">{meta}</p>}
                 <div className="mt-5">
                   {card.emBreve ? (
                     <span className="rounded-full bg-amber-500/15 px-4 py-2 text-sm font-semibold text-amber-600">

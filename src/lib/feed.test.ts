@@ -20,6 +20,11 @@ describe("buildContentFeed", () => {
     expect(buildContentFeed([pod])[0].emBreve).toBe(true);
     expect(buildContentFeed([podPub])[0].emBreve).toBe(false);
   });
+  it("repassa duração e XP para o card", () => {
+    const [c] = buildContentFeed([rel]);
+    expect(c.durationMinutes).toBe(5);
+    expect(c.xpReward).toBe(10);
+  });
 });
 
 describe("formatActivity", () => {
