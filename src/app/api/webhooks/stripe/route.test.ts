@@ -16,11 +16,13 @@ function buildSupabaseMock(
     existingPurchase?: { id: string } | null;
     existingToken?: { token: string } | null;
     tokenInsertError?: { message: string } | null;
+    tokenUpdateError?: { message: string } | null;
   } = {}
 ) {
   const existingPurchase = opts.existingPurchase ?? null;
   const existingToken = opts.existingToken ?? null;
   const tokenInsertError = opts.tokenInsertError ?? null;
+  const tokenUpdateError = opts.tokenUpdateError ?? null;
 
   const insertedRows: Record<string, unknown[]> = {
     users: [],
@@ -82,7 +84,7 @@ function buildSupabaseMock(
         update: (values: Record<string, unknown>) => ({
           eq: async (col: string, val: unknown) => {
             updatedRows.tokens.push({ values, eq: [col, val] });
-            return { data: null, error: null };
+            return { data: null, error: tokenUpdateError };
           },
         }),
       };
@@ -282,6 +284,24 @@ describe("POST /api/webhooks/stripe", () => {
     expect(mockSupabase.updatedRows.purchases).toHaveLength(0);
     expect(mockSupabase.updatedRows.tokens).toHaveLength(0);
     expect(mockSupabase.updatedRows.entitlements).toHaveLength(0);
+  });
+
+  it("charge.refunded: falha ao gravar a revogação → 500 (para a Stripe reentregar)", async () => {
+    mockSupabase = buildSupabaseMock({
+      existingPurchase: { id: "purchase-existente" },
+      tokenUpdateError: { message: "indisponível" },
+    });
+    mockConstructEvent.mockReturnValue({
+      type: "charge.refunded",
+      data: { object: { id: "ch_999", payment_intent: "pi_999" } },
+    });
+
+    const { POST } = await import("./route");
+    const response = await POST(buildRequest());
+    const json = await response.json();
+
+    expect(response.status).toBe(500);
+    expect(json.received).toBeUndefined();
   });
 
   it("evento ignorado (payment_intent.succeeded) → received sem processar", async () => {

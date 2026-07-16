@@ -16,22 +16,42 @@ import { classifyStripeEvent } from "@/lib/stripe-events";
  * identificador, `charge.payment_intent` (não `charge.id`).
  * Idempotente: se a compra não é conhecida (ou já foi revogada), é no-op —
  * reentregas da Stripe convergem sem efeito colateral.
+ *
+ * Retorna `false` se QUALQUER leitura/gravação falhar — o chamador deve
+ * responder 500 para a Stripe REENTREGAR o evento. Sem isso, uma falha
+ * transitória do DB faria o webhook responder 200 mesmo sem revogar: o
+ * cliente é reembolsado e mantém acesso para sempre (a Stripe nunca
+ * reenvia um evento que já recebeu 200). Compra desconhecida (`!purchase`)
+ * não é erro — retorna `true` (nada a revogar).
  */
 async function revokePurchase(
   supabase: SupabaseClient,
   stripeId: string,
   status: "refunded" | "disputed"
-): Promise<void> {
+): Promise<boolean> {
   const nowIso = new Date().toISOString();
-  const { data: purchase } = await supabase
+  const { data: purchase, error: selectError } = await supabase
     .from("purchases")
     .select("id")
     .eq("stripe_payment_id", stripeId)
     .maybeSingle();
-  if (!purchase) return; // compra desconhecida → no-op idempotente
-  await supabase.from("purchases").update({ status }).eq("id", purchase.id);
-  await supabase.from("tokens").update({ valid_until: nowIso }).eq("purchase_id", purchase.id);
-  await supabase.from("entitlements").update({ expires_at: nowIso }).eq("stripe_payment_id", stripeId);
+  if (selectError) return false;
+  if (!purchase) return true; // compra desconhecida → no-op idempotente
+
+  const { error: purchaseError } = await supabase
+    .from("purchases")
+    .update({ status })
+    .eq("id", purchase.id);
+  const { error: tokenError } = await supabase
+    .from("tokens")
+    .update({ valid_until: nowIso })
+    .eq("purchase_id", purchase.id);
+  const { error: entitlementError } = await supabase
+    .from("entitlements")
+    .update({ expires_at: nowIso })
+    .eq("stripe_payment_id", stripeId);
+
+  return !purchaseError && !tokenError && !entitlementError;
 }
 
 export async function POST(req: NextRequest) {
@@ -52,13 +72,26 @@ export async function POST(req: NextRequest) {
   }
 
   if (kind === "refund" || kind === "dispute") {
-    const charge = event.data.object as Stripe.Charge;
-    const chargePaymentIntent = charge.payment_intent as string | null;
+    // `charge.refunded` traz um Stripe.Charge, mas `charge.dispute.created` traz
+    // um Stripe.Dispute — os dois expõem `payment_intent` de forma independente,
+    // que é o único campo lido aqui.
+    const chargeOrDispute = event.data.object as Stripe.Charge | Stripe.Dispute;
+    const chargePaymentIntent = chargeOrDispute.payment_intent as string | null;
     if (!chargePaymentIntent) {
       return NextResponse.json({ error: "evento incompleto" }, { status: 400 });
     }
     const supabase = getSupabaseServerClient();
-    await revokePurchase(supabase, chargePaymentIntent, kind === "refund" ? "refunded" : "disputed");
+    const revoked = await revokePurchase(
+      supabase,
+      chargePaymentIntent,
+      kind === "refund" ? "refunded" : "disputed"
+    );
+    if (!revoked) {
+      // Falha ao revogar (DB indisponível etc.): 500 força a Stripe REENTREGAR
+      // o evento — é isto que impede o cenário "cliente reembolsado e mantém
+      // acesso para sempre".
+      return NextResponse.json({ error: "falha ao revogar acesso" }, { status: 500 });
+    }
     return NextResponse.json({ received: true });
   }
 
