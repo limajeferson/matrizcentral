@@ -12,6 +12,8 @@ import { resolveUserIdByToken, tryConsume } from "@/lib/entitlement-access";
 import PesquisaForm from "@/components/content/PesquisaForm";
 import PesquisaResults from "@/components/content/PesquisaResults";
 import Markdown from "@/components/ui/Markdown";
+import { VideoPlayer } from "@/components/app/content/VideoPlayer";
+import { MusicPlayerCard } from "@/components/app/content/MusicPlayerCard";
 
 export default async function ConteudoDetailPage({
   params,
@@ -114,17 +116,26 @@ export default async function ConteudoDetailPage({
         </GlassCard>
       )}
 
-      {!body && item.embedUrl === null && (
-        <GlassCard className="p-6 text-center">
-          <p className="font-semibold text-amber-600">Em breve</p>
-          <p className="mt-1 text-zinc-600">{item.description}</p>
-        </GlassCard>
-      )}
-
-      {!body && item.embedUrl && (
-        <GlassCard className="p-6">
-          <iframe src={item.embedUrl} className="aspect-video w-full rounded-xl" allowFullScreen />
-        </GlassCard>
+      {!body && (
+        item.type === "video" ? (
+          <VideoPlayer title={item.title} embedUrl={item.embedUrl} durationMinutes={item.durationMinutes} />
+        ) : item.type === "podcast" ? (
+          <MusicPlayerCard
+            title={item.title}
+            description={item.description}
+            embedUrl={item.embedUrl}
+            durationMinutes={item.durationMinutes}
+          />
+        ) : item.embedUrl === null ? (
+          <GlassCard className="p-6 text-center">
+            <p className="font-semibold text-amber-600">Em breve</p>
+            <p className="mt-1 text-zinc-600">{item.description}</p>
+          </GlassCard>
+        ) : (
+          <GlassCard className="p-6">
+            <iframe src={item.embedUrl} className="aspect-video w-full rounded-xl" allowFullScreen />
+          </GlassCard>
+        )
       )}
 
       <CompleteContentButton
