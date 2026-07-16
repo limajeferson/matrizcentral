@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { buildFeedTimeline, postEntries } from "./feed-timeline";
+import { buildFeedTimeline, mergeFeedPage, postEntries } from "./feed-timeline";
 import type { FeedPost } from "./feed-posts";
 import type { TopicListItem } from "./forum-data";
 import type { FeedCard } from "./feed";
@@ -40,5 +40,25 @@ describe("buildFeedTimeline", () => {
   it("postEntries mapeia posts para entries kind=post", () => {
     const es = postEntries([post("p1", "2026-07-10T00:00:00Z")]);
     expect(es).toEqual([{ kind: "post", at: "2026-07-10T00:00:00Z", post: post("p1", "2026-07-10T00:00:00Z") }]);
+  });
+});
+
+describe("mergeFeedPage", () => {
+  it("re-intercala a pagina nova: post mais novo sobe acima de thread antiga do prev", () => {
+    const prev = buildFeedTimeline(
+      [post("p1", "2026-07-14T00:00:00Z")],
+      [thread("t1", "2026-07-10T00:00:00Z")],
+      [],
+    );
+    const page = postEntries([post("p2", "2026-07-12T00:00:00Z")]);
+    const merged = mergeFeedPage(prev, page);
+    expect(merged.map((e) => e.at)).toEqual([
+      "2026-07-14T00:00:00Z", "2026-07-12T00:00:00Z", "2026-07-10T00:00:00Z",
+    ]);
+  });
+
+  it("pagina vazia mantem o prev intacto", () => {
+    const prev = postEntries([post("p1", "2026-07-14T00:00:00Z")]);
+    expect(mergeFeedPage(prev, [])).toEqual(prev);
   });
 });

@@ -29,3 +29,13 @@ export function buildFeedTimeline(
   ];
   return entries.sort((a, b) => (a.at < b.at ? 1 : a.at > b.at ? -1 : 0));
 }
+
+/**
+ * Anexa uma página de posts mantendo a ordem do timeline (mais novo → mais
+ * antigo). Só concatenar quebrava a recência: threads/conteúdo não são
+ * paginados, então uma thread antiga no fim da 1ª página ficava ACIMA de
+ * posts mais novos vindos da página 2.
+ */
+export function mergeFeedPage(prev: FeedEntry[], page: FeedEntry[]): FeedEntry[] {
+  return [...prev, ...page].sort((a, b) => (a.at < b.at ? 1 : a.at > b.at ? -1 : 0));
+}

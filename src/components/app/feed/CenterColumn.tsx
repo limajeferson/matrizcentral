@@ -26,7 +26,7 @@ export type CenterColumnProps = {
  */
 export function CenterColumn({ cards, timeline, timelineCursor, access, canPost }: CenterColumnProps) {
   return (
-    <div id="conteudos" className="space-y-6">
+    <div id="conteudos" className="scroll-mt-24 space-y-6">
       <section>
         <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
           Comece por aqui

@@ -74,16 +74,17 @@ export function ExpandableContentCard({ card }: { card: FeedCard }) {
 
       <AnimatePresence>
         {open && (
-          <>
-            <motion.div
-              key="backdrop"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setOpen(false)}
-              className="fixed inset-0 z-[90] bg-black/60 backdrop-blur-sm"
-            />
-            <div className="fixed inset-0 z-[95] flex items-center justify-center p-4">
+          /* Filho direto ÚNICO e keyed do AnimatePresence: fragment + div comum
+           * quebram o tracking de exit e o véu ficava montado para sempre,
+           * engolindo todos os cliques da página (bug real, achado ao vivo). */
+          <motion.div
+            key={`overlay-${card.id}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setOpen(false)}
+            className="fixed inset-0 z-[90] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+          >
               <motion.div
                 ref={dialogRef}
                 layoutId={layoutId}
@@ -91,6 +92,7 @@ export function ExpandableContentCard({ card }: { card: FeedCard }) {
                 role="dialog"
                 aria-modal="true"
                 aria-label={card.title}
+                onClick={(e) => e.stopPropagation()}
                 className="w-full max-w-lg rounded-2xl border border-border bg-card p-6 shadow-2xl outline-none"
               >
                 <div className="mb-2 flex items-center justify-between">
@@ -125,8 +127,7 @@ export function ExpandableContentCard({ card }: { card: FeedCard }) {
                   )}
                 </div>
               </motion.div>
-            </div>
-          </>
+          </motion.div>
         )}
       </AnimatePresence>
     </>

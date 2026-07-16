@@ -57,6 +57,7 @@ describe("parseMediaSource", () => {
       "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
       "https://youtu.be/dQw4w9WgXcQ",
       "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      "https://www.youtube.com/shorts/dQw4w9WgXcQ",
     ]) {
       expect(parseMediaSource(url)).toEqual({
         kind: "youtube",
@@ -104,7 +105,7 @@ export type MediaSource =
   | { kind: "spotify"; embedSrc: string; height: number }
   | { kind: "generic"; embedSrc: string };
 
-const YOUTUBE_RE = /(?:youtu\.be\/|youtube\.com\/(?:embed\/|watch\?v=))([\w-]{11})/;
+const YOUTUBE_RE = /(?:youtu\.be\/|youtube\.com\/(?:embed\/|watch\?v=|shorts\/))([\w-]{11})/;
 const SPOTIFY_RE = /open\.spotify\.com\/(?:embed\/)?(track|episode|show|playlist|album)\/([A-Za-z0-9]+)/;
 
 /** Fonte única de parsing de embedUrl (YouTube/Spotify/genérico). */

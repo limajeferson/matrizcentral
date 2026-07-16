@@ -8,7 +8,7 @@ import { PostCard } from "./PostCard";
 import { VideoThumb } from "./VideoThumb";
 import { ExpandableContentCard } from "./ExpandableContentCard";
 import { CONTENT_HUB } from "@/data/content-hub";
-import type { FeedEntry } from "@/lib/feed-timeline";
+import { mergeFeedPage, type FeedEntry } from "@/lib/feed-timeline";
 import type { FeedPost } from "@/lib/feed-posts";
 import type { TopicListItem } from "@/lib/forum-data";
 
@@ -84,7 +84,7 @@ export function FeedTimeline({ initial, initialCursor, canPost, canOpenThreads }
       const res = await fetch(`/api/feed/page?before=${encodeURIComponent(cursor)}`);
       if (res.ok) {
         const data = (await res.json()) as { entries: FeedEntry[]; nextCursor: string | null };
-        setEntries((prev) => [...prev, ...data.entries]);
+        setEntries((prev) => mergeFeedPage(prev, data.entries));
         setCursor(data.nextCursor);
       } else {
         setCursor(null);
