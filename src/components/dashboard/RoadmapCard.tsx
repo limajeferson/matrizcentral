@@ -60,7 +60,11 @@ export default function RoadmapCard({ roadmap, completedStages, token }: Props) 
 
           if (status === "done") {
             return (
-              <div key={key} className="border-l-4 border-emerald-400 pl-4 py-2">
+              <div
+                key={key}
+                id={`etapa-${key}`}
+                className="scroll-mt-24 border-l-4 border-emerald-400 pl-4 py-2"
+              >
                 <h3 className="flex items-center gap-1.5 font-semibold text-zinc-900">
                   <IconCheck size={16} className="text-emerald-500" />
                   {label}
@@ -71,7 +75,11 @@ export default function RoadmapCard({ roadmap, completedStages, token }: Props) 
 
           if (status === "active") {
             return (
-              <div key={key} className="border-l-4 border-violet-500 bg-violet-50 pl-4 py-4 rounded-r-xl">
+              <div
+                key={key}
+                id={`etapa-${key}`}
+                className="scroll-mt-24 border-l-4 border-violet-500 bg-violet-50 pl-4 py-4 rounded-r-xl"
+              >
                 <h3 className="font-semibold text-zinc-900">{label}</h3>
                 <p className="mt-1 text-sm text-zinc-600">{stage.objective}</p>
                 <ul className="mt-3 space-y-1 text-sm text-zinc-600">
@@ -93,7 +101,11 @@ export default function RoadmapCard({ roadmap, completedStages, token }: Props) 
           }
 
           return (
-            <div key={key} className="border-l-4 border-zinc-200 pl-4 py-2 text-zinc-400">
+            <div
+              key={key}
+              id={`etapa-${key}`}
+              className="scroll-mt-24 border-l-4 border-zinc-200 pl-4 py-2 text-zinc-400"
+            >
               <h3 className="flex items-center gap-1.5 font-semibold">
                 <IconLock size={16} />
                 {label}

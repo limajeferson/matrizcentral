@@ -2,6 +2,7 @@ import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { isTokenExpired } from "@/lib/tokens";
 import { getLevelProgress } from "@/lib/levels";
 import RoadmapCard from "@/components/dashboard/RoadmapCard";
+import JornadaToc from "@/components/dashboard/JornadaToc";
 import {
   ROADMAP_STAGE_KEYS,
   ROADMAP_STAGE_LABELS,
@@ -178,13 +179,16 @@ export default async function DashboardPage({ params }: { params: { token: strin
         </dl>
       </GlassCard>
 
-      <GlassCard className="p-6">
-        <RoadmapCard
-          roadmap={profile.study_roadmap as RoadmapStages}
-          completedStages={completedStages}
-          token={params.token}
-        />
-      </GlassCard>
+      <div className="flex items-start gap-6">
+        <JornadaToc completedStages={completedStages} />
+        <GlassCard className="min-w-0 flex-1 p-6">
+          <RoadmapCard
+            roadmap={profile.study_roadmap as RoadmapStages}
+            completedStages={completedStages}
+            token={params.token}
+          />
+        </GlassCard>
+      </div>
 
       <GlassCard className="p-6">
         <div className="mb-2">
