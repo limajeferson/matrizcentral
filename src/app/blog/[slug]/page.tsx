@@ -5,6 +5,8 @@ import type { Metadata } from "next";
 import { BLOG_POSTS } from "@/data/blog";
 import { getPostBySlug } from "@/lib/blog";
 import Markdown from "@/components/ui/Markdown";
+import { ArticleToc } from "@/components/app/content/ArticleToc";
+import { extractHeadings, parseMarkdown } from "@/lib/markdown";
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const post = getPostBySlug(BLOG_POSTS, params.slug);
@@ -18,9 +20,11 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
 
   let body = "";
   try { body = await readFile(path.join(process.cwd(), post.bodyPath), "utf-8"); } catch { body = post.excerpt; }
+  const headings = extractHeadings(parseMarkdown(body));
 
   return (
     <div className="mx-auto max-w-2xl space-y-6 p-6">
+      <ArticleToc headings={headings} />
       <article>
         <h1 className="text-2xl font-bold text-zinc-900">{post.title}</h1>
         <p className="mt-1 text-xs text-zinc-400">{new Date(post.date).toLocaleDateString("pt-BR")} · {post.author}</p>

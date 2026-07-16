@@ -12,8 +12,10 @@ import { resolveUserIdByToken, tryConsume } from "@/lib/entitlement-access";
 import PesquisaForm from "@/components/content/PesquisaForm";
 import PesquisaResults from "@/components/content/PesquisaResults";
 import Markdown from "@/components/ui/Markdown";
+import { ArticleToc } from "@/components/app/content/ArticleToc";
 import { VideoPlayer } from "@/components/app/content/VideoPlayer";
 import { MusicPlayerCard } from "@/components/app/content/MusicPlayerCard";
+import { extractHeadings, parseMarkdown } from "@/lib/markdown";
 
 export default async function ConteudoDetailPage({
   params,
@@ -66,6 +68,7 @@ export default async function ConteudoDetailPage({
   const body = item.bodyPath
     ? await readFile(path.join(process.cwd(), item.bodyPath), "utf-8")
     : null;
+  const headings = body ? extractHeadings(parseMarkdown(body)) : [];
 
   if (item.type === "pesquisa" && item.surveyOptions) {
     const { data: existingResponse } = await supabase
@@ -111,9 +114,12 @@ export default async function ConteudoDetailPage({
       </p>
 
       {body && (
-        <GlassCard className="p-6">
-          <Markdown source={body} />
-        </GlassCard>
+        <>
+          <ArticleToc headings={headings} />
+          <GlassCard className="p-6">
+            <Markdown source={body} />
+          </GlassCard>
+        </>
       )}
 
       {!body && (
