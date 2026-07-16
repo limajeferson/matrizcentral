@@ -34,7 +34,7 @@ export default function Markdown({ source }: { source: string }) {
           return (
             <ul key={index} className="list-disc pl-5 space-y-1">
               {block.items.map((item, itemIndex) => (
-                <li key={itemIndex} className="ml-5 list-disc text-zinc-700">
+                <li key={itemIndex} className="text-zinc-700">
                   {item}
                 </li>
               ))}
