@@ -6,6 +6,12 @@ master (`tsc` 0 / 118 testes), migrations 0015/0016 **aplicadas em produção**,
 uso único, logout, proteção de rota — tudo passou). Spec e plano:
 [`spec.md`](spec.md) · [`plano.md`](plano.md).
 
+> ⚠️ **Nota de encerramento (2026-07-16):** o header acima é o estado final e
+> correto. Seções do corpo abaixo ("Pendências antes de fechar", "Próximo
+> passo", "Prompt de retomada") congelaram o meio da frente e estão
+> **obsoletas** — migrations aplicadas, E2E validado, decisão #7 tomada
+> (landing dinâmica). Não seguir o "prompt de retomada" daqui.
+
 > ✅ **Deliverability do Brevo — RESOLVIDO (2026-07-13):** o remetente
 > `contato@matrizcentral.com.br` não estava validado no Brevo (o envio dava
 > `error: sender not valid`). Corrigido autenticando o **domínio** no Brevo

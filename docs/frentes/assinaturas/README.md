@@ -1,9 +1,15 @@
 # Frente 2 — Assinaturas (passes Regular/Advanced) + e-mails de ciclo
 
-**Status:** 🔄 **Plano 1 — código completo e revisado** (11 tasks + 2 fixes da
-revisão final, na master, `tsc` 0 / **136 testes**). Falta só o **E2E ao vivo em
-modo teste do Stripe** (precisa do Stripe CLI encaminhando o webhook). Plano 2
-(e-mails/CRM) a escrever depois.
+**Status:** ✅ **Concluída** — Planos 1 (entitlement/Stripe/webhook/oferta) e 2
+(e-mails de ciclo + cron) entregues e revisados; **E2E Stripe modo teste validado
+em produção (2026-07-13)**; migrations 0017–0019 aplicadas; cron vivo; Issue 3
+(cupom↔sessão) resolvido (`5cf89e3`).
+
+> ⚠️ **Nota de encerramento (2026-07-16):** o corpo abaixo congela o estado da
+> época do código; as pendências que ele cita foram **todas resolvidas** (ver
+> `docs/ESTADO-ATUAL.md`, log de 2026-07-13). Pendência viva relacionada:
+> `BREVO_API_KEY` inválida no Vercel + Stripe live bloqueado (verificação de
+> empresa).
 
 ## ✅ Entregue (Plano 1)
 

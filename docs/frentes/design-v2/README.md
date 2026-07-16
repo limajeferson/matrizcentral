@@ -5,6 +5,19 @@
 > Decisões de escopo travadas no brainstorm (2026-07-15):
 > **(1) visual + backend juntos**; **(2) 5 frentes por área, commit por item**.
 
+## Progresso (atualizar a cada sub-frente)
+
+| # | Frente | Status | Docs |
+|---|--------|--------|------|
+| 1 | Moldura | ✅ no ar (2026-07-15) | spec-1/plano-1-moldura |
+| 2 | Feed | ✅ no ar; migration `0024` **aplicada** (2026-07-16) | spec-2/plano-2-feed |
+| 3 | Comunidade | ✅ no ar (2026-07-15) | spec-3/plano-3-comunidade |
+| 4 | Conteúdo/mídia | 📐 **desenhada** (2026-07-16), a construir — **próxima** | [spec-4](spec-4-conteudo.md)/[plano-4](plano-4-conteudo.md) |
+| 5 | Fórum | 🔜 a desenhar | — |
+
+**Próximo passo:** executar `plano-4-conteudo.md` via subagent-driven-development
+(Task 1: `src/lib/media.ts`).
+
 ## Regras do programa (Global Constraints — valem para TODAS as frentes)
 
 - **Custo zero:** sem dependência npm nova. Reconstruir cada modelo 21st.dev com

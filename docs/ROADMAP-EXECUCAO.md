@@ -7,6 +7,10 @@
 > eu preparo e faço o hand-off).
 >
 > Fonte de verdade do andamento: [`ESTADO-ATUAL.md`](ESTADO-ATUAL.md).
+>
+> ⚠️ **HISTÓRICO — não mantido desde ~2026-07-13.** Tudo que este arquivo lista
+> como bloqueado/pendente (A3 E2E Stripe, A4 deploy+cron, frentes 3–6) foi
+> **concluído**. Consulte só o `ESTADO-ATUAL.md`.
 
 ## Ordem de execução
 

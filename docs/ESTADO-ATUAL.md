@@ -8,36 +8,31 @@
 > Ordem de leitura ao retomar: **este arquivo → `CLAUDE.md` → o `README.md` da
 > frente ativa → o código fonte-de-verdade.**
 
-_Última atualização: 2026-07-15 (Design v2 — programa de 5 frentes: **Frentes 1
-(Moldura), 2 (Feed) e 3 (Comunidade) concluídas/revisadas**; Frentes 4–5 a
-desenhar; migration `0024` ainda pendente. Frente 3 na master, aguardando push)_
+_Última atualização: 2026-07-16 (Design v2: **Frentes 1–3 no ar**; **Frente 4
+desenhada** (spec+plano); migration **`0024` APLICADA pelo Claude via navegador**;
+auditoria do ecossistema + arquitetura feita e docs curados)_
 
 ---
 
 ## ⏭️ PRÓXIMA AÇÃO (leia isto primeiro ao retomar)
 
 **Estado agora:** site **no ar** em `www.matrizcentral.com.br` (Vercel, auto-deploy
-na `master`). **Frente 3 (Comunidade) PUSHADA** (`origin/master` em `1586c2e`,
-deploy disparado). `git` limpo e sincronizado. `npx tsc --noEmit` 0 ·
-`npm run test` **210 testes** verdes · `next lint` sem erros. Frente ativa:
-**programa "design v2"** (17 modelos 21st.dev, 5 frentes) — Frentes 1 (Moldura),
-2 (Feed) e 3 (Comunidade) **concluídas/revisadas/pushadas**; Frentes 4–5
-**a desenhar**.
+na `master`). Design v2 Frentes 1–3 **no ar**; **migration `0024` APLICADA**
+(2026-07-16, pelo Claude via navegador — publicar post no feed funciona).
+`npx tsc --noEmit` 0 · `npm run test` **210 testes** verdes · `next lint` sem
+erros. Frente ativa: **design v2 Frente 4 (Conteúdo/mídia)** — **desenhada**
+(spec-4-conteudo + plano-4-conteudo), pronta pra construir.
 
 **Faça, nesta ordem:**
-1. **Pendência do usuário (lembrar/confirmar):** aplicar a migration
-   **`0024_feed_posts`** no Supabase (SQL Editor — o SQL está em
-   `supabase/migrations/0024_feed_posts.sql` e no `docs/frentes/design-v2/spec-2-feed.md`).
-   É da **Frente 2**; o feed funciona sem ela, só **publicar post** falha. A
-   Frente 3 **não** depende dela (lê `xp_events`/`users.display_name`, já no banco).
-2. **Verificação visual da Frente 3** (logado, em produção após o deploy):
-   `/feed` → `RightSidebar` deve mostrar "Comunidade" (atividades swipeable,
-   gated a Advanced) + "Ranking da temporada" (só logados). Anônimo **não** vê
-   o bloco de ranking.
-3. **Desenhar + construir as Frentes 4 (conteúdo/mídia: players+artigo+jornada+
-   share) e 5 (fórum: pergunta+respostas aninhadas)** — escrever `spec-N.md` +
-   `plano-N.md` antes de construir. Programa e modelo de dados em
-   [`docs/frentes/design-v2/README.md`](frentes/design-v2/README.md).
+1. **Construir a Frente 4** via `subagent-driven-development`: plano em
+   [`docs/frentes/design-v2/plano-4-conteudo.md`](frentes/design-v2/plano-4-conteudo.md)
+   — 6 tasks, começar pela **Task 1** (`src/lib/media.ts` puro + refactor
+   `VideoThumb`). Commit por item; revisão final opus; deploy.
+2. **Aguardando o usuário:** revisão de design da **`RightSidebar`** (ele está
+   anotando e vai enviar) — aplicar quando chegar, item a item.
+3. **Depois:** desenhar + construir a **Frente 5 (fórum: pergunta + respostas
+   aninhadas — `forum_replies.parent_reply_id`)**; verificação visual da Frente 3
+   em produção (ranking/atividades logado) quando conveniente.
 
 **Como trabalhar aqui (harness):** commit por item, gate `tsc` 0 + `npm run test` +
 `next lint` sem erros antes de cada commit; custo zero (sem dep npm nova); área
@@ -164,9 +159,10 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
   **Próxima ação:** aplicar migrations 0022/0023 no remoto → E2E (compra teste →
   auto-login → `/feed` → diagnóstico grava perfil). Depois: **SP2** (gamificação
   por sessão + aposentar `/dashboard/[token]`).
-- **Pendências de ambiente (hand-off):** aplicar migrations **0022** e **0023**
-  no Supabase remoto (SQL Editor); repor `BREVO_API_KEY` válido no Vercel;
-  verificação visual gated (`/feed` strip Advanced, `/forum` como assinante).
+- **Pendências de ambiente:** ✅ migrations **0022/0023 aplicadas** (SQL Editor;
+  banco em dia até a **0024**, ver `CLAUDE.md`). Ainda abertas: repor
+  `BREVO_API_KEY` válida no Vercel (401 no E2E de 2026-07-13); verificação
+  visual gated (`/feed` strip Advanced, `/forum` como assinante).
 - **Follow-ups SP2 (do review final):** aposentar o fluxo token (`/api/quiz`
   triagem + `/dashboard/[token]`) — hoje um comprador que force a URL antiga
   poderia ganhar XP de triagem em dois lugares (sem dedup entre token e sessão);
@@ -228,10 +224,10 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
     (`buildFeedTimeline` + IntersectionObserver + composer), rail galeria
     (`RailGallery` wheel→horizontal), `PostCard`+`relativeTime`, `VideoThumb`
     (play inline YouTube), `ExpandableContentCard` (transição feed→conteúdo).
-    3 minors corrigidos (commit `7bc003c`). **⚠️ HAND-OFF: migration
-    `0024_feed_posts` PENDENTE no remoto** (MCP sem permissão; SPA Supabase não
-    renderiza em aba bg). Aplicar via SQL Editor — SQL em `plano-2-feed.md`/spec.
-    Até aplicar, o feed funciona; só *publicar post* falha.
+    3 minors corrigidos (commit `7bc003c`). ✅ Migration `0024_feed_posts`
+    **APLICADA no remoto (2026-07-16, pelo Claude via navegador/SQL Editor** —
+    injeção Monaco, método documentado no `CLAUDE.md`; verificada:
+    `feed_posts` existe com RLS ativo). Publicar post funciona.
   - **Frente 3 (Comunidade) — CONCLUÍDA e revisada (Ready to merge), na master,
     aguardando push (2026-07-15):** via `subagent-driven-development` (3 tasks +
     fix da revisão final, `tsc` 0 / **210 testes** / lint limpo). Entregue:
@@ -245,10 +241,18 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
     logados) e `feed/page.tsx`. **Sem migration nova.** Revisão final (opus):
     1 Important corrigido (ranking escondido p/ anônimo — commit `76c15ea`);
     7 Minors deferidos (nenhum bloqueia). Commits `c27d78f`..`76c15ea`.
-  - **Frentes 4 (conteúdo/mídia: players+artigo+jornada+share) e 5 (fórum:
-    pergunta+respostas aninhadas) — a desenhar (spec+plano) e construir.**
-  - **Próxima ação:** aplicar migration `0024` (Frente 2, pendência do usuário);
-    verificar Frente 3 visualmente em produção; desenhar+construir Frentes 4 e 5.
+  - **Frente 4 (Conteúdo/mídia) — DESENHADA (2026-07-16), a construir:**
+    spec em `spec-4-conteudo.md`, plano em `plano-4-conteudo.md` (6 tasks):
+    `media.ts` puro (parsing YouTube/Spotify, DRY c/ `VideoThumb`) →
+    `markdown.ts` puro (blocos+ids; corrige `####`/tabelas dos relatórios) →
+    `VideoPlayer`+`MusicPlayerCard` na página de conteúdo → `ArticleToc`
+    (ilha dinâmica, relatórios+blog) → `JornadaToc` (dashboard) → `ShareLinks`
+    (WhatsApp/X/LinkedIn/copiar; **invariante: nunca compartilhar URL com
+    token**). Sem migration; sem dep nova.
+  - **Frente 5 (fórum: pergunta+respostas aninhadas) — a desenhar (spec+plano)
+    e construir.**
+  - **Próxima ação:** construir a Frente 4 (Task 1: `media.ts`); aplicar a
+    revisão de design da RightSidebar quando o usuário enviar; depois Frente 5.
 
 ## 🌿 Estado do git
 
@@ -271,15 +275,20 @@ Ordem escolhida pelo usuário: **receita primeiro**.
 |---|--------|--------|--------|
 | 0 | Auditoria + Hardening dos 4 críticos | ✅ concluída | [hardening-criticos](frentes/hardening-criticos/README.md) |
 | 1 | **Login real** (fundação de identidade) | ✅ **concluída** (implementada, revisada, migrations aplicadas, E2E validado ao vivo) | [login-real](frentes/login-real/README.md) |
-| 2 | Assinaturas (Regular/Advanced) + e-mails de ciclo/CRM | 🔄 código completo+revisado (Planos 1 e 2; falta E2E Stripe/deploy) | [assinaturas](frentes/assinaturas/README.md) |
-| 3 | Feed central (rede social de IA) | 🔄 código completo+revisado (falta visual) | [feed](frentes/feed/README.md) |
-| 4 | Fórum (portal de tópicos) | 🔄 código completo+revisado (falta 0020+visual) | [forum](frentes/forum/README.md) |
+| 2 | Assinaturas (Regular/Advanced) + e-mails de ciclo/CRM | ✅ **concluída** (E2E Stripe validado 2026-07-13; deploy+cron vivos; Issue 3 resolvido) | [assinaturas](frentes/assinaturas/README.md) |
+| 3 | Feed central (rede social de IA) | ✅ **concluída** (evoluída depois pelo feed-redesign + design v2) | [feed](frentes/feed/README.md) |
+| 4 | Fórum (portal de tópicos) | ✅ **concluída** (0020 aplicada, `/forum` 200 em produção) | [forum](frentes/forum/README.md) |
 | 5 | Blog + Marketing (calendário/sazonalidade/funil) | ✅ **concluída** (blog público + doc de estratégia) | [blog-marketing](frentes/blog-marketing/README.md) |
 | 6 | Suporte/autoatendimento + CRM/pós-venda | ✅ **concluída** (código+revisão; `/suporte` + doc `crm.md`) | [suporte-crm](frentes/suporte-crm/README.md) |
 
 > As tasks do painel do Claude Code **não sobrevivem ao `/clear`** — esta tabela
 > é a fonte de verdade das frentes. Ao retomar, recrie as tasks a partir daqui
 > se quiser o acompanhamento visual.
+>
+> **Evolução pós-roadmap (não está na tabela acima):** ✅ casa-unificada (SP1) ·
+> ✅ feed-redesign · ✅ feed-stories · 🔄 **design-v2** (frente ativa; progresso
+> por sub-frente em [`frentes/design-v2/README.md`](frentes/design-v2/README.md)
+> e no bloco "Onde paramos AGORA").
 
 ## 🔒 Decisões travadas (não reabrir sem motivo)
 
@@ -322,6 +331,23 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
 
+- **2026-07-16 (Opus 4.8 1M) — 0024 aplicada + Frente 4 desenhada + auditoria:**
+  (1) **Migration `0024_feed_posts` APLICADA pelo Claude** via navegador
+  (dashboard Supabase → SQL Editor; digitação no Monaco não foca → injeção via
+  `monaco.editor.getModels().setValue()` + Run; verificada `relrowsecurity=true`).
+  **Política nova (raiz):** migrations são responsabilidade do Claude, não
+  hand-off do usuário (documentado no `CLAUDE.md` + memória local). (2) **Design
+  v2 Frente 4 (Conteúdo/mídia) DESENHADA:** `spec-4-conteudo.md` +
+  `plano-4-conteudo.md` (6 tasks: media.ts → markdown.ts → players → ArticleToc
+  → JornadaToc → ShareLinks; invariante: nunca compartilhar URL tokenizada).
+  (3) **Auditoria dupla** (continuidade + arquitetura, 3 subagentes): cadeia de
+  retomada sólida (0 links quebrados, 210 testes conferem), mas docs congelavam
+  no fechamento — curados ESTADO/ECOSSISTEMA/COMO-CONTINUAR/READMEs (0024,
+  Frente 3, tabela mestre, banners de encerramento). Arquitetura: achados
+  Critical = `auth-session.ts` e `entitlement-access.ts` sem teste; top recs =
+  testes nesses 2 + `resolveTokenRow()` DRY + preparos p/ Frentes 4-5 (media
+  union type — já incorporado no plano-4). Pendências novas registradas:
+  BREVO_API_KEY inválida no Vercel; revisão RightSidebar a chegar do usuário.
 - **2026-07-15 (Opus 4.8 1M) — Design v2 Frente 3 (Comunidade) implementada:**
   retomada "continue de onde paramos". Via `subagent-driven-development` (3 tasks,
   cada uma implementer sonnet + task-reviewer sonnet; revisão final whole-branch

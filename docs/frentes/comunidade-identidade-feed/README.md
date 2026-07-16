@@ -1,6 +1,9 @@
 # Comunidade: Identidade + Feed Central + Fórum
 
-**Status:** 🔜 Planejada (aguardando início numa sessão dedicada, modelo Opus)
+**Status:** ✅ **Superada/absorvida** — o escopo desta frente foi entregue por
+[`login-real`](../login-real/README.md) (identidade), [`feed`](../feed/README.md)
+(feed central) e [`forum`](../forum/README.md) (fórum), todas concluídas.
+Documento mantido só como histórico das decisões de 08/07/2026.
 
 **Objetivo:** Construir a plataforma de comunidade da Matriz Central — um feed central no modelo de mídia/rede social especializada em IA, e um portal de fórum onde assinantes trocam insights organizados por tópicos que eles mesmos podem criar. Depende de um pré-requisito técnico que hoje não existe: identidade persistente de usuário (login real), já que o acesso atual é só por token temporário.
 

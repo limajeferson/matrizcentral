@@ -9,16 +9,17 @@
 - Cada fato tem **um lugar canônico** (indicado abaixo). Ao precisar de um detalhe, **confirme no arquivo linkado** em vez de supor — isso evita alucinação.
 - Ordem recomendada num início do zero: [`ESTADO-ATUAL.md`](ESTADO-ATUAL.md) → este hub → `CLAUDE.md` → o README da frente ativa → o código fonte-de-verdade.
 
-## 📊 Status atual (2026-07-15)
+## 📊 Status atual (2026-07-16)
 
-- **No ar (produção):** **`www.matrizcentral.com.br`** (Vercel, auto-deploy a cada push na `master`; último deploy READY). Muito além da landing: **todas as 6 frentes do roadmap** (login real, assinaturas, feed, fórum, blog/marketing, suporte/CRM), **SP1** (casa unificada + diagnóstico por sessão), o **redesign do feed** (baseline + barra de histórias) e o **programa design v2** (Frentes 1 Moldura e 2 Feed) estão entregues e deployados.
+- **No ar (produção):** **`www.matrizcentral.com.br`** (Vercel, auto-deploy a cada push na `master`; último deploy READY). Muito além da landing: **todas as 6 frentes do roadmap** (login real, assinaturas, feed, fórum, blog/marketing, suporte/CRM), **SP1** (casa unificada + diagnóstico por sessão), o **redesign do feed** (baseline + barra de histórias) e o **programa design v2** (Frentes 1 Moldura, 2 Feed e 3 Comunidade) estão entregues e deployados.
 - **Repo:** https://github.com/limajeferson/matrizcentral · branch `master` · HEAD sincronizado com `origin/master`.
-- **Saúde:** `npx tsc --noEmit` 0 · `npm run test` **207 testes** verdes · `npx next lint` sem erros. (`npm run build` falha só ao coletar `/api/checkout` por falta de `STRIPE_SECRET_KEY` no shell — pré-existente, ver `CLAUDE.md`.)
+- **Saúde:** `npx tsc --noEmit` 0 · `npm run test` **210 testes** verdes · `npx next lint` sem erros. (`npm run build` falha só ao coletar `/api/checkout` por falta de `STRIPE_SECRET_KEY` no shell — pré-existente, ver `CLAUDE.md`.)
 - **Fonte de verdade do andamento e da próxima ação:** [`ESTADO-ATUAL.md`](ESTADO-ATUAL.md).
 - **Pendências ativas (detalhe em `ESTADO-ATUAL.md`):**
-  1. **Aplicar a migration `0024_feed_posts`** no Supabase remoto (posts do feed não persistem até lá; MCP sem permissão → SQL Editor).
-  2. **Design v2 Frentes 3–5** (comunidade, conteúdo/mídia, fórum) — 3 desenhada, a construir.
+  1. **Design v2 Frentes 4–5** (conteúdo/mídia, fórum) — 4 desenhada (spec+plano), a construir; 5 a desenhar.
+  2. Repor **`BREVO_API_KEY`** válida no Vercel (e-mails pós-compra não saem; achado do E2E de 2026-07-13).
   3. Stripe em modo **teste** (verificação de empresa pendente); go-live financeiro depende disso.
+  4. Revisão de design da `RightSidebar` — o usuário está anotando e vai enviar.
 
 ## 🗺️ Mapa neural (leia quando…)
 
@@ -56,7 +57,7 @@
 
 **Deploy**
 - [`.env.example`](../.env.example) — env vars necessárias.
-- [`supabase/migrations/`](../supabase/migrations/) — migrations (0001→**0024**). **Aplicadas via SQL Editor** do Supabase (o MCP não tem permissão nesta conta; `supabase db push` tem histórico divergente). Pendente de aplicar: **`0024_feed_posts`**.
+- [`supabase/migrations/`](../supabase/migrations/) — migrations (0001→**0024**, **todas aplicadas no remoto**). **O Claude aplica sozinho** via navegador (SQL Editor; método no `CLAUDE.md` — injeção Monaco) — não é hand-off pro usuário. O MCP não tem permissão nesta conta; `supabase db push` tem histórico divergente.
 - Auto-deploy: push na `master` → Vercel builda e publica em `www.matrizcentral.com.br`. O ESLint roda no `npm run build` do Vercel e **barra o deploy** se houver erro de lint.
 
 ## 🔀 Frentes já trabalhadas
@@ -98,17 +99,18 @@ Cada frente vive em `docs/frentes/<slug>/` com `spec.md` (o quê/porquê), `plan
 - ✅ [feed-stories](frentes/feed-stories/README.md) — barra de histórias (stories) derivada do conteúdo.
 - 🔄 [**design-v2**](frentes/design-v2/README.md) — **programa de 5 frentes** a partir de 17 modelos 21st.dev (visual + backend, commit por item):
   - ✅ Frente 1 (Moldura: header + sidebar + rodapé) — deployada, verificada ao vivo.
-  - ✅ Frente 2 (Feed: timeline infinita + posts + cards + players + transição) — deployada, revisada. **Migration `0024` a aplicar.**
-  - 📐 Frente 3 (Comunidade: atividades + ranking mensal) — desenhada (spec+plano), a construir.
-  - 🔜 Frente 4 (Conteúdo/mídia: players + artigo + jornada + share) · Frente 5 (Fórum: pergunta + respostas aninhadas) — a desenhar/construir.
+  - ✅ Frente 2 (Feed: timeline infinita + posts + cards + players + transição) — deployada, revisada. Migration `0024` **aplicada** (2026-07-16).
+  - ✅ Frente 3 (Comunidade: atividades swipeable + ranking mensal) — deployada, revisada (2026-07-15).
+  - 📐 Frente 4 (Conteúdo/mídia: players + artigo + jornada + share) — **desenhada** (spec-4/plano-4), a construir.
+  - 🔜 Frente 5 (Fórum: pergunta + respostas aninhadas) — a desenhar/construir.
 
 ## ➡️ Próximos passos (estado atual)
 
 O site **já está no ar** (`www.matrizcentral.com.br`, auto-deploy). Os próximos passos são de evolução, não de "colocar no ar":
 
-1. **Aplicar `0024_feed_posts`** no Supabase (SQL Editor) — desbloqueia publicar posts no feed.
-2. **Construir design v2 Frentes 3 → 4 → 5** (specs/planos em `docs/frentes/design-v2/`; começar pela Frente 3, Task 1 `leaderboard.ts`).
-3. **Go-live financeiro:** sair do modo teste da Stripe (verificação de empresa pendente).
+1. **Construir design v2 Frente 4** (plano em `docs/frentes/design-v2/plano-4-conteudo.md`, Task 1 `media.ts`); depois **desenhar+construir a Frente 5**.
+2. **Aplicar a revisão de design da `RightSidebar`** quando o usuário enviar as anotações.
+3. **Go-live financeiro:** sair do modo teste da Stripe (verificação de empresa pendente) + repor `BREVO_API_KEY` no Vercel.
 
 ---
 
