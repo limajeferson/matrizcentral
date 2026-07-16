@@ -8,9 +8,9 @@
 > Ordem de leitura ao retomar: **este arquivo → `CLAUDE.md` → o `README.md` da
 > frente ativa → o código fonte-de-verdade.**
 
-_Última atualização: 2026-07-16 (Design v2: **Frentes 1–3 no ar**; **Frente 4
-desenhada** (spec+plano); migration **`0024` APLICADA pelo Claude via navegador**;
-auditoria do ecossistema + arquitetura feita e docs curados)_
+_Última atualização: 2026-07-16 (Design v2: **Frentes 1–4 no ar** — Frente 4
+Conteúdo/mídia concluída, revisada Ready-to-merge e deployada, 229 testes; +
+design pass do feed a pedido do usuário. Falta só a **Frente 5 (Fórum)**)_
 
 ---
 
@@ -24,25 +24,21 @@ erros. Frente ativa: **design v2 Frente 4 (Conteúdo/mídia)** — **desenhada**
 (spec-4-conteudo + plano-4-conteudo), pronta pra construir.
 
 **Faça, nesta ordem:**
-1. **Retomar a Frente 4** (foi pausada no meio para um _design pass_ do feed —
-   ver abaixo). Estado: **Tasks 1–3 concluídas e revisadas** (media.ts,
-   markdown.ts+Markdown v2, players); **Task 4 (ArticleToc) implementada mas com
-   REVISÃO PENDENTE** (commit `f5e2228`); faltam **Task 5 (JornadaToc)** e
-   **Task 6 (ShareLinks)**. Plano em
-   [`plano-4-conteudo.md`](frentes/design-v2/plano-4-conteudo.md). Rodar o task
-   reviewer da Task 4, depois construir 5 e 6, revisão final opus, deploy.
-2. **DESIGN PASS do feed — CONCLUÍDO e no ar** (commit `25d5566`): a pedido do
-   usuário, os cards do feed ganharam identidade real por tipo (cor/ícone/pôster/
-   hover via `content-accent.ts`), metadados (duração·XP) e CTA; a esteira "Comece
-   por aqui" agora rola calma e controlada (60px/notch). **Aprendizado gravado:**
-   `tailwind.config` `content` precisou incluir `./src/lib` (classes em helpers de
-   lib não eram geradas). **Pendente do usuário:** conferir ao vivo o _feel_ da
-   rolagem da esteira e a animação de abrir/fechar dos cards (a automação roda em
-   aba de fundo e **não** consegue observar scroll/framer animados — só estático).
-3. **Aguardando o usuário:** revisão de design da **`RightSidebar`** (ele está
-   anotando e vai enviar).
-4. **Depois:** desenhar + construir a **Frente 5 (fórum: pergunta + respostas
-   aninhadas — `forum_replies.parent_reply_id`)**.
+1. **Desenhar + construir a Frente 5 (Fórum)** — última do programa design v2:
+   pergunta estilo stack-overflow + respostas aninhadas estilo reddit
+   (`forum_replies.parent_reply_id` nullable + render recursivo). Escrever
+   `spec-5.md`+`plano-5.md`, depois `subagent-driven-development`. Migração
+   aditiva (respostas atuais viram raiz).
+2. **Aguardando o usuário:** revisão de design da **`RightSidebar`** (ele está
+   anotando e vai enviar); conferir ao vivo o _feel_ da rolagem da esteira e a
+   transição dos cards (a automação roda em aba de fundo e não observa
+   scroll/framer animados — só estático).
+3. **Frente própria a considerar — dark-aware do marketing/blog:** achado durante
+   a Frente 4 — `/blog/[slug]`, `/oferta`, `/sobre`, `/legal/*` e o `Markdown.tsx`
+   usam cores claras hardcoded (`text-zinc-900`, `bg-violet-50`) mas rodam sob
+   `<html class="dark">` por padrão → títulos quase pretos somem no fundo dark.
+   Precisa de uma frente pra tornar o marketing/blog dark-aware (ou forçar `light`
+   nessas rotas).
 
 **Como trabalhar aqui (harness):** commit por item, gate `tsc` 0 + `npm run test` +
 `next lint` sem erros antes de cada commit; custo zero (sem dep npm nova); área
@@ -341,6 +337,23 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
 
+- **2026-07-16 (Opus 4.8 1M) — Design v2 Frente 4 (Conteúdo/mídia) concluída +
+  design pass do feed:** via `subagent-driven-development` (6 tasks + revisão por
+  task + revisão final opus whole-branch = **Ready to merge**, 229 testes).
+  Entregue: `media.ts` (parsing YouTube/Spotify, DRY com VideoThumb, +shorts),
+  `markdown.ts`+Markdown v2 (corrige `####`/tabelas dos relatórios), `VideoPlayer`+
+  `MusicPlayerCard` sobre embed, `ArticleToc` (ilha dinâmica em relatórios+blog),
+  `JornadaToc` (sumário da jornada no dashboard), `ShareLinks` (WhatsApp/X/
+  LinkedIn/copiar; **invariante: nunca compartilhar URL com token** — verificado
+  ponta a ponta). Sem migration, sem dep nova. Commits `bfa2b64`..`2c44b90`.
+  **No meio, a pedido do usuário, um design pass do feed** (commit `25d5566`):
+  identidade por tipo (`content-accent.ts`: cor/ícone/pôster/hover), metadados
+  duração·XP, RailCard/ExpandableContentCard redesenhados, esteira com rolagem
+  direta calma (60px/notch), dialog trocou morph layoutId frágil por scale+fade.
+  Fix de raiz: `tailwind.config content` não incluía `./src/lib` (pôsteres saíam
+  pretos). **Achado pré-existente (nova frente):** marketing/blog não é
+  dark-aware (texto claro hardcoded sob dark default). Ledger em
+  `.superpowers/sdd/progress.md`.
 - **2026-07-16 (Fable 5) — Auditoria de fidelidade dos 17 modelos + 4 bugs
   reais corrigidos:** a partir do report do usuário (rail "Comece por aqui" não
   deslizava com shift+wheel), diagnóstico ao vivo + 2 subagentes auditando os

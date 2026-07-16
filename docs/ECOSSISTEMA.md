@@ -101,8 +101,8 @@ Cada frente vive em `docs/frentes/<slug>/` com `spec.md` (o quê/porquê), `plan
   - ✅ Frente 1 (Moldura: header + sidebar + rodapé) — deployada, verificada ao vivo.
   - ✅ Frente 2 (Feed: timeline infinita + posts + cards + players + transição) — deployada, revisada. Migration `0024` **aplicada** (2026-07-16).
   - ✅ Frente 3 (Comunidade: atividades swipeable + ranking mensal) — deployada, revisada (2026-07-15).
-  - 📐 Frente 4 (Conteúdo/mídia: players + artigo + jornada + share) — **desenhada** (spec-4/plano-4), a construir.
-  - 🔜 Frente 5 (Fórum: pergunta + respostas aninhadas) — a desenhar/construir.
+  - ✅ Frente 4 (Conteúdo/mídia: players + artigo + jornada + share) — deployada, revisada Ready-to-merge (2026-07-16) + design pass do feed.
+  - 🔜 Frente 5 (Fórum: pergunta + respostas aninhadas) — a desenhar/construir (última do programa).
 
 ## ➡️ Próximos passos (estado atual)
 

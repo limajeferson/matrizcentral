@@ -12,11 +12,12 @@
 | 1 | Moldura | ✅ no ar (2026-07-15) | spec-1/plano-1-moldura |
 | 2 | Feed | ✅ no ar; migration `0024` **aplicada** (2026-07-16) | spec-2/plano-2-feed |
 | 3 | Comunidade | ✅ no ar (2026-07-15) | spec-3/plano-3-comunidade |
-| 4 | Conteúdo/mídia | 📐 **desenhada** (2026-07-16), a construir — **próxima** | [spec-4](spec-4-conteudo.md)/[plano-4](plano-4-conteudo.md) |
-| 5 | Fórum | 🔜 a desenhar | — |
+| 4 | Conteúdo/mídia | ✅ no ar (2026-07-16), revisada Ready-to-merge | [spec-4](spec-4-conteudo.md)/[plano-4](plano-4-conteudo.md) |
+| 5 | Fórum | 🔜 a desenhar — **próxima** | — |
 
-**Próximo passo:** executar `plano-4-conteudo.md` via subagent-driven-development
-(Task 1: `src/lib/media.ts`).
+**Próximo passo:** desenhar a Frente 5 (Fórum: pergunta stack-overflow +
+respostas aninhadas reddit; `forum_replies.parent_reply_id`) — `spec-5`+`plano-5`,
+depois subagent-driven-development. É a última do programa.
 
 ## Regras do programa (Global Constraints — valem para TODAS as frentes)
 
