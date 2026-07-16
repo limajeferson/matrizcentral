@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { parseMediaSource, withAutoplay } from "@/lib/media";
 
 export type VideoThumbProps = {
   title: string;
@@ -8,11 +9,6 @@ export type VideoThumbProps = {
   embedUrl: string | null;
   durationMinutes?: number;
 };
-
-function youtubeId(url: string): string | null {
-  const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|watch\?v=))([\w-]{11})/);
-  return m ? m[1] : null;
-}
 
 /**
  * Thumbnail de vídeo (modelo video-thumbnail-player): capa + botão play central +
@@ -22,9 +18,9 @@ function youtubeId(url: string): string | null {
 export function VideoThumb({ title, embedUrl, durationMinutes }: VideoThumbProps) {
   const [playing, setPlaying] = useState(false);
   const emBreve = !embedUrl;
-  const ytId = embedUrl ? youtubeId(embedUrl) : null;
-  const thumb = ytId ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` : null;
-  const src = embedUrl ? `${embedUrl}${embedUrl.includes("?") ? "&" : "?"}autoplay=1` : "";
+  const source = embedUrl ? parseMediaSource(embedUrl) : null;
+  const thumb = source?.kind === "youtube" ? source.thumbnailUrl : null;
+  const src = embedUrl ? withAutoplay(embedUrl) : "";
 
   return (
     <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
