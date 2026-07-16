@@ -331,6 +331,25 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
 
+- **2026-07-16 (Fable 5) — Auditoria de fidelidade dos 17 modelos + 4 bugs
+  reais corrigidos:** a partir do report do usuário (rail "Comece por aqui" não
+  deslizava com shift+wheel), diagnóstico ao vivo + 2 subagentes auditando os
+  10 itens construídos contra os modelos 21st.dev. **Corrigido e pushado**
+  (`7ea7c55`, `05c10bd`): (1) rail: `snap-mandatory` revertia `scrollLeft +=
+  deltaY` (tick < meio card) — agora desliza 1 card/gesto com `scrollBy` smooth
+  + guards com tolerância; (2) **ExpandableContentCard: véu `z-[95]` ficava
+  montado pra sempre** (fragment como filho do AnimatePresence) e a página
+  inteira ficava morta pra cliques após abrir/fechar um card — reestruturado p/
+  motion child único keyed, validado ao vivo; (3) FeedTimeline: página nova
+  concatenada sem re-ordenar quebrava a recência — `mergeFeedPage()` puro +
+  testes (212 total); (4) âncora `#conteudos` cortada sob o header sticky —
+  `scroll-mt-24`. Plano-4 já cobre YouTube Shorts no regex (gap dormente do
+  VideoThumb). **Backlog rastreado da auditoria (não bloqueia):** focus-trap
+  real no ExpandableContentCard (Tab abre 2 overlays); cursor de paginação sem
+  tiebreak `(created_at,id)`; erro de rede no loadMore vira "fim do feed"
+  silencioso; banda 768–1023px mostra busca+hambúrguer juntos; hydration risk
+  de `relativeTime(new Date())` em SSR; indicador ativo da sidebar é estático
+  (trade-off documentado, layoutId colidia nos 2 mounts).
 - **2026-07-16 (Opus 4.8 1M) — 0024 aplicada + Frente 4 desenhada + auditoria:**
   (1) **Migration `0024_feed_posts` APLICADA pelo Claude** via navegador
   (dashboard Supabase → SQL Editor; digitação no Monaco não foca → injeção via
