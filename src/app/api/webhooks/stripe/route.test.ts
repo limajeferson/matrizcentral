@@ -28,6 +28,11 @@ function buildSupabaseMock(
     tokens: [],
     xp_events: [],
   };
+  const updatedRows: Record<string, { values: Record<string, unknown>; eq: [string, unknown] }[]> = {
+    purchases: [],
+    tokens: [],
+    entitlements: [],
+  };
 
   const from = (table: string) => {
     if (table === "users") {
@@ -57,6 +62,12 @@ function buildSupabaseMock(
             },
           }),
         }),
+        update: (values: Record<string, unknown>) => ({
+          eq: async (col: string, val: unknown) => {
+            updatedRows.purchases.push({ values, eq: [col, val] });
+            return { data: null, error: null };
+          },
+        }),
       };
     }
     if (table === "tokens") {
@@ -68,6 +79,25 @@ function buildSupabaseMock(
           insertedRows.tokens.push(row);
           return { data: null, error: tokenInsertError };
         },
+        update: (values: Record<string, unknown>) => ({
+          eq: async (col: string, val: unknown) => {
+            updatedRows.tokens.push({ values, eq: [col, val] });
+            return { data: null, error: null };
+          },
+        }),
+      };
+    }
+    if (table === "entitlements") {
+      return {
+        select: () => ({
+          eq: () => ({ maybeSingle: async () => ({ data: null, error: null }) }),
+        }),
+        update: (values: Record<string, unknown>) => ({
+          eq: async (col: string, val: unknown) => {
+            updatedRows.entitlements.push({ values, eq: [col, val] });
+            return { data: null, error: null };
+          },
+        }),
       };
     }
     if (table === "xp_events") {
@@ -81,7 +111,7 @@ function buildSupabaseMock(
     return { insert: async () => ({ data: null, error: null }) };
   };
 
-  return { from, insertedRows };
+  return { from, insertedRows, updatedRows };
 }
 
 let mockSupabase: ReturnType<typeof buildSupabaseMock>;
@@ -196,5 +226,72 @@ describe("POST /api/webhooks/stripe", () => {
     const { POST } = await import("./route");
     const response = await POST(buildRequest());
     expect(response.status).toBe(400);
+  });
+
+  it("charge.refunded: revoga acesso (purchase.status, token.valid_until, entitlement.expires_at)", async () => {
+    mockSupabase = buildSupabaseMock({ existingPurchase: { id: "purchase-existente" } });
+    mockConstructEvent.mockReturnValue({
+      type: "charge.refunded",
+      data: { object: { id: "ch_123", payment_intent: "pi_123" } },
+    });
+
+    const { POST } = await import("./route");
+    const response = await POST(buildRequest());
+    const json = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(json.received).toBe(true);
+    expect(mockSupabase.updatedRows.purchases).toEqual([
+      { values: { status: "refunded" }, eq: ["id", "purchase-existente"] },
+    ]);
+    expect(mockSupabase.updatedRows.tokens).toHaveLength(1);
+    expect(mockSupabase.updatedRows.tokens[0].values).toHaveProperty("valid_until");
+    expect(mockSupabase.updatedRows.tokens[0].eq).toEqual(["purchase_id", "purchase-existente"]);
+    expect(mockSupabase.updatedRows.entitlements).toHaveLength(1);
+    expect(mockSupabase.updatedRows.entitlements[0].values).toHaveProperty("expires_at");
+    expect(mockSupabase.updatedRows.entitlements[0].eq).toEqual(["stripe_payment_id", "pi_123"]);
+  });
+
+  it("charge.dispute.created: revoga acesso com status disputed", async () => {
+    mockSupabase = buildSupabaseMock({ existingPurchase: { id: "purchase-existente" } });
+    mockConstructEvent.mockReturnValue({
+      type: "charge.dispute.created",
+      data: { object: { id: "ch_456", payment_intent: "pi_456" } },
+    });
+
+    const { POST } = await import("./route");
+    const response = await POST(buildRequest());
+
+    expect(response.status).toBe(200);
+    expect(mockSupabase.updatedRows.purchases).toEqual([
+      { values: { status: "disputed" }, eq: ["id", "purchase-existente"] },
+    ]);
+  });
+
+  it("charge.refunded para compra desconhecida: no-op idempotente", async () => {
+    mockSupabase = buildSupabaseMock({ existingPurchase: null });
+    mockConstructEvent.mockReturnValue({
+      type: "charge.refunded",
+      data: { object: { id: "ch_789", payment_intent: "pi_789" } },
+    });
+
+    const { POST } = await import("./route");
+    const response = await POST(buildRequest());
+
+    expect(response.status).toBe(200);
+    expect(mockSupabase.updatedRows.purchases).toHaveLength(0);
+    expect(mockSupabase.updatedRows.tokens).toHaveLength(0);
+    expect(mockSupabase.updatedRows.entitlements).toHaveLength(0);
+  });
+
+  it("evento ignorado (payment_intent.succeeded) → received sem processar", async () => {
+    mockConstructEvent.mockReturnValue({ type: "payment_intent.succeeded", data: { object: {} } });
+
+    const { POST } = await import("./route");
+    const response = await POST(buildRequest());
+    const json = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(json.received).toBe(true);
   });
 });

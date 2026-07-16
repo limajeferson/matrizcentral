@@ -1,9 +1,38 @@
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { stripe } from "@/lib/stripe";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { generateToken, tokenAccessExpiry, refundWindowExpiry } from "@/lib/tokens";
 import { sendTokenEmail, sendPassPurchaseEmail } from "@/lib/email";
+import { classifyStripeEvent } from "@/lib/stripe-events";
+
+/**
+ * Revoga acesso após reembolso/disputa: expira o token (`tokens.valid_until`)
+ * e o entitlement (`entitlements.expires_at`) — fontes que TODO gate de acesso
+ * consulta (`isTokenExpired`, `resolveAccess`) — e marca `purchases.status`
+ * para o registro. Casamento por `stripe_payment_id`: no ramo `completed`
+ * abaixo gravamos `session.payment_intent`, então aqui casamos pelo mesmo
+ * identificador, `charge.payment_intent` (não `charge.id`).
+ * Idempotente: se a compra não é conhecida (ou já foi revogada), é no-op —
+ * reentregas da Stripe convergem sem efeito colateral.
+ */
+async function revokePurchase(
+  supabase: SupabaseClient,
+  stripeId: string,
+  status: "refunded" | "disputed"
+): Promise<void> {
+  const nowIso = new Date().toISOString();
+  const { data: purchase } = await supabase
+    .from("purchases")
+    .select("id")
+    .eq("stripe_payment_id", stripeId)
+    .maybeSingle();
+  if (!purchase) return; // compra desconhecida → no-op idempotente
+  await supabase.from("purchases").update({ status }).eq("id", purchase.id);
+  await supabase.from("tokens").update({ valid_until: nowIso }).eq("purchase_id", purchase.id);
+  await supabase.from("entitlements").update({ expires_at: nowIso }).eq("stripe_payment_id", stripeId);
+}
 
 export async function POST(req: NextRequest) {
   const signature = req.headers.get("stripe-signature");
@@ -16,7 +45,20 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "assinatura inválida" }, { status: 400 });
   }
 
-  if (event.type !== "checkout.session.completed") {
+  const kind = classifyStripeEvent(event.type);
+
+  if (kind === "ignore") {
+    return NextResponse.json({ received: true });
+  }
+
+  if (kind === "refund" || kind === "dispute") {
+    const charge = event.data.object as Stripe.Charge;
+    const chargePaymentIntent = charge.payment_intent as string | null;
+    if (!chargePaymentIntent) {
+      return NextResponse.json({ error: "evento incompleto" }, { status: 400 });
+    }
+    const supabase = getSupabaseServerClient();
+    await revokePurchase(supabase, chargePaymentIntent, kind === "refund" ? "refunded" : "disputed");
     return NextResponse.json({ received: true });
   }
 
