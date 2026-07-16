@@ -17,26 +17,24 @@ desenhar; migration `0024` ainda pendente. Frente 3 na master, aguardando push)_
 ## ⏭️ PRÓXIMA AÇÃO (leia isto primeiro ao retomar)
 
 **Estado agora:** site **no ar** em `www.matrizcentral.com.br` (Vercel, auto-deploy
-na `master`; último deploy READY). **`master` está 4 commits À FRENTE de
-`origin/master`** (Frente 3 — Comunidade — `c27d78f..76c15ea`, ainda **não
-pushada**). `npx tsc --noEmit` 0 · `npm run test` **210 testes** verdes ·
-`next lint` sem erros. Frente ativa: **programa "design v2"** (17 modelos
-21st.dev, 5 frentes) — Frentes 1 (Moldura), 2 (Feed) e 3 (Comunidade)
-**concluídas/revisadas**; Frentes 4–5 **a desenhar**.
+na `master`). **Frente 3 (Comunidade) PUSHADA** (`origin/master` em `1586c2e`,
+deploy disparado). `git` limpo e sincronizado. `npx tsc --noEmit` 0 ·
+`npm run test` **210 testes** verdes · `next lint` sem erros. Frente ativa:
+**programa "design v2"** (17 modelos 21st.dev, 5 frentes) — Frentes 1 (Moldura),
+2 (Feed) e 3 (Comunidade) **concluídas/revisadas/pushadas**; Frentes 4–5
+**a desenhar**.
 
 **Faça, nesta ordem:**
-1. **Push da Frente 3:** `git push origin master` (4 commits) → dispara o
-   auto-deploy da Vercel. _(Se esta linha ainda estiver aqui, o push não foi
-   feito.)_
-2. **Pendência do usuário (lembrar/confirmar):** aplicar a migration
+1. **Pendência do usuário (lembrar/confirmar):** aplicar a migration
    **`0024_feed_posts`** no Supabase (SQL Editor — o SQL está em
    `supabase/migrations/0024_feed_posts.sql` e no `docs/frentes/design-v2/spec-2-feed.md`).
    É da **Frente 2**; o feed funciona sem ela, só **publicar post** falha. A
    Frente 3 **não** depende dela (lê `xp_events`/`users.display_name`, já no banco).
-3. **Verificação visual da Frente 3** (logado): `/feed` → `RightSidebar` deve
-   mostrar "Comunidade" (atividades swipeable, gated a Advanced) + "Ranking da
-   temporada" (só logados). Anônimo **não** vê o bloco de ranking.
-4. **Desenhar + construir as Frentes 4 (conteúdo/mídia: players+artigo+jornada+
+2. **Verificação visual da Frente 3** (logado, em produção após o deploy):
+   `/feed` → `RightSidebar` deve mostrar "Comunidade" (atividades swipeable,
+   gated a Advanced) + "Ranking da temporada" (só logados). Anônimo **não** vê
+   o bloco de ranking.
+3. **Desenhar + construir as Frentes 4 (conteúdo/mídia: players+artigo+jornada+
    share) e 5 (fórum: pergunta+respostas aninhadas)** — escrever `spec-N.md` +
    `plano-N.md` antes de construir. Programa e modelo de dados em
    [`docs/frentes/design-v2/README.md`](frentes/design-v2/README.md).
@@ -249,17 +247,15 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
     7 Minors deferidos (nenhum bloqueia). Commits `c27d78f`..`76c15ea`.
   - **Frentes 4 (conteúdo/mídia: players+artigo+jornada+share) e 5 (fórum:
     pergunta+respostas aninhadas) — a desenhar (spec+plano) e construir.**
-  - **Próxima ação:** `git push origin master` (Frente 3); aplicar migration
-    `0024` (Frente 2, pendência do usuário); verificar Frente 3 visualmente;
-    desenhar+construir Frentes 4 e 5.
+  - **Próxima ação:** aplicar migration `0024` (Frente 2, pendência do usuário);
+    verificar Frente 3 visualmente em produção; desenhar+construir Frentes 4 e 5.
 
 ## 🌿 Estado do git
 
-- **Branch ativa:** `master`, **4 commits À FRENTE de `origin/master`**
-  (Frente 3 Comunidade `c27d78f..76c15ea` — **push pendente**). Antes do push, o
-  último sincronizado era `f366c4c`. Após `git push origin master`, a Vercel
-  auto-deploya e o outro computador recebe com `git pull origin master`.
-- **Inclui (nesta rodada, a pushar):** design v2 Frente 3 (comunidade:
+- **Branch ativa:** `master`, **sincronizada com `origin/master`** (HEAD
+  `1586c2e`, push feito, deploy Vercel disparado). O outro computador recebe
+  tudo com `git pull origin master`.
+- **Inclui (nesta rodada):** design v2 Frente 3 (comunidade:
   `src/lib/leaderboard.ts`+test + `leaderboard-data.ts` + `RankingList` +
   `SwipeableActivityList` + montagem `RightSidebar`/`feed/page.tsx`). Antes (já
   em `origin`): Frentes 1 (moldura) e 2 (feed, com migration `0024` a aplicar),
