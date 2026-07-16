@@ -18,12 +18,15 @@ atualizado). Fonte de verdade do andamento: [`../ESTADO-ATUAL.md`](../ESTADO-ATU
 | # | Trilha | Dono | Status | Docs |
 |---|--------|------|--------|------|
 | A | Go-live de receita (Stripe live, BREVO no Vercel) | **Usuário** (externo) | 🔄 **BREVO ✓ resolvido e verificado** (delivered em prod 2026-07-16); **Stripe live pendente** (verificação de empresa) | hand-off |
-| B | **Segurança do dinheiro** (reembolso→revoga, XP dedup, rate limit, validações, testes do caminho pago) | Claude | 📐 **spec escrito — em execução (1ª)** | [spec-B](spec-B-seguranca-dinheiro.md) |
-| C | Dark-aware (~22 arquivos claros sob dark default) | Claude | 🔜 a desenhar | — |
-| D | Design v2 Frente 5 (Fórum: respostas aninhadas) | Claude | 🔜 a desenhar | — |
-| E | Conteúdo (texto agora; mídia via NotebookLM→hand-off) | Claude + Usuário | 🔄 contínuo, em paralelo | — |
-| F | UX / a11y / CX polish (+ herdados nunca fechados) | Claude (+ RightSidebar do usuário) | 🔜 a desenhar | — |
-| G | Tech-debt / limpeza (SP2, resolveTokenRow DRY, tiebreak) | Claude | 🔜 a desenhar | — |
+| B | **Segurança do dinheiro** (reembolso→revoga, XP dedup, rate limit, validações, testes do caminho pago) | Claude | 🔄 **em execução (2/6 tasks)** | [spec-B](spec-B-seguranca-dinheiro.md) · [plano-B](plano-B-seguranca-dinheiro.md) |
+| C | Dark-aware (27 arquivos; blog force-light + logado→tokens; glass-card cascateia) | Claude | 📐 spec+plano prontos | [spec-C](spec-C-dark-aware.md) · plano-C |
+| D | Design v2 Frente 5 (Fórum: respostas aninhadas `parent_reply_id`) | Claude | 📐 spec+plano prontos | [spec-D](spec-D-forum.md) · plano-D |
+| E | Conteúdo (texto agora; mídia via NotebookLM→hand-off) | Claude + Usuário | 📐 spec+plano prontos (contínuo, paralelo) | [spec-E](spec-E-conteudo.md) · plano-E |
+| F | UX / a11y / CX polish (+ herdados nunca fechados) | Claude (+ RightSidebar do usuário) | 📐 spec+plano prontos | [spec-F](spec-F-polish.md) · plano-F |
+| G | Tech-debt / limpeza (SP2, resolveTokenRow DRY, tiebreak, dead code) | Claude | 📐 spec+plano prontos | [spec-G](spec-G-techdebt.md) · plano-G |
+
+**Numeração de migrations do programa:** `0025_xp_dedup` (B) · `0026_waitlist_unique`
+(B) · `0027_forum_nested_replies` (D). Aplicadas juntas no SQL Editor antes de pushar.
 | — | 🔍 **Auditoria final** + dogfooding da jornada | Claude | 🔜 ao fim | — |
 
 ## Hand-offs externos (rastreados, não bloqueiam o Claude)
