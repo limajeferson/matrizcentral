@@ -41,3 +41,15 @@ describe("extractHeadings", () => {
     ]);
   });
 });
+
+describe("casos de borda", () => {
+  it("source vazio → []", () => {
+    expect(parseMarkdown("")).toEqual([]);
+    expect(parseMarkdown("\n\n  \n")).toEqual([]);
+  });
+  it("tabela sem linha separadora: 1ª linha vira header, resto vira dados", () => {
+    expect(parseMarkdown("| A | B |\n| x | y |")).toEqual([
+      { kind: "table", header: ["A", "B"], rows: [["x", "y"]] },
+    ]);
+  });
+});
