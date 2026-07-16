@@ -24,15 +24,25 @@ erros. Frente ativa: **design v2 Frente 4 (Conteúdo/mídia)** — **desenhada**
 (spec-4-conteudo + plano-4-conteudo), pronta pra construir.
 
 **Faça, nesta ordem:**
-1. **Construir a Frente 4** via `subagent-driven-development`: plano em
-   [`docs/frentes/design-v2/plano-4-conteudo.md`](frentes/design-v2/plano-4-conteudo.md)
-   — 6 tasks, começar pela **Task 1** (`src/lib/media.ts` puro + refactor
-   `VideoThumb`). Commit por item; revisão final opus; deploy.
-2. **Aguardando o usuário:** revisão de design da **`RightSidebar`** (ele está
-   anotando e vai enviar) — aplicar quando chegar, item a item.
-3. **Depois:** desenhar + construir a **Frente 5 (fórum: pergunta + respostas
-   aninhadas — `forum_replies.parent_reply_id`)**; verificação visual da Frente 3
-   em produção (ranking/atividades logado) quando conveniente.
+1. **Retomar a Frente 4** (foi pausada no meio para um _design pass_ do feed —
+   ver abaixo). Estado: **Tasks 1–3 concluídas e revisadas** (media.ts,
+   markdown.ts+Markdown v2, players); **Task 4 (ArticleToc) implementada mas com
+   REVISÃO PENDENTE** (commit `f5e2228`); faltam **Task 5 (JornadaToc)** e
+   **Task 6 (ShareLinks)**. Plano em
+   [`plano-4-conteudo.md`](frentes/design-v2/plano-4-conteudo.md). Rodar o task
+   reviewer da Task 4, depois construir 5 e 6, revisão final opus, deploy.
+2. **DESIGN PASS do feed — CONCLUÍDO e no ar** (commit `25d5566`): a pedido do
+   usuário, os cards do feed ganharam identidade real por tipo (cor/ícone/pôster/
+   hover via `content-accent.ts`), metadados (duração·XP) e CTA; a esteira "Comece
+   por aqui" agora rola calma e controlada (60px/notch). **Aprendizado gravado:**
+   `tailwind.config` `content` precisou incluir `./src/lib` (classes em helpers de
+   lib não eram geradas). **Pendente do usuário:** conferir ao vivo o _feel_ da
+   rolagem da esteira e a animação de abrir/fechar dos cards (a automação roda em
+   aba de fundo e **não** consegue observar scroll/framer animados — só estático).
+3. **Aguardando o usuário:** revisão de design da **`RightSidebar`** (ele está
+   anotando e vai enviar).
+4. **Depois:** desenhar + construir a **Frente 5 (fórum: pergunta + respostas
+   aninhadas — `forum_replies.parent_reply_id`)**.
 
 **Como trabalhar aqui (harness):** commit por item, gate `tsc` 0 + `npm run test` +
 `next lint` sem erros antes de cada commit; custo zero (sem dep npm nova); área
