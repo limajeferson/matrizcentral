@@ -60,11 +60,18 @@ export function RailGallery({ cards }: { cards: FeedCard[] }) {
     if (!el) return;
     const onWheel = (e: WheelEvent) => {
       if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return; // já é gesto horizontal
-      const atStart = el.scrollLeft <= 0;
-      const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 1;
+      // Tolerância de 8px: o snap assenta com um offset do padding (px-1),
+      // então scrollLeft nunca chega exatamente a 0.
+      const atStart = el.scrollLeft <= 8;
+      const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 8;
       if ((e.deltaY < 0 && atStart) || (e.deltaY > 0 && atEnd)) return; // deixa a página rolar
       e.preventDefault();
-      el.scrollLeft += e.deltaY;
+      // `snap-mandatory` reverte incrementos de scrollLeft menores que meio
+      // card (um tick de roda ~100px < 140px) — somar deltaY parece "morto".
+      // Deslizar um card por gesto garante cruzar o snap point, com suavidade.
+      const card = el.querySelector("article");
+      const step = (card?.offsetWidth ?? 256) + 16; // + gap-4
+      el.scrollBy({ left: Math.sign(e.deltaY) * step, behavior: "smooth" });
     };
     el.addEventListener("wheel", onWheel, { passive: false });
     return () => el.removeEventListener("wheel", onWheel);
