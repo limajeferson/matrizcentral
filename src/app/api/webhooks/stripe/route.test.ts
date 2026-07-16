@@ -108,6 +108,10 @@ function buildSupabaseMock(
           insertedRows.xp_events.push(row);
           return { data: null, error: null };
         },
+        upsert: async (row: Record<string, unknown>) => {
+          insertedRows.xp_events.push(row);
+          return { data: null, error: null };
+        },
       };
     }
     return { insert: async () => ({ data: null, error: null }) };

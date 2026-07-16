@@ -63,12 +63,15 @@ export async function POST(req: NextRequest) {
       // O progresso já foi salvo com sucesso acima; a concessão de XP é um bônus
       // best-effort. Um erro aqui não deve fazer a rota retornar erro, pois isso
       // faria o cliente achar que o progresso não foi salvo quando na verdade foi.
-      await supabase.from("xp_events").insert({
-        user_id: purchase.user_id,
-        xp_amount: 50,
-        action_type: "roadmap",
-        reference_id: referenceId,
-      });
+      await supabase.from("xp_events").upsert(
+        {
+          user_id: purchase.user_id,
+          xp_amount: 50,
+          action_type: "roadmap",
+          reference_id: referenceId,
+        },
+        { onConflict: "user_id,action_type,reference_id", ignoreDuplicates: true }
+      );
     }
 
     await grantBadges(supabase, purchase.user_id);

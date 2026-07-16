@@ -44,12 +44,15 @@ export async function POST(req: NextRequest) {
     .maybeSingle();
 
   if (claimed) {
-    const { error: xpError } = await supabase.from("xp_events").insert({
-      user_id: user.id,
-      xp_amount: 50,
-      action_type: "triagem",
-      reference_id: user.id,
-    });
+    const { error: xpError } = await supabase.from("xp_events").upsert(
+      {
+        user_id: user.id,
+        xp_amount: 50,
+        action_type: "triagem",
+        reference_id: user.id,
+      },
+      { onConflict: "user_id,action_type,reference_id", ignoreDuplicates: true }
+    );
     if (xpError) {
       console.error("Falha ao conceder XP de diagnóstico (perfil já salvo):", xpError);
     }

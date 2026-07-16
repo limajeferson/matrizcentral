@@ -73,6 +73,10 @@ function buildSupabaseMock(
           inserted.push({ __xp: row });
           return { data: null, error: null };
         },
+        upsert: async (row: unknown) => {
+          inserted.push({ __xp: row });
+          return { data: null, error: null };
+        },
       };
     }
     if (table === "users") {

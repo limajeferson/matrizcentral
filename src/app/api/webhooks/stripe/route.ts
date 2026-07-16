@@ -163,12 +163,15 @@ export async function POST(req: NextRequest) {
     } else {
       purchaseId = created.id;
       purchaseWasCreated = true;
-      await supabase.from("xp_events").insert({
-        user_id: user.id,
-        xp_amount: 100,
-        action_type: "compra",
-        reference_id: purchaseId,
-      });
+      await supabase.from("xp_events").upsert(
+        {
+          user_id: user.id,
+          xp_amount: 100,
+          action_type: "compra",
+          reference_id: purchaseId,
+        },
+        { onConflict: "user_id,action_type,reference_id", ignoreDuplicates: true }
+      );
     }
   }
 

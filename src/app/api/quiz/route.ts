@@ -68,12 +68,15 @@ export async function POST(req: NextRequest) {
       .single();
 
     if (purchase) {
-      await supabase.from("xp_events").insert({
-        user_id: purchase.user_id,
-        xp_amount: 50,
-        action_type: "triagem",
-        reference_id: token,
-      });
+      await supabase.from("xp_events").upsert(
+        {
+          user_id: purchase.user_id,
+          xp_amount: 50,
+          action_type: "triagem",
+          reference_id: token,
+        },
+        { onConflict: "user_id,action_type,reference_id", ignoreDuplicates: true }
+      );
       await grantBadges(supabase, purchase.user_id);
     }
 
@@ -114,12 +117,15 @@ export async function POST(req: NextRequest) {
         .maybeSingle();
 
       if (!existingXpEvent) {
-        await supabase.from("xp_events").insert({
-          user_id: purchase.user_id,
-          xp_amount: 100,
-          action_type: "validacao",
-          reference_id: token,
-        });
+        await supabase.from("xp_events").upsert(
+          {
+            user_id: purchase.user_id,
+            xp_amount: 100,
+            action_type: "validacao",
+            reference_id: token,
+          },
+          { onConflict: "user_id,action_type,reference_id", ignoreDuplicates: true }
+        );
         await grantBadges(supabase, purchase.user_id);
         await notifyLevelUpIfNeeded(supabase, purchase.user_id, 100);
       }

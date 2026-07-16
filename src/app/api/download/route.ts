@@ -35,12 +35,15 @@ export async function GET(req: NextRequest) {
 
   if (!purchase.downloaded) {
     await supabase.from("purchases").update({ downloaded: true }).eq("id", purchase.id);
-    await supabase.from("xp_events").insert({
-      user_id: purchase.user_id,
-      xp_amount: 25,
-      action_type: "download",
-      reference_id: purchase.id,
-    });
+    await supabase.from("xp_events").upsert(
+      {
+        user_id: purchase.user_id,
+        xp_amount: 25,
+        action_type: "download",
+        reference_id: purchase.id,
+      },
+      { onConflict: "user_id,action_type,reference_id", ignoreDuplicates: true }
+    );
   }
 
   const content = await readFile(EBOOK_PATH, "utf-8");

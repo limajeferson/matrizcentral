@@ -77,12 +77,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "desafio já resgatado esta semana" }, { status: 409 });
   }
 
-  await supabase.from("xp_events").insert({
-    user_id: purchase.user_id,
-    xp_amount: challenge.xpReward,
-    action_type: "desafio",
-    reference_id: `${weekKey}:${challenge.id}`,
-  });
+  await supabase.from("xp_events").upsert(
+    {
+      user_id: purchase.user_id,
+      xp_amount: challenge.xpReward,
+      action_type: "desafio",
+      reference_id: `${weekKey}:${challenge.id}`,
+    },
+    { onConflict: "user_id,action_type,reference_id", ignoreDuplicates: true }
+  );
 
   await grantBadges(supabase, purchase.user_id);
   await notifyLevelUpIfNeeded(supabase, purchase.user_id, challenge.xpReward);

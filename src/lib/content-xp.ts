@@ -37,12 +37,15 @@ export async function grantContentXp(
     return 0;
   }
 
-  await supabase.from("xp_events").insert({
-    user_id: purchase.user_id,
-    xp_amount: xpReward,
-    action_type: "conteudo",
-    reference_id: contentId,
-  });
+  await supabase.from("xp_events").upsert(
+    {
+      user_id: purchase.user_id,
+      xp_amount: xpReward,
+      action_type: "conteudo",
+      reference_id: contentId,
+    },
+    { onConflict: "user_id,action_type,reference_id", ignoreDuplicates: true }
+  );
 
   await grantBadges(supabase, purchase.user_id);
   await notifyLevelUpIfNeeded(supabase, purchase.user_id, xpReward);
