@@ -113,7 +113,7 @@ export default async function FeedPage() {
             />
           </>
         }
-        right={<RightSidebar access={access} activity={activity} ranking={ranking} />}
+        right={<RightSidebar access={access} activity={activity} ranking={ranking} loggedIn={!!user} />}
       />
       {user && (
         <ProfileCard

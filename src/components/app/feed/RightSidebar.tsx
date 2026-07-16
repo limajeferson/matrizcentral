@@ -11,13 +11,15 @@ export type RightSidebarProps = {
   activity: ActivityItem[];
   /** `getMonthlyLeaderboard(new Date())`, já resolvido pelo server component. */
   ranking: RankRow[];
+  /** Visitante logado? Controla a visibilidade do bloco "Ranking da temporada". */
+  loggedIn: boolean;
 };
 
 /**
  * "Comunidade": atividade recente (selos conquistados, swipeable), gated a
  * Advanced. "Ranking da temporada": XP mensal, visível a todos os logados.
  */
-export function RightSidebar({ access, activity, ranking }: RightSidebarProps) {
+export function RightSidebar({ access, activity, ranking, loggedIn }: RightSidebarProps) {
   return (
     <div className="space-y-6">
       <section className="rounded-2xl border border-border bg-card p-4 shadow-sm">
@@ -28,12 +30,14 @@ export function RightSidebar({ access, activity, ranking }: RightSidebarProps) {
           <ContentGate title="Atividade da comunidade" nextPath="/feed" />
         )}
       </section>
-      <section className="rounded-2xl border border-border bg-card p-4 shadow-sm">
-        <h2 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-          Ranking da temporada
-        </h2>
-        <RankingList rows={ranking} />
-      </section>
+      {loggedIn ? (
+        <section className="rounded-2xl border border-border bg-card p-4 shadow-sm">
+          <h2 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            Ranking da temporada
+          </h2>
+          <RankingList rows={ranking} />
+        </section>
+      ) : null}
     </div>
   );
 }
