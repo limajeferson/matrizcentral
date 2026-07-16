@@ -5,6 +5,7 @@ import { getCommunityActivity } from "@/lib/feed-data";
 import { getSessionUser } from "@/lib/auth-session";
 import { getAccessContext } from "@/lib/entitlement-access";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { getMonthlyLeaderboard } from "@/lib/leaderboard-data";
 import { getLevelProgress } from "@/lib/levels";
 import { listTopics } from "@/lib/forum-data";
 import { BADGES } from "@/data/badges";
@@ -79,6 +80,8 @@ export default async function FeedPage() {
     activity = formatActivity(await getCommunityActivity(20), badgeLabel);
   }
 
+  const ranking = user ? await getMonthlyLeaderboard(new Date()) : [];
+
   const level = getLevelProgress(totalXp);
 
   const userMenu = user ? (
@@ -110,7 +113,7 @@ export default async function FeedPage() {
             />
           </>
         }
-        right={<RightSidebar access={access} activity={activity} />}
+        right={<RightSidebar access={access} activity={activity} ranking={ranking} />}
       />
       {user && (
         <ProfileCard
