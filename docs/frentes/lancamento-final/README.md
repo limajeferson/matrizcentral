@@ -40,3 +40,10 @@ atualizado). Fonte de verdade do andamento: [`../ESTADO-ATUAL.md`](../ESTADO-ATU
 - Nada que dependa de conta/credencial do usuário é feito pelo Claude (upload
   público, entrada de chaves).
 - Custo zero mantido (sem dep npm nova, sem hosting pago; mídia = embeds).
+
+## Decisões travadas
+
+- **Garantia = condicional de 7 dias** (smart gates: janela + não-triagem +
+  não-download). Alinhar código (`refundWindowExpiry` 30→7), doc da política
+  (`arquitetura-1/parte5`), termos e copy a 7 dias — executado na **Trilha F (F6)**.
+- **Escopo:** tudo que o Claude controla, pronto e polido; mídia via NotebookLM→hand-off.

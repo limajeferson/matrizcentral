@@ -54,16 +54,37 @@ Modify `src/components/marketing/v2/LandingHeader.tsx`.
   (qualificar).
 - [ ] Gate + conferir nav. Commit `fix(links): remove/corrige ancoras mortas (marketing)`.
 
-### Task F6 — Copy (garantia + e-mail)
-**Files:** Modify `src/lib/tokens.ts` (ou a copy), `src/lib/email.ts`; talvez
-`tokens.test.ts`.
-- [ ] **Garantia:** decisão = **7 dias** → mudar `refundWindowExpiry` (`tokens.ts:16-18`)
-  de `30 * DAY_MS` p/ `7 * DAY_MS` (mantém a copy de 7 dias). Atualizar teste se
-  houver. _(Se o usuário preferir 30, mudar a copy de `OfferPricing.tsx:53` e
-  `legal/termos/page.tsx:40` em vez do código.)_
+### Task F6 — Garantia consistente (7 dias) em TUDO + e-mail
+**Decisão do usuário (travada):** o padrão é **garantia condicional de 7 dias**
+(smart gates: dentro da janela **E** não fez triagem **E** não baixou). A copy
+(`/oferta`) e os termos **já dizem 7 dias**; o **código e o doc da política dizem
+30** → alinhar tudo a **7 dias** e garantir que está explicado na aquisição.
+
+**Files:** Modify `src/lib/tokens.ts`, `src/lib/tokens.test.ts`,
+`arquitetura-1/parte5-politica-de-reembolso-smart-gates.md`,
+`src/app/(marketing)/legal/termos/page.tsx` (verificar/reforçar),
+`src/components/marketing/OfferPricing.tsx` (verificar), `src/lib/email.ts`.
+- [ ] **Código:** `tokens.ts:16-18` `refundWindowExpiry` `30 * DAY_MS` → `7 * DAY_MS`.
+  `tokens.test.ts:30-33` "30 dias no futuro" → **7 dias** (assert e descrição).
+  (O webhook `route.ts` já usa `refundWindowExpiry` → pega os 7 automaticamente.)
+- [ ] **Doc da política:** `arquitetura-1/parte5-…smart-gates.md` — trocar toda
+  menção "janela de 30 dias"/"Dentro de 30 dias" por **7 dias** (Gate 1 e a lista
+  de condições), pra o doc-fonte da garantia bater com o resto.
+- [ ] **Termos:** `legal/termos/page.tsx` (`#garantia`/`#reembolso`, linhas ~38-48)
+  — confirmar que diz **7 dias** e que descreve as **condições** (smart gates:
+  triagem/download) claramente. Ajustar o texto se estiver incompleto.
+- [ ] **Aquisição (/oferta):** `OfferPricing.tsx:53` já diz "Garantia condicional
+  de 7 dias (ver termos)" — manter; garantir que o link "ver termos" leva ao
+  `#garantia`. (NÃO tocar o "Cupom … válido 30 dias" da linha 52 — é validade do
+  cupom, não a garantia.)
+- [ ] **Varredura final:** grep `30 dias`/`garantia` nos arquivos user-facing e
+  docs de produto (`descricao/*`, `contextocentral.md`, `copywriter-brief.md`,
+  `crm.md`) — corrigir qualquer menção residual à garantia de 30 dias (ignorar
+  cupom, ciclos e outros "30 dias" não relacionados).
 - [ ] **E-mail:** `email.ts:18` "Seu ebook está confirmado." → "Seu acesso à
   Matriz Central está confirmado."
-- [ ] Gate. Commit `fix(copy): garantia 7 dias (codigo) + e-mail 'acesso' (nao 'ebook')`.
+- [ ] Gate + verificar `/oferta` e `/legal/termos` (7 dias + condições). Commit
+  `fix(garantia): padroniza garantia condicional de 7 dias (codigo+doc+termos+copy) + e-mail 'acesso'`.
 
 ### Task F7 — Descoberta do certificado
 **Files:** Modify `src/components/quiz/QuizValidacao.tsx`, `src/app/dashboard/[token]/page.tsx`.
