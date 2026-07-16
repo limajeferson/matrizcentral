@@ -5,7 +5,8 @@ where a.user_id = b.user_id
   and a.action_type = b.action_type
   and a.reference_id = b.reference_id
   and a.reference_id is not null
-  and a.created_at > b.created_at;
+  and (a.created_at > b.created_at
+       or (a.created_at = b.created_at and a.ctid > b.ctid));
 
 -- 2) Reconciliar total_xp a partir do ledger deduplicado
 update users u
