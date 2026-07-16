@@ -217,6 +217,27 @@ export const IconShare = makeIcon(
   </>
 );
 
+// Ícones de compartilhamento social — silhuetas próprias, monocromáticas (não são o
+// logotipo oficial da marca).
+export const IconWhatsApp = makeIcon(
+  <>
+    <path d="M12 4a8 8 0 0 0-6.9 12l-1.1 4 4.2-1.1A8 8 0 1 0 12 4z" />
+    <path d="M9 9c0 3.5 2.5 6 6 6" />
+    <circle cx="9" cy="9" r="1" />
+    <circle cx="15" cy="15" r="1" />
+  </>
+);
+
+export const IconXTwitter = makeIcon(<path d="M4 4l16 16M20 4L4 20" />);
+
+export const IconLinkedIn = makeIcon(
+  <>
+    <rect x="3" y="3" width="18" height="18" rx="3" />
+    <path d="M7.5 10.5v6M7.5 7.8v.01" />
+    <path d="M11.5 17v-5a2.2 2.2 0 0 1 4.4 0v5" />
+  </>
+);
+
 // Ícones do ícone-mapa de conteúdo — alias explícito por tipo, útil para testes/documentação.
 export const CONTENT_TYPE_ICONS = {
   report: IconReport,

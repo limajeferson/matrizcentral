@@ -6,6 +6,7 @@ import { BLOG_POSTS } from "@/data/blog";
 import { getPostBySlug } from "@/lib/blog";
 import Markdown from "@/components/ui/Markdown";
 import { ArticleToc } from "@/components/app/content/ArticleToc";
+import { ShareLinks } from "@/components/app/content/ShareLinks";
 import { extractHeadings, parseMarkdown } from "@/lib/markdown";
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
@@ -21,6 +22,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
   let body = "";
   try { body = await readFile(path.join(process.cwd(), post.bodyPath), "utf-8"); } catch { body = post.excerpt; }
   const headings = extractHeadings(parseMarkdown(body));
+  const base = process.env.NEXT_PUBLIC_URL ?? "https://www.matrizcentral.com.br";
 
   return (
     <div className="mx-auto max-w-2xl space-y-6 p-6">
@@ -30,6 +32,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
         <p className="mt-1 text-xs text-zinc-400">{new Date(post.date).toLocaleDateString("pt-BR")} · {post.author}</p>
         <div className="mt-4"><Markdown source={body} /></div>
       </article>
+      <ShareLinks url={`${base}/blog/${post.slug}`} text={post.title} />
       <div className="rounded-xl border border-violet-200 bg-violet-50 p-5 text-center">
         <p className="font-semibold text-zinc-900">Quer sair das mensalidades de IA?</p>
         <p className="mt-1 text-sm text-zinc-600">Descubra seu roadmap de IA local por R$47 — pagamento único.</p>

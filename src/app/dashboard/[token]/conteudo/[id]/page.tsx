@@ -13,6 +13,7 @@ import PesquisaForm from "@/components/content/PesquisaForm";
 import PesquisaResults from "@/components/content/PesquisaResults";
 import Markdown from "@/components/ui/Markdown";
 import { ArticleToc } from "@/components/app/content/ArticleToc";
+import { ShareLinks } from "@/components/app/content/ShareLinks";
 import { VideoPlayer } from "@/components/app/content/VideoPlayer";
 import { MusicPlayerCard } from "@/components/app/content/MusicPlayerCard";
 import { extractHeadings, parseMarkdown } from "@/lib/markdown";
@@ -69,6 +70,7 @@ export default async function ConteudoDetailPage({
     ? await readFile(path.join(process.cwd(), item.bodyPath), "utf-8")
     : null;
   const headings = body ? extractHeadings(parseMarkdown(body)) : [];
+  const base = process.env.NEXT_PUBLIC_URL ?? "https://www.matrizcentral.com.br";
 
   if (item.type === "pesquisa" && item.surveyOptions) {
     const { data: existingResponse } = await supabase
@@ -149,6 +151,8 @@ export default async function ConteudoDetailPage({
         contentId={item.id}
         initiallyCompleted={!!existingCompletion}
       />
+
+      <ShareLinks url={base} text={item.title} />
     </div>
   );
 }
