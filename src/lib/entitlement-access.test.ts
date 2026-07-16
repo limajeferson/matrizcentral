@@ -45,6 +45,10 @@ function buildSupabaseMock(
     entitlements?: Array<{ plan: string; starts_at: string; expires_at: string; user_id?: string }>;
     contentUnlocks?: Array<{ user_id: string; content_id: string; cycle_key: string }>;
     insertError?: { code: string } | null;
+    /** Simula um insert concorrente que "vence a corrida": ao inserir nossa linha,
+     *  esta linha extra (mesmo cycle_key, outro content_id) também é gravada antes
+     *  da releitura de `sameCycle`, forçando o ramo de reversão em `tryConsume`. */
+    raceRow?: { user_id: string; content_id: string; cycle_key: string } | null;
   } = {}
 ) {
   const tokenRow = "tokenRow" in opts ? opts.tokenRow ?? null : null;
@@ -52,6 +56,7 @@ function buildSupabaseMock(
   const entitlements: Row[] = [...(opts.entitlements ?? [])];
   const contentUnlocks: Row[] = [...(opts.contentUnlocks ?? [])];
   const insertError = opts.insertError ?? null;
+  const raceRow = opts.raceRow ?? null;
 
   const from = (table: string) => {
     if (table === "tokens") {
@@ -77,6 +82,7 @@ function buildSupabaseMock(
         insert: async (row: Row) => {
           if (insertError) return { data: null, error: insertError };
           contentUnlocks.push(row);
+          if (raceRow) contentUnlocks.push(raceRow);
           return { data: row, error: null };
         },
         delete: () => makeDeleteChain(contentUnlocks),
@@ -254,5 +260,54 @@ describe("tryConsume", () => {
 
     expect(result).toEqual({ allowed: true, reason: "already-unlocked" });
     expect(mockSupabase.contentUnlocks).toHaveLength(1);
+  });
+
+  it("insert falha com 23505 (unique violation, corrida já desbloqueou) → allowed 'already-unlocked'", async () => {
+    mockSupabase = buildSupabaseMock({
+      entitlements: [
+        { user_id: "user-1", plan: "regular", starts_at: now.toISOString(), expires_at: iso(30 * DAY) },
+      ],
+      contentUnlocks: [],
+      insertError: { code: "23505" },
+    });
+
+    const { tryConsume } = await import("./entitlement-access");
+    const result = await tryConsume("user-1", "content-1", false);
+
+    expect(result).toEqual({ allowed: true, reason: "already-unlocked" });
+  });
+
+  it("insert falha com outro erro (não 23505) → nega fail-closed", async () => {
+    mockSupabase = buildSupabaseMock({
+      entitlements: [
+        { user_id: "user-1", plan: "regular", starts_at: now.toISOString(), expires_at: iso(30 * DAY) },
+      ],
+      contentUnlocks: [],
+      insertError: { code: "23503" },
+    });
+
+    const { tryConsume } = await import("./entitlement-access");
+    const result = await tryConsume("user-1", "content-1", false);
+
+    expect(result).toEqual({ allowed: false, reason: "error" });
+  });
+
+  it("corrida no mesmo ciclo (dois inserts concorrentes) → reverte a nossa e nega 'cycle-used'", async () => {
+    mockSupabase = buildSupabaseMock({
+      entitlements: [
+        { user_id: "user-1", plan: "regular", starts_at: now.toISOString(), expires_at: iso(30 * DAY) },
+      ],
+      contentUnlocks: [],
+      // simula outro request que insere primeiro, no mesmo ciclo, um content_id diferente
+      raceRow: { user_id: "user-1", content_id: "other-content", cycle_key: "cycle-0" },
+    });
+
+    const { tryConsume } = await import("./entitlement-access");
+    const result = await tryConsume("user-1", "content-1", false);
+
+    expect(result).toEqual({ allowed: false, reason: "cycle-used" });
+    // reverteu a nossa linha; só sobra a do "vencedor" da corrida
+    expect(mockSupabase.contentUnlocks).toHaveLength(1);
+    expect(mockSupabase.contentUnlocks[0]).toMatchObject({ content_id: "other-content" });
   });
 });
