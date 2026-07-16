@@ -5,6 +5,7 @@ import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { getSessionUser } from "@/lib/auth-session";
 import { couponEligible, UPGRADE_COUPON_CENTS } from "@/lib/coupon";
 import { createRateLimiter } from "@/lib/rate-limit";
+import { isValidEmail } from "@/lib/email-validation";
 
 const limiter = createRateLimiter(10_000);
 
@@ -15,6 +16,10 @@ export async function POST(req: NextRequest) {
 
   if (!email || typeof email !== "string") {
     return NextResponse.json({ error: "email é obrigatório" }, { status: 400 });
+  }
+
+  if (!isValidEmail(email)) {
+    return NextResponse.json({ error: "e-mail inválido" }, { status: 400 });
   }
 
   if (!limiter.check(email.toLowerCase(), Date.now())) {

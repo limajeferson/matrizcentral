@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import type { WaitlistPlanId } from "@/types";
 import { createRateLimiter } from "@/lib/rate-limit";
+import { isValidEmail } from "@/lib/email-validation";
 
 const VALID_PLAN_IDS: WaitlistPlanId[] = ["mensal_97", "anual_497"];
 const limiter = createRateLimiter(30_000);
@@ -15,6 +16,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "email é obrigatório" }, { status: 400 });
   }
 
+  if (!isValidEmail(email)) {
+    return NextResponse.json({ error: "e-mail inválido" }, { status: 400 });
+  }
+
   if (!limiter.check(email.toLowerCase(), Date.now())) {
     return NextResponse.json({ error: "aguarde um instante e tente de novo" }, { status: 429 });
   }
@@ -24,7 +29,12 @@ export async function POST(req: NextRequest) {
   }
 
   const supabase = getSupabaseServerClient();
-  const { error } = await supabase.from("plan_waitlist").insert({ email, plan_id: planId });
+  const { error } = await supabase
+    .from("plan_waitlist")
+    .upsert(
+      { email: email.toLowerCase(), plan_id: planId },
+      { onConflict: "email,plan_id", ignoreDuplicates: true }
+    );
 
   if (error) {
     return NextResponse.json(
