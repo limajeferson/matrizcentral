@@ -9,31 +9,36 @@
 > frente ativa → o código fonte-de-verdade.**
 
 _Última atualização: 2026-07-15 (Design v2 — programa de 5 frentes: **Frentes 1
-(Moldura) e 2 (Feed) concluídas/revisadas/deployadas**; Frente 3 desenhada;
-migration `0024` pendente)_
+(Moldura), 2 (Feed) e 3 (Comunidade) concluídas/revisadas**; Frentes 4–5 a
+desenhar; migration `0024` ainda pendente. Frente 3 na master, aguardando push)_
 
 ---
 
 ## ⏭️ PRÓXIMA AÇÃO (leia isto primeiro ao retomar)
 
 **Estado agora:** site **no ar** em `www.matrizcentral.com.br` (Vercel, auto-deploy
-na `master`; último deploy READY). `git` limpo e sincronizado com `origin/master`.
-`npx tsc --noEmit` 0 · `npm run test` **207 testes** verdes · `next lint` sem erros.
-Frente ativa: **programa "design v2"** (17 modelos 21st.dev, 5 frentes) — Frentes 1
-(Moldura) e 2 (Feed) **no ar**; Frente 3 (Comunidade) **desenhada**.
+na `master`; último deploy READY). **`master` está 4 commits À FRENTE de
+`origin/master`** (Frente 3 — Comunidade — `c27d78f..76c15ea`, ainda **não
+pushada**). `npx tsc --noEmit` 0 · `npm run test` **210 testes** verdes ·
+`next lint` sem erros. Frente ativa: **programa "design v2"** (17 modelos
+21st.dev, 5 frentes) — Frentes 1 (Moldura), 2 (Feed) e 3 (Comunidade)
+**concluídas/revisadas**; Frentes 4–5 **a desenhar**.
 
 **Faça, nesta ordem:**
-1. **Pendência do usuário (lembrar/confirmar):** aplicar a migration
+1. **Push da Frente 3:** `git push origin master` (4 commits) → dispara o
+   auto-deploy da Vercel. _(Se esta linha ainda estiver aqui, o push não foi
+   feito.)_
+2. **Pendência do usuário (lembrar/confirmar):** aplicar a migration
    **`0024_feed_posts`** no Supabase (SQL Editor — o SQL está em
    `supabase/migrations/0024_feed_posts.sql` e no `docs/frentes/design-v2/spec-2-feed.md`).
-   O feed funciona sem ela; só **publicar post** falha até aplicar.
-2. **Construir design v2 Frente 3 (Comunidade)** via `subagent-driven-development`:
-   plano em [`docs/frentes/design-v2/plano-3-comunidade.md`](frentes/design-v2/plano-3-comunidade.md)
-   — começar pela **Task 1** (`src/lib/leaderboard.ts` puro + testes → `leaderboard-data.ts`),
-   depois Task 2 (`RankingList`) e Task 3 (`SwipeableActivityList` + montagem).
-   Commit por item; revisão final opus; deploy.
-3. **Seguir para as Frentes 4 (conteúdo/mídia) e 5 (fórum)** — ainda a desenhar
-   (spec+plano) antes de construir. Programa e modelo de dados em
+   É da **Frente 2**; o feed funciona sem ela, só **publicar post** falha. A
+   Frente 3 **não** depende dela (lê `xp_events`/`users.display_name`, já no banco).
+3. **Verificação visual da Frente 3** (logado): `/feed` → `RightSidebar` deve
+   mostrar "Comunidade" (atividades swipeable, gated a Advanced) + "Ranking da
+   temporada" (só logados). Anônimo **não** vê o bloco de ranking.
+4. **Desenhar + construir as Frentes 4 (conteúdo/mídia: players+artigo+jornada+
+   share) e 5 (fórum: pergunta+respostas aninhadas)** — escrever `spec-N.md` +
+   `plano-N.md` antes de construir. Programa e modelo de dados em
    [`docs/frentes/design-v2/README.md`](frentes/design-v2/README.md).
 
 **Como trabalhar aqui (harness):** commit por item, gate `tsc` 0 + `npm run test` +
@@ -229,25 +234,36 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
     `0024_feed_posts` PENDENTE no remoto** (MCP sem permissão; SPA Supabase não
     renderiza em aba bg). Aplicar via SQL Editor — SQL em `plano-2-feed.md`/spec.
     Até aplicar, o feed funciona; só *publicar post* falha.
-  - **Frente 3 (Comunidade) — DESENHADA (spec+plano), a construir:** atividades
-    swipeable-list + ranking mensal animated-list (backend leve de agregação de XP
-    por mês; sem migration nova).
+  - **Frente 3 (Comunidade) — CONCLUÍDA e revisada (Ready to merge), na master,
+    aguardando push (2026-07-15):** via `subagent-driven-development` (3 tasks +
+    fix da revisão final, `tsc` 0 / **210 testes** / lint limpo). Entregue:
+    `src/lib/leaderboard.ts` puro (`monthStartIso`/`aggregateMonthlyXp`/
+    `rankLeaderboard` — testado) + `leaderboard-data.ts` (`getMonthlyLeaderboard`,
+    agrega `xp_events` do mês; **só usuários opt-in** com `display_name` não-nulo);
+    `RankingList` (lista animada staggered, pódio ouro/prata/bronze via
+    `--mc-gold` fallback); `SwipeableActivityList` (atividades com drag-to-dismiss
+    + botão "Dispensar" acessível por teclado); montagem na `RightSidebar`
+    (Comunidade gated a Advanced **intacto** + novo "Ranking da temporada" só a
+    logados) e `feed/page.tsx`. **Sem migration nova.** Revisão final (opus):
+    1 Important corrigido (ranking escondido p/ anônimo — commit `76c15ea`);
+    7 Minors deferidos (nenhum bloqueia). Commits `c27d78f`..`76c15ea`.
   - **Frentes 4 (conteúdo/mídia: players+artigo+jornada+share) e 5 (fórum:
-    pergunta+respostas aninhadas) — a desenhar/construir.**
-  - **Próxima ação:** aplicar migration `0024`; construir Frente 3 (Task 1:
-    `leaderboard.ts`); seguir 4 e 5.
+    pergunta+respostas aninhadas) — a desenhar (spec+plano) e construir.**
+  - **Próxima ação:** `git push origin master` (Frente 3); aplicar migration
+    `0024` (Frente 2, pendência do usuário); verificar Frente 3 visualmente;
+    desenhar+construir Frentes 4 e 5.
 
 ## 🌿 Estado do git
 
-- **Branch ativa:** `master`, **sincronizada com `origin/master`** (push feito,
-  HEAD `fa48af5`, deploy Vercel READY). O outro computador recebe tudo com
-  `git pull origin master`.
-- **Inclui (nesta rodada):** design v2 Frentes 1 (moldura: `AppHeader`/`AppFooter`
-  + `LeftSidebar` client + `format-availability`) e 2 (feed: `feed_posts`/
-  `feed-posts` + `feed-timeline` + `FeedTimeline`/`PostCard`/`VideoThumb`/
-  `RailGallery`/`ExpandableContentCard` + `relative-time` + rotas `/api/feed/*` +
-  migration `0024` a aplicar), docs `docs/frentes/design-v2/`. Antes: barra de
-  histórias, feed-redesign baseline, SP1.
+- **Branch ativa:** `master`, **4 commits À FRENTE de `origin/master`**
+  (Frente 3 Comunidade `c27d78f..76c15ea` — **push pendente**). Antes do push, o
+  último sincronizado era `f366c4c`. Após `git push origin master`, a Vercel
+  auto-deploya e o outro computador recebe com `git pull origin master`.
+- **Inclui (nesta rodada, a pushar):** design v2 Frente 3 (comunidade:
+  `src/lib/leaderboard.ts`+test + `leaderboard-data.ts` + `RankingList` +
+  `SwipeableActivityList` + montagem `RightSidebar`/`feed/page.tsx`). Antes (já
+  em `origin`): Frentes 1 (moldura) e 2 (feed, com migration `0024` a aplicar),
+  barra de histórias, feed-redesign baseline, SP1.
 - **Não versionado (local, de propósito):** `.env.local` (segredos),
   `SETUP.md`, `claude-chat.md`, `CLAUDE.local-draft.md`.
 
@@ -310,6 +326,20 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
 
+- **2026-07-15 (Opus 4.8 1M) — Design v2 Frente 3 (Comunidade) implementada:**
+  retomada "continue de onde paramos". Via `subagent-driven-development` (3 tasks,
+  cada uma implementer sonnet + task-reviewer sonnet; revisão final whole-branch
+  opus). Task 1: `leaderboard.ts` puro (TDD: `monthStartIso`/`aggregateMonthlyXp`/
+  `rankLeaderboard`) + `leaderboard-data.ts` (`getMonthlyLeaderboard`, agrega
+  `xp_events` do mês, **só opt-in** `display_name!=null`). Task 2: `RankingList`
+  animado (staggered framer-motion; pódio `--mc-gold` com fallback fora do
+  `.mcv2`). Task 3: `SwipeableActivityList` (drag-to-dismiss + botão "Dispensar"
+  a11y) + montagem `RightSidebar` (gate Advanced intacto + ranking só logados) +
+  `feed/page.tsx`. Revisão final: 1 Important corrigido (ranking escondido p/
+  anônimo, `76c15ea`), 7 Minors deferidos. `tsc` 0 / 210 testes / lint limpo.
+  Commits `c27d78f..76c15ea` (**push pendente**). Migration `0024` (Frente 2)
+  segue pendência do usuário — Frente 3 não depende dela. Ledger em
+  `.superpowers/sdd/progress.md`.
 - **2026-07-13 (Opus) — Frente 6 (Suporte/CRM) implementada — ÚLTIMA FRENTE:**
   via `subagent-driven-development` (5 tasks) — migration `0021`
   (`support_messages`) + tipos, `suporte.ts`/`validateContactInput` puro
