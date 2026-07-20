@@ -24,6 +24,10 @@ export type ReaderShellProps = {
   prevSlug: string | null;
   nextSlug: string | null;
   reader: { email: string; userId: string };
+  /** Repassado ao `ReadTracker` — ver `ReadTrackerProps.skipProgress`. Usado
+   *  pela página que chama este shell quando a seção 0 está sendo mostrada
+   *  só como pano de fundo do banner de retomada, não porque a pessoa pediu. */
+  skipProgress?: boolean;
 };
 
 /**
@@ -44,12 +48,18 @@ export function ReaderShell({
   prevSlug,
   nextSlug,
   reader,
+  skipProgress,
 }: ReaderShellProps) {
   const progressPercent = totalSections > 0 ? ((sectionIndex + 1) / totalSections) * 100 : 0;
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-6 lg:px-6">
-      <ReadTracker contentId={contentId} slug={currentSlug} index={sectionIndex} />
+      <ReadTracker
+        contentId={contentId}
+        slug={currentSlug}
+        index={sectionIndex}
+        skipProgress={skipProgress}
+      />
       {/*
         Sem <h1> aqui de propósito: `section.blocks` já inclui o próprio bloco
         do heading "##" da seção (ver `splitIntoSections` em `src/lib/reader.ts`,

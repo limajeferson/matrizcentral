@@ -111,7 +111,29 @@ describe("POST /api/leitura", () => {
       "user-1",
       CONTENT_ID,
       REAL_SECTION.slug,
-      REAL_SECTION.index
+      REAL_SECTION.index,
+      { skipProgress: false }
+    );
+  });
+
+  it("repassa skipProgress:true ao recordRead quando o cliente manda (visita so do banner de retomada)", async () => {
+    // Usuario proprio (nao "user-1"): o rate limiter e chaveado por user.id e
+    // o teste "caminho feliz" logo acima acabou de consumir a janela de 2s de
+    // "user-1" — reusar o mesmo id faria esta chamada cair no rate limit
+    // (retorno silencioso sem chamar recordRead) e o teste falharia por
+    // motivo errado.
+    sessionUser = { id: "user-skip-progress", email: "c@d.com" };
+    const { POST } = await import("./route");
+    const res = await POST(
+      req({ contentId: CONTENT_ID, slug: REAL_SECTION.slug, index: REAL_SECTION.index, skipProgress: true })
+    );
+    expect(res.status).toBe(200);
+    expect(mockRecordRead).toHaveBeenCalledWith(
+      "user-skip-progress",
+      CONTENT_ID,
+      REAL_SECTION.slug,
+      REAL_SECTION.index,
+      { skipProgress: true }
     );
   });
 

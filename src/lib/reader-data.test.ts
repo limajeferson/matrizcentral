@@ -127,4 +127,32 @@ describe("recordRead", () => {
     });
     await expect(recordRead("u1", "ebook-llm-local", "intro", 0)).resolves.toBeUndefined();
   });
+
+  it("por padrao grava em reading_events E faz upsert em reading_progress", async () => {
+    const insert = vi.fn().mockResolvedValue({ error: null });
+    const upsert = vi.fn().mockResolvedValue({ error: null });
+    mockFrom.mockImplementation((table: string) =>
+      table === "reading_events" ? { insert } : { upsert },
+    );
+
+    await recordRead("u1", "ebook-llm-local", "intro", 0);
+
+    expect(insert).toHaveBeenCalledWith(
+      expect.objectContaining({ user_id: "u1", content_id: "ebook-llm-local", section_slug: "intro", section_index: 0 }),
+    );
+    expect(upsert).toHaveBeenCalledTimes(1);
+  });
+
+  it("com skipProgress: grava reading_events mas NAO faz upsert em reading_progress", async () => {
+    const insert = vi.fn().mockResolvedValue({ error: null });
+    const upsert = vi.fn().mockResolvedValue({ error: null });
+    mockFrom.mockImplementation((table: string) =>
+      table === "reading_events" ? { insert } : { upsert },
+    );
+
+    await recordRead("u1", "ebook-llm-local", "intro", 0, { skipProgress: true });
+
+    expect(insert).toHaveBeenCalledTimes(1);
+    expect(upsert).not.toHaveBeenCalled();
+  });
 });

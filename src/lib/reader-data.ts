@@ -62,6 +62,13 @@ export async function getProgress(
 }
 
 /** Grava retomada (upsert) e o evento de auditoria (append-only).
+ *  `options.skipProgress` pula SÓ o upsert de `reading_progress` — usado pela
+ *  visita que apenas exibe o banner "Você parou em X" (abrir a URL sem `?s=`
+ *  quando já existe progresso salvo em outra seção): essa visita renderiza a
+ *  seção 0 sem o leitor ter pedido isso, e gravar progresso ali sobrescreveria
+ *  a posição salva com 0 antes da pessoa clicar em "Continuar" — apagando a
+ *  retomada. `reading_events` continua sendo gravado nesse caso (é
+ *  append-only e serve de prova de consumo; não há motivo para perdê-lo).
  *  Falha aqui NUNCA bloqueia a leitura — só registra. Por isso o corpo inteiro
  *  roda em try/catch: `getSupabaseServerClient()` pode lançar (usa
  *  `process.env.X!`) e a desestruturação do `Promise.all` lança se algum
@@ -69,16 +76,23 @@ export async function getProgress(
  *  a leitura do usuário, quebrando a promessa do comentário acima. */
 export async function recordRead(
   userId: string, contentId: string, slug: string, index: number,
+  options?: { skipProgress?: boolean },
 ): Promise<void> {
   try {
     const supabase = getSupabaseServerClient();
     const row = { user_id: userId, content_id: contentId, section_slug: slug, section_index: index };
-    const [{ error: pErr }, { error: eErr }] = await Promise.all([
-      supabase.from("reading_progress").upsert(
-        { ...row, updated_at: new Date().toISOString() },
-        { onConflict: "user_id,content_id" },
-      ),
+    // Tipos de retorno de `.insert` e `.upsert` são builders distintos (linhas
+    // de tabelas diferentes) — não dá pra empurrar os dois num array
+    // homogêneo sem o TS reclamar. Array literal de 2 posições no
+    // `Promise.all` deixa cada posição inferir seu próprio tipo.
+    const [{ error: eErr }, { error: pErr }] = await Promise.all([
       supabase.from("reading_events").insert(row),
+      options?.skipProgress
+        ? Promise.resolve({ error: null as null })
+        : supabase.from("reading_progress").upsert(
+            { ...row, updated_at: new Date().toISOString() },
+            { onConflict: "user_id,content_id" },
+          ),
     ]);
     // `reading_progress` é cosmético (só afeta "retomar de onde parei"); já
     // `reading_events` é a prova de consumo usada em garantia comercial e

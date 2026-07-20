@@ -36,6 +36,7 @@ export async function POST(req: NextRequest) {
     const contentId = typeof body?.contentId === "string" ? body.contentId : null;
     const slug = typeof body?.slug === "string" ? body.slug : null;
     const index = Number.isInteger(body?.index) ? (body.index as number) : null;
+    const skipProgress = body?.skipProgress === true;
     if (!contentId || !slug || index === null || index < 0) {
       return NextResponse.json({ error: "payload inválido" }, { status: 400 });
     }
@@ -69,7 +70,7 @@ export async function POST(req: NextRequest) {
     if (!limiter.check(user.id, Date.now())) {
       return NextResponse.json({ ok: true }); // silencioso: não é erro do usuário
     }
-    await recordRead(user.id, contentId, slug, index);
+    await recordRead(user.id, contentId, slug, index, { skipProgress });
     return NextResponse.json({ ok: true });
   } catch (e) {
     console.error("POST /api/leitura", e);

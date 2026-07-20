@@ -132,6 +132,10 @@ export default async function BibliotecaLeitorPage({
         prevSlug={prevSlug}
         nextSlug={nextSlug}
         reader={{ email: user.email, userId: user.id }}
+        // Seção 0 na tela só como pano de fundo do banner "Você parou em X"
+        // (URL sem `?s=` e progresso salvo em outra seção) — não pode
+        // sobrescrever `reading_progress` com 0 antes de a pessoa escolher.
+        skipProgress={!!resumeSection}
       />
     </>
   );
