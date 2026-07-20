@@ -319,6 +319,18 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["content_unlocks"]["Insert"]>;
         Relationships: [];
       };
+      reading_progress: {
+        Row: { user_id: string; content_id: string; section_slug: string; section_index: number; updated_at: string };
+        Insert: { user_id: string; content_id: string; section_slug: string; section_index: number; updated_at?: string };
+        Update: Partial<Database["public"]["Tables"]["reading_progress"]["Insert"]>;
+        Relationships: [];
+      };
+      reading_events: {
+        Row: { id: string; user_id: string; content_id: string; section_slug: string; section_index: number; created_at: string };
+        Insert: { id?: string; user_id: string; content_id: string; section_slug: string; section_index: number; created_at?: string };
+        Update: Partial<Database["public"]["Tables"]["reading_events"]["Insert"]>;
+        Relationships: [];
+      };
       sent_emails: {
         Row: { id: string; user_id: string; email_type: string; reference: string; sent_at: string };
         Insert: { id?: string; user_id: string; email_type: string; reference: string; sent_at?: string };
