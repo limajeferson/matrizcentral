@@ -196,10 +196,10 @@ export default async function DashboardPage({ params }: { params: { token: strin
         </div>
         <h2 className="mb-3 font-bold text-zinc-900">Seu primeiro ebook</h2>
         <a
-          href={`/api/download?token=${params.token}`}
+          href={`/entrar/resgate?token=${params.token}`}
           className="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-6 py-2 font-semibold text-white transition hover:bg-violet-700"
         >
-          Baixar Ebook LLM Local
+          Ler o guia
           <IconArrow size={16} />
         </a>
       </GlassCard>

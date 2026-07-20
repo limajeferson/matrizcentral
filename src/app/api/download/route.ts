@@ -1,11 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import { readFile } from "fs/promises";
-import path from "path";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { isTokenExpired } from "@/lib/tokens";
 
-const EBOOK_PATH = path.join(process.cwd(), "content", "ebooks", "ebook_llm_local_matrizcentral.md");
-
+/**
+ * O download em arquivo foi aposentado — o material agora é lido direto na
+ * plataforma (`/biblioteca/[slug]`). Esta rota continua viva (não é 404 mudo)
+ * só para orientar quem ainda tem o link antigo salvo: valida o token como
+ * sempre validou e responde 410 com o link de resgate. Token inválido/expirado
+ * segue 404, exatamente como antes — é essa validação que distingue os dois
+ * casos.
+ */
 export async function GET(req: NextRequest) {
   const token = req.nextUrl.searchParams.get("token");
   if (!token) {
@@ -15,7 +19,7 @@ export async function GET(req: NextRequest) {
   const supabase = getSupabaseServerClient();
   const { data: tokenRow } = await supabase
     .from("tokens")
-    .select("valid_until, purchase_id")
+    .select("valid_until")
     .eq("token", token)
     .maybeSingle();
 
@@ -23,35 +27,12 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "token inválido ou expirado" }, { status: 404 });
   }
 
-  const { data: purchase } = await supabase
-    .from("purchases")
-    .select("id, downloaded, user_id")
-    .eq("id", tokenRow.purchase_id)
-    .single();
-
-  if (!purchase) {
-    return NextResponse.json({ error: "compra não encontrada" }, { status: 404 });
-  }
-
-  if (!purchase.downloaded) {
-    await supabase.from("purchases").update({ downloaded: true }).eq("id", purchase.id);
-    await supabase.from("xp_events").upsert(
-      {
-        user_id: purchase.user_id,
-        xp_amount: 25,
-        action_type: "download",
-        reference_id: purchase.id,
-      },
-      { onConflict: "user_id,action_type,reference_id", ignoreDuplicates: true }
-    );
-  }
-
-  const content = await readFile(EBOOK_PATH, "utf-8");
-
-  return new NextResponse(content, {
-    headers: {
-      "Content-Type": "text/markdown; charset=utf-8",
-      "Content-Disposition": 'attachment; filename="llm-local.md"',
+  return NextResponse.json(
+    {
+      error:
+        "O download em arquivo foi aposentado — seu material agora é lido direto na plataforma.",
+      resgate: `/entrar/resgate?token=${encodeURIComponent(token)}`,
     },
-  });
+    { status: 410 }
+  );
 }
