@@ -13,9 +13,11 @@ create table if not exists reading_progress (
 
 -- Auditoria: append-only. É a prova de consumo (garantia comercial + chargeback).
 -- NUNCA sofre update/delete.
+-- Nota: sem "on delete cascade" — é registro de auditoria; futura exclusão de conta
+-- precisa decidir explicitamente o que fazer com estas linhas, em vez de destrui-las.
 create table if not exists reading_events (
   id uuid primary key default gen_random_uuid(),
-  user_id uuid not null references users(id) on delete cascade,
+  user_id uuid not null references users(id),
   content_id text not null,
   section_slug text not null,
   section_index int not null,
