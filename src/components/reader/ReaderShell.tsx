@@ -7,8 +7,9 @@ import { IconArrow } from "@/components/ui/icons";
 
 export type ReaderShellProps = {
   docTitle: string;
-  /** Só os blocos da seção CORRENTE — nunca do documento inteiro. */
+  /** Usado só em `aria-label` (o título visível vem do heading dentro de `sectionBlocks`). */
   sectionTitle: string;
+  /** Só os blocos da seção CORRENTE — nunca do documento inteiro. */
   sectionBlocks: MdBlock[];
   sectionIndex: number;
   totalSections: number;
@@ -44,9 +45,15 @@ export function ReaderShell({
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-6 lg:px-6">
+      {/*
+        Sem <h1> aqui de propósito: `section.blocks` já inclui o próprio bloco
+        do heading "##" da seção (ver `splitIntoSections` em `src/lib/reader.ts`,
+        que empurra o heading como primeiro item de `blocks`), então o título
+        visível da seção nasce do corpo renderizado pelo `<Markdown>` abaixo —
+        duplicá-lo aqui repetiria o mesmo texto duas vezes na tela.
+      */}
       <header className="mb-6">
-        <p className="truncate text-sm font-medium text-muted-foreground">{docTitle}</p>
-        <h1 className="mt-1 text-xl font-bold text-foreground sm:text-2xl">{sectionTitle}</h1>
+        <p className="truncate text-sm font-semibold text-foreground">{docTitle}</p>
 
         <p className="mt-3 text-xs text-muted-foreground">
           Seção {sectionIndex + 1} de {totalSections}
@@ -69,7 +76,7 @@ export function ReaderShell({
       <div className="lg:grid lg:grid-cols-[220px_1fr] lg:gap-10">
         <ReaderToc items={tocItems} currentSlug={currentSlug} basePath={basePath} />
 
-        <main>
+        <main aria-label={sectionTitle}>
           <article>
             <Markdown blocks={sectionBlocks} />
           </article>
