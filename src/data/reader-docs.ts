@@ -1,14 +1,27 @@
 import { CONTENT_HUB } from "./content-hub";
 
 /**
- * `product_id` gravado em `purchases` pelo webhook da Stripe para a compra do
- * ebook (ver `PRODUTO_1.productId` em `src/lib/stripe.ts` e o `metadata.product_id`
- * setado em `src/app/api/checkout/route.ts`). NÃO importar `@/lib/stripe` aqui:
+ * `product_id` gravados em `purchases` pelo webhook da Stripe (ver `PLANOS`
+ * em `src/lib/stripe.ts`, que IMPORTA estas constantes daqui — não o
+ * contrário). Este arquivo é dado puro e não pode importar `@/lib/stripe`:
  * esse módulo instancia `new Stripe(process.env.STRIPE_SECRET_KEY!)` no topo,
- * o que já causa falha de build ao coletar `/api/checkout` (ver CLAUDE.md) —
- * duplicar a constante evita esse acoplamento.
+ * o que já causa falha de build ao coletar `/api/checkout` (ver CLAUDE.md).
+ * Fonte única: mudar aqui já propaga para o checkout/webhook via stripe.ts.
  */
 export const EBOOK_PRODUCT_ID = "ebook_llm_local";
+export const REGULAR_PASS_PRODUCT_ID = "regular_pass";
+export const ADVANCED_PASS_PRODUCT_ID = "advanced_pass";
+
+/**
+ * Passes vendem "Tudo do Start" (ver `OfferPricing.tsx`), ou seja, incluem o
+ * ebook — mesmo comprados direto, sem compra prévia do Start. Por isso
+ * `canRead` libera o ebook também para quem tem um passe pago, além de quem
+ * comprou o ebook avulso.
+ */
+export const PASS_PRODUCT_IDS: ReadonlySet<string> = new Set([
+  REGULAR_PASS_PRODUCT_ID,
+  ADVANCED_PASS_PRODUCT_ID,
+]);
 
 export type ReaderDoc = {
   slug: string;

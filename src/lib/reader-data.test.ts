@@ -1,14 +1,15 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 const mockFrom = vi.fn();
+const mockGetSupabaseServerClient = vi.fn(() => ({ from: mockFrom }));
 vi.mock("@/lib/supabase/server", () => ({
-  getSupabaseServerClient: () => ({ from: mockFrom }),
+  getSupabaseServerClient: () => mockGetSupabaseServerClient(),
 }));
 const mockTryConsume = vi.fn();
 vi.mock("./entitlement-access", () => ({ tryConsume: (...a: unknown[]) => mockTryConsume(...a) }));
 
-import { canRead } from "./reader-data";
-import { EBOOK_PRODUCT_ID, type ReaderDoc } from "@/data/reader-docs";
+import { canRead, recordRead } from "./reader-data";
+import { EBOOK_PRODUCT_ID, ADVANCED_PASS_PRODUCT_ID, type ReaderDoc } from "@/data/reader-docs";
 
 const EBOOK: ReaderDoc = {
   slug: "guia", contentId: "ebook-llm-local", title: "Guia",
@@ -16,7 +17,12 @@ const EBOOK: ReaderDoc = {
 };
 const RELATORIO: ReaderDoc = { ...EBOOK, contentId: "rel-1", kind: "relatorio" };
 
+// Usado nos testes de "relatorio" (irrelevante ali se é passe ou não — qualquer
+// compra paga libera o fluxo de tryConsume). NÃO usar como "outra compra" nos
+// testes de revogação do ebook: passes liberam o ebook (ver abaixo), então
+// esses testes usam um produto que não é passe (`NON_PASS_PRODUCT_ID`).
 const OTHER_PRODUCT_ID = "advanced_pass";
+const NON_PASS_PRODUCT_ID = "algum_outro_produto";
 
 /** Mock de `from("purchases").select(...).eq(...)` devolvendo `rows`. */
 function mockPurchases(
@@ -31,6 +37,8 @@ function mockPurchases(
 beforeEach(() => {
   mockFrom.mockReset();
   mockTryConsume.mockReset();
+  mockGetSupabaseServerClient.mockReset();
+  mockGetSupabaseServerClient.mockImplementation(() => ({ from: mockFrom }));
 });
 
 describe("canRead", () => {
@@ -52,8 +60,18 @@ describe("canRead", () => {
   it("nega o ebook reembolsado mesmo com OUTRA compra paga (revogacao e por produto, nao por usuario)", async () => {
     mockPurchases([
       { status: "refunded", product_id: EBOOK_PRODUCT_ID },
-      { status: "paid", product_id: OTHER_PRODUCT_ID },
+      { status: "paid", product_id: NON_PASS_PRODUCT_ID },
     ]);
+    expect((await canRead("u1", EBOOK)).allowed).toBe(false);
+  });
+
+  it("passe advanced pago libera o ebook sem compra do Start", async () => {
+    mockPurchases([{ status: "paid", product_id: ADVANCED_PASS_PRODUCT_ID }]);
+    expect(await canRead("u1", EBOOK)).toEqual({ allowed: true, reason: "purchase" });
+  });
+
+  it("passe reembolsado e sem compra do ebook nega", async () => {
+    mockPurchases([{ status: "refunded", product_id: ADVANCED_PASS_PRODUCT_ID }]);
     expect((await canRead("u1", EBOOK)).allowed).toBe(false);
   });
 
@@ -99,5 +117,14 @@ describe("canRead", () => {
     mockTryConsume.mockResolvedValue({ allowed: true, reason: "advanced" });
     expect((await canRead("u1", RELATORIO)).reason).toBe("revoked");
     expect(mockTryConsume).not.toHaveBeenCalled();
+  });
+});
+
+describe("recordRead", () => {
+  it("nunca bloqueia a leitura: resolve normalmente mesmo se getSupabaseServerClient lancar", async () => {
+    mockGetSupabaseServerClient.mockImplementation(() => {
+      throw new Error("boom");
+    });
+    await expect(recordRead("u1", "ebook-llm-local", "intro", 0)).resolves.toBeUndefined();
   });
 });

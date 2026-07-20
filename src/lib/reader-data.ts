@@ -1,6 +1,6 @@
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { tryConsume } from "./entitlement-access";
-import { EBOOK_PRODUCT_ID, type ReaderDoc } from "@/data/reader-docs";
+import { EBOOK_PRODUCT_ID, PASS_PRODUCT_IDS, type ReaderDoc } from "@/data/reader-docs";
 
 export type ReadDecision = { allowed: boolean; reason: string };
 
@@ -35,13 +35,16 @@ export async function canRead(userId: string, doc: ReaderDoc): Promise<ReadDecis
   if (!hasAnyPaid) return { allowed: false, reason: "no-purchase" };
 
   if (doc.kind === "ebook") {
-    // Revogação é por PRODUTO, não por usuário: uma compra paga de OUTRO
-    // produto (ex.: passe advanced) não libera o ebook se a compra do ebook
-    // em si foi reembolsada — precisa da compra paga *do ebook*.
-    const ebookPaid = active.some(
-      (p) => p.status === "paid" && p.product_id === EBOOK_PRODUCT_ID,
+    // Revogação é por PRODUTO, não por usuário: uma compra paga de um produto
+    // que NÃO seja o ebook nem um passe (que vende "Tudo do Start", ou seja,
+    // inclui o ebook) não libera o ebook se a compra do ebook em si foi
+    // reembolsada — precisa da compra paga *do ebook ou de um passe*.
+    const ebookOrPassPaid = active.some(
+      (p) =>
+        p.status === "paid" &&
+        (p.product_id === EBOOK_PRODUCT_ID || PASS_PRODUCT_IDS.has(p.product_id)),
     );
-    return ebookPaid
+    return ebookOrPassPaid
       ? { allowed: true, reason: "purchase" }
       : { allowed: false, reason: "no-purchase" };
   }
