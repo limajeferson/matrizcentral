@@ -52,6 +52,11 @@ delete/retire `src/app/quiz/[token]/page.tsx` (e `QuizTriagem` se órfão).
   quiz/[token], dashboard/[token]/{page,ranking,conteudo,conteudo/[id],certificado})
   p/ usar o helper, unificando a mensagem. Rotear `entitlement-access.resolveUserIdByToken`
   pelo helper (fecha o trap de expiry faltante).
+- [ ] ⚠️ **14º site, deliberadamente FORA da migração:**
+  `src/app/api/webhooks/stripe/route.ts` também usa `isTokenExpired`, mas ali o
+  token é **escrito** (revogação em reembolso, Trilha B), não usado como
+  credencial de acesso. **Não migrar** — o helper retorna `"expired"` como recusa,
+  e o webhook precisa justamente mexer em tokens expirados. Confirmado 2026-07-20.
 - [ ] Gate + Commit `refactor(dry): resolveTokenRow compartilhado (13 sites + fecha expiry latente)`.
 
 ### Task G5 — Cursor de paginação com tiebreak

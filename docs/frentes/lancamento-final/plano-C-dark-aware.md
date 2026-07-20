@@ -49,8 +49,13 @@ de maior cascata (glass-card, dashboard/layout, Markdown).
   Commit `fix(dark): glass-card + dashboard shell + Markdown theme-aware (cascata)`.
 
 ### Task C3 — Páginas do dashboard
-**Files:** Modify `src/app/dashboard/[token]/page.tsx`, `conteudo/page.tsx`,
-`conteudo/[id]/page.tsx`, `ranking/page.tsx`, `certificado/page.tsx`.
+**Files:** Modify `src/app/dashboard/[token]/page.tsx`,
+`src/app/dashboard/[token]/conteudo/page.tsx`,
+`src/app/dashboard/[token]/conteudo/[id]/page.tsx`,
+`src/app/dashboard/[token]/ranking/page.tsx`,
+`src/app/dashboard/[token]/certificado/page.tsx`.
+> ⚠️ Todas as subpáginas do dashboard vivem **dentro de `[token]/`** — caminhos
+> conferidos em 2026-07-20. Não existe `src/app/dashboard/conteudo/`.
 - [ ] Aplicar o mapa de troca em cada arquivo (LER cada um; trocar só as classes
   claras fixas listadas no map da spec). Cuidar de `bg-violet-50 border-violet-300`
   (conteudo/page) → tint dark-safe (`bg-violet-500/10 border-violet-500/40`).

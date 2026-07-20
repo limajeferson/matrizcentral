@@ -13,11 +13,14 @@
 | 2 | Feed | ✅ no ar; migration `0024` **aplicada** (2026-07-16) | spec-2/plano-2-feed |
 | 3 | Comunidade | ✅ no ar (2026-07-15) | spec-3/plano-3-comunidade |
 | 4 | Conteúdo/mídia | ✅ no ar (2026-07-16), revisada Ready-to-merge | [spec-4](spec-4-conteudo.md)/[plano-4](plano-4-conteudo.md) |
-| 5 | Fórum | 🔜 a desenhar — **próxima** | — |
+| 5 | Fórum | 📐 **desenhada e migrada para a Trilha D** do lançamento-final | [spec-D-forum](../lancamento-final/spec-D-forum.md) |
 
-**Próximo passo:** desenhar a Frente 5 (Fórum: pergunta stack-overflow +
-respostas aninhadas reddit; `forum_replies.parent_reply_id`) — `spec-5`+`plano-5`,
-depois subagent-driven-development. É a última do programa.
+**Próximo passo:** nada aqui. A Frente 5 (Fórum: pergunta stack-overflow +
+respostas aninhadas reddit; `forum_replies.parent_reply_id`, migration `0027`)
+**foi absorvida pela Trilha D** do
+[programa de lançamento final](../lancamento-final/README.md) — é lá que ela é
+especificada e construída, para não haver duas filas concorrentes. As Frentes 1–4
+deste programa estão **no ar**; este README fica como histórico do design-v2.
 
 ## Regras do programa (Global Constraints — valem para TODAS as frentes)
 

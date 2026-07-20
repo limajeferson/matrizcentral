@@ -41,9 +41,38 @@ atualizado). Fonte de verdade do andamento: [`../ESTADO-ATUAL.md`](../ESTADO-ATU
   público, entrada de chaves).
 - Custo zero mantido (sem dep npm nova, sem hosting pago; mídia = embeds).
 
+## ✅ Revalidação dos planos (2026-07-20)
+
+Todos os planos C–G foram reconferidos **contra o código real** (dois sweeps).
+Veredito: **nenhum plano invalidado**; correções aplicadas nos arquivos:
+
+- **C3:** caminhos errados — as subpáginas do dashboard vivem sob
+  `dashboard/[token]/`, não `dashboard/`. Corrigido.
+- **F1/F3:** caminhos dos componentes (`src/components/app/feed|stories/`). Corrigido.
+- **F4:** ressalva nova — `text-white` sobre botão violeta **não** vira token.
+- **F5:** `Header.tsx`/`Footer.tsx` **ainda são usados** por `/oferta` → repontar,
+  não remover. +2 âncoras relativas que o plano não listava.
+- **F8:** parcialmente feito na Trilha B (`94384d7`); resta o `finally`
+  (`loading` trava em exceção de rede), o `<form>` e o label.
+- **G4:** o webhook da Stripe é um 14º usuário de `isTokenExpired`, **fora** da
+  migração de propósito (escreve tokens expirados; o helper os recusaria).
+- **D/E/G:** batem integralmente. `0027` confirmado como próximo número livre;
+  `parent_reply_id` não existe; CSV do 3º relatório localizado em
+  `notebooklm/textos/`; todos os itens de tech-debt do G ainda presentes.
+
+## ⚠️ Decisão aberta (bloqueia parte da F6)
+
+**A garantia publicada e a implementada divergem** — termos dizem 7 dias
+**incondicionais**, o código usa janela de **30 dias**, a política documenta
+**30 dias com smart gates**. Apertar tudo para "7 condicionais" encurta a janela
+e adiciona condições que compradores atuais não viram. As duas saídas estão
+detalhadas no [`plano-F-polish.md`](plano-F-polish.md) (fim da Task F6) —
+**precisa da escolha do usuário** antes de mexer em termos/copy.
+
 ## Decisões travadas
 
 - **Garantia = condicional de 7 dias** (smart gates: janela + não-triagem +
   não-download). Alinhar código (`refundWindowExpiry` 30→7), doc da política
   (`arquitetura-1/parte5`), termos e copy a 7 dias — executado na **Trilha F (F6)**.
+  ⚠️ **Revisitar à luz da divergência acima antes de executar.**
 - **Escopo:** tudo que o Claude controla, pronto e polido; mídia via NotebookLM→hand-off.

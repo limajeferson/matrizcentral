@@ -9,17 +9,18 @@
 - Cada fato tem **um lugar canônico** (indicado abaixo). Ao precisar de um detalhe, **confirme no arquivo linkado** em vez de supor — isso evita alucinação.
 - Ordem recomendada num início do zero: [`ESTADO-ATUAL.md`](ESTADO-ATUAL.md) → este hub → `CLAUDE.md` → o README da frente ativa → o código fonte-de-verdade.
 
-## 📊 Status atual (2026-07-16)
+## 📊 Status atual (2026-07-20)
 
-- **No ar (produção):** **`www.matrizcentral.com.br`** (Vercel, auto-deploy a cada push na `master`; último deploy READY). Muito além da landing: **todas as 6 frentes do roadmap** (login real, assinaturas, feed, fórum, blog/marketing, suporte/CRM), **SP1** (casa unificada + diagnóstico por sessão), o **redesign do feed** (baseline + barra de histórias) e o **programa design v2** (Frentes 1 Moldura, 2 Feed e 3 Comunidade) estão entregues e deployados.
+- **No ar (produção):** **`www.matrizcentral.com.br`** (Vercel, auto-deploy a cada push na `master`; último deploy READY). Muito além da landing: **todas as 6 frentes do roadmap** (login real, assinaturas, feed, fórum, blog/marketing, suporte/CRM), **SP1** (casa unificada + diagnóstico por sessão), o **redesign do feed** (baseline + barra de histórias), o **programa design v2** (Frentes 1–4) e a **Trilha B do lançamento** (segurança do dinheiro) estão entregues e deployados.
+- **Fase atual:** **PROGRAMA DE LANÇAMENTO FINAL** ([`frentes/lancamento-final/`](frentes/lancamento-final/README.md)) — 7 trilhas (A–G) que levam à versão final. **Planejadas inteiras** (6 specs + 6 planos); **A** (Brevo ✅ / Stripe com o usuário) e **B** ✅ fechadas; **C (dark-aware) é a próxima**.
 - **Repo:** https://github.com/limajeferson/matrizcentral · branch `master` · HEAD sincronizado com `origin/master`.
-- **Saúde:** `npx tsc --noEmit` 0 · `npm run test` **210 testes** verdes · `npx next lint` sem erros. (`npm run build` falha só ao coletar `/api/checkout` por falta de `STRIPE_SECRET_KEY` no shell — pré-existente, ver `CLAUDE.md`.)
+- **Saúde:** `npx tsc --noEmit` 0 · `npm run test` **268 testes** verdes · `npx next lint` sem erros. (`npm run build` falha só ao coletar `/api/checkout` por falta de `STRIPE_SECRET_KEY` no shell — pré-existente, ver `CLAUDE.md`.)
 - **Fonte de verdade do andamento e da próxima ação:** [`ESTADO-ATUAL.md`](ESTADO-ATUAL.md).
 - **Pendências ativas (detalhe em `ESTADO-ATUAL.md`):**
-  1. **Design v2 Frentes 4–5** (conteúdo/mídia, fórum) — 4 desenhada (spec+plano), a construir; 5 a desenhar.
-  2. Repor **`BREVO_API_KEY`** válida no Vercel (e-mails pós-compra não saem; achado do E2E de 2026-07-13).
-  3. Stripe em modo **teste** (verificação de empresa pendente); go-live financeiro depende disso.
-  4. Revisão de design da `RightSidebar` — o usuário está anotando e vai enviar.
+  1. **Trilhas C→G do lançamento** (dark-aware, fórum, conteúdo, polish, tech-debt) + auditoria final.
+  2. Stripe em modo **teste** (verificação de empresa pendente); go-live financeiro depende disso. **Único bloqueio externo real.**
+  3. Revisão de design da `RightSidebar` — o usuário está anotando e vai enviar (entra na Trilha F).
+  4. Upload da mídia gerada no NotebookLM (Spotify/YouTube) — hand-off do usuário; o Claude pluga os `embedUrl` (Trilha E).
 
 ## 🗺️ Mapa neural (leia quando…)
 
@@ -57,7 +58,7 @@
 
 **Deploy**
 - [`.env.example`](../.env.example) — env vars necessárias.
-- [`supabase/migrations/`](../supabase/migrations/) — migrations (0001→**0024**, **todas aplicadas no remoto**). **O Claude aplica sozinho** via navegador (SQL Editor; método no `CLAUDE.md` — injeção Monaco) — não é hand-off pro usuário. O MCP não tem permissão nesta conta; `supabase db push` tem histórico divergente.
+- [`supabase/migrations/`](../supabase/migrations/) — migrations (0001→**0026**, **todas aplicadas no remoto**; `0027_forum_nested_replies` chega na Trilha D). **O Claude aplica sozinho** via navegador (SQL Editor; método no `CLAUDE.md` — injeção Monaco) — não é hand-off pro usuário. O MCP não tem permissão nesta conta; `supabase db push` tem histórico divergente.
 - Auto-deploy: push na `master` → Vercel builda e publica em `www.matrizcentral.com.br`. O ESLint roda no `npm run build` do Vercel e **barra o deploy** se houver erro de lint.
 
 ## 🔀 Frentes já trabalhadas
@@ -102,15 +103,16 @@ Cada frente vive em `docs/frentes/<slug>/` com `spec.md` (o quê/porquê), `plan
   - ✅ Frente 2 (Feed: timeline infinita + posts + cards + players + transição) — deployada, revisada. Migration `0024` **aplicada** (2026-07-16).
   - ✅ Frente 3 (Comunidade: atividades swipeable + ranking mensal) — deployada, revisada (2026-07-15).
   - ✅ Frente 4 (Conteúdo/mídia: players + artigo + jornada + share) — deployada, revisada Ready-to-merge (2026-07-16) + design pass do feed.
-  - 🔜 Frente 5 (Fórum: pergunta + respostas aninhadas) — a desenhar/construir (última do programa).
+  - 🔜 Frente 5 (Fórum: pergunta + respostas aninhadas) — **absorvida pela Trilha D do lançamento-final** (já tem `spec-D-forum.md`); é lá que ela é construída.
+- 🔄 [**lancamento-final**](frentes/lancamento-final/README.md) — **programa guarda-chuva atual**: 7 trilhas (A–G) até a versão final. Planejadas inteiras; A e B fechadas; C em diante a executar. **Absorve** o que sobrou do design-v2 (Frente 5 = Trilha D) e os backlogs herdados (a11y, tech-debt, links mortos) na Trilha F/G.
 
 ## ➡️ Próximos passos (estado atual)
 
-O site **já está no ar** (`www.matrizcentral.com.br`, auto-deploy). Os próximos passos são de evolução, não de "colocar no ar":
+O site **já está no ar** (`www.matrizcentral.com.br`, auto-deploy). O que resta é o **programa de lançamento final** — a sequência está em [`frentes/lancamento-final/README.md`](frentes/lancamento-final/README.md):
 
-1. **Construir design v2 Frente 4** (plano em `docs/frentes/design-v2/plano-4-conteudo.md`, Task 1 `media.ts`); depois **desenhar+construir a Frente 5**.
-2. **Aplicar a revisão de design da `RightSidebar`** quando o usuário enviar as anotações.
-3. **Go-live financeiro:** sair do modo teste da Stripe (verificação de empresa pendente) + repor `BREVO_API_KEY` no Vercel.
+1. **Trilha C (dark-aware)** — próxima a executar (`plano-C-dark-aware.md`).
+2. Depois: **D** (fórum aninhado, migration 0027) → **E** (conteúdo, paralelo) → **F** (polish + a11y + garantia 7 dias) → **G** (tech-debt) → **auditoria final**.
+3. **Hand-offs do usuário (não bloqueiam o Claude):** Stripe live (verificação de empresa); anotações da `RightSidebar`; upload da mídia do NotebookLM.
 
 ---
 

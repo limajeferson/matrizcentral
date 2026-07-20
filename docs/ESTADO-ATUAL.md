@@ -8,24 +8,27 @@
 > Ordem de leitura ao retomar: **este arquivo → `CLAUDE.md` → o `README.md` da
 > frente ativa → o código fonte-de-verdade.**
 
-_Última atualização: 2026-07-16 (Design v2: **Frentes 1–4 no ar** — Frente 4
-Conteúdo/mídia concluída, revisada Ready-to-merge e deployada, 229 testes; +
-design pass do feed a pedido do usuário. Falta só a **Frente 5 (Fórum)**)_
+_Última atualização: 2026-07-20 (**Programa de Lançamento Final**: 7 trilhas
+planejadas inteiras; **Trilha A** fechada do lado do Claude e **Trilha B
+(segurança do dinheiro) COMPLETA e no ar** — 268 testes, migrations 0025/0026
+aplicadas. Design v2 Frentes 1–4 no ar; a Frente 5 virou a Trilha D. **Próxima:
+Trilha C (dark-aware)**.)_
 
 ---
 
 ## ⏭️ PRÓXIMA AÇÃO (leia isto primeiro ao retomar)
 
 **Estado agora:** site **no ar** em `www.matrizcentral.com.br` (Vercel, auto-deploy
-na `master`). Design v2 Frentes 1–3 **no ar**; **migration `0024` APLICADA**
-(2026-07-16, pelo Claude via navegador — publicar post no feed funciona).
-`npx tsc --noEmit` 0 · `npm run test` **210 testes** verdes · `next lint` sem
-erros. Frente ativa: **design v2 Frente 4 (Conteúdo/mídia)** — **desenhada**
-(spec-4-conteudo + plano-4-conteudo), pronta pra construir.
+na `master`). Design v2 Frentes **1–4 no ar**; banco **em dia até a `0026`**
+(0024 feed_posts, 0025 xp dedup, 0026 waitlist unique — todas aplicadas pelo
+Claude via SQL Editor). `npx tsc --noEmit` 0 · `npm run test` **268 testes**
+verdes · `next lint` sem erros. HEAD `b47f57c`, sincronizado com `origin/master`.
 
 **Frente ativa: PROGRAMA DE LANÇAMENTO FINAL** (`docs/frentes/lancamento-final/`)
 — 7 trilhas planejadas inteiras (specs+planos B–G). Trilha A (Brevo ✅; Stripe com
-o usuário) e **Trilha B (segurança do dinheiro) COMPLETAS e no ar**.
+o usuário) e **Trilha B (segurança do dinheiro) COMPLETAS e no ar**. Este programa
+**absorve** a Frente 5 do design-v2 (vira Trilha D) e os backlogs herdados de
+a11y/tech-debt (Trilhas F e G) — não há fila concorrente.
 
 **Faça, nesta ordem (retomar aqui):**
 1. **Trilha C — Dark-aware** (próxima): `plano-C-dark-aware.md`. Blog force-light
@@ -166,9 +169,9 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
   **Próxima ação:** aplicar migrations 0022/0023 no remoto → E2E (compra teste →
   auto-login → `/feed` → diagnóstico grava perfil). Depois: **SP2** (gamificação
   por sessão + aposentar `/dashboard/[token]`).
-- **Pendências de ambiente:** ✅ migrations **0022/0023 aplicadas** (SQL Editor;
-  banco em dia até a **0024**, ver `CLAUDE.md`). Ainda abertas: repor
-  `BREVO_API_KEY` válida no Vercel (401 no E2E de 2026-07-13); verificação
+- **Pendências de ambiente:** ✅ migrations **0022/0023 aplicadas**; banco em dia
+  até a **0026**. ✅ **`BREVO_API_KEY` reposta e verificada ao vivo** (2026-07-16:
+  magic link em produção → evento `delivered` no Brevo). Ainda aberta: verificação
   visual gated (`/feed` strip Advanced, `/forum` como assinante).
 - **Follow-ups SP2 (do review final):** aposentar o fluxo token (`/api/quiz`
   triagem + `/dashboard/[token]`) — hoje um comprador que force a URL antiga
@@ -248,28 +251,33 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
     logados) e `feed/page.tsx`. **Sem migration nova.** Revisão final (opus):
     1 Important corrigido (ranking escondido p/ anônimo — commit `76c15ea`);
     7 Minors deferidos (nenhum bloqueia). Commits `c27d78f`..`76c15ea`.
-  - **Frente 4 (Conteúdo/mídia) — DESENHADA (2026-07-16), a construir:**
-    spec em `spec-4-conteudo.md`, plano em `plano-4-conteudo.md` (6 tasks):
-    `media.ts` puro (parsing YouTube/Spotify, DRY c/ `VideoThumb`) →
-    `markdown.ts` puro (blocos+ids; corrige `####`/tabelas dos relatórios) →
-    `VideoPlayer`+`MusicPlayerCard` na página de conteúdo → `ArticleToc`
-    (ilha dinâmica, relatórios+blog) → `JornadaToc` (dashboard) → `ShareLinks`
-    (WhatsApp/X/LinkedIn/copiar; **invariante: nunca compartilhar URL com
-    token**). Sem migration; sem dep nova.
-  - **Frente 5 (fórum: pergunta+respostas aninhadas) — a desenhar (spec+plano)
-    e construir.**
-  - **Próxima ação:** construir a Frente 4 (Task 1: `media.ts`); aplicar a
-    revisão de design da RightSidebar quando o usuário enviar; depois Frente 5.
+  - **Frente 4 (Conteúdo/mídia) — ✅ CONCLUÍDA, revisada Ready-to-merge e no ar
+    (2026-07-16):** 6 tasks via subagent-driven-development —
+    `media.ts` puro (parsing YouTube/Spotify incl. `shorts/`, DRY c/ `VideoThumb`),
+    `markdown.ts` puro (blocos+ids; corrigiu `####`/tabelas dos relatórios),
+    `VideoPlayer`+`MusicPlayerCard` sobre embed, `ArticleToc` (ilha dinâmica,
+    relatórios+blog), `JornadaToc` (dashboard), `ShareLinks` (WhatsApp/X/LinkedIn/
+    copiar; **invariante verificado: nunca compartilhar URL com token**). Sem
+    migration; sem dep nova. Commits `bfa2b64`..`2c44b90`. **No meio, design pass
+    do feed** a pedido do usuário (`25d5566`): `content-accent.ts` (identidade por
+    tipo), metadados duração·XP, rail com rolagem calma, dialog scale+fade; fix de
+    raiz no `tailwind.config` (`content` não incluía `./src/lib`).
+  - **Frente 5 (fórum: pergunta+respostas aninhadas) — 📐 desenhada, mas
+    MIGRADA para a Trilha D** do programa de lançamento final
+    (`lancamento-final/spec-D-forum.md`). É lá que ela é construída.
+  - **Programa design-v2: encerrado como fila própria.** O que sobrou vive nas
+    trilhas do lançamento final.
 
 ## 🌿 Estado do git
 
 - **Branch ativa:** `master`, **sincronizada com `origin/master`** (HEAD
-  `1586c2e`, push feito, deploy Vercel disparado). O outro computador recebe
+  `b47f57c`, push feito, deploy Vercel disparado). O outro computador recebe
   tudo com `git pull origin master`.
-- **Inclui (nesta rodada):** design v2 Frente 3 (comunidade:
-  `src/lib/leaderboard.ts`+test + `leaderboard-data.ts` + `RankingList` +
-  `SwipeableActivityList` + montagem `RightSidebar`/`feed/page.tsx`). Antes (já
-  em `origin`): Frentes 1 (moldura) e 2 (feed, com migration `0024` a aplicar),
+- **Inclui (nesta rodada):** **Trilha B do lançamento final** — reembolso/disputa
+  revoga acesso, XP não-duplicável (`0025`), rate limiter, validação+dedupe do
+  waitlist (`0026`), testes de `entitlement-access` e `auth-session`; + os
+  **6 specs e 6 planos** das trilhas B–G. Antes (já em `origin`): design v2
+  Frentes 1–4 (moldura, feed com `0024`, comunidade, conteúdo/mídia + design pass),
   barra de histórias, feed-redesign baseline, SP1.
 - **Não versionado (local, de propósito):** `.env.local` (segredos),
   `SETUP.md`, `claude-chat.md`, `CLAUDE.local-draft.md`.
@@ -293,9 +301,24 @@ Ordem escolhida pelo usuário: **receita primeiro**.
 > se quiser o acompanhamento visual.
 >
 > **Evolução pós-roadmap (não está na tabela acima):** ✅ casa-unificada (SP1) ·
-> ✅ feed-redesign · ✅ feed-stories · 🔄 **design-v2** (frente ativa; progresso
-> por sub-frente em [`frentes/design-v2/README.md`](frentes/design-v2/README.md)
-> e no bloco "Onde paramos AGORA").
+> ✅ feed-redesign · ✅ feed-stories · ✅ **design-v2** Frentes 1–4
+> ([`frentes/design-v2/README.md`](frentes/design-v2/README.md); a Frente 5 virou
+> a Trilha D) · 🔄 **lancamento-final** (**programa ativo**, 7 trilhas até a versão
+> final — progresso em
+> [`frentes/lancamento-final/README.md`](frentes/lancamento-final/README.md)).
+
+### 🚀 Programa de Lançamento Final (fila ativa)
+
+| Trilha | O quê | Status |
+|---|---|---|
+| A | Go-live de receita (Brevo, Stripe live) | 🔄 Brevo ✅ · **Stripe live = único bloqueio externo** |
+| B | Segurança do dinheiro | ✅ **completa e no ar** (268 testes, 0025/0026 aplicadas) |
+| C | Dark-aware (blog force-light + logado→tokens) | 📐 planejada — **próxima** |
+| D | Fórum: respostas aninhadas (migration `0027`) | 📐 planejada |
+| E | Conteúdo (texto agora; mídia via NotebookLM) | 📐 planejada (paralela) |
+| F | Polish UX/a11y/CX + garantia 7 dias + herdados | 📐 planejada |
+| G | Tech-debt (SP2, DRY, dead code) | 📐 planejada |
+| — | 🔍 Auditoria final + dogfooding | 🔜 ao fim |
 
 ## 🔒 Decisões travadas (não reabrir sem motivo)
 
@@ -337,6 +360,27 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
   dentro das frentes seguintes.
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
+
+- **2026-07-20 (Opus 4.8 1M) — Follow-up: reconciliação do mapa neural +
+  revalidação dos planos C–G contra o código:** sessão de manutenção, sem código
+  novo. **(1) Drift dos docs corrigido:** `ESTADO-ATUAL` ainda dizia "210 testes,
+  Frente 4 a construir, HEAD 1586c2e" e listava a BREVO como pendente — tudo
+  reconciliado (268 testes, Frente 4 ✅, HEAD `b47f57c`, Brevo ✅). `ECOSSISTEMA`
+  atualizado (migrations 0001→0026, programa de lançamento adicionado ao mapa).
+  **Duas filas concorrentes eliminadas:** a Frente 5 do design-v2 foi
+  explicitamente **absorvida pela Trilha D**, e o README do design-v2 virou
+  histórico. Nova tabela do programa no `ESTADO-ATUAL`. **(2) Planos C–G
+  revalidados** por 2 sweeps contra o código real — nenhum invalidado, mas 6
+  correções aplicadas: caminhos errados em **C3** (subpáginas vivem sob
+  `dashboard/[token]/`) e **F1/F3**; **F5** (`Header`/`Footer` ainda usados por
+  `/oferta` → repontar, não remover); **F4** (ressalva do `text-white` em botão
+  violeta); **F8** parcialmente feito na Trilha B; **G4** (webhook é 14º site,
+  fora da migração de propósito). **(3) Achado que exige decisão do usuário:** a
+  garantia publicada (**7 dias incondicionais** nos termos) diverge do código
+  (**janela de 30 dias**) e da política (**30 dias com smart gates**) — apertar
+  tudo pra "7 condicionais" é retroativo pra quem já comprou; duas saídas
+  detalhadas no fim da Task F6. **F6 de termos/copy fica bloqueada até a escolha;
+  o resto da F6 pode seguir.** **Próximo:** Trilha C (dark-aware).
 
 - **2026-07-16 (Opus 4.8 1M) — Programa de LANÇAMENTO FINAL: planejado inteiro +
   Trilha B concluída:** brainstorm "listar tudo p/ o lançamento" → escopo travado
