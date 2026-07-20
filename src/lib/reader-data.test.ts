@@ -21,7 +21,7 @@ const RELATORIO: ReaderDoc = { ...EBOOK, contentId: "rel-1", kind: "relatorio" }
 // compra paga libera o fluxo de tryConsume). NÃO usar como "outra compra" nos
 // testes de revogação do ebook: passes liberam o ebook (ver abaixo), então
 // esses testes usam um produto que não é passe (`NON_PASS_PRODUCT_ID`).
-const OTHER_PRODUCT_ID = "advanced_pass";
+const OTHER_PRODUCT_ID = ADVANCED_PASS_PRODUCT_ID;
 const NON_PASS_PRODUCT_ID = "algum_outro_produto";
 
 /** Mock de `from("purchases").select(...).eq(...)` devolvendo `rows`. */

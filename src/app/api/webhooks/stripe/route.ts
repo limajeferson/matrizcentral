@@ -6,6 +6,7 @@ import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { generateToken, tokenAccessExpiry, refundWindowExpiry } from "@/lib/tokens";
 import { sendTokenEmail, sendPassPurchaseEmail } from "@/lib/email";
 import { classifyStripeEvent } from "@/lib/stripe-events";
+import { REGULAR_PASS_PRODUCT_ID, ADVANCED_PASS_PRODUCT_ID } from "@/data/reader-docs";
 
 /**
  * Revoga acesso após reembolso/disputa: expira o token (`tokens.valid_until`)
@@ -210,7 +211,7 @@ export async function POST(req: NextRequest) {
 
   // 3.5 Entitlement para passes (Regular/Advanced). Idempotente por stripe_payment_id.
   let entitlementWasCreated = false;
-  const plan = productId === "regular_pass" ? "regular" : productId === "advanced_pass" ? "advanced" : null;
+  const plan = productId === REGULAR_PASS_PRODUCT_ID ? "regular" : productId === ADVANCED_PASS_PRODUCT_ID ? "advanced" : null;
   if (plan) {
     const { data: existingEnt } = await supabase
       .from("entitlements").select("id").eq("stripe_payment_id", stripePaymentId).maybeSingle();

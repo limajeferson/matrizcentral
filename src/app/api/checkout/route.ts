@@ -6,6 +6,7 @@ import { getSessionUser } from "@/lib/auth-session";
 import { couponEligible, UPGRADE_COUPON_CENTS } from "@/lib/coupon";
 import { createRateLimiter } from "@/lib/rate-limit";
 import { isValidEmail } from "@/lib/email-validation";
+import { EBOOK_PRODUCT_ID } from "@/data/reader-docs";
 
 const limiter = createRateLimiter(10_000);
 
@@ -39,7 +40,7 @@ export async function POST(req: NextRequest) {
       customerEmail = sessionUser.email;
       const supabase = getSupabaseServerClient();
       const { data: ebook } = await supabase
-        .from("purchases").select("created_at").eq("user_id", sessionUser.id).eq("product_id", "ebook_llm_local")
+        .from("purchases").select("created_at").eq("user_id", sessionUser.id).eq("product_id", EBOOK_PRODUCT_ID)
         .order("created_at", { ascending: false }).limit(1).maybeSingle();
       const { data: ent } = await supabase.from("entitlements").select("id").eq("user_id", sessionUser.id).limit(1).maybeSingle();
       if (couponEligible(ebook?.created_at ?? null, !!ent)) {
