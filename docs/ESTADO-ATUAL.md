@@ -361,6 +361,33 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
 
+- **2026-07-20 (Opus 4.8 1M) — FRENTE LEITOR PROTEGIDO construída (6 tasks) — NÃO
+  PUSHADA:** brainstorm sobre reembolso de má-fé → pesquisa jurídica → decisão de
+  **resolver por produto, não por cláusula**: se o conteúdo nunca sai da
+  plataforma, a revogação vira real e a assimetria some. Docs em
+  `docs/frentes/leitor-protegido/` (spec + `politica-reembolso.md` + plano).
+  **Política travada:** dias 1–7 incondicionais (art. 49 CDC, irrenunciável;
+  Hotmart/Kiwify/Eduzz todas incondicionais), dias 8–30 garantia comercial
+  condicionada a consumo comprovado; antiabuso por identidade, não por cláusula.
+  **6 tasks via subagent-driven-development**, cada uma com revisão + fixes:
+  `reader.ts` (corte em seções) · migration `0028` + registro · `canRead`
+  (acesso revogável, fail-closed) · tela do leitor · registro de leitura ·
+  aposentar download + ponte de resgate. **322 testes**, `tsc` 0, lint limpo.
+  **As revisões pegaram furos graves, quase todos da própria spec:** revogação
+  era por usuário e não por produto; o fix disso trancou quem comprou passe;
+  `/api/leitura` gravava prova de consumo sem checar acesso (forjável); auditoria
+  com `on delete cascade` apagava a própria prova; e uma **regressão visual real**
+  (texto quase-branco sobre `GlassCard` branco no tema padrão). Achado lateral
+  do usuário verificado e corrigido: cupom de upgrade continuava valendo após
+  reembolso do Start. **20 commits LOCAIS — nada no ar.**
+  **Bloqueadores de deploy:** (1) aplicar `0028` no remoto; (2) conferir
+  `select status, product_id from purchases` — comprador legado fora de
+  `paid`/produtos conhecidos fica trancado **com o download já removido**;
+  (3) verificação visual (roteiros nos `.superpowers/sdd/task-*-report.md`).
+  **3 decisões abertas do usuário** (C2 completude da prova de consumo, C3
+  segundo caminho de entrega dos relatórios, I4 resgate não é uso único) —
+  detalhadas no ledger `.superpowers/sdd/progress.md`.
+
 - **2026-07-20 (Opus 4.8 1M) — Follow-up: reconciliação do mapa neural +
   revalidação dos planos C–G contra o código:** sessão de manutenção, sem código
   novo. **(1) Drift dos docs corrigido:** `ESTADO-ATUAL` ainda dizia "210 testes,
