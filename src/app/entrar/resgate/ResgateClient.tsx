@@ -43,12 +43,14 @@ export default function ResgateClient({ token }: { token: string | null }) {
           body: JSON.stringify({ token }),
         });
         const data = await res.json().catch(() => null);
+        // O token vale uma sessão completa de 30 dias (não só um arquivo) —
+        // não pode ficar no histórico do navegador nem vazar por Referer.
+        // Limpa a query da URL nos dois caminhos (sucesso E erro): no erro
+        // 500 a pessoa fica parada nesta tela (é o único caso em que isso
+        // importa de verdade — no sucesso a navegação cheia já troca de
+        // página um instante depois).
+        history.replaceState({}, "", "/entrar/resgate");
         if (active && res.ok && data?.ok) {
-          // O token agora vale uma sessão completa de 30 dias (não só um
-          // arquivo) — não pode ficar no histórico do navegador nem vazar
-          // por Referer. Limpa a query da URL antes de navegar e usa
-          // `replace` pra não deixar a URL com token no histórico.
-          history.replaceState({}, "", "/entrar/resgate");
           window.location.replace(READER_PATH); // navegação cheia: o cookie novo passa a valer no servidor
           return;
         }

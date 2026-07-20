@@ -2,6 +2,9 @@ import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/auth-session";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import LogoutButton from "@/components/auth/LogoutButton";
+import { READER_DOCS } from "@/data/reader-docs";
+
+const readerEbook = READER_DOCS.find((d) => d.kind === "ebook");
 
 export default async function ContaPage() {
   const user = await getSessionUser();
@@ -44,6 +47,14 @@ export default async function ContaPage() {
           <p className="text-gray-500">
             Nenhuma compra encontrada nesta conta ainda.
           </p>
+        )}
+        {readerEbook && (
+          <a
+            href={`/biblioteca/${readerEbook.slug}`}
+            className="inline-block rounded-lg bg-violet-600 px-5 py-3 font-semibold text-white"
+          >
+            Ler o guia
+          </a>
         )}
         <a
           href="/feed"

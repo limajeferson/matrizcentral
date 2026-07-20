@@ -7,7 +7,10 @@ import { createRateLimiter } from "@/lib/rate-limit";
 // Rate limit por IP (custo zero): esta rota não tem e-mail no corpo (só o
 // token), então não dá pra chavear por e-mail como em /api/resend-access —
 // a chave possível aqui é o IP de origem. 1 tentativa a cada 5s por IP é
-// suficiente pra frear varredura de tokens sem incomodar uso legítimo.
+// suficiente pra frear varredura de tokens sem incomodar uso legítimo — mas
+// o estado é em memória por instância (ver `createRateLimiter`), não
+// compartilhado entre instâncias serverless, então é mitigação de abuso,
+// não garantia distribuída.
 const limiter = createRateLimiter(5_000);
 
 /**
@@ -26,7 +29,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: false, error: "Content-Type inválido" }, { status: 415 });
   }
 
-  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || req.ip || "desconhecido";
+  // `req.ip` é preenchido pela própria Vercel (não vem de header do cliente);
+  // `x-forwarded-for` é fornecido pelo requisitante e pode ser forjado — só
+  // serve como fallback fora da Vercel (dev local, outro host).
+  const ip =
+    req.ip ||
+    req.headers.get("x-real-ip") ||
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    "desconhecido";
   if (!limiter.check(ip, Date.now())) {
     return NextResponse.json(
       { ok: false, error: "Muitas tentativas. Aguarde um instante e tente de novo." },

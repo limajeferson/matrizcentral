@@ -4,12 +4,19 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, type ComponentType } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { IconAccount, IconChevron, IconContent, IconFeed, IconForum, IconSupport, type IconProps } from "@/components/ui/icons";
+import { IconAccount, IconChevron, IconContent, IconFeed, IconForum, IconReport, IconSupport, type IconProps } from "@/components/ui/icons";
 import { CONTENT_ICON } from "@/lib/content-icons";
 import { CONTENT_HUB, type ContentType } from "@/data/content-hub";
 import { formatAvailability } from "@/lib/format-availability";
+import { READER_DOCS } from "@/data/reader-docs";
 
 type NavItem = { href: string; label: string; icon: ComponentType<IconProps> };
+
+// Slug do ebook no leitor protegido (`/biblioteca/<slug>`) — único ponto de
+// entrada logado para o leitor antes desta mudança era nenhum (ver I3 da
+// revisão final da frente "leitor protegido"). Busca por `kind` em vez de
+// hardcodar o slug: se o registro em `reader-docs.ts` mudar, este link segue.
+const readerEbook = READER_DOCS.find((d) => d.kind === "ebook");
 
 // Rotas reais do app. Não há uma página dedicada "/conteudos" — aponta para
 // o rail/lista de conteúdo dentro do próprio /feed (id="conteudos").
@@ -17,6 +24,7 @@ const NAV_MAIN: NavItem[] = [
   { href: "/feed", label: "Feed", icon: IconFeed },
   { href: "/feed#conteudos", label: "Conteúdos", icon: IconContent },
   { href: "/forum", label: "Fórum", icon: IconForum },
+  ...(readerEbook ? [{ href: `/biblioteca/${readerEbook.slug}`, label: "Ler o guia", icon: IconReport }] : []),
 ];
 
 const NAV_ACCOUNT: NavItem[] = [
