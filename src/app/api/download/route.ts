@@ -32,6 +32,9 @@ export async function GET(req: NextRequest) {
       error:
         "O download em arquivo foi aposentado — seu material agora é lido direto na plataforma.",
       resgate: `/entrar/resgate?token=${encodeURIComponent(token)}`,
+      // Segundo link: se o token do resgate já tiver vencido, quem comprou já
+      // tem conta (nasce no webhook) e pode entrar sozinho por magic link.
+      entrar: "/entrar",
     },
     { status: 410 }
   );

@@ -36,6 +36,7 @@ describe("GET /api/download (aposentado)", () => {
     expect(typeof json.error).toBe("string");
     expect(json.error.length).toBeGreaterThan(0);
     expect(json.resgate).toBe("/entrar/resgate?token=ABC1234567");
+    expect(json.entrar).toBe("/entrar");
   });
 
   it("responde 404 quando o token não existe", async () => {
