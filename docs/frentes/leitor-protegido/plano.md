@@ -291,6 +291,11 @@ export const READER_DOCS: ReaderDoc[] = [EBOOK, ...RELATORIOS];
 export function findDoc(slug: string): ReaderDoc | undefined {
   return READER_DOCS.find((d) => d.slug === slug);
 }
+
+/** Ids válidos para o livro-razão de leitura (impede poluir `reading_events`). */
+export const READER_CONTENT_IDS: ReadonlySet<string> = new Set(
+  READER_DOCS.map((d) => d.contentId),
+);
 ```
 
 - [ ] **Step 4: Gate**
@@ -587,7 +592,7 @@ git commit -m "feat(leitor): tela do leitor (secao a secao, sumario, progresso, 
 import { NextRequest, NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/auth-session";
 import { recordRead } from "@/lib/reader-data";
-import { findDoc } from "@/data/reader-docs";
+import { READER_CONTENT_IDS } from "@/data/reader-docs";
 import { createRateLimiter } from "@/lib/rate-limit";
 
 // Uma seção a cada 2s por usuário: leitura humana passa; varredura sequencial não.
@@ -606,7 +611,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "payload inválido" }, { status: 400 });
     }
     // Só aceita conteúdo que existe no registro — impede poluir o livro-razão.
-    if (!findDoc(contentId) && !READER_CONTENT_IDS.has(contentId)) {
+    if (!READER_CONTENT_IDS.has(contentId)) {
       return NextResponse.json({ error: "conteúdo desconhecido" }, { status: 400 });
     }
     if (!limiter.check(user.id, Date.now())) {
@@ -620,10 +625,6 @@ export async function POST(req: NextRequest) {
   }
 }
 ```
-
-> **Nota ao implementador:** `findDoc` recebe *slug*, não *contentId*. Adicionar em
-> `src/data/reader-docs.ts` um `export const READER_CONTENT_IDS = new Set(READER_DOCS.map(d => d.contentId));`
-> e importá-lo aqui. Ajustar a condição para usar só o Set.
 
 - [ ] **Step 2: `ReadTracker.tsx`**
 
