@@ -1,6 +1,6 @@
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { tryConsume } from "./entitlement-access";
-import type { ReaderDoc } from "@/data/reader-docs";
+import { EBOOK_PRODUCT_ID, type ReaderDoc } from "@/data/reader-docs";
 
 export type ReadDecision = { allowed: boolean; reason: string };
 
@@ -9,7 +9,7 @@ const REVOKED = new Set(["refunded", "disputed"]);
 export async function canRead(userId: string, doc: ReaderDoc): Promise<ReadDecision> {
   const supabase = getSupabaseServerClient();
   const { data: purchases, error } = await supabase
-    .from("purchases").select("status").eq("user_id", userId);
+    .from("purchases").select("status, product_id").eq("user_id", userId);
 
   // Fail-closed: sem leitura confiável do estado da compra, não libera.
   if (error || !purchases) {
@@ -17,15 +17,31 @@ export async function canRead(userId: string, doc: ReaderDoc): Promise<ReadDecis
     return { allowed: false, reason: "error" };
   }
 
+  // Intenção direta: sem NENHUMA linha em `purchases`, é "sem compra" — não
+  // "revogado" (esse é só alcançável quando existiu compra e ela morreu toda).
+  if (purchases.length === 0) return { allowed: false, reason: "no-purchase" };
+
   const active = purchases.filter((p) => !REVOKED.has(p.status));
   // Tinha compra, e toda ela foi revogada → acesso revogado (não "sem compra").
-  if (purchases.length > 0 && active.length === 0) {
+  if (active.length === 0) {
     return { allowed: false, reason: "revoked" };
   }
-  if (active.length === 0) return { allowed: false, reason: "no-purchase" };
+
+  // Pré-condição comum a QUALQUER kind, antes do ramo por tipo de doc: precisa
+  // existir ao menos uma compra com status "paid" — não basta "não revogada"
+  // (o default da coluna é "pending", que sem isto passava direto pro relatorio
+  // e chegava até o tryConsume sem nunca ter sido paga).
+  const hasAnyPaid = active.some((p) => p.status === "paid");
+  if (!hasAnyPaid) return { allowed: false, reason: "no-purchase" };
 
   if (doc.kind === "ebook") {
-    return active.some((p) => p.status === "paid")
+    // Revogação é por PRODUTO, não por usuário: uma compra paga de OUTRO
+    // produto (ex.: passe advanced) não libera o ebook se a compra do ebook
+    // em si foi reembolsada — precisa da compra paga *do ebook*.
+    const ebookPaid = active.some(
+      (p) => p.status === "paid" && p.product_id === EBOOK_PRODUCT_ID,
+    );
+    return ebookPaid
       ? { allowed: true, reason: "purchase" }
       : { allowed: false, reason: "no-purchase" };
   }
@@ -43,19 +59,33 @@ export async function getProgress(
 }
 
 /** Grava retomada (upsert) e o evento de auditoria (append-only).
- *  Falha aqui NUNCA bloqueia a leitura — só registra. */
+ *  Falha aqui NUNCA bloqueia a leitura — só registra. Por isso o corpo inteiro
+ *  roda em try/catch: `getSupabaseServerClient()` pode lançar (usa
+ *  `process.env.X!`) e a desestruturação do `Promise.all` lança se algum
+ *  resultado vier `undefined` — sem o catch, qualquer um dos dois derrubaria
+ *  a leitura do usuário, quebrando a promessa do comentário acima. */
 export async function recordRead(
   userId: string, contentId: string, slug: string, index: number,
 ): Promise<void> {
-  const supabase = getSupabaseServerClient();
-  const row = { user_id: userId, content_id: contentId, section_slug: slug, section_index: index };
-  const [{ error: pErr }, { error: eErr }] = await Promise.all([
-    supabase.from("reading_progress").upsert(
-      { ...row, updated_at: new Date().toISOString() },
-      { onConflict: "user_id,content_id" },
-    ),
-    supabase.from("reading_events").insert(row),
-  ]);
-  if (pErr) console.error("recordRead: progresso", pErr);
-  if (eErr) console.error("recordRead: evento", eErr);
+  try {
+    const supabase = getSupabaseServerClient();
+    const row = { user_id: userId, content_id: contentId, section_slug: slug, section_index: index };
+    const [{ error: pErr }, { error: eErr }] = await Promise.all([
+      supabase.from("reading_progress").upsert(
+        { ...row, updated_at: new Date().toISOString() },
+        { onConflict: "user_id,content_id" },
+      ),
+      supabase.from("reading_events").insert(row),
+    ]);
+    // `reading_progress` é cosmético (só afeta "retomar de onde parei"); já
+    // `reading_events` é a prova de consumo usada em garantia comercial e
+    // defesa de chargeback — perdê-la silenciosamente é perda de AUDITORIA,
+    // não um detalhe de UX, por isso o prefixo distinto e alertável.
+    if (pErr) console.error("recordRead: falha ao gravar progresso (cosmético)", pErr);
+    if (eErr) console.error("AUDIT-LOSS: falha ao gravar reading_events (prova de consumo)", eErr);
+  } catch (err) {
+    // Não dá pra saber qual das duas gravações falhou (ou se falhou antes de
+    // tentar) — trata como perda de auditoria por segurança (pior caso).
+    console.error("AUDIT-LOSS: recordRead lançou inesperadamente", err);
+  }
 }

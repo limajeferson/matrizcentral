@@ -1,5 +1,15 @@
 import { CONTENT_HUB } from "./content-hub";
 
+/**
+ * `product_id` gravado em `purchases` pelo webhook da Stripe para a compra do
+ * ebook (ver `PRODUTO_1.productId` em `src/lib/stripe.ts` e o `metadata.product_id`
+ * setado em `src/app/api/checkout/route.ts`). NÃO importar `@/lib/stripe` aqui:
+ * esse módulo instancia `new Stripe(process.env.STRIPE_SECRET_KEY!)` no topo,
+ * o que já causa falha de build ao coletar `/api/checkout` (ver CLAUDE.md) —
+ * duplicar a constante evita esse acoplamento.
+ */
+export const EBOOK_PRODUCT_ID = "ebook_llm_local";
+
 export type ReaderDoc = {
   slug: string;
   contentId: string;
