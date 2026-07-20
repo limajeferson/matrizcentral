@@ -60,6 +60,12 @@ export function findDoc(slug: string): ReaderDoc | undefined {
   return READER_DOCS.find((d) => d.slug === slug);
 }
 
+/** Mesmo registro, chave por `contentId` — usado por rotas que recebem o
+ *  contentId direto (ex.: `/api/leitura`) em vez do slug da URL do leitor. */
+export function findDocByContentId(contentId: string): ReaderDoc | undefined {
+  return READER_DOCS.find((d) => d.contentId === contentId);
+}
+
 /** Ids válidos para o livro-razão de leitura (impede poluir `reading_events`). */
 export const READER_CONTENT_IDS: ReadonlySet<string> = new Set(
   READER_DOCS.map((d) => d.contentId),
