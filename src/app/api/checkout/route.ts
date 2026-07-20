@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
       customerEmail = sessionUser.email;
       const supabase = getSupabaseServerClient();
       const { data: ebook } = await supabase
-        .from("purchases").select("created_at").eq("user_id", sessionUser.id).eq("product_id", EBOOK_PRODUCT_ID)
+        .from("purchases").select("created_at").eq("user_id", sessionUser.id).eq("product_id", EBOOK_PRODUCT_ID).eq("status", "paid")
         .order("created_at", { ascending: false }).limit(1).maybeSingle();
       const { data: ent } = await supabase.from("entitlements").select("id").eq("user_id", sessionUser.id).limit(1).maybeSingle();
       if (couponEligible(ebook?.created_at ?? null, !!ent)) {
