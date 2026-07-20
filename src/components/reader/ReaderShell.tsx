@@ -2,10 +2,13 @@ import Link from "next/link";
 import Markdown from "@/components/ui/Markdown";
 import type { MdBlock } from "@/lib/markdown";
 import { ReaderToc, type ReaderTocItem } from "@/components/reader/ReaderToc";
+import ReadTracker from "@/components/reader/ReadTracker";
 import Watermark from "@/components/reader/Watermark";
 import { IconArrow } from "@/components/ui/icons";
 
 export type ReaderShellProps = {
+  /** Id do conteúdo (não o slug da seção) — chave do livro-razão de leitura. */
+  contentId: string;
   docTitle: string;
   /** Usado só em `aria-label` (o título visível vem do heading dentro de `sectionBlocks`). */
   sectionTitle: string;
@@ -29,6 +32,7 @@ export type ReaderShellProps = {
  * `<Link>` real (funciona sem JS, fica no histórico do navegador).
  */
 export function ReaderShell({
+  contentId,
   docTitle,
   sectionTitle,
   sectionBlocks,
@@ -45,6 +49,7 @@ export function ReaderShell({
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-6 lg:px-6">
+      <ReadTracker contentId={contentId} slug={currentSlug} index={sectionIndex} />
       {/*
         Sem <h1> aqui de propósito: `section.blocks` já inclui o próprio bloco
         do heading "##" da seção (ver `splitIntoSections` em `src/lib/reader.ts`,

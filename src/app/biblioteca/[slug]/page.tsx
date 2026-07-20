@@ -120,6 +120,7 @@ export default async function BibliotecaLeitorPage({
       )}
 
       <ReaderShell
+        contentId={doc.contentId}
         docTitle={doc.title}
         sectionTitle={section.title}
         sectionBlocks={section.blocks}
