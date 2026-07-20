@@ -1,31 +1,39 @@
-import { parseMarkdown } from "@/lib/markdown";
+import { parseMarkdown, type MdBlock } from "@/lib/markdown";
 
-export default function Markdown({ source }: { source: string }) {
-  const blocks = parseMarkdown(source);
+/**
+ * Aceita `source` (markdown bruto, re-parseado aqui — uso histórico do blog e
+ * do dashboard) OU `blocks` já cortados (uso do leitor protegido, que nunca
+ * deve ter o markdown completo das outras seções disponível para re-parse no
+ * cliente — só os blocos da seção corrente chegam até aqui).
+ */
+export type MarkdownProps = { source: string } | { blocks: MdBlock[] };
+
+export default function Markdown(props: MarkdownProps) {
+  const blocks = "source" in props ? parseMarkdown(props.source) : props.blocks;
   return (
     <div>
       {blocks.map((block, index) => {
         if (block.kind === "heading") {
           if (block.level === 1)
             return (
-              <h1 key={index} id={block.id} className="mt-6 scroll-mt-24 text-2xl font-bold text-zinc-900">
+              <h1 key={index} id={block.id} className="mt-6 scroll-mt-24 text-2xl font-bold text-foreground">
                 {block.text}
               </h1>
             );
           if (block.level === 2)
             return (
-              <h2 key={index} id={block.id} className="mt-5 scroll-mt-24 text-xl font-bold text-zinc-900">
+              <h2 key={index} id={block.id} className="mt-5 scroll-mt-24 text-xl font-bold text-foreground">
                 {block.text}
               </h2>
             );
           if (block.level === 3)
             return (
-              <h3 key={index} id={block.id} className="mt-4 scroll-mt-24 text-lg font-semibold text-zinc-900">
+              <h3 key={index} id={block.id} className="mt-4 scroll-mt-24 text-lg font-semibold text-foreground">
                 {block.text}
               </h3>
             );
           return (
-            <h4 key={index} id={block.id} className="mt-4 scroll-mt-24 text-base font-semibold text-zinc-900">
+            <h4 key={index} id={block.id} className="mt-4 scroll-mt-24 text-base font-semibold text-foreground">
               {block.text}
             </h4>
           );
@@ -34,7 +42,7 @@ export default function Markdown({ source }: { source: string }) {
           return (
             <ul key={index} className="list-disc pl-5 space-y-1">
               {block.items.map((item, itemIndex) => (
-                <li key={itemIndex} className="text-zinc-700">
+                <li key={itemIndex} className="text-foreground/90">
                   {item}
                 </li>
               ))}
@@ -68,7 +76,7 @@ export default function Markdown({ source }: { source: string }) {
             </div>
           );
         return (
-          <p key={index} className="mt-2 text-zinc-700">
+          <p key={index} className="mt-2 text-foreground/90">
             {block.text}
           </p>
         );
