@@ -5,7 +5,7 @@
 Avaliação do paper *Experience Memory Graph* trazido pelo usuário → implementação
 literal rejeitada (produto não tem agentes em runtime; ver `spec.md`), e a
 arquitetura offline/runtime do paper aplicada ao processo: [`docs/LICOES.md`](../../LICOES.md)
-(base por gatilho) + etapa 7.5 no [`PLAYBOOK-EXECUCAO.md`](../../PLAYBOOK-EXECUCAO.md)
+(base por gatilho) + etapa 7 no [`PLAYBOOK-EXECUCAO.md`](../../PLAYBOOK-EXECUCAO.md)
 (destilação ao fim de cada frente) + injeção de lições nos briefs de task.
 
 - **EMG como conteúdo do produto** ("Loops vs Grafos") ficou como candidato da

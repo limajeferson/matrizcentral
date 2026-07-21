@@ -84,9 +84,9 @@ O subagente **não herda seu contexto**. Monte exatamente o que ele precisa:
 1. **Uma linha** dizendo onde a task se encaixa no projeto.
 2. **O caminho do brief** (`scripts/task-brief PLANO N`) — "leia isto primeiro, é
    seu requisito, com os valores exatos a usar verbatim".
-2b. **As lições do gatilho da task** (`docs/LICOES.md`): copie para o brief as
-    lições da(s) seção(ões) que a task toca (migration, acesso-dinheiro, visual…).
-    Máx. ~6; escolha as mais específicas. É a defesa contra repetir erro já pago.
+   - **2b.** **As lições do gatilho da task** (`docs/LICOES.md`): copie para o brief as
+     lições da(s) seção(ões) que a task toca (migration, acesso-dinheiro, visual…).
+     Máx. ~6; escolha as mais específicas. É a defesa contra repetir erro já pago.
 3. **Interfaces das tasks anteriores** que o brief não pode conhecer (assinaturas
    reais, não presumidas).
 4. **Sua resolução de qualquer ambiguidade** que você notou no brief.
