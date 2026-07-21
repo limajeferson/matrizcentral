@@ -61,6 +61,9 @@ já migrado).
 - **`npm run build` FALHA** ao coletar `/api/checkout`: `src/lib/stripe.ts` instancia `new Stripe(process.env.STRIPE_SECRET_KEY!)` no topo do módulo e a chave não existe no shell de build. É pré-existente e não relacionado à maioria das mudanças.
 - **Gate real:** `npx tsc --noEmit` (exit 0) + `npm run test`. Para conferir o visual, rode o app (`npm run dev`) — não confie só no build.
 - **Vitest roda em `environment: "node"`** (sem jsdom/testing-library) → testes automatizados só para **lógica pura** em `src/lib`/`src/data`. Componentes são verificados rodando o app (dev + navegador/Playwright), extraindo a lógica testável para helpers puros.
+- **Lições de erros já pagos:** [`docs/LICOES.md`](docs/LICOES.md) — consultar a
+  seção do gatilho antes de tasks de migration/acesso/deploy; alimentar ao fechar
+  cada frente (etapa 7 do playbook).
 
 ## CSS por página (manter escopo)
 

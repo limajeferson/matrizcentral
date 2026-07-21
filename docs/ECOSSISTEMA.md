@@ -42,6 +42,8 @@
 **Specs & Plans (por frente)** — ver lista em "Frentes já trabalhadas".
 - [`docs/frentes/<slug>/spec.md`](frentes/) — o "porquê/o quê" de cada frente.
 - [`docs/frentes/<slug>/plano*.md`](frentes/) — o "como" (passo a passo).
+- [`PLAYBOOK-EXECUCAO.md`](PLAYBOOK-EXECUCAO.md) — método: skills, agentes, modelos, gate, ordem de deploy.
+- [`LICOES.md`](LICOES.md) — lições destiladas de erros reais, por gatilho; injetar nos briefs (etapa 7).
 
 **Memória automática (fora do repo — LOCAL de cada máquina, NÃO viaja no `git pull`)**
 - O usuário trabalha de **dois computadores**: **`Grazi`** (da esposa, em uso agora)
