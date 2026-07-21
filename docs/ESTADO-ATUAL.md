@@ -31,8 +31,13 @@ na `master`). Design v2 Frentes **1–4 no ar**; **frente leitor-protegido NO AR
 todas aplicadas pelo Claude). Não há migration no disco esperando: a `0027` é da
 Trilha D e ainda não foi criada.
 `npx tsc --noEmit` 0 · `npm run test` **322 testes** verdes (54 arquivos).
-✅ **`master` sincronizada com `origin/master`** (`c50b667`) — o bloqueio de push
+✅ **`master` sincronizada com `origin/master`** — o bloqueio de push
 que valeu de 20/07 até agora **acabou**.
+✅ **Frente `memoria-licoes` CONCLUÍDA (2026-07-21):** `docs/LICOES.md` (34 lições
+L-001..L-034 mineradas dos reports/docs reais, por gatilho) + etapa 7 (destilar
+lições) no fluxo do PLAYBOOK + item 2b (injetar lições nos briefs). Revisão final
+opus = Ready to merge. **Ao montar qualquer brief de task, consultar a seção do
+gatilho em `LICOES.md`.**
 
 **➡️ PRÓXIMA FRENTE: Trilha C — Dark-aware** (`lancamento-final/plano-C-dark-aware.md`).
 Blog force-light (Bucket A) + área logada→tokens semânticos (Bucket B). Começar por
@@ -522,6 +527,28 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
   ver [hardening-criticos](frentes/hardening-criticos/README.md).
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
+
+- **2026-07-21 (Fable 5) — FRENTE MEMORIA-LICOES: EMG avaliado e aplicado ao
+  processo (não ao produto):** o usuário trouxe a análise do paper *Experience
+  Memory Graph* (NotebookLM) perguntando se cabia no ecossistema. Brainstorm →
+  decisão registrada na spec: **implementação literal rejeitada** (o produto não
+  tem agentes em runtime; grafos/FGW/banco vetorial resolveriam problema que não
+  temos) e a **arquitetura offline/runtime do paper adotada para o fluxo de
+  trabalho**: nasce [`docs/LICOES.md`](LICOES.md) — **34 lições** (L-001..L-034)
+  mineradas por subagentes de 43 reports do SDD + docs de continuidade (39
+  candidatas → 4 fusões, 1 corte), cada uma com Fonte auditada por revisão;
+  PLAYBOOK ganha a **etapa 7 (destilar lições)** no fluxo de frente e o item
+  **2b** (injetar lições do gatilho nos briefs); ponteiros no CLAUDE.md e
+  ECOSSISTEMA. Executada via SDD (5 tasks, review por task com 2 loops de fix —
+  citações de fonte e resíduo "7.5" — e revisão final opus **Ready to merge**).
+  **EMG como conteúdo** ("Loops vs Grafos") registrado como candidato da Trilha E.
+  ⚠️ Registrado no README da frente: o insumo anterior da Trilha E (diálogo das
+  26 fontes) foi **sobrescrito** no `texto-para-salvar-prompt-temporario.md` pela
+  discussão do EMG — a tabela dos 5 artefatos sobrevive no README da
+  lancamento-final; pedir reexport ao usuário na Trilha E. Follow-up desta
+  sessão: CLAUDE.md/PLAYBOOK reconciliados com o caminho SQL novo
+  (`npx supabase db query --linked`, descoberto de manhã). Gate: docs-only,
+  `tsc` 0 · 322 testes. **Próximo: Trilha C (dark-aware).**
 
 - **2026-07-21 (Opus 4.8 1M) — LEITOR PROTEGIDO NO AR + 2 ajustes de preço na
   landing:** fecho da retomada anterior. Visual conferido pelo usuário no dev

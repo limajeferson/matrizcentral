@@ -60,7 +60,7 @@
 
 **Deploy**
 - [`.env.example`](../.env.example) — env vars necessárias.
-- [`supabase/migrations/`](../supabase/migrations/) — migrations (0001→**0026**, **todas aplicadas no remoto**; `0027_forum_nested_replies` chega na Trilha D). **O Claude aplica sozinho** via navegador (SQL Editor; método no `CLAUDE.md` — injeção Monaco) — não é hand-off pro usuário. O MCP não tem permissão nesta conta; `supabase db push` tem histórico divergente.
+- [`supabase/migrations/`](../supabase/migrations/) — migrations (0001→**0028**, **todas aplicadas no remoto**; `0027_forum_nested_replies` chega na Trilha D). **O Claude aplica sozinho** via `npx supabase db query --linked -f <arquivo>` (projeto linkado; fallback navegador/Monaco — método no `CLAUDE.md`) — não é hand-off pro usuário. O MCP não tem permissão nesta conta; `supabase db push` tem histórico divergente.
 - Auto-deploy: push na `master` → Vercel builda e publica em `www.matrizcentral.com.br`. O ESLint roda no `npm run build` do Vercel e **barra o deploy** se houver erro de lint.
 
 ## 🔀 Frentes já trabalhadas

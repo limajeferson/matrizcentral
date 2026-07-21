@@ -75,12 +75,13 @@ já migrado).
 
 - **Custo zero:** sem dependências npm novas e sem assets externos; só tiers gratuitos. Animações/efeitos com Canvas 2D nativo, CSS e libs já instaladas (framer-motion).
 - **Supabase — o Claude aplica SQL/migrations sozinho (não é pendência do usuário).**
-  Caminho preferido: **navegador** (Chrome já logado no dashboard → SQL Editor do
-  projeto `rzolsrzyafijaogjcjjb` → query nova; digitar direto no Monaco NÃO foca —
-  injetar o SQL via `javascript_tool` com `monaco.editor.getModels()[última].setValue(...)`
-  e clicar Run; verificar com um `select` em seguida). Alternativa: CLI
-  `npx supabase` (devDependency 2.x) — mas `supabase db push` **falha** (histórico
-  de migrations divergente) e o login do CLI não existe em toda máquina. Migration
-  nova: criar o arquivo em `supabase/migrations/` **e** aplicar no remoto na mesma sessão.
+  Caminho preferido (desde 2026-07-21): **`npx supabase db query --linked`**
+  (aceita `-f arquivo.sql`; projeto `rzolsrzyafijaogjcjjb` já linkado/logado nesta
+  máquina; verificar com um `select` em seguida). Fallback: **navegador** (Chrome
+  logado → SQL Editor; digitar no Monaco NÃO foca — injetar via `javascript_tool`
+  com `monaco.editor.getModels()[última].setValue(...)` e Run). O que NÃO funciona:
+  MCP do Supabase (sem permissão nesta conta) e `supabase db push` (histórico de
+  migrations divergente). Migration nova: criar o arquivo em `supabase/migrations/`
+  **e** aplicar no remoto na mesma sessão.
 - **Windows / Git Bash:** caminhos com `(marketing)` precisam de aspas. Dev server: a porta 3000 costuma estar ocupada e o Next pula para 3001/3002 — force com `npm run dev -- -p 3000`.
 - Comunicar em **português do Brasil**.

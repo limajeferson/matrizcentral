@@ -172,21 +172,30 @@ sem publicar. Foi o que foi feito com a branch `leitor-protegido`.
 
 ## 🗄️ Supabase — como aplicar SQL
 
-**Caminho válido: navegador.** Chrome já logado → SQL Editor do projeto
-`rzolsrzyafijaogjcjjb` → query nova. Digitar no Monaco **não foca** — injetar via
-`javascript_tool`:
+**Caminho preferido (desde 2026-07-21): CLI linkado.**
+
+```bash
+npx supabase db query --linked "<SQL>"          # query direta
+npx supabase db query --linked -f caminho.sql   # aplicar arquivo de migration
+```
+
+O projeto `rzolsrzyafijaogjcjjb` já está linkado e logado nesta máquina.
+**Sempre verificar com um `select` depois.**
+
+**Fallback: navegador.** Chrome logado → SQL Editor → query nova. Digitar no
+Monaco **não foca** — injetar via `javascript_tool`:
 
 ```js
 monaco.editor.getModels()[<último>].setValue(`<SQL>`)
 ```
 
-…e clicar Run. **Sempre verificar com um `select` depois.**
+…e clicar Run.
 
 **O que NÃO funciona (testado, não presumido):**
 
 | Caminho | Estado |
 |---|---|
-| MCP do Supabase | ❌ **Sem permissão nesta conta** (testado 2026-07-20) |
+| MCP do Supabase | ❌ **Sem permissão nesta conta** (retestado 2026-07-20 à noite) |
 | `npx supabase db push` | ❌ Falha — histórico de migrations divergente |
 
 Migration nova: criar o arquivo em `supabase/migrations/` **e** aplicar no remoto
