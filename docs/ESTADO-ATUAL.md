@@ -48,11 +48,14 @@ reconfirmado nesta sessão, não é suposição.)
   Só **4 linhas**, todas `paid`, todas de **11–14/07** (janela de
   desenvolvimento, Stripe sempre em **modo teste** — o modo live nunca foi
   aberto). Distribuição: 2× `advanced_pass`, 1× `ebook_llm_local`, 1× **`ebook`**.
-  ⚠️ **`ebook` é `product_id` legado** e não bate com `EBOOK_PRODUCT_ID`
-  (`ebook_llm_local`) nem com `PASS_PRODUCT_IDS` → `canRead` devolve
-  `no-purchase`. É **conta de teste**, não cliente. **Pendente:** normalizar
-  (`update purchases set product_id='ebook_llm_local' where product_id='ebook'`)
-  — o classificador do harness **bloqueou o UPDATE** por ser tabela de dinheiro.
+  `ebook` era `product_id` **legado** e não batia com `EBOOK_PRODUCT_ID`
+  (`ebook_llm_local`) nem com `PASS_PRODUCT_IDS` → `canRead` devolvia
+  `no-purchase` (era conta de teste, não cliente). ✅ **NORMALIZADO** (com
+  autorização explícita do usuário — o classificador bloqueia UPDATE em tabela
+  de dinheiro por padrão): `update purchases set product_id='ebook_llm_local'
+  where product_id='ebook' and status='paid'`. Reauditado: **2× `advanced_pass`
+  + 2× `ebook_llm_local`, todas `paid`** — nenhum `product_id` desconhecido
+  restante.
 - **0.3 🟡 Invariante crítico VERIFICADO por construção** (o navegador
   automatizável não está disponível nesta sessão): em
   `src/app/biblioteca/[slug]/page.tsx` o array `sections` (documento inteiro)
@@ -519,9 +522,10 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
   **Auditoria de `purchases`:** só 4 linhas, todas `paid`, todas da janela de
   desenvolvimento (11–14/07) — **Stripe nunca saiu do modo teste, então não existe
   cliente real**; o risco caro que travava o push **não se materializou**. Achado:
-  1 linha com `product_id='ebook'` (legado) que `canRead` não reconhece → o UPDATE
-  de normalização foi **bloqueado pelo classificador** (tabela de dinheiro), fica
-  para o usuário liberar. (3) **Invariante do leitor provado por construção:**
+  1 linha com `product_id='ebook'` (legado) que `canRead` não reconhecia →
+  **normalizada para `ebook_llm_local`** com autorização explícita do usuário
+  (o classificador bloqueia UPDATE em tabela de dinheiro por padrão); reauditado,
+  só produtos conhecidos. (3) **Invariante do leitor provado por construção:**
   `sections` (doc inteiro) nunca sai do servidor; `ReaderShell` só recebe
   `section.blocks` + `tocItems` sem corpo — logo o markdown das outras seções não
   entra no payload RSC. Gate revalidado: `tsc` 0 · 322 testes. **Falta:** olho
