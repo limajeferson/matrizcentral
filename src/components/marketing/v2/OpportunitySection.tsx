@@ -23,7 +23,9 @@ export default function OpportunitySection() {
           </Reveal>
           <Reveal delay={0.3}>
             <div className="mc-opportunity-compare">
-              <div>
+              {/* Lado "que você NÃO vai pagar" — mesmo tratamento do
+                  comparativo do `PricingV2`. Ver `.mc-price-alt`. */}
+              <div className="mc-price-alt">
                 <span className="mc-mono mc-opportunity-label">Hoje</span>
                 <p className="mc-opportunity-value mc-display">
                   <AnimatedCounter value={annualSpendBRL()} format={formatBRL} />
