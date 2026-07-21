@@ -71,10 +71,48 @@ a11y/tech-debt (Trilhas F e G) — não há fila concorrente.
 um brainstorm sobre reembolso de má-fé. Ela **precede** a retomada das trilhas
 porque já está construída e só falta destravar.
 
+> 🔓 **Você tem autonomia — comece a trabalhar, não pergunte por onde começar.**
+> Método, agentes e modelos por frente: [`PLAYBOOK-EXECUCAO.md`](PLAYBOOK-EXECUCAO.md).
+
 **Faça, nesta ordem (retomar aqui):**
-0. **DESTRAVAR A FRENTE LEITOR-PROTEGIDO** (ver o bloco 🚨 acima): aplicar `0028`
-   → conferir `purchases` legadas → verificação visual → **então** `git push`.
-   Precisa do navegador. Enquanto não destravar, **não pushar**.
+
+### 0. FRENTE ATIVA — destravar o leitor-protegido (comece por aqui, sem perguntar)
+
+Não precisa de skill de processo; é operação. **Roteiro exato:**
+
+**0.1 — Aplicar a migration.** Abrir o SQL Editor do projeto `rzolsrzyafijaogjcjjb`
+no Chrome (já logado), colar o conteúdo de `supabase/migrations/0028_reading_progress.sql`
+via `monaco.editor.getModels()[<último>].setValue(...)` e Run. Verificar:
+```sql
+select tablename, relrowsecurity from pg_tables t
+  join pg_class c on c.relname = t.tablename
+  where tablename in ('reading_progress','reading_events');
+```
+Esperado: 2 linhas, `relrowsecurity = true`.
+
+**0.2 — Auditar compras legadas** (o risco mais caro):
+```sql
+select status, product_id, count(*) from purchases group by 1,2 order by 3 desc;
+```
+Toda linha precisa ser `status='paid'` com `product_id` ∈ {`ebook_llm_local`,
+`regular_pass`, `advanced_pass`}. **Qualquer coisa fora disso = cliente que pagou
+e ficará sem acesso** (o download já foi aposentado). Corrigir os dados antes de
+seguir. Se aparecer algo inesperado, **avisar o usuário** — é dinheiro de cliente.
+
+**0.3 — Verificação visual.** `npm run dev -- -p 3000`, logado. Roteiros numerados
+em `.superpowers/sdd/task-4-report.md`, `task-5-report.md`, `task-6-report.md`.
+O item crítico: `Ctrl+U` no leitor e confirmar que **o markdown das outras seções
+não aparece no HTML**.
+
+**0.4 — Push.** `git push origin master`. (O trabalho já está salvo na branch
+remota `leitor-protegido` — a `master` é o deploy.)
+
+**0.5 — Decidir o C3** (última decisão aberta da frente): os relatórios ainda têm
+um segundo caminho de entrega sem registro. Recomendação registrada: fechar junto
+com a Trilha G. Ver `frentes/leitor-protegido/README.md`.
+
+> ⚠️ **Se o navegador não estiver disponível:** não pushe. Diga isso ao usuário,
+> pule para a Trilha C (que não depende de banco) e volte ao 0.1 quando der.
 1. **Trilha C — Dark-aware**: `plano-C-dark-aware.md`. Blog force-light
    (Bucket A) + área logada→tokens semânticos (Bucket B). Começar por `glass-card`
    (cascateia 6 telas) + `dashboard/layout` + `Markdown`. Verificação visual é o gate.

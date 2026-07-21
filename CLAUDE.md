@@ -3,6 +3,28 @@
 Contexto para sessões do Claude Code neste repositório. Mantenha conciso.
 
 > **› Contexto completo e navegação:** leia [`docs/ECOSSISTEMA.md`](docs/ECOSSISTEMA.md) primeiro — é o hub que indexa specs, arquitetura, memória e o fluxo de deploy.
+>
+> **› Como executar (método, agentes, modelos, portão de qualidade):**
+> [`docs/PLAYBOOK-EXECUCAO.md`](docs/PLAYBOOK-EXECUCAO.md).
+
+## Autonomia (regra permanente)
+
+O usuário autoriza, de forma padrão e recorrente: **atue com iniciativa, decida o
+que for melhor e entregue — sem pedir permissão a cada passo.** Ao retomar, leia o
+estado e **comece a trabalhar**; não pergunte "por onde começo?". Apresente
+soluções decididas com o porquê em uma linha, não menus de opções.
+
+Só vire pergunta o que é genuinamente do usuário: **dinheiro, jurídico,
+posicionamento de marca, escopo de produto**. E há quatro limites que a autonomia
+não remove:
+
+1. **Nunca digitar chave/credencial** em campo nenhum, mesmo autorizado.
+2. **Nunca `git push` na `master`** com pré-requisito de deploy pendente (a Vercel
+   publica automático) — ver "Ordem de deploy" no playbook.
+3. **Nunca publicar termos/política** com efeito sobre o cliente sem o usuário ver.
+4. **Nunca agir em conta de terceiro** (Stripe live, Spotify, YouTube).
+
+Detalhe e casos: [`docs/PLAYBOOK-EXECUCAO.md`](docs/PLAYBOOK-EXECUCAO.md).
 
 ## Retomando trabalho entre sessões
 
