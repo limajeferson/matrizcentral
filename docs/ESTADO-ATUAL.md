@@ -8,10 +8,10 @@
 > Ordem de leitura ao retomar: **este arquivo → `CLAUDE.md` → o `README.md` da
 > frente ativa → o código fonte-de-verdade.**
 
-_Última atualização: 2026-07-20 (auditoria de continuidade + frente
-**leitor-protegido** construída e **NÃO pushada**. Estado: **322 testes**, `tsc` 0,
-**23 commits locais**. Trilhas A e B no ar; C–G planejadas. ⚠️ **Leia o bloco 🚨
-antes de qualquer `git push`.**)_
+_Última atualização: 2026-07-20 (frente **leitor-protegido** DESTRAVADA: migration
+`0028` aplicada no remoto e auditoria de `purchases` feita — **sem cliente real em
+risco**. Estado: **322 testes**, `tsc` 0, **25 commits locais**. Falta só o `git
+push` (aguardando o olho humano no leitor). Trilhas A e B no ar; C–G planejadas.)_
 
 > **Convenção deste arquivo:** as seções de **estado** (`PRÓXIMA AÇÃO`,
 > `Estado do git`, tabela de frentes) são **sobrescritas** a cada atualização —
@@ -33,9 +33,44 @@ Claude via SQL Editor); **`0028` criada e NÃO aplicada** (ver bloco 🚨 abaixo
 
 ---
 
-## 🚨 PARE — ESTADO NÃO-SINCRONIZADO (2026-07-20)
+## ✅ BLOQUEADORES DO LEITOR — RESOLVIDOS (2026-07-20, sessão da noite)
 
-**Há 23 commits LOCAIS, não pushados. NÃO DÊ `git push` antes de ler isto.**
+**Caminho novo e definitivo para SQL no remoto:** o CLI 2.x tem
+**`npx supabase db query --linked`** (com `-f arquivo.sql`) — o projeto já está
+linkado e logado nesta máquina. **Não precisa mais do navegador/Monaco** para
+aplicar migration ou rodar select. (O **MCP do Supabase segue sem permissão** —
+reconfirmado nesta sessão, não é suposição.)
+
+- **0.1 ✅ Migration `0028` APLICADA no remoto** via `db query --linked -f`.
+  Verificado: `reading_progress` e `reading_events` existem, ambas com
+  `relrowsecurity = true`. **Banco agora em dia até a `0028`.**
+- **0.2 ✅ Auditoria de `purchases` FEITA — nenhum cliente real em risco.**
+  Só **4 linhas**, todas `paid`, todas de **11–14/07** (janela de
+  desenvolvimento, Stripe sempre em **modo teste** — o modo live nunca foi
+  aberto). Distribuição: 2× `advanced_pass`, 1× `ebook_llm_local`, 1× **`ebook`**.
+  ⚠️ **`ebook` é `product_id` legado** e não bate com `EBOOK_PRODUCT_ID`
+  (`ebook_llm_local`) nem com `PASS_PRODUCT_IDS` → `canRead` devolve
+  `no-purchase`. É **conta de teste**, não cliente. **Pendente:** normalizar
+  (`update purchases set product_id='ebook_llm_local' where product_id='ebook'`)
+  — o classificador do harness **bloqueou o UPDATE** por ser tabela de dinheiro.
+- **0.3 🟡 Invariante crítico VERIFICADO por construção** (o navegador
+  automatizável não está disponível nesta sessão): em
+  `src/app/biblioteca/[slug]/page.tsx` o array `sections` (documento inteiro)
+  **nunca sai do servidor** — o `ReaderShell` recebe só `sectionBlocks`
+  (= `section.blocks`, seção corrente) e `tocItems` (`{slug,title,index}`, sem
+  corpo). Como props de componente atravessam pro payload RSC, essa é a prova
+  real do "Ctrl+U" — **markdown das outras seções não pode aparecer no HTML**.
+  **Falta só o olho humano** no visual (aparência/contraste), com
+  `npm run dev -- -p 3000`; roteiros em `.superpowers/sdd/task-*-report.md`.
+
+**➡️ Próxima ação: `git push origin master`** (25 commits) assim que o visual for
+conferido. Gate revalidado nesta sessão: `tsc` 0 · **322 testes** verdes.
+
+---
+
+## 🚨 (histórico) PARE — ESTADO NÃO-SINCRONIZADO (2026-07-20, manhã)
+
+**Há 25 commits LOCAIS, não pushados. NÃO DÊ `git push` antes de ler isto.**
 
 A frente **[leitor-protegido](frentes/leitor-protegido/README.md)** foi construída
 inteira (6 tasks, revisadas, 322 testes) mas **não está no ar de propósito**. A
@@ -473,6 +508,24 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
   ver [hardening-criticos](frentes/hardening-criticos/README.md).
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
+
+- **2026-07-20 (Opus 4.8 1M) — LEITOR PROTEGIDO DESTRAVADO (2 dos 3 bloqueadores
+  caíram) + descoberto o caminho definitivo de SQL:** retomada. O MCP do Supabase
+  foi **reconfirmado sem permissão**, e o navegador não estava disponível — mas o
+  CLI 2.x tem **`npx supabase db query --linked`** (aceita `-f arquivo.sql`), com o
+  projeto já linkado/logado. **Isso aposenta a dependência do navegador/Monaco
+  para migrations.** (1) **`0028` aplicada e verificada** (`reading_progress` +
+  `reading_events`, RLS `true` nas duas) → banco em dia até a `0028`. (2)
+  **Auditoria de `purchases`:** só 4 linhas, todas `paid`, todas da janela de
+  desenvolvimento (11–14/07) — **Stripe nunca saiu do modo teste, então não existe
+  cliente real**; o risco caro que travava o push **não se materializou**. Achado:
+  1 linha com `product_id='ebook'` (legado) que `canRead` não reconhece → o UPDATE
+  de normalização foi **bloqueado pelo classificador** (tabela de dinheiro), fica
+  para o usuário liberar. (3) **Invariante do leitor provado por construção:**
+  `sections` (doc inteiro) nunca sai do servidor; `ReaderShell` só recebe
+  `section.blocks` + `tocItems` sem corpo — logo o markdown das outras seções não
+  entra no payload RSC. Gate revalidado: `tsc` 0 · 322 testes. **Falta:** olho
+  humano no visual (dev server subido em :3000) e o `git push` dos 25 commits.
 
 - **2026-07-20 (Opus 4.8 1M) — FRENTE LEITOR PROTEGIDO construída (6 tasks) — NÃO
   PUSHADA:** brainstorm sobre reembolso de má-fé → pesquisa jurídica → decisão de
