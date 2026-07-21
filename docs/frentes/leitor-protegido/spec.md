@@ -96,14 +96,24 @@ Compradores atuais têm **token, não conta**. Aposentar o download sem ponte
 quebra acesso de cliente pagante.
 
 - `/entrar/resgate?token=<token>` valida o token e vincula/cria a conta do e-mail
-  da compra, criando sessão. Uso único.
+  da compra, criando sessão.
+- ⚠️ **NÃO é uso único** (divergência consciente registrada em 2026-07-20): o
+  `/dashboard/[token]` ainda depende do token, então invalidá-lo aqui quebraria o
+  fluxo antigo. **Efeito colateral aceito e rastreado:** como `tokenAccessExpiry`
+  é de 365 dias, uma URL de dashboard vazada permite gerar sessões de 30 dias
+  repetidamente por até um ano. **Fechar quando a Trilha G aposentar o fluxo de
+  token** — aí o resgate pode consumir o token.
 - Enquanto houver tokens válidos, `/api/download` responde **410 Gone** com
   instrução e link para o resgate — não 404 mudo.
 
 ### Marca d'água
 
-Rodapé discreto por seção, server-rendered: e-mail do comprador + código curto da
-compra. Barato, legal, e mata compartilhamento casual sem atrapalhar a leitura.
+Rodapé discreto por seção, server-rendered: e-mail do comprador + identificador
+curto. Barato, legal, e mata compartilhamento casual sem atrapalhar a leitura.
+
+> **Implementado com `userId`, não com código da compra** (2026-07-20): a tela do
+> leitor resolve a sessão, não a compra — buscar a compra só para a marca d'água
+> seria uma consulta a mais sem ganho. Atribuição é equivalente.
 
 ### Antiabuso
 

@@ -55,6 +55,32 @@ Pesquisa de 2026-07-20 (fontes no log da sessão):
 não abriu o conteúdo não tem do que se arrepender depois do prazo legal — para
 esse caso, a janela é a legal (dias 1–7).
 
+### ⚠️ Limite do sinal (achado da revisão final, 2026-07-20) — REGRA VINCULANTE
+
+**Ausência de evento NÃO é prova de não-consumo.** O registro de leitura depende
+de JavaScript no cliente (`ReadTracker`), enquanto a leitura em si é
+server-rendered e navega por `<Link>` real. Consequência: quem lê com **JS
+desligado, bloqueador de script, leitor de tela agressivo** ou por outro cliente
+HTTP consome o material inteiro e gera **zero eventos**.
+
+Se a política usasse a ausência de eventos como gate automático, ela produziria
+**falso negativo contra o cliente que pagou** — exatamente o oposto do objetivo
+declarado ("garantir também a satisfação do usuário").
+
+**Portanto:**
+1. O livro-razão é **evidência corroborante**, nunca portão único.
+2. Registro vazio → tratar como **inconclusivo**, e a decisão pende **a favor do
+   consumidor** (concede o reembolso).
+3. O livro-razão serve para **sustentar a negativa quando há consumo comprovado**
+   e para **defesa em chargeback** — não para presumir má-fé no silêncio.
+4. Qualquer texto de termos que venha a ser publicado deve refletir isso; não
+   prometer aferição automática que o sistema não faz de forma completa.
+
+> Mover o registro para o servidor **não** resolve sozinho: o `<Link>` do Next
+> faz prefetch (hover/viewport), então gravar no render produziria **eventos
+> falsos** — pior que o silêncio. Se algum dia for feito, exige guarda contra
+> prefetch (`Next-Router-Prefetch` / `purpose: prefetch`).
+
 **Limiar exato: a definir na frente do fluxo de reembolso**, com dados reais de
 leitura em mãos. Travar um número agora seria chute. O limiar deve ser
 **publicado nos termos** quando definido.
