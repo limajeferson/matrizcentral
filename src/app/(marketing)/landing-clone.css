@@ -780,17 +780,24 @@
 }
 
 /* ---------- TAG ANIMADA "MAIS PROCURADO" ---------- */
-/* Tag "Mais procurado" — fonte em cores quentes que trocam continuamente */
+/* Tag "Mais procurado" — a PÍLULA carrega as cores quentes que trocam
+   continuamente; a fonte fica branca por cima. (Antes era o inverso, via
+   `background-clip: text`: a fonte recebia o gradiente e a caixa ficava
+   transparente, o que apagava o selo sobre o card claro.)
+   Stops escurecidos de propósito em relação ao gradiente original — o
+   #ffc21a de antes era claro demais para segurar texto branco — e o
+   `text-shadow` garante a leitura durante a volta inteira da animação. */
 .lp-guide .plan-tag.plan-tag-hot {
   background: linear-gradient(
     90deg,
-    #ff3d3d, #ff7a1a, #ffc21a, #ff5e8a, #ff3d3d
+    #d92626, #e0620a, #c78406, #d92a63, #d92626
   );
   background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  -webkit-text-fill-color: #fff;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
   font-weight: 700;
   animation: mc-hot-shift 4s linear infinite;
 }
