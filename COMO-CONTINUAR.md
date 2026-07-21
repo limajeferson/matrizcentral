@@ -57,19 +57,41 @@ saber o que cada um faz:
 | `COMO-CONTINUAR.md` | Este arquivo — o guia pra você. |
 | `prompt-pedido.md` | Seu registro manual do pedido original (histórico). |
 
+## ⚠️ ATENÇÃO — tem trabalho pronto que ainda NÃO está no ar (20/07/2026)
+
+Normalmente tudo que o Claude faz vai pro ar sozinho. **Desta vez não.** Existe
+uma frente inteira construída e revisada (o **leitor protegido**, que substitui o
+download do ebook por leitura dentro da plataforma) parada de propósito no seu
+computador, esperando **três coisas que precisam do navegador**:
+
+1. Aplicar uma mudança no banco (a migration `0028`);
+2. Conferir se alguma compra antiga tem dado fora do padrão — se tiver, essa
+   pessoa **pagou e ficaria sem acesso**;
+3. Olhar as telas novas no navegador (nunca foram vistas por ninguém).
+
+**O que fazer:** abra o Claude Code e diga **"continue de onde paramos"**. Ele lê
+o estado, vê esses bloqueios e conduz. Se o navegador estiver funcionando, ele
+resolve os dois primeiros sozinho.
+
+**O que NÃO fazer:** não peça pra "subir" ou "fazer push" antes disso. Subir agora
+coloca no ar um leitor que *parece* funcionar mas não registra nada — e o registro
+é o que sustenta a regra da garantia.
+
 ## 🗺️ Onde o projeto está (resumo em 1 parágrafo)
 
 O site **já está no ar** em `www.matrizcentral.com.br` (deploy automático a cada
-push na `master`). Já foram entregues: a auditoria + conserto dos 4 críticos, e
-**todas as 6 frentes do roadmap** (login real, assinaturas, feed, fórum, blog,
-suporte/CRM), mais a evolução da plataforma (casa unificada/SP1, redesign do feed
-com tema dark e barra de histórias). Agora está em andamento o **programa "design
-v2"** — 17 melhorias de design a partir de modelos do 21st.dev, em 5 frentes: as
-**Frentes 1 (Moldura), 2 (Feed) e 3 (Comunidade) já estão no ar**; a **4
-(Conteúdo/mídia) está desenhada** e a 5 vem depois. Migrations do banco não são
-mais pendência sua — o Claude aplica sozinho (via navegador; todas em dia até a
-`0024`). A próxima ação exata está sempre em `docs/ESTADO-ATUAL.md` — é só dar
-**"continue de onde paramos"**.
+push na `master`). Já foram entregues: a auditoria + os 4 críticos, **todas as 6
+frentes do roadmap** (login, assinaturas, feed, fórum, blog, suporte/CRM), a
+evolução da plataforma (casa unificada/SP1, redesign do feed, histórias) e o
+**programa "design v2" (Frentes 1 a 4)**. Agora o projeto está no **programa de
+lançamento final** — 7 trilhas (A a G) até a versão final: a **A** (e-mail
+resolvido; falta só a Stripe sair do modo teste, que depende de você) e a **B**
+(segurança do dinheiro: reembolso revoga acesso, XP não-duplicável, limites de
+requisição) **já estão no ar**. As trilhas **C a G** estão planejadas e esperando.
+Fora dessa fila, foi construída a frente do **leitor protegido** (veja o aviso
+acima — é a única coisa pronta que ainda não subiu). Banco em dia até a `0026`; a
+`0028` é a que falta aplicar. A próxima ação exata está sempre em
+`docs/ESTADO-ATUAL.md` — é só dar **"continue de onde paramos"**.
 
 ## ▶️ Comandos úteis (digite no Claude Code)
 

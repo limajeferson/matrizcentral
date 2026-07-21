@@ -24,16 +24,55 @@ na `master`). Design v2 Frentes **1–4 no ar**; banco **em dia até a `0026`**
 Claude via SQL Editor). `npx tsc --noEmit` 0 · `npm run test` **268 testes**
 verdes · `next lint` sem erros. HEAD `b47f57c`, sincronizado com `origin/master`.
 
+---
+
+## 🚨 PARE — ESTADO NÃO-SINCRONIZADO (2026-07-20)
+
+**Há ~22 commits LOCAIS, não pushados. NÃO DÊ `git push` antes de ler isto.**
+
+A frente **[leitor-protegido](frentes/leitor-protegido/README.md)** foi construída
+inteira (6 tasks, revisadas, 322 testes) mas **não está no ar de propósito**. A
+`master` tem auto-deploy: pushar antes de aplicar a migration **`0028`** coloca no
+ar um leitor que *parece* funcionar enquanto o livro-razão fica **vazio** — falha
+silenciosa, e é justamente o sinal de que a política de garantia depende.
+
+**Antes de qualquer push, nesta ordem:**
+1. **Aplicar `supabase/migrations/0028_reading_progress.sql`** no remoto e verificar.
+2. **`select status, product_id, count(*) from purchases group by 1,2;`** — se
+   houver compra fora de `paid` + {`ebook_llm_local`,`regular_pass`,`advanced_pass`},
+   esse cliente **pagou e fica sem acesso a nada** (o download já foi aposentado).
+   Corrigir os dados antes.
+3. **Verificação visual** — nunca executada; roteiros em `.superpowers/sdd/task-*-report.md`.
+
+⚠️ O **MCP do Supabase não tem permissão** nesta conta (testado em 2026-07-20, não
+é suposição). O caminho é o **navegador** → SQL Editor (método no `CLAUDE.md`).
+Na sessão de 2026-07-20 o MCP do navegador estava **desconectado** — por isso os
+3 bloqueadores ficaram abertos. **Se o navegador estiver disponível agora, resolvê-los
+é a primeira tarefa.**
+
+Detalhes completos: [`frentes/leitor-protegido/README.md`](frentes/leitor-protegido/README.md).
+
+---
+
 **Frente ativa: PROGRAMA DE LANÇAMENTO FINAL** (`docs/frentes/lancamento-final/`)
 — 7 trilhas planejadas inteiras (specs+planos B–G). Trilha A (Brevo ✅; Stripe com
 o usuário) e **Trilha B (segurança do dinheiro) COMPLETAS e no ar**. Este programa
 **absorve** a Frente 5 do design-v2 (vira Trilha D) e os backlogs herdados de
 a11y/tech-debt (Trilhas F e G) — não há fila concorrente.
 
+**Inserida fora da fila (2026-07-20):** a frente **leitor-protegido**, nascida de
+um brainstorm sobre reembolso de má-fé. Ela **precede** a retomada das trilhas
+porque já está construída e só falta destravar.
+
 **Faça, nesta ordem (retomar aqui):**
-1. **Trilha C — Dark-aware** (próxima): `plano-C-dark-aware.md`. Blog force-light
+0. **DESTRAVAR A FRENTE LEITOR-PROTEGIDO** (ver o bloco 🚨 acima): aplicar `0028`
+   → conferir `purchases` legadas → verificação visual → **então** `git push`.
+   Precisa do navegador. Enquanto não destravar, **não pushar**.
+1. **Trilha C — Dark-aware**: `plano-C-dark-aware.md`. Blog force-light
    (Bucket A) + área logada→tokens semânticos (Bucket B). Começar por `glass-card`
    (cascateia 6 telas) + `dashboard/layout` + `Markdown`. Verificação visual é o gate.
+   ℹ️ **Parcialmente adiantada:** `Markdown.tsx` já virou dark-aware (com prop
+   `surface` para superfícies claras fixas). O resto do plano-C segue válido.
 2. Depois: **D (Fórum, `parent_reply_id`, migration 0027) → E (conteúdo, paralelo)
    → F (polish + herdados, inclui F6 garantia 7 dias) → G (tech-debt/SP2) →
    auditoria final.**
