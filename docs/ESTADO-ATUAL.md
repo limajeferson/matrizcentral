@@ -8,10 +8,11 @@
 > Ordem de leitura ao retomar: **este arquivo → `CLAUDE.md` → o `README.md` da
 > frente ativa → o código fonte-de-verdade.**
 
-_Última atualização: 2026-07-20 (frente **leitor-protegido** DESTRAVADA: migration
-`0028` aplicada no remoto e auditoria de `purchases` feita — **sem cliente real em
-risco**. Estado: **322 testes**, `tsc` 0, **25 commits locais**. Falta só o `git
-push` (aguardando o olho humano no leitor). Trilhas A e B no ar; C–G planejadas.)_
+_Última atualização: 2026-07-21 (frente **leitor-protegido NO AR**: `0028`
+aplicada, `purchases` auditadas e normalizadas, visual aprovado pelo usuário e
+**30 commits pushados** (`b0a66cb..c50b667`) — a `master` voltou a estar
+**sincronizada** com `origin`. Estado: **322 testes**, `tsc` 0. Trilhas A e B no
+ar; **próxima = Trilha C (dark-aware)**.)_
 
 > **Convenção deste arquivo:** as seções de **estado** (`PRÓXIMA AÇÃO`,
 > `Estado do git`, tabela de frentes) são **sobrescritas** a cada atualização —
@@ -24,12 +25,20 @@ push` (aguardando o olho humano no leitor). Trilhas A e B no ar; C–G planejada
 ## ⏭️ PRÓXIMA AÇÃO (leia isto primeiro ao retomar)
 
 **Estado agora:** site **no ar** em `www.matrizcentral.com.br` (Vercel, auto-deploy
-na `master`). Design v2 Frentes **1–4 no ar**; banco **em dia até a `0026`**
-(0024 feed_posts, 0025 xp dedup, 0026 waitlist unique — todas aplicadas pelo
-Claude via SQL Editor); **`0028` criada e NÃO aplicada** (ver bloco 🚨 abaixo).
-`npx tsc --noEmit` 0 · `npm run test` **322 testes** verdes (54 arquivos) ·
-`next lint` **0 erros** (2 warnings `no-img-element` pré-existentes).
-⚠️ **HEAD `da0ce5d` — 23 commits À FRENTE de `origin/master` (`b0a66cb`).**
+na `master`). Design v2 Frentes **1–4 no ar**; **frente leitor-protegido NO AR**
+(deploy de produção do commit `c50b667`, 2026-07-21). Banco **em dia até a `0028`**
+(0024 feed_posts, 0025 xp dedup, 0026 waitlist unique, 0028 reading_progress —
+todas aplicadas pelo Claude). Não há migration no disco esperando: a `0027` é da
+Trilha D e ainda não foi criada.
+`npx tsc --noEmit` 0 · `npm run test` **322 testes** verdes (54 arquivos).
+✅ **`master` sincronizada com `origin/master`** (`c50b667`) — o bloqueio de push
+que valeu de 20/07 até agora **acabou**.
+
+**➡️ PRÓXIMA FRENTE: Trilha C — Dark-aware** (`lancamento-final/plano-C-dark-aware.md`).
+Blog force-light (Bucket A) + área logada→tokens semânticos (Bucket B). Começar por
+`glass-card` (cascateia 6 telas) + `dashboard/layout` + `Markdown`. Verificação
+visual é o gate. ℹ️ `Markdown.tsx` já virou dark-aware (prop `surface`) — o resto
+do plano segue válido.
 
 ---
 
@@ -56,18 +65,20 @@ reconfirmado nesta sessão, não é suposição.)
   where product_id='ebook' and status='paid'`. Reauditado: **2× `advanced_pass`
   + 2× `ebook_llm_local`, todas `paid`** — nenhum `product_id` desconhecido
   restante.
-- **0.3 🟡 Invariante crítico VERIFICADO por construção** (o navegador
+- **0.3 ✅ Invariante crítico VERIFICADO por construção** (o navegador
   automatizável não está disponível nesta sessão): em
   `src/app/biblioteca/[slug]/page.tsx` o array `sections` (documento inteiro)
   **nunca sai do servidor** — o `ReaderShell` recebe só `sectionBlocks`
   (= `section.blocks`, seção corrente) e `tocItems` (`{slug,title,index}`, sem
   corpo). Como props de componente atravessam pro payload RSC, essa é a prova
   real do "Ctrl+U" — **markdown das outras seções não pode aparecer no HTML**.
-  **Falta só o olho humano** no visual (aparência/contraste), com
-  `npm run dev -- -p 3000`; roteiros em `.superpowers/sdd/task-*-report.md`.
+  ✅ **Visual aprovado pelo usuário** em 2026-07-21 (rodou o dev server e
+  conferiu; veredito: "ficou excelente"). A regressão de contraste que a revisão
+  tinha pego já estava corrigida (prop `surface` no `Markdown.tsx`).
 
-**➡️ Próxima ação: `git push origin master`** (25 commits) assim que o visual for
-conferido. Gate revalidado nesta sessão: `tsc` 0 · **322 testes** verdes.
+**✅ PUSH FEITO (2026-07-21): `b0a66cb..c50b667`, 30 commits.** Deploy de produção
+disparado automaticamente pela Vercel. Gate no momento do push: `tsc` 0 ·
+**322 testes** verdes.
 
 ---
 
@@ -511,6 +522,25 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
   ver [hardening-criticos](frentes/hardening-criticos/README.md).
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
+
+- **2026-07-21 (Opus 4.8 1M) — LEITOR PROTEGIDO NO AR + 2 ajustes de preço na
+  landing:** fecho da retomada anterior. Visual conferido pelo usuário no dev
+  server ("ficou excelente") → **push de 30 commits** (`b0a66cb..c50b667`) →
+  deploy de produção `dpl_FTZVV7v…` **READY**, aliasado em
+  `www.matrizcentral.com.br`. Smoke test: home 200, `/oferta` 200,
+  `/biblioteca/guia-llm-local` **307** para `/entrar` (gate do leitor funcionando
+  para anônimo). **A `master` voltou a estar sincronizada** — o bloqueio de push
+  que durou de 20/07 até aqui acabou. **Dois ajustes visuais pedidos pelo
+  usuário** no caminho: (1) selo "Mais procurado" da `/oferta` — o
+  `background-clip: text` pintava a *fonte* com o gradiente quente e deixava a
+  pílula transparente; invertido (gradiente na caixa, texto branco), com stops
+  escurecidos e `text-shadow` porque o `#ffc21a` não segurava texto branco;
+  (2) o gasto anual com assinaturas nos comparativos da landing agora vai a
+  **60% de opacidade + `line-through` de 1px** (espessura fixada porque o padrão
+  escala com a fonte e num display de 3rem sairia mais pesado que o próprio
+  R$47). **Achado:** o valor aparecia em **dois** comparativos (`PricingV2` e
+  `OpportunitySection`) e o segundo tinha passado batido — regra `.mc-price-alt`
+  desaninhada do container para servir aos dois. **Próximo: Trilha C (dark-aware).**
 
 - **2026-07-20 (Opus 4.8 1M) — LEITOR PROTEGIDO DESTRAVADO (2 dos 3 bloqueadores
   caíram) + descoberto o caminho definitivo de SQL:** retomada. O MCP do Supabase
