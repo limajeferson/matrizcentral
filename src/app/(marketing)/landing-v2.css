@@ -697,6 +697,18 @@
 .mcv2 .mc-price-compare > div { display: flex; flex-direction: column; gap: 6px; }
 .mcv2 .mc-price-compare p.mc-display { font-size: clamp(2rem, 5vw, 3rem); }
 .mcv2 .mc-price-compare > span { color: var(--mc-gray); }
+/* Lado "Assinaturas" = o gasto que a pessoa NÃO vai ter. Atenuado a 90% e
+   riscado com um traço fino, para o R$47 ao lado ler como o valor real.
+   O risco vai só no número (não no rótulo nem no "/ano"), e a espessura é
+   fixada em 1px porque o padrão escala com a fonte — neste display de até
+   3rem sairia um traço grosso, que pesa mais que o próprio preço. */
+.mcv2 .mc-price-compare .mc-price-alt { opacity: 0.9; }
+.mcv2 .mc-price-compare .mc-price-alt p.mc-display {
+  width: fit-content;
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+  text-decoration-color: currentColor;
+}
 .mcv2 .mc-price-cta { margin-top: 56px; }
 .mcv2 .mc-price-cta-note { margin-top: 14px; color: var(--mc-gray); font-size: 0.9rem; }
 .mcv2 .mc-price-foot { margin-top: 40px; color: var(--mc-gray); max-width: 560px; }

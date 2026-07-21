@@ -67,7 +67,9 @@ export default function PricingV2() {
 
         <Reveal delay={0.4}>
           <div className="mc-price-compare">
-            <div>
+            {/* Lado "que você NÃO vai pagar": atenuado e riscado, para o
+                R$47 ao lado ler como o valor real. Ver `.mc-price-alt`. */}
+            <div className="mc-price-alt">
               <span className="mc-mono">Assinaturas</span>
               <p className="mc-display">
                 <AnimatedCounter value={annualSpendBRL()} format={formatBRL} />
