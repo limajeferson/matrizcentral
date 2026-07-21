@@ -13,8 +13,8 @@ Candidatas extraídas de `.superpowers/sdd/task-*-report.md`, `final-*-report.md
 - **Fonte:** .superpowers/sdd/task-3-report.md (commit `75a5d35`)
 
 ### CAND · Checagem de acesso pago é fail-closed em qualquer erro/dado ausente
-- **Não faça:** tratar erro de banco, `null`/`undefined` inesperado ou linha ausente como "libera acesso" (fail-open) numa função de `canRead`/`getAccessContext`/`tryConsume`.
 - **Gatilho:** `acesso-dinheiro`
+- **Não faça:** tratar erro de banco, `null`/`undefined` inesperado ou linha ausente como "libera acesso" (fail-open) numa função de `canRead`/`getAccessContext`/`tryConsume`.
 - **Faça:** qualquer branch de erro ou dado ausente numa checagem de acesso pago deve negar (`{allowed:false, reason:"error"}`), nunca permitir por omissão. Cobrir com teste os dois operandos de condições tipo `if (error || !purchases)` separadamente.
 - **Fonte:** .superpowers/sdd/task-3-report.md (regra de acesso, MINOR 5, commit `75a5d35`)
 
@@ -118,7 +118,7 @@ Candidatas extraídas de `.superpowers/sdd/task-*-report.md`, `final-*-report.md
 - **Gatilho:** `visual`
 - **Não faça:** tratar "sem focus-trap" num sheet/dialog mobile próprio (sem Radix/headless UI) como minor a ser corrigido depois — o padrão se repetiu em pelo menos três frentes diferentes (sumário do leitor, card de perfil flutuante, drawer mobile do design v2).
 - **Faça:** ao construir qualquer overlay/sheet/dialog do zero, incluir Tab/Shift+Tab cíclico entre os elementos focáveis + fechar com Escape/clique-fora como parte da primeira versão, não como item deferido de revisão.
-- **Fonte:** .superpowers/sdd/final-fixes-leitor-report.md (M6, commit `d1eb300`); .superpowers/sdd/frente-C-report.md; .superpowers/sdd/progress.md (Frente 1, Design v2)
+- **Fonte:** .superpowers/sdd/final-fixes-leitor-report.md (M6, commit `d1eb300`); .superpowers/sdd/progress.md (Frente 1 Design v2 e revisão do frente-C)
 
 ### CAND · Nunca pushar código que dependa de uma migration nova antes de aplicá-la no remoto
 - **Gatilho:** `deploy`
@@ -130,7 +130,7 @@ Candidatas extraídas de `.superpowers/sdd/task-*-report.md`, `final-*-report.md
 - **Gatilho:** `docs-continuidade`
 - **Não faça:** nomear o report de uma task só como `task-N-report.md` quando o projeto já roda várias frentes em paralelo/sequência — o mesmo caminho é reaproveitado por uma frente diferente semanas depois e sobrescreve o conteúdo anterior, que se perde de vez porque `.superpowers/` não é versionado no repo.
 - **Faça:** usar sufixo de frente no nome do report desde a primeira task (`task-N-<slug-da-frente>-report.md`), do mesmo jeito que já é feito para blog/suporte/fórum/feed — nunca reaproveitar `task-N-report.md` puro entre frentes diferentes.
-- **Fonte:** .superpowers/sdd/task-3-report.md, .superpowers/sdd/task-5-report.md, .superpowers/sdd/task-6-report.md (notas de sobrescrita de report anterior)
+- **Fonte:** .superpowers/sdd/task-5-report.md, .superpowers/sdd/task-6-report.md (notas de sobrescrita de report anterior)
 
 ### CAND · Frente que termina com commits locais não pushados precisa registrar isso de forma redundante
 - **Gatilho:** `docs-continuidade`
