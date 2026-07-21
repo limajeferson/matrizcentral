@@ -65,11 +65,33 @@ Modify `src/components/marketing/v2/LandingHeader.tsx`.
   `/#preco`, `/#faq`.
 - [ ] Gate + conferir nav. Commit `fix(links): remove/corrige ancoras mortas (marketing)`.
 
-### Task F6 — Garantia consistente (7 dias) em TUDO + e-mail
-**Decisão do usuário (travada):** o padrão é **garantia condicional de 7 dias**
-(smart gates: dentro da janela **E** não fez triagem **E** não baixou). A copy
-(`/oferta`) e os termos **já dizem 7 dias**; o **código e o doc da política dizem
-30** → alinhar tudo a **7 dias** e garantir que está explicado na aquisição.
+### Task F6 — Garantia consistente + e-mail
+
+> 🚨 **ESTA TASK FOI REESCRITA EM 2026-07-20. A versão anterior mandava alinhar
+> tudo a "7 dias condicionais" — isso foi REVOGADO por ser provavelmente ilegal**
+> (art. 49 do CDC é norma de ordem pública; os 7 dias são **irrenunciáveis**, e
+> condicioná-los tende a ser nulo pelo art. 51, I). **Não implemente a versão
+> antiga.** Fonte de verdade da política:
+> [`../leitor-protegido/politica-reembolso.md`](../leitor-protegido/politica-reembolso.md).
+
+**Política vigente — duas janelas:**
+
+| Janela | Regra |
+|---|---|
+| **Dias 1–7** | **Incondicional.** Integral, sem justificativa, sem análise. |
+| **Dias 8–30** | **Garantia comercial**, condicionada a consumo comprovado. |
+
+**Consequências para os passos abaixo:**
+- ❌ **NÃO** mudar `refundWindowExpiry` de 30 para 7. A janela comercial **é 30
+  dias** — reduzir encurtaria a garantia e é o oposto do que a política agora diz.
+  **Ignore o sub-item de `tokens.ts`/`tokens.test.ts` mais abaixo.**
+- ✅ Os termos precisam descrever **as duas janelas separadamente**.
+- ✅ A `/oferta` pode dizer "30 dias de garantia" **com qualificador visível ao
+  lado da promessa** (art. 54, §4 + art. 37) — e o link "ver termos" **precisa ser
+  criado** (hoje é texto puro).
+- ✅ **Ausência de registro de leitura não é prova de não-consumo** — não escrever
+  nos termos nenhuma aferição automática que o sistema não faz.
+- ⚠️ **Revisão por advogado antes de publicar** e aplicar **só a compras novas**.
 
 **Files:** Modify `src/lib/tokens.ts`, `src/lib/tokens.test.ts`,
 `arquitetura-1/parte5-politica-de-reembolso-smart-gates.md`,

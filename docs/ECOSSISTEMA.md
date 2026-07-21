@@ -13,8 +13,8 @@
 
 - **No ar (produção):** **`www.matrizcentral.com.br`** (Vercel, auto-deploy a cada push na `master`; último deploy READY). Muito além da landing: **todas as 6 frentes do roadmap** (login real, assinaturas, feed, fórum, blog/marketing, suporte/CRM), **SP1** (casa unificada + diagnóstico por sessão), o **redesign do feed** (baseline + barra de histórias), o **programa design v2** (Frentes 1–4) e a **Trilha B do lançamento** (segurança do dinheiro) estão entregues e deployados.
 - **Fase atual:** **PROGRAMA DE LANÇAMENTO FINAL** ([`frentes/lancamento-final/`](frentes/lancamento-final/README.md)) — 7 trilhas (A–G) que levam à versão final. **Planejadas inteiras** (6 specs + 6 planos); **A** (Brevo ✅ / Stripe com o usuário) e **B** ✅ fechadas; **C (dark-aware) é a próxima**.
-- **Repo:** https://github.com/limajeferson/matrizcentral · branch `master` · HEAD sincronizado com `origin/master`.
-- **Saúde:** `npx tsc --noEmit` 0 · `npm run test` **268 testes** verdes · `npx next lint` sem erros. (`npm run build` falha só ao coletar `/api/checkout` por falta de `STRIPE_SECRET_KEY` no shell — pré-existente, ver `CLAUDE.md`.)
+- **Repo:** https://github.com/limajeferson/matrizcentral · branch `master` · ⚠️ **HEAD `da0ce5d` está 23 commits À FRENTE de `origin/master` (`b0a66cb`)** — a frente [leitor-protegido](frentes/leitor-protegido/README.md) está local de propósito. **Não pushar antes de destravá-la.**
+- **Saúde:** `npx tsc --noEmit` 0 · `npm run test` **322 testes** verdes (54 arquivos) · `npx next lint` **0 erros** (2 warnings `no-img-element` pré-existentes em `VideoPlayer.tsx:52` e `SystemSection.tsx:92`). (`npm run build` falha só ao coletar `/api/checkout` por falta de `STRIPE_SECRET_KEY` no shell — pré-existente, ver `CLAUDE.md`.)
 - **Fonte de verdade do andamento e da próxima ação:** [`ESTADO-ATUAL.md`](ESTADO-ATUAL.md).
 - **Pendências ativas (detalhe em `ESTADO-ATUAL.md`):**
   1. **Trilhas C→G do lançamento** (dark-aware, fórum, conteúdo, polish, tech-debt) + auditoria final.

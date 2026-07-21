@@ -10,9 +10,11 @@ grava em `support_messages` + notifica o time por e-mail Brevo, migration
 por etapa do funil). Decisões com autonomia, documentadas no spec.
 
 ## Status
-`tsc` 0 / testes verdes (inclui `suporte`). Migration `0021` pendente de
+`tsc` 0 / testes verdes (inclui `suporte`). ~~Migration `0021` pendente de
 aplicar no Supabase remoto (SQL Editor — hand-off de ambiente, mesma
-pendência das migrations anteriores).
+pendência das migrations anteriores).~~ ✅ **RESOLVIDO:** `0021` aplicada em
+produção em 2026-07-13 (via SQL Editor), verificada (`POST /api/suporte` →
+`{ok:true}`).
 
 Esta é a **última frente** do roadmap — com ela, as 6 frentes do
 [`ROADMAP-EXECUCAO.md`](../../ROADMAP-EXECUCAO.md) estão entregues

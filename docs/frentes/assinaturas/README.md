@@ -23,14 +23,18 @@ Benchmark (`relatorio-comparativo-modelos`) marcado `startIncluded` (Start conso
 Revisão final ampla (opus) **confirmou os invariantes de dinheiro**: não-pagante
 consome nada; Regular nunca passa de 1/mês (mesmo sob corrida).
 
-## ⏳ Pendências / gates
+## ⏳ Pendências / gates (seção congelada — ver nota de encerramento acima)
 
-- **E2E ao vivo (modo teste Stripe):** comprar Regular/Advanced (cartão 4242) →
+- ~~**E2E ao vivo (modo teste Stripe):** comprar Regular/Advanced (cartão 4242) →
   webhook cria entitlement → consumo (Advanced ilimitado; Regular 1/mês + tranca no
   2º) → cupom no upgrade. Precisa do **Stripe CLI** (`stripe listen --forward-to
-  localhost:3000/api/webhooks/stripe`).
-- **Gate de GO-LIVE (Issue 3):** o cupom confia no e-mail do cliente (sem auth) —
-  amarrar à sessão autenticada antes de ligar o Stripe live. Limitado a R$47.
+  localhost:3000/api/webhooks/stripe`).~~ ✅ **RESOLVIDO (2026-07-13):** validado
+  em produção (modo teste `cs_test_`) — webhook `checkout.session.completed` 200,
+  entitlement criado.
+- ~~**Gate de GO-LIVE (Issue 3):** o cupom confia no e-mail do cliente (sem auth) —
+  amarrar à sessão autenticada antes de ligar o Stripe live. Limitado a R$47.~~
+  ✅ **RESOLVIDO:** cupom amarrado à sessão autenticada (commit `5cf89e3`,
+  revisado).
 - **Minors rastreados** (ver ledger `.superpowers/sdd/progress.md`): APIs de mutação
   não-gated (XP), `plan_waitlist` órfão, gaps de teste de borda, "em breve" UX.
 
@@ -81,9 +85,10 @@ recipiente corretos; 1 Important corrigido (novo_ciclo edge→level-triggered).
 - **Validação de runtime dos e-mails:** o **cron só dispara em deploy** (Vercel).
   Configurar `CRON_SECRET` nas env da Vercel; o cron chega em `/api/cron/emails-diarios`.
   Localmente dá pra chamar a rota à mão com o header.
-- **E2E ao vivo do Plano 1 (Stripe modo teste):** ainda pendente — precisa do Stripe
-  CLI encaminhando o webhook.
-- **Gate de go-live:** amarrar o cupom à sessão (Issue 3 do Plano 1).
+- ~~**E2E ao vivo do Plano 1 (Stripe modo teste):** ainda pendente — precisa do Stripe
+  CLI encaminhando o webhook.~~ ✅ **RESOLVIDO (2026-07-13):** validado em produção.
+- ~~**Gate de go-live:** amarrar o cupom à sessão (Issue 3 do Plano 1).~~
+  ✅ **RESOLVIDO:** commit `5cf89e3`.
 - **Minors rastreados** (ledger): notify sem idempotência, cron fetch-all sem
   paginação, compare não timing-safe, copy "1 dia".
 

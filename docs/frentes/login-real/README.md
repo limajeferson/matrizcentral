@@ -21,7 +21,8 @@ uso único, logout, proteção de rota — tudo passou). Spec e plano:
 ## ✅ O que foi entregue
 
 - Migrations `0015` (tabelas `magic_links`, `sessions`) e `0016` (backfill de
-  e-mail) — **ainda não aplicadas no remoto**.
+  e-mail) — ~~ainda não aplicadas no remoto~~. ✅ **RESOLVIDO:** aplicadas em
+  produção via SQL Editor em 2026-07-12 (aceitação ao vivo, ver abaixo).
 - Lógica pura testada: `auth-tokens.ts` (segredo/hash/expiração), `safe-redirect.ts`
   (anti open-redirect).
 - Camada de dados `auth-session.ts`: emissão/verificação de magic link (uso único
@@ -32,13 +33,17 @@ uso único, logout, proteção de rota — tudo passou). Spec e plano:
   header. Componente `ContentGate` (tranca, ainda não plugado).
 - Fix de consistência de e-mail no write path (webhook) + resend.
 
-## ⏳ Pendências antes de fechar
+## ⏳ Pendências antes de fechar (seção congelada — ver nota de encerramento acima)
 
-1. **Aplicar migrations no Supabase remoto:** `npx supabase db push` (aplica
-   0011+0015+0016) — precisa da auth local do Supabase CLI.
-2. **E2E ao vivo:** pedir link em `/entrar` com e-mail real → clicar no e-mail
+1. ~~**Aplicar migrations no Supabase remoto:** `npx supabase db push` (aplica
+   0011+0015+0016) — precisa da auth local do Supabase CLI.~~ ✅ **RESOLVIDO
+   (2026-07-12):** aplicadas via SQL Editor (o `db push` travou por histórico
+   divergente).
+2. ~~**E2E ao vivo:** pedir link em `/entrar` com e-mail real → clicar no e-mail
    (Brevo) → cair logado em `/conta` → "ir para meu painel" → logout. Reusar link
-   (uso único) e e-mail inexistente (aviso + Adquirir).
+   (uso único) e e-mail inexistente (aviso + Adquirir).~~ ✅ **RESOLVIDO
+   (2026-07-12):** aceitação ao vivo concluída no navegador — todos os caminhos
+   passaram.
 3. **Decisão pendente (#7):** a landing `/` virou dinâmica (SSR por request) porque
    o `SessionNav` lê cookies. Manter assim, ou mover a pílula de sessão pra
    client-side e preservar a landing estática?

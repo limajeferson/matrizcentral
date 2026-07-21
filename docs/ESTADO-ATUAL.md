@@ -8,11 +8,16 @@
 > Ordem de leitura ao retomar: **este arquivo → `CLAUDE.md` → o `README.md` da
 > frente ativa → o código fonte-de-verdade.**
 
-_Última atualização: 2026-07-20 (**Programa de Lançamento Final**: 7 trilhas
-planejadas inteiras; **Trilha A** fechada do lado do Claude e **Trilha B
-(segurança do dinheiro) COMPLETA e no ar** — 268 testes, migrations 0025/0026
-aplicadas. Design v2 Frentes 1–4 no ar; a Frente 5 virou a Trilha D. **Próxima:
-Trilha C (dark-aware)**.)_
+_Última atualização: 2026-07-20 (auditoria de continuidade + frente
+**leitor-protegido** construída e **NÃO pushada**. Estado: **322 testes**, `tsc` 0,
+**23 commits locais**. Trilhas A e B no ar; C–G planejadas. ⚠️ **Leia o bloco 🚨
+antes de qualquer `git push`.**)_
+
+> **Convenção deste arquivo:** as seções de **estado** (`PRÓXIMA AÇÃO`,
+> `Estado do git`, tabela de frentes) são **sobrescritas** a cada atualização —
+> não são append-only. Só o **Log de sessões** no fim é append-only. Tratar as
+> seções de estado como append-only foi a causa raiz do drift corrigido em
+> 2026-07-20 (o topo do arquivo contradizia o meio).
 
 ---
 
@@ -21,14 +26,16 @@ Trilha C (dark-aware)**.)_
 **Estado agora:** site **no ar** em `www.matrizcentral.com.br` (Vercel, auto-deploy
 na `master`). Design v2 Frentes **1–4 no ar**; banco **em dia até a `0026`**
 (0024 feed_posts, 0025 xp dedup, 0026 waitlist unique — todas aplicadas pelo
-Claude via SQL Editor). `npx tsc --noEmit` 0 · `npm run test` **268 testes**
-verdes · `next lint` sem erros. HEAD `b47f57c`, sincronizado com `origin/master`.
+Claude via SQL Editor); **`0028` criada e NÃO aplicada** (ver bloco 🚨 abaixo).
+`npx tsc --noEmit` 0 · `npm run test` **322 testes** verdes (54 arquivos) ·
+`next lint` **0 erros** (2 warnings `no-img-element` pré-existentes).
+⚠️ **HEAD `da0ce5d` — 23 commits À FRENTE de `origin/master` (`b0a66cb`).**
 
 ---
 
 ## 🚨 PARE — ESTADO NÃO-SINCRONIZADO (2026-07-20)
 
-**Há ~22 commits LOCAIS, não pushados. NÃO DÊ `git push` antes de ler isto.**
+**Há 23 commits LOCAIS, não pushados. NÃO DÊ `git push` antes de ler isto.**
 
 A frente **[leitor-protegido](frentes/leitor-protegido/README.md)** foi construída
 inteira (6 tasks, revisadas, 322 testes) mas **não está no ar de propósito**. A
@@ -74,7 +81,8 @@ porque já está construída e só falta destravar.
    ℹ️ **Parcialmente adiantada:** `Markdown.tsx` já virou dark-aware (com prop
    `surface` para superfícies claras fixas). O resto do plano-C segue válido.
 2. Depois: **D (Fórum, `parent_reply_id`, migration 0027) → E (conteúdo, paralelo)
-   → F (polish + herdados, inclui F6 garantia 7 dias) → G (tech-debt/SP2) →
+   → F (polish + herdados; ⚠️ a **F6 foi reescrita** — a garantia NÃO é mais
+   "7 dias condicional", ver `lancamento-final/README.md`) → G (tech-debt/SP2) →
    auditoria final.**
 3. **Aguardando o usuário:** anotações de design da **`RightSidebar`** (entram na
    Trilha F); Stripe live (verificação de empresa); subir a mídia que o Claude
@@ -116,10 +124,13 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
   com conta real: no-account, envio, verify→`/conta` logado, "ir para meu painel"
   →`/dashboard/{token}`, uso único (`?erro=link`), logout, header reativo,
   proteção de `/conta`. **Tudo passou.** Decisão #7: landing fica dinâmica.
-- **⚠️ ACHADO (não-bloqueante, fora do login):** o Brevo **aceita** o envio
+- ~~**⚠️ ACHADO (não-bloqueante, fora do login):** o Brevo **aceita** o envio
   (API 2xx) mas o e-mail **não chegou** no inbox em 4 min — provável domínio
   remetente não verificado (SPF/DKIM) ou spam. **Afeta também o e-mail de token
-  da compra** (mesmo `email.ts`). Investigar config do Brevo separadamente.
+  da compra** (mesmo `email.ts`). Investigar config do Brevo separadamente.~~
+  ✅ **RESOLVIDO:** domínio `matrizcentral.com.br` autenticado no Brevo
+  (2026-07-13) e, depois, `BREVO_API_KEY` reposta e verificada ao vivo no Vercel
+  (2026-07-16, evento `delivered` em produção).
 - **Frente 2 (Assinaturas) — Plano 1 código completo e revisado** (na master,
   `tsc` 0 / 136 testes): entitlement + consumo/`ContentGate` + Stripe (modo teste,
   cupom/parcelas) + webhook + `/oferta` real. Revisão final (opus) confirmou os
@@ -160,10 +171,11 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
   feed/fórum, reativação/win-back de passe expirado, suporte com SLA simples,
   métricas por etapa do funil pós-venda). `tsc` 0. Docs em
   [`docs/frentes/suporte-crm/`](frentes/suporte-crm/).
-- **🏁 TODAS AS 6 FRENTES DO ROADMAP ESTÃO ENTREGUES (código + revisão).** Não
-  há próxima frente planejada — o que resta é **coordenação de ambiente**
-  (abaixo) e o que o usuário priorizar em seguida (não há "próxima ação"
-  automática; alinhar com o usuário ao retomar).
+- **[histórico — 2026-07-13] 🏁 TODAS AS 6 FRENTES DO ROADMAP ESTÃO ENTREGUES
+  (código + revisão).** Não havia próxima frente planejada naquele momento — o
+  que restava era **coordenação de ambiente** (abaixo). Desde então o projeto
+  evoluiu (design v2, programa de lançamento final); a próxima ação atual está
+  na seção **⏭️ PRÓXIMA AÇÃO** no topo deste arquivo.
 - ✅ **Migrations `0019`/`0020`/`0021` APLICADAS no Supabase de produção**
   (2026-07-13, via SQL Editor pelo navegador). Verificado: `/forum` 200 (0020),
   `POST /api/suporte` → `{ok:true}` (0021), 0019 no mesmo paste. **Fluxo de
@@ -205,9 +217,10 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
   `diagnosed_at`); fix do bug 200-em-falha no `/api/quiz`; bloco de boas-vindas +
   `DiagnosticoInline` no `/feed`; **auto-login pós-compra** por `session_id`
   (paid + janela 30min + uso único) → `/feed`. Commits `7527cca`..`325007d`.
-  **Próxima ação:** aplicar migrations 0022/0023 no remoto → E2E (compra teste →
-  auto-login → `/feed` → diagnóstico grava perfil). Depois: **SP2** (gamificação
-  por sessão + aposentar `/dashboard/[token]`).
+  **[à época] Próxima ação:** aplicar migrations 0022/0023 no remoto → E2E
+  (compra teste → auto-login → `/feed` → diagnóstico grava perfil) — já
+  concluído (0022/0023 aplicadas). Depois: **SP2** (gamificação por sessão +
+  aposentar `/dashboard/[token]`).
 - **Pendências de ambiente:** ✅ migrations **0022/0023 aplicadas**; banco em dia
   até a **0026**. ✅ **`BREVO_API_KEY` reposta e verificada ao vivo** (2026-07-16:
   magic link em produção → evento `delivered` no Brevo). Ainda aberta: verificação
@@ -257,9 +270,10 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
   o browser congela `requestAnimationFrame` em aba de segundo plano — não é bug.)
   **Minor rastreado:** ao voltar de aba em 2º plano por muito tempo, o slide pode
   pular direto (rAF acumula o gap) — tratar com `visibilitychange` no backlog.
-  **Próxima ação:** aguardar o **próximo item do backlog de design** do usuário
-  (aplicar isolado, com rollback ao baseline), OU checar visualmente o toggle de
-  tema/pill quando conveniente.
+  **[à época] Próxima ação:** aguardar o **próximo item do backlog de design**
+  do usuário (aplicar isolado, com rollback ao baseline), OU checar visualmente
+  o toggle de tema/pill quando conveniente — superado pelo programa design-v2
+  (17 modelos), iniciado logo em seguida.
 - 🔄 **DESIGN v2 (17 modelos 21st.dev) — PROGRAMA EM EXECUÇÃO (2026-07-15):**
   backlog grande do usuário, decidido no brainstorm: **visual + backend juntos**,
   **5 frentes por área, commit por item**. Docs em `docs/frentes/design-v2/`
@@ -277,8 +291,9 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
     **APLICADA no remoto (2026-07-16, pelo Claude via navegador/SQL Editor** —
     injeção Monaco, método documentado no `CLAUDE.md`; verificada:
     `feed_posts` existe com RLS ativo). Publicar post funciona.
-  - **Frente 3 (Comunidade) — CONCLUÍDA e revisada (Ready to merge), na master,
-    aguardando push (2026-07-15):** via `subagent-driven-development` (3 tasks +
+  - **Frente 3 (Comunidade) — CONCLUÍDA e revisada (Ready to merge), na master
+    (push já feito para `origin/master` em `b0a66cb`):** via
+    `subagent-driven-development` (3 tasks +
     fix da revisão final, `tsc` 0 / **210 testes** / lint limpo). Entregue:
     `src/lib/leaderboard.ts` puro (`monthStartIso`/`aggregateMonthlyXp`/
     `rankLeaderboard` — testado) + `leaderboard-data.ts` (`getMonthlyLeaderboard`,
@@ -309,17 +324,25 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
 
 ## 🌿 Estado do git
 
-- **Branch ativa:** `master`, **sincronizada com `origin/master`** (HEAD
-  `b47f57c`, push feito, deploy Vercel disparado). O outro computador recebe
-  tudo com `git pull origin master`.
-- **Inclui (nesta rodada):** **Trilha B do lançamento final** — reembolso/disputa
-  revoga acesso, XP não-duplicável (`0025`), rate limiter, validação+dedupe do
-  waitlist (`0026`), testes de `entitlement-access` e `auth-session`; + os
-  **6 specs e 6 planos** das trilhas B–G. Antes (já em `origin`): design v2
-  Frentes 1–4 (moldura, feed com `0024`, comunidade, conteúdo/mídia + design pass),
-  barra de histórias, feed-redesign baseline, SP1.
+- **Branch ativa:** `master`, **NÃO sincronizada com `origin/master`**. HEAD local
+  `da0ce5d`; `origin/master` está em `b0a66cb` — **23 commits locais não
+  pushados**. Isso é **de propósito**: a frente
+  [leitor-protegido](frentes/leitor-protegido/README.md) está pronta mas
+  bloqueada (ver o bloco 🚨 no topo deste arquivo) e a `master` tem auto-deploy
+  no push, então pushar antes de destravá-la coloca no ar um leitor com
+  livro-razão vazio. **O outro computador NÃO recebe esses 23 commits** até o
+  push acontecer — `git pull origin master` só traz até `b0a66cb`.
+- **Inclui (nesses 23 commits, ainda locais):** a frente **leitor-protegido**
+  completa (6 tasks, 322 testes, migration `0028` no disco); **Trilha B do
+  lançamento final** — reembolso/disputa revoga acesso, XP não-duplicável
+  (`0025`), rate limiter, validação+dedupe do waitlist (`0026`), testes de
+  `entitlement-access` e `auth-session`; + os **6 specs e 6 planos** das
+  trilhas B–G. Antes (já em `origin/master`, `b0a66cb`): design v2 Frentes 1–4
+  (moldura, feed com `0024`, comunidade, conteúdo/mídia + design pass), barra
+  de histórias, feed-redesign baseline, SP1.
 - **Não versionado (local, de propósito):** `.env.local` (segredos),
-  `SETUP.md`, `claude-chat.md`, `CLAUDE.local-draft.md`.
+  `SETUP.md`, `claude-chat.md`, `CLAUDE.local-draft.md`, `erro.png`,
+  `texto-para-salvar-prompt-temporario.md`.
 
 ## 🗂️ Frentes (o mapa mestre)
 
@@ -344,13 +367,20 @@ Ordem escolhida pelo usuário: **receita primeiro**.
 > ([`frentes/design-v2/README.md`](frentes/design-v2/README.md); a Frente 5 virou
 > a Trilha D) · 🔄 **lancamento-final** (**programa ativo**, 7 trilhas até a versão
 > final — progresso em
-> [`frentes/lancamento-final/README.md`](frentes/lancamento-final/README.md)).
+> [`frentes/lancamento-final/README.md`](frentes/lancamento-final/README.md)) ·
+> 🟡 **leitor-protegido** (construída, revisada, 322 testes — **NÃO no ar**,
+> ver [`frentes/leitor-protegido/README.md`](frentes/leitor-protegido/README.md)
+> e o bloco 🚨 no topo deste arquivo).
 
 ### 🚀 Programa de Lançamento Final (fila ativa)
 
+A frente **leitor-protegido** (acima) tem **3 bloqueadores próprios** (aplicar
+migration `0028`, auditar `purchases` legadas, verificação visual) que são mais
+imediatos que o Stripe live — ver o bloco 🚨 no topo deste arquivo.
+
 | Trilha | O quê | Status |
 |---|---|---|
-| A | Go-live de receita (Brevo, Stripe live) | 🔄 Brevo ✅ · **Stripe live = único bloqueio externo** |
+| A | Go-live de receita (Brevo, Stripe live) | 🔄 Brevo ✅ · **Stripe live = único bloqueio externo do programa de lançamento** |
 | B | Segurança do dinheiro | ✅ **completa e no ar** (268 testes, 0025/0026 aplicadas) |
 | C | Dark-aware (blog force-light + logado→tokens) | 📐 planejada — **próxima** |
 | D | Fórum: respostas aninhadas (migration `0027`) | 📐 planejada |
@@ -388,15 +418,21 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
 - **Histórico de migrations do Supabase divergente:** remoto tem versões com
   timestamp; local usa `000N_`. Por isso `supabase db push` falha. Reconciliar
   com cuidado (sem re-rodar seeds) antes de depender do CLI para novas migrations.
-- **Deep-return do `next`** (ContentGate): deferido para a frente de deploy do gate.
+- ~~**Deep-return do `next`** (ContentGate): deferido para a frente de deploy do gate.~~
+  ✅ **RESOLVIDO:** já plugado em 5 lugares (`forum/page.tsx`,
+  `forum/[id]/page.tsx`, `feed/RightSidebar.tsx`,
+  `dashboard/[token]/conteudo/[id]/page.tsx` e mais um site em `ContentGate.tsx`).
 
 
 - **Crítico #4 (copy):** o alinhamento da `/oferta` é de posicionamento/marca —
   o usuário deve revisar o texto do card Start/Advanced e ajustar as palavras.
-- **Backlog da auditoria (altos/médios):** revogação de acesso em reembolso,
+- ~~**Backlog da auditoria (altos/médios):** revogação de acesso em reembolso,
   forja de XP, rate limiting, links mortos etc. — mapeados em
   [hardening-criticos](frentes/hardening-criticos/README.md), a serem resolvidos
-  dentro das frentes seguintes.
+  dentro das frentes seguintes.~~ ✅ **Revogação em reembolso, forja de XP e
+  rate limiting RESOLVIDOS na Trilha B (2026-07-16).** Restam links mortos,
+  certificado sem descoberta e forms da `/oferta`, cobertos por F5/F7/F8 —
+  ver [hardening-criticos](frentes/hardening-criticos/README.md).
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
 
@@ -418,7 +454,7 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
   com `on delete cascade` apagava a própria prova; e uma **regressão visual real**
   (texto quase-branco sobre `GlassCard` branco no tema padrão). Achado lateral
   do usuário verificado e corrigido: cupom de upgrade continuava valendo após
-  reembolso do Start. **20 commits LOCAIS — nada no ar.**
+  reembolso do Start. **23 commits LOCAIS — nada no ar.**
   **Bloqueadores de deploy:** (1) aplicar `0028` no remoto; (2) conferir
   `select status, product_id from purchases` — comprador legado fora de
   `paid`/produtos conhecidos fica trancado **com o download já removido**;
@@ -529,8 +565,9 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
   a11y) + montagem `RightSidebar` (gate Advanced intacto + ranking só logados) +
   `feed/page.tsx`. Revisão final: 1 Important corrigido (ranking escondido p/
   anônimo, `76c15ea`), 7 Minors deferidos. `tsc` 0 / 210 testes / lint limpo.
-  Commits `c27d78f..76c15ea` (**push pendente**). Migration `0024` (Frente 2)
-  segue pendência do usuário — Frente 3 não depende dela. Ledger em
+  Commits `c27d78f..76c15ea` (**[à época] push pendente — já feito**).
+  **[à época]** Migration `0024` (Frente 2) seguia pendência do usuário —
+  Frente 3 não dependia dela; **0024 já foi aplicada** (2026-07-16). Ledger em
   `.superpowers/sdd/progress.md`.
 - **2026-07-13 (Opus) — Frente 6 (Suporte/CRM) implementada — ÚLTIMA FRENTE:**
   via `subagent-driven-development` (5 tasks) — migration `0021`

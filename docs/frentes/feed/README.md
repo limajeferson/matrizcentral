@@ -15,4 +15,6 @@ Decisões tomadas com autonomia (documentadas no spec). UGC/curtidas/comentário
 Depende de: login (✅), entitlement/`ContentGate` (✅), gamificação (✅).
 
 ## Próximo passo
-Executar [`plano.md`](plano.md) (5 tasks) via `subagent-driven-development`.
+Nada a executar — frente concluída (plano já executado). Pendência real
+restante: verificação visual dos 3 estados de `/feed` (deslogado/view/advanced),
+que segue coordenada com o restante da checagem de runtime.

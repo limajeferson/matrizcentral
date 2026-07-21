@@ -4,7 +4,7 @@
 
 **Objetivo:** Corrigir, antes de construir qualquer frente nova, os problemas que afetam clientes reais e a receita hoje — encontrados na auditoria completa (5 subagentes: segurança, pagamentos/e-mail, jornada, gamificação, frontend/conversão).
 
-**Próximo passo:** revisar o diff da branch e decidir merge; depois seguir para a Frente 1 (Login real). Os achados ALTOS/MÉDIOS abaixo viram backlog das frentes seguintes.
+**Próximo passo:** nada — frente concluída. O merge já aconteceu (commit `0aee161` está na `master`) e a Frente 1 (Login real) fechou em 12/07/2026. Os achados ALTOS/MÉDIOS abaixo já viraram backlog das frentes seguintes (a maioria resolvida; ver `docs/ESTADO-ATUAL.md`).
 
 ---
 
@@ -53,15 +53,23 @@ A landing dizia "todo o sistema por R$47" (com gamificação + certificado), mas
 ## Backlog herdado da auditoria (para as próximas frentes)
 
 **ALTOS**
-- Reembolso/chargeback não revoga acesso (webhook não trata `charge.refunded`/`dispute`; `/api/download` e outras não checam `purchase.status`). `refund_window_expires` é gravado mas nunca aplicado. → resolver na frente de **Assinaturas** (ciclo de vida do pagamento).
-- XP/badges/ranking forjáveis via chamada direta às APIs (sem sinal real de consumo). Mitigação estrutural depende de **Login real**; dedup de XP precisa de `unique(user_id, action_type, reference_id)` em `xp_events`.
+- ~~Reembolso/chargeback não revoga acesso (webhook não trata `charge.refunded`/`dispute`; `/api/download` e outras não checam `purchase.status`). `refund_window_expires` é gravado mas nunca aplicado. → resolver na frente de **Assinaturas** (ciclo de vida do pagamento).~~
+  ✅ **RESOLVIDO na Trilha B (2026-07-16):** webhook trata reembolso/disputa e revoga token+entitlement na fonte.
+- ~~XP/badges/ranking forjáveis via chamada direta às APIs (sem sinal real de consumo). Mitigação estrutural depende de **Login real**; dedup de XP precisa de `unique(user_id, action_type, reference_id)` em `xp_events`.~~
+  ✅ **RESOLVIDO na Trilha B (2026-07-16):** dedup de XP (migration `0025` + upsert em 8 sites).
 - Token na URL, 1 ano, sem revogação — resolvido de raiz pela frente de **Login real**.
 
 **MÉDIOS / BAIXOS**
-- Sem rate limiting nas rotas públicas de escrita (`/api/checkout`, `/api/newsletter`, `/api/waitlist`).
-- Waitlist sem validação de e-mail / dedupe (newsletter já tem).
-- Checkout server-side não valida formato de e-mail (`isValidEmail` só no cliente).
+- ~~Sem rate limiting nas rotas públicas de escrita (`/api/checkout`, `/api/newsletter`, `/api/waitlist`).~~
+  ✅ **RESOLVIDO na Trilha B (2026-07-16):** rate limiter aplicado em checkout/newsletter/waitlist.
+- ~~Waitlist sem validação de e-mail / dedupe (newsletter já tem).~~
+  ✅ **RESOLVIDO na Trilha B (2026-07-16):** validação de e-mail + dedupe (migration `0026`).
+- ~~Checkout server-side não valida formato de e-mail (`isValidEmail` só no cliente).~~
+  ✅ **RESOLVIDO na Trilha B (2026-07-16):** `isValidEmail` passou a ser checado também no servidor.
 - Copy: garantia "7 dias" na `/oferta` vs `refundWindowExpiry` de 30 dias no código; e-mail de token diz "seu ebook" (produto é plataforma).
 - Links mortos: `/#features` no `Header`/`Footer` antigos; âncoras `#sistema/#preco/…` e logo sem link em `/sobre` e `/legal/*`; contador "3 Apresentações" sem itens correspondentes.
+  ⏳ **Ainda aberto** — coberto por **Task F5** da Trilha F (`plano-F-polish.md`).
 - Certificado do dashboard sem link de descoberta (card no dashboard); botão do quiz aponta pro dashboard, não pro certificado.
+  ⏳ **Ainda aberto** — coberto por **Task F7** da Trilha F (`plano-F-polish.md`).
 - Forms da `/oferta` travam em falha de rede (sem `.catch`); não enviam com Enter; inputs sem label.
+  ⏳ **Ainda aberto** — coberto por **Task F8** da Trilha F (`plano-F-polish.md`).

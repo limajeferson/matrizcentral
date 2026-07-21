@@ -72,7 +72,66 @@ delete/retire `src/app/quiz/[token]/page.tsx` (e `QuizTriagem` se órfão).
 - [ ] `rm erro.png` (nunca foi commitado). Commit vazio de doc não necessário;
   registrar no ESTADO. (Sem commit de código; é limpeza do working tree.)
 
+### Task G7 — Teste da elegibilidade do cupom em `/api/checkout`
+**Files:** Create `src/app/api/checkout/route.test.ts`. Segue a convenção de
+`src/app/api/content/complete/route.test.ts` (mock de `getSupabaseServerClient`
+via `vi.mock("@/lib/supabase/server")`, montado por teste com `NextRequest`).
+> Achado sem cobertura: o fix `f8561f0` (compra do Start reembolsada não dá
+> mais direito ao cupom de upgrade) mudou a query de `purchases` (`+.eq("status",
+> "paid")`), mas não existe teste da rota — só o `couponEligible` puro é testado.
+- [ ] Mock de `getSessionUser` (`@/lib/auth-session`) e do client Supabase
+  (`purchases`, `entitlements`, `stripe.checkout.sessions.create`). Cobrir:
+  (1) sem sessão autenticada → `unitAmount` cheio, sem desconto; (2) sessão com
+  Start pago há < 30 dias e sem entitlement → desconto de `UPGRADE_COUPON_CENTS`
+  aplicado; (3) sessão com Start **reembolsado** (`status != "paid"`) → sem
+  desconto (é o caso que `f8561f0` corrigiu); (4) sessão que já tem
+  `entitlements` → sem desconto mesmo com Start pago recente.
+- [ ] Gate + Commit `test(cupom): cobre elegibilidade do cupom em /api/checkout (reembolso, entitlement, sem sessao)`.
+
+### Task G8 — `plan_waitlist` órfão: investigar e decidir
+**Files:** Investigar `src/app/api/waitlist/route.ts` (escreve em `plan_waitlist`)
+e todo o repo por leitores da tabela; Modify o que a decisão exigir (rota,
+página admin, ou doc registrando a decisão de manter só-escrita).
+- [ ] Confirmar por grep que **nada lê** `plan_waitlist` hoje (rota só grava via
+  `upsert`). Decidir: (a) expor num lugar (ex.: consulta simples/admin) para o
+  dado virar útil, ou (b) remover a escrita se não há plano de uso. **Não
+  presumir a saída** — registrar a decisão e a razão no commit/doc.
+- [ ] Aplicar a decisão (código mínimo) ou, se for adiar, registrar como
+  pendência explícita rastreada (não deixar órfã de novo).
+- [ ] Gate + Commit `chore(waitlist): decide destino do plan_waitlist (expõe leitura ou remove escrita orfa)`.
+
+### Task G9 — `StoryViewer`: `visibilitychange` no timer do rAF
+**Files:** Modify `src/components/app/stories/StoryViewer.tsx`.
+> Achado: o timer por slide (`useEffect` do `tick`, linhas ~64-88) acumula
+> `elapsed` a partir de `ts - last` em cada frame do `requestAnimationFrame`; se
+> a aba fica em segundo plano, o navegador congela o rAF e, ao voltar, o próximo
+> `ts` salta um intervalo grande — o slide avança/pula direto. Nenhum arquivo em
+> `src/` usa `visibilitychange` hoje (confirmado por grep).
+- [ ] Adicionar listener de `document.visibilitychange`: ao ficar oculta,
+  pausar o acúmulo (ex.: marcar `last = null` ou equivalente ao retomar) para
+  não contar o tempo em segundo plano como progresso do slide.
+- [ ] Gate + verificar manualmente (trocar de aba durante uma história e
+  voltar; o slide não deve pular). Commit `fix(stories): visibilitychange evita pulo de slide ao voltar de aba em 2o plano`.
+
+### Task G10 — Focus-trap do drawer mobile do `AppHeader`
+**Files:** Modify `src/components/app/AppHeader.tsx`. Reusa
+`src/lib/use-focus-trap.ts` criado na **Task F1** da Trilha F — **depende da F1
+já ter sido executada** (se G rodar antes de F, criar o hook aqui e a F1 apenas
+reusa).
+> A Task F1 cobre o focus-trap de `ExpandableContentCard` e `StoryViewer`; o
+> drawer mobile do `AppHeader` (`role="dialog"`, aberto por `open`/`setOpen`,
+> linhas ~118-144) ficou de fora — hoje só tem foco inicial + Escape, sem
+> ciclar `Tab`/`Shift+Tab` dentro do painel.
+- [ ] Aplicar `useFocusTrap(panelRef, open)` no `<motion.aside>` do drawer,
+  junto do Escape/overflow já existentes.
+- [ ] Gate + verificar teclado (Tab não escapa do drawer para o conteúdo atrás
+  do overlay). Commit `fix(a11y): focus-trap no drawer mobile do AppHeader`.
+
 ## Self-Review
 - Cobertura: SP2 (G1), dead code (G2), auto-login (G3), DRY (G4), cursor (G5),
-  erro.png (G6). G1/G3 com verificação ao vivo. Puros/integração testados:
-  `resolveTokenRow`, cursor. Depende da dedup de XP (Trilha B) já estar aplicada.
+  erro.png (G6), teste do cupom no checkout (G7), destino do `plan_waitlist`
+  (G8), `visibilitychange` no StoryViewer (G9), focus-trap do drawer do
+  AppHeader (G10). G1/G3 com verificação ao vivo. Puros/integração testados:
+  `resolveTokenRow`, cursor, elegibilidade do cupom. Depende da dedup de XP
+  (Trilha B) já estar aplicada; G10 depende do hook `use-focus-trap.ts` da
+  Task F1 (Trilha F).
