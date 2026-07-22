@@ -65,6 +65,20 @@ export const CONTENT_HUB: ContentItem[] = [
     capacityFit: ["performance"],
   },
   {
+    id: "relatorio-ferramentas-automacao",
+    type: "relatorio",
+    title: "Ferramentas de IA Local para Automação e Produtividade",
+    description:
+      "As ferramentas e modelos locais que automatizam tarefas de verdade — organizados por caso de uso e hardware.",
+    durationMinutes: 10,
+    xpReward: 30,
+    recommendedStage: "automacoes",
+    bodyPath: "content/relatorios/ferramentas-automacao-ia.md",
+    embedUrl: null,
+    publishedAt: "2026-07-20",
+    capacityFit: ["equilibrio", "essencial"],
+  },
+  {
     id: "podcast-rode-ia-potente",
     type: "podcast",
     title: "Rode IA Potente Direto no Seu Computador",
