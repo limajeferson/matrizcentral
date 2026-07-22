@@ -55,7 +55,21 @@ no [`LICOES.md`](LICOES.md). **Pendência única do usuário:** quiz completo de
 9 perguntas com conta nova (50 XP 1x) — detalhe no
 [`README da frente`](frentes/segmentacao-publico/README.md).
 
-**➡️ 2º) Trilha C — Dark-aware. PRÓXIMA. Roteiro completo abaixo.**
+**➡️ 2º) Trilha C — Dark-aware. PRÓXIMA — retomar EXATAMENTE aqui:**
+o setup já foi feito (2026-07-21, noite): pre-flight do plano-C contra o código
+executado e **o brief da Task C1 já está pronto** em
+`.superpowers/sdd/task-1c-brief.md` (com lições injetadas). **Primeiro ato da
+próxima sessão: registrar o commit BASE (`git rev-parse --short HEAD`) e
+despachar o implementer (sonnet) da C1 com esse brief** — não recriar o brief,
+não rodar brainstorming/writing-plans. Achados do pre-flight que os briefs
+C2+ devem carregar: `Markdown.tsx` **JÁ é theme-aware** (prop
+`surface: "themed"|"light"`) — o item Markdown da C2 vira só conferência; o
+risco real da C2 é o consumidor `dashboard/[token]/conteudo/[id]/page.tsx:122`
+(`surface="light"`) que precisa virar themed QUANDO o glass-card trocar para
+`bg-card/70`, senão texto escuro sobre card escuro (L-020). `glass-card` e
+`dashboard/layout` ainda têm as classes claras fixas (confirmado). C3–C5:
+contagens de classes claras conferidas em todos os arquivos do plano (2–15
+ocorrências por arquivo; caminhos válidos). Roteiro completo da trilha abaixo.
 
 > 🔓 **Autonomia (declaração permanente do usuário, 2026-07-21):** *"você tem
 > autonomia, eu autorizo, não precisa ficar pedindo permissão, atue sempre no que
@@ -600,6 +614,18 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
   ver [hardening-criticos](frentes/hardening-criticos/README.md).
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
+
+- **2026-07-22 (Fable 5) — FECHAMENTO DE SESSÃO pós-glitch de limite:** no
+  meio do setup da Trilha C (brief da C1 recém-escrito), o CLI travou com
+  "monthly spend limit" — **falso positivo do rollout do Fable 5 no plano Max**
+  (verificado ao vivo em claude.ai/settings/usage: sessão 2%, semana 17%,
+  Fable 16%, créditos R$0; a própria página instrui "reinicie o Claude Code").
+  Não é limite real; correção = reiniciar a sessão. Modelo padrão voltou a
+  Fable 5. Sessão finalizada a pedido do usuário no formato do ecossistema:
+  este pino atualizado com o ponto exato (despachar implementer da C1 com o
+  brief pronto), commit + push. Log bruto do erro: `erro-de-limite.md` (local,
+  não versionado). **Nada da Trilha C foi implementado ainda** — zero código
+  novo desde o `091cabc`.
 
 - **2026-07-21 (Fable 5, retomada da noite) — SEGMENTAÇÃO DE PÚBLICO FECHADA E
   PUSHADA:** usuário reenviou o pedido original da frente + "continue de onde
