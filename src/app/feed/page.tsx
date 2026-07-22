@@ -64,7 +64,7 @@ export default async function FeedPage() {
   const token = user ? await resolveToken(user.id) : undefined;
   const access = user ? (await getAccessContext(user.id)).access : "view";
 
-  const cards = buildContentFeed(CONTENT_HUB, token);
+  const cards = buildContentFeed(CONTENT_HUB, token, (capacityTier as CapacityTier | null) ?? undefined);
   const stories = buildStories(CONTENT_HUB, new Date(), token);
   const threads = await listTopics(50);
 

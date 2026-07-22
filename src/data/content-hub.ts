@@ -1,4 +1,5 @@
 import type { RoadmapStageKey } from "@/data/roadmap-stages";
+import type { CapacityTier } from "@/lib/capacity";
 
 export type ContentType = "relatorio" | "podcast" | "video" | "pesquisa";
 
@@ -27,6 +28,10 @@ export interface ContentItem {
   /** Data de publicação (ISO). Ausente = não publicado ainda. Um item entra nas
    *  histórias (stories) se publishedAt estiver dentro de STORY_WINDOW_DAYS. */
   publishedAt?: string;
+  /** Tiers de capacidade com que este item tem afinidade óbvia (título/descrição).
+   *  Usado só para ORDENAR a vitrine (nunca filtrar) — ver `buildContentFeed`.
+   *  Ausente = item neutro, não sobe nem desce para nenhum tier. */
+  capacityFit?: CapacityTier[];
 }
 
 export const CONTENT_HUB: ContentItem[] = [
@@ -42,6 +47,7 @@ export const CONTENT_HUB: ContentItem[] = [
     bodyPath: "content/relatorios/panorama-estrategico-llms-locais.md",
     embedUrl: null,
     publishedAt: "2026-07-13",
+    capacityFit: ["essencial", "equilibrio"],
   },
   {
     id: "relatorio-comparativo-modelos",
@@ -56,6 +62,7 @@ export const CONTENT_HUB: ContentItem[] = [
     embedUrl: null,
     startIncluded: true,
     publishedAt: "2026-07-11",
+    capacityFit: ["performance"],
   },
   {
     id: "podcast-rode-ia-potente",
@@ -67,6 +74,7 @@ export const CONTENT_HUB: ContentItem[] = [
     xpReward: 20,
     recommendedStage: "fundacao_local",
     embedUrl: null,
+    capacityFit: ["essencial", "equilibrio"],
   },
   {
     id: "podcast-ias-poderosas",
@@ -77,6 +85,7 @@ export const CONTENT_HUB: ContentItem[] = [
     xpReward: 20,
     recommendedStage: "fluxo_trabalho",
     embedUrl: null,
+    capacityFit: ["equilibrio"],
   },
   {
     id: "podcast-melhor-ia-hardware",
@@ -98,6 +107,7 @@ export const CONTENT_HUB: ContentItem[] = [
     xpReward: 20,
     recommendedStage: "automacoes",
     embedUrl: null,
+    capacityFit: ["essencial", "equilibrio"],
   },
   {
     id: "video-verdade-ia-local",

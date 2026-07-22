@@ -1,4 +1,5 @@
 import type { ContentItem, ContentType } from "@/data/content-hub";
+import type { CapacityTier } from "@/lib/capacity";
 
 export type FeedCard = {
   id: string; title: string; description: string; type: ContentType;
@@ -18,8 +19,11 @@ export function contentHref(id: string, token?: string): string {
   return token ? `/dashboard/${token}/conteudo/${id}` : "/oferta";
 }
 
-export function buildContentFeed(items: ContentItem[], token?: string): FeedCard[] {
-  return items.map((item) => ({
+/** Ordena por afinidade de capacidade — NUNCA filtra. Itens cujo `capacityFit`
+ *  inclui o tier do usuário sobem para o topo; os demais mantêm a ordem
+ *  original entre si (sort estável via dois filters concatenados). */
+export function buildContentFeed(items: ContentItem[], token?: string, tier?: CapacityTier): FeedCard[] {
+  const cards = items.map((item) => ({
     id: item.id,
     title: item.title,
     description: item.description,
@@ -29,6 +33,9 @@ export function buildContentFeed(items: ContentItem[], token?: string): FeedCard
     durationMinutes: item.durationMinutes,
     xpReward: item.xpReward,
   }));
+  if (!tier) return cards;
+  const fits = (id: string) => items.find((i) => i.id === id)?.capacityFit?.includes(tier) ?? false;
+  return [...cards.filter((c) => fits(c.id)), ...cards.filter((c) => !fits(c.id))];
 }
 
 export type ActivityRow = { display_name: string | null; badge_id: string; earned_at: string };

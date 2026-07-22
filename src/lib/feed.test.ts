@@ -27,6 +27,29 @@ describe("buildContentFeed", () => {
   });
 });
 
+describe("buildContentFeed — ordenação por afinidade (capacityFit)", () => {
+  const a: ContentItem = { ...rel, id: "a", capacityFit: ["equilibrio"] };
+  const b: ContentItem = { ...rel, id: "b", capacityFit: ["essencial"] };
+  const c: ContentItem = { ...rel, id: "c" }; // sem capacityFit
+  const d: ContentItem = { ...rel, id: "d", capacityFit: ["essencial", "equilibrio"] };
+
+  it("com tier: itens afins sobem para a frente, ordem relativa preservada (sort estável)", () => {
+    const cards = buildContentFeed([a, b, c, d], undefined, "essencial");
+    expect(cards.map((x) => x.id)).toEqual(["b", "d", "a", "c"]);
+  });
+
+  it("sem tier: saída idêntica à ordem original (sem ordenação)", () => {
+    const cards = buildContentFeed([a, b, c, d], undefined, undefined);
+    expect(cards.map((x) => x.id)).toEqual(["a", "b", "c", "d"]);
+  });
+
+  it("item sem capacityFit nunca é removido, mesmo com tier ativo", () => {
+    const cards = buildContentFeed([a, b, c, d], undefined, "essencial");
+    expect(cards.map((x) => x.id)).toContain("c");
+    expect(cards).toHaveLength(4);
+  });
+});
+
 describe("formatActivity", () => {
   const label = (id: string) => (id === "b1" ? "Validador" : id);
   it("filtra sem display_name, formata e ordena desc", () => {
