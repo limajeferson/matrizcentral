@@ -24,21 +24,21 @@ export default async function TopicPage({ params }: { params: { id: string } }) 
 
   return (
     <div className="mx-auto max-w-2xl space-y-6 p-6">
-      <article className="rounded-xl border border-zinc-200 bg-white p-4">
-        <h1 className="text-xl font-bold text-zinc-900">{topic.title}</h1>
-        <p className="mt-1 text-xs text-zinc-500">por {topic.author}</p>
-        <p className="mt-3 whitespace-pre-wrap text-zinc-700">{topic.body}</p>
+      <article className="rounded-xl border border-border bg-card p-4">
+        <h1 className="text-xl font-bold text-foreground">{topic.title}</h1>
+        <p className="mt-1 text-xs text-muted-foreground">por {topic.author}</p>
+        <p className="mt-3 whitespace-pre-wrap text-muted-foreground">{topic.body}</p>
       </article>
 
       <section className="space-y-2">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-500">Respostas</h2>
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Respostas</h2>
         {topic.replies.map((r) => (
-          <div key={r.id} className="rounded-lg border border-zinc-200 bg-white/60 p-3">
-            <p className="text-xs text-zinc-500">{r.author}</p>
-            <p className="mt-1 whitespace-pre-wrap text-sm text-zinc-700">{r.body}</p>
+          <div key={r.id} className="rounded-lg border border-border bg-card/60 p-3">
+            <p className="text-xs text-muted-foreground">{r.author}</p>
+            <p className="mt-1 whitespace-pre-wrap text-sm text-muted-foreground">{r.body}</p>
           </div>
         ))}
-        {topic.replies.length === 0 && <p className="text-sm text-zinc-500">Seja o primeiro a responder.</p>}
+        {topic.replies.length === 0 && <p className="text-sm text-muted-foreground">Seja o primeiro a responder.</p>}
       </section>
 
       <ResponderForm topicId={topic.id} />

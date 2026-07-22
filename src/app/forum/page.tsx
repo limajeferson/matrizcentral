@@ -19,16 +19,16 @@ export default async function ForumPage() {
 
       <ul className="space-y-2">
         {topics.map((t) => (
-          <li key={t.id} className="rounded-xl border border-zinc-200 bg-white p-4">
+          <li key={t.id} className="rounded-xl border border-border bg-card p-4">
             {sub ? (
-              <a href={`/forum/${t.id}`} className="font-semibold text-zinc-900 hover:text-violet-600">{t.title}</a>
+              <a href={`/forum/${t.id}`} className="font-semibold text-foreground hover:text-violet-600">{t.title}</a>
             ) : (
-              <span className="font-semibold text-zinc-900">{t.title}</span>
+              <span className="font-semibold text-foreground">{t.title}</span>
             )}
-            <p className="mt-1 text-xs text-zinc-500">por {t.author} · {t.replyCount} resposta(s)</p>
+            <p className="mt-1 text-xs text-muted-foreground">por {t.author} · {t.replyCount} resposta(s)</p>
           </li>
         ))}
-        {topics.length === 0 && <p className="text-sm text-zinc-500">Ainda não há tópicos. {sub ? "Crie o primeiro!" : ""}</p>}
+        {topics.length === 0 && <p className="text-sm text-muted-foreground">Ainda não há tópicos. {sub ? "Crie o primeiro!" : ""}</p>}
       </ul>
     </div>
   );

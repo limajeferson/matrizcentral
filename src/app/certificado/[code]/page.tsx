@@ -16,8 +16,8 @@ export default async function VerificacaoCertificadoPage({
   if (!certificate) {
     return (
       <div className="mx-auto max-w-md p-8 text-center">
-        <h1 className="text-xl font-bold text-zinc-900">Certificado não encontrado</h1>
-        <p className="mt-2 text-zinc-600">
+        <h1 className="text-xl font-bold text-foreground">Certificado não encontrado</h1>
+        <p className="mt-2 text-muted-foreground">
           O código informado não corresponde a nenhum certificado emitido.
         </p>
       </div>
@@ -29,8 +29,8 @@ export default async function VerificacaoCertificadoPage({
       <p className="flex items-center justify-center gap-1.5 text-sm uppercase tracking-widest text-emerald-600">
         <IconCheck size={14} /> Certificado válido
       </p>
-      <h1 className="text-2xl font-bold text-zinc-900">{certificate.title}</h1>
-      <p className="text-zinc-600">
+      <h1 className="text-2xl font-bold text-foreground">{certificate.title}</h1>
+      <p className="text-muted-foreground">
         Emitido em{" "}
         {new Date(certificate.issued_at).toLocaleDateString("pt-BR", {
           day: "2-digit",
