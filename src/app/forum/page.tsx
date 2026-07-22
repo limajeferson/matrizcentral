@@ -6,6 +6,10 @@ import { relativeTime } from "@/lib/relative-time";
 import ContentGate from "@/components/auth/ContentGate";
 import NovoTopicoForm from "@/components/forum/NovoTopicoForm";
 
+// Explícito: a lista lê o banco a cada request (hoje já é dinâmica porque o
+// getSessionUser roda antes, mas isso é dependência de ordem — frágil).
+export const dynamic = "force-dynamic";
+
 export default async function ForumPage() {
   const user = await getSessionUser();
   const access = user ? (await getAccessContext(user.id)).access : "view";
