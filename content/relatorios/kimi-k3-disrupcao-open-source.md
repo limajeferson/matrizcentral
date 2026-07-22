@@ -34,9 +34,9 @@ O uso da Metal 4 API chama atenção porque indica conhecimento profundo de bibl
 
 ## Benchmarks de programação e engenharia agêntica
 
-Nos índices técnicos de engenharia de software, o K3 fica no topo da categoria atual. A distância entre código aberto e proprietário, nesses números, ficou reduzida a cerca de duas semanas.
+Segundo os testes divulgados pela comunidade e pela Moonshot AI, o K3 fica no topo da categoria atual. A distância entre código aberto e proprietário, nesses números, ficou reduzida a cerca de duas semanas.
 
-- Deep SWE: o desempenho do K3 nesse índice indica boa capacidade de gerenciar estado em repositórios com milhares de linhas, superando GPT 5.5 e Claude Opus 4.8.
+- Deep SWE: os benchmarks indicam boa capacidade do K3 em gerenciar estado em repositórios com milhares de linhas, posicionando-o de forma competitiva frente ao GPT 5.5 e Claude Opus 4.8.
 - Terminal Bench: posicionado logo atrás das variantes Sol e Fable, com proficiência em navegação de sistemas de arquivos massivos e execução de comandos complexos.
 - Eficiência em sessões longas (long horizon): otimizado para manter coesão lógica ao longo de sessões extensas, ponto crítico para não degradar a qualidade do código em projetos de longa duração.
 
@@ -52,7 +52,7 @@ A parte que sustenta a viabilidade econômica do K3 é o cache de contexto (prom
 
 Preço base: 3 dólares por milhão de tokens de input, 15 dólares por milhão de tokens de output. Com o cache habilitado, tokens já processados e armazenados no KV cache custam apenas um décimo do valor original.
 
-O impacto fica claro numa sessão real de engenharia com 113 milhões de tokens (o mesmo desenvolvimento do jogo 3D citado acima):
+O impacto fica claro numa sessão real de engenharia com 113 milhões de tokens (o mesmo desenvolvimento do jogo 3D citado acima). Os valores abaixo vem dos testes divulgados pelas fontes da comunidade - trate como ordem de grandeza, nao como medicao nossa.
 
 | Modelo | Custo da sessão (113M tokens) |
 | --- | --- |
