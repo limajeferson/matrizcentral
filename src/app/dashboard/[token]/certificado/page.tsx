@@ -41,7 +41,7 @@ export default async function CertificadoPage({ params }: { params: { token: str
   }
 
   return (
-    <div className="mx-auto max-w-2xl space-y-6 p-6 print:p-0">
+    <div className="force-light mx-auto max-w-2xl space-y-6 bg-background p-6 text-foreground print:p-0">
       <div className="rounded-2xl border-4 border-violet-600 p-10 text-center print:border-2">
         <p className="text-sm uppercase tracking-widest text-muted-foreground">Matriz Central</p>
         <h1 className="mt-4 text-3xl font-bold text-foreground">{certificate.title}</h1>
