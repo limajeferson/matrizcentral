@@ -14,7 +14,7 @@ import { UserMenu } from "@/components/app/UserMenu";
 import { AppShell } from "@/components/app/AppShell";
 import { ProfileCard, type ProfileCardPlan } from "@/components/app/ProfileCard";
 import { SeuCaminhoCard } from "@/components/app/SeuCaminhoCard";
-import type { CapacityTier } from "@/lib/capacity";
+import { toCapacityTier, type CapacityTier } from "@/lib/capacity";
 import { LeftSidebar } from "@/components/app/feed/LeftSidebar";
 import { CenterColumn } from "@/components/app/feed/CenterColumn";
 import { RightSidebar } from "@/components/app/feed/RightSidebar";
@@ -48,7 +48,7 @@ export default async function FeedPage() {
 
   let profileId: string | null = null;
   let totalXp = 0;
-  let capacityTier: string | null = null;
+  let capacityTier: CapacityTier | null = null;
   if (user) {
     const sb = getSupabaseServerClient();
     const { data: urow } = await sb
@@ -58,13 +58,16 @@ export default async function FeedPage() {
       .maybeSingle();
     profileId = (urow?.profile_id as string | null) ?? null;
     totalXp = (urow?.total_xp as number | null) ?? 0;
-    capacityTier = (urow?.capacity_tier as string | null) ?? null;
+    // Nunca `as CapacityTier` cego: valor cru do banco passa pelo validador
+    // — se vier fora dos 3 literais, degrada para null (card não renderiza)
+    // em vez de derrubar a página inteira em CAPACITY_PATHS[tier].
+    capacityTier = toCapacityTier(urow?.capacity_tier) ?? null;
   }
 
   const token = user ? await resolveToken(user.id) : undefined;
   const access = user ? (await getAccessContext(user.id)).access : "view";
 
-  const cards = buildContentFeed(CONTENT_HUB, token, (capacityTier as CapacityTier | null) ?? undefined);
+  const cards = buildContentFeed(CONTENT_HUB, token, capacityTier ?? undefined);
   const stories = buildStories(CONTENT_HUB, new Date(), token);
   const threads = await listTopics(50);
 
@@ -108,7 +111,7 @@ export default async function FeedPage() {
           <>
             {user && !profileId && <DiagnosticoInline mode="completo" />}
             {user && profileId && !capacityTier && <DiagnosticoInline mode="capacidade" />}
-            {user && capacityTier && <SeuCaminhoCard tier={capacityTier as CapacityTier} />}
+            {user && capacityTier && <SeuCaminhoCard tier={capacityTier} />}
             {user && <StoryBar groups={stories} />}
             <CenterColumn
               cards={cards}

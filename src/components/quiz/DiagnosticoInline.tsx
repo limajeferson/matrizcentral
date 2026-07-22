@@ -17,9 +17,14 @@ type AskableQuestion = {
 
 interface DiagnosticoInlineProps {
   mode?: "completo" | "capacidade";
+  /** Chamado quando o envio é bem-sucedido (após o `router.refresh()`). O
+   *  refresh sozinho não desmonta este componente — ele preserva estado de
+   *  client components — então quem controla a condição de montagem (ex.:
+   *  SeuCaminhoCard com `refazendo`) usa isto para voltar ao estado normal. */
+  onDone?: () => void;
 }
 
-export default function DiagnosticoInline({ mode = "completo" }: DiagnosticoInlineProps) {
+export default function DiagnosticoInline({ mode = "completo", onDone }: DiagnosticoInlineProps) {
   const router = useRouter();
   const [currentQ, setCurrentQ] = useState(0);
   const [answers, setAnswers] = useState<{ questionId: number; selectedOptionIndexes: number[] }[]>([]);
@@ -66,6 +71,7 @@ export default function DiagnosticoInline({ mode = "completo" }: DiagnosticoInli
       });
       if (res.ok) {
         router.refresh(); // o feed re-renderiza sem o bloco de boas-vindas
+        onDone?.();
         return;
       }
     } catch {

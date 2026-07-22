@@ -53,7 +53,11 @@ export function SeuCaminhoCard({ tier }: SeuCaminhoCardProps) {
   };
 
   if (refazendo) {
-    return <DiagnosticoInline mode="capacidade" />;
+    // onDone: router.refresh() sozinho não desmonta este client component,
+    // então sem isso o card ficava preso no mini-diagnóstico finalizado até
+    // F5 manual — o callback devolve o controle e o card volta ao normal
+    // (já com o tier atualizado, assim que o RSC payload chegar).
+    return <DiagnosticoInline mode="capacidade" onDone={() => setRefazendo(false)} />;
   }
 
   if (dismissed) return null;
