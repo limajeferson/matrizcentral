@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 
-export default function ResponderForm({ topicId }: { topicId: string }) {
+export default function ResponderForm({ topicId, parentReplyId }: { topicId: string; parentReplyId?: string }) {
   const [body, setBody] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -11,7 +11,7 @@ export default function ResponderForm({ topicId }: { topicId: string }) {
     setLoading(true); setError(null);
     const res = await fetch("/api/forum/reply", {
       method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ topicId, body }),
+      body: JSON.stringify(parentReplyId ? { topicId, body, parentReplyId } : { topicId, body }),
     });
     if (!res.ok) { const d = await res.json().catch(() => ({})); setError(d.error ?? "Erro ao responder."); setLoading(false); return; }
     window.location.reload();
