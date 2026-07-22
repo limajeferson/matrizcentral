@@ -5,9 +5,10 @@ import type { ReplyNode } from "@/lib/forum-tree";
 import ResponderForm from "./ResponderForm";
 
 /** Cap visual de indentação: a partir daqui, respostas continuam aninhadas
- * na árvore mas não ganham mais recuo (evita paredão de indentação infinita).
- * Cada nível aplica ml-4 + border-l + pl-4 (constante por nível, sem compounding
- * porque nesting o coloca fora do pai já margined). */
+ * na árvore, mas o recuo visual congela (evita paredão de indentação infinita).
+ * O filho fica DENTRO da div recuada do pai — é justamente esse aninhamento
+ * que soma ml-4 por nível; passado MAX_INDENT_DEPTH a classe fica vazia e o
+ * recuo para de crescer. */
 const MAX_INDENT_DEPTH = 5;
 
 /** Classe constante por nível (1–5): cada profundidade adiciona ml-4.
@@ -25,7 +26,7 @@ function ReplyNodeItem({ node, topicId }: { node: ReplyNode; topicId: string }) 
           <p className="text-xs font-medium text-foreground">{node.author}</p>
           <p className="text-xs text-muted-foreground">{relativeTime(node.created_at, new Date())}</p>
         </div>
-        <p className="mt-1 whitespace-pre-wrap text-sm text-muted-foreground">{node.body}</p>
+        <p className="mt-1 whitespace-pre-wrap text-sm text-foreground">{node.body}</p>
         <button
           type="button"
           onClick={() => setReplying((v) => !v)}

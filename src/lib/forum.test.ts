@@ -17,4 +17,15 @@ describe("validateTopicInput", () => {
 describe("validateReplyInput", () => {
   it("vazio → erro", () => expect(validateReplyInput({ body: "" }).ok).toBe(false));
   it("válido → ok", () => expect(validateReplyInput({ body: "resposta" }).ok).toBe(true));
+  it("parentReplyId vazio → erro 'Resposta de origem inválida.'", () => {
+    const result = validateReplyInput({ body: "x", parentReplyId: "" });
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.error).toBe("Resposta de origem inválida.");
+  });
+  it("parentReplyId presente → ok", () => {
+    expect(validateReplyInput({ body: "x", parentReplyId: "some-id" }).ok).toBe(true);
+  });
+  it("parentReplyId ausente → ok", () => {
+    expect(validateReplyInput({ body: "x" }).ok).toBe(true);
+  });
 });

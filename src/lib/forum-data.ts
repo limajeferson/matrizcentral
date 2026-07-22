@@ -56,14 +56,24 @@ export async function createTopic(userId: string, title: string, body: string): 
   return data?.id ?? null;
 }
 
+export type CreateReplyResult = "ok" | "invalid_parent" | "error";
+
 export async function createReply(
   userId: string,
   topicId: string,
   body: string,
   parentReplyId?: string | null,
-): Promise<boolean> {
+): Promise<CreateReplyResult> {
   const supabase = getSupabaseServerClient();
+  if (parentReplyId) {
+    const { data: parent, error: parentError } = await supabase
+      .from("forum_replies").select("id")
+      .eq("id", parentReplyId).eq("topic_id", topicId).maybeSingle();
+    // Erro no select (incl. cast de uuid inválido pelo Postgres) é tratado
+    // como "não encontrado": nunca deixamos cair no insert às cegas.
+    if (parentError || !parent) return "invalid_parent";
+  }
   const { error } = await supabase.from("forum_replies")
     .insert({ user_id: userId, topic_id: topicId, body: body.trim(), parent_reply_id: parentReplyId ?? null });
-  return !error;
+  return error ? "error" : "ok";
 }

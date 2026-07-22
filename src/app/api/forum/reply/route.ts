@@ -18,7 +18,8 @@ export async function POST(req: NextRequest) {
       : null;
   const v = validateReplyInput({ body: body?.body, parentReplyId: body?.parentReplyId });
   if (!v.ok) return NextResponse.json({ error: v.error }, { status: 400 });
-  const ok = await createReply(user.id, topicId, body.body, parentReplyId);
-  if (!ok) return NextResponse.json({ error: "não foi possível responder" }, { status: 500 });
+  const result = await createReply(user.id, topicId, body.body, parentReplyId);
+  if (result === "invalid_parent") return NextResponse.json({ error: "Resposta de origem inválida." }, { status: 400 });
+  if (result === "error") return NextResponse.json({ error: "não foi possível responder" }, { status: 500 });
   return NextResponse.json({ ok: true });
 }
