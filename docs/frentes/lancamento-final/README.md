@@ -20,12 +20,10 @@ frente fora-de-fila **leitor-protegido** (construída, não pushada) — ver
 
 ## Próximo passo
 
-1. **Destravar a frente [leitor-protegido](../leitor-protegido/README.md)**
-   primeiro: aplicar a migration `0028`, auditar `purchases` legadas e fazer a
-   verificação visual (os 3 bloqueadores estão detalhados no bloco 🚨 de
-   [`../../ESTADO-ATUAL.md`](../../ESTADO-ATUAL.md)) — só depois dar `git push`.
-2. **Então seguir a fila deste programa** pela **Trilha C (dark-aware)**, a
-   próxima trilha planejada (ver tabela abaixo).
+~~1. Destravar a frente leitor-protegido~~ ✅ **feito** (2026-07-21, no ar).
+~~2. Trilha C (dark-aware)~~ ✅ **feita** (2026-07-22, no ar).
+**Agora: Trilha D (fórum aninhado)** — ⚠️ aplicar e verificar a migration
+`0027` no remoto **antes** do push (L-023). Depois: E → F → G → auditoria.
 
 ## Trilhas (ordem por dependência/risco)
 
@@ -33,8 +31,8 @@ frente fora-de-fila **leitor-protegido** (construída, não pushada) — ver
 |---|--------|------|--------|------|
 | A | Go-live de receita (Stripe live, BREVO no Vercel) | **Usuário** (externo) | 🔄 **BREVO ✓ resolvido e verificado** (delivered em prod 2026-07-16); **Stripe live pendente** (verificação de empresa) | hand-off |
 | B | **Segurança do dinheiro** (reembolso→revoga, XP dedup, rate limit, validações, testes do caminho pago) | Claude | ✅ **COMPLETA e no ar** (6/6, revisão final Ready-to-merge; migrations 0025/0026 aplicadas; 268 testes **no fechamento da trilha** — hoje a suíte tem 322) | [spec-B](spec-B-seguranca-dinheiro.md) · [plano-B](plano-B-seguranca-dinheiro.md) |
-| C | Dark-aware (27 arquivos; blog force-light + logado→tokens; glass-card cascateia) | Claude | 📐 spec+plano prontos — **próxima** | [spec-C](spec-C-dark-aware.md) · [plano-C](plano-C-dark-aware.md) |
-| D | Design v2 Frente 5 (Fórum: respostas aninhadas `parent_reply_id`) | Claude | 📐 spec+plano prontos | [spec-D](spec-D-forum.md) · plano-D |
+| C | Dark-aware (blog force-light + logado→tokens; glass-card cascateia) | Claude | ✅ **COMPLETA e no ar** (2026-07-22: C1–C5 + fix certificado-impressão `942a539`; revisão final opus Ready-to-merge; visual dark+claro executado; L-040) | [spec-C](spec-C-dark-aware.md) · [plano-C](plano-C-dark-aware.md) |
+| D | Design v2 Frente 5 (Fórum: respostas aninhadas `parent_reply_id`) | Claude | 📐 spec+plano prontos — **próxima** | [spec-D](spec-D-forum.md) · plano-D |
 | E | Conteúdo (texto agora; mídia via NotebookLM→hand-off) | Claude + Usuário | 📐 spec+plano prontos (contínuo, paralelo) | [spec-E](spec-E-conteudo.md) · plano-E |
 | F | UX / a11y / CX polish (+ herdados nunca fechados) | Claude (+ RightSidebar do usuário) | 📐 spec+plano prontos | [spec-F](spec-F-polish.md) · plano-F |
 | G | Tech-debt / limpeza (SP2, resolveTokenRow DRY, tiebreak, dead code) | Claude | 📐 spec+plano prontos | [spec-G](spec-G-techdebt.md) · plano-G |

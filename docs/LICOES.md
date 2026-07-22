@@ -199,6 +199,12 @@ Criar tag nova exige editar este arquivo e o PLAYBOOK juntos.
 - **Faça:** tratar "sessão logada disponível" como pré-requisito de ambiente do roteiro (como o navegador em L-030): verificar ANTES se o Chrome tem sessão viva (local ou produção); se não tiver, executar os passos deslogados, entregar os passos logados como roteiro numerado para o usuário e registrar a pendência — sem fingir e sem contornar o bloqueio.
 - **Fonte:** sessão 2026-07-21 (fechamento da frente segmentacao-publico, itens 3–6 do roteiro da Task S8).
 
+### L-040 · Superfície feita para IMPRIMIR não pode depender de token de tema — forçar claro nela
+- **Gatilho:** `visual`
+- **Não faça:** converter para tokens de tema (`text-foreground` etc.) uma página cujo fim é impressão/PDF (certificado, recibo) sem pensar no papel: no tema dark os tokens resolvem quase-branco, o navegador descarta cores de fundo ao imprimir, e o resultado é **texto invisível no papel branco** — regressão que os gates tsc/test/lint nunca pegam.
+- **Faça:** superfícies imprimíveis usam tema claro forçado (wrapper `.force-light`, que redeclara os tokens com os valores claros) ou um bloco `@media print` com cores fixas escuras. Na revisão de qualquer conversão dark-aware, perguntar: "alguma dessas telas vira papel?"
+- **Fonte:** revisão final da Trilha C (Important #1, fix `942a539`).
+
 ## `deploy`
 
 ### L-023 · Nunca pushar código que dependa de migration nova antes de aplicá-la e verificá-la no remoto

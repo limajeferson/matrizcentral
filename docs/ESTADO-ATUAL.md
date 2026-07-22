@@ -8,12 +8,13 @@
 > Ordem de leitura ao retomar: **este arquivo → `CLAUDE.md` → o `README.md` da
 > frente ativa → o código fonte-de-verdade.**
 
-_Última atualização: 2026-07-21 (noite, retomada: frente **segmentacao-publico
-FECHADA e pushada** — re-review S8 + revisão final opus "Ready to merge" + 2
-ondas de fixes + visual deslogado executado; **340 testes**, `tsc` 0, lint 0.
-`master` sincronizada com `origin`. **Próxima = Trilha C (dark-aware)**;
-pendência do usuário: roteiro logado da segmentação, 4 passos no README da
-frente.)_
+_Última atualização: 2026-07-22 (**Trilha C dark-aware FECHADA e pushada** —
+5 tasks C1–C5 + fix do certificado, revisão final opus "Ready to merge Yes",
+verificação visual dark E claro executada ao vivo (blog claro sob dark,
+dashboard/hub/suporte/fórum no dark, tema restaurado). **340 testes**, `tsc` 0,
+lint 0. **Próxima = Trilha D (fórum aninhado; migration 0027 ANTES do push,
+L-023)**. Pendências do usuário: roteiro logado da segmentação (README da
+frente) + reclamação de cobrança (pasta `reclamacao-anthropic/`).)_
 
 > **Convenção deste arquivo:** as seções de **estado** (`PRÓXIMA AÇÃO`,
 > `Estado do git`, tabela de frentes) são **sobrescritas** a cada atualização —
@@ -55,21 +56,24 @@ no [`LICOES.md`](LICOES.md). **Pendência única do usuário:** quiz completo de
 9 perguntas com conta nova (50 XP 1x) — detalhe no
 [`README da frente`](frentes/segmentacao-publico/README.md).
 
-**➡️ 2º) Trilha C — Dark-aware. PRÓXIMA — retomar EXATAMENTE aqui:**
-o setup já foi feito (2026-07-21, noite): pre-flight do plano-C contra o código
-executado e **o brief da Task C1 já está pronto** em
-`.superpowers/sdd/task-1c-brief.md` (com lições injetadas). **Primeiro ato da
-próxima sessão: registrar o commit BASE (`git rev-parse --short HEAD`) e
-despachar o implementer (sonnet) da C1 com esse brief** — não recriar o brief,
-não rodar brainstorming/writing-plans. Achados do pre-flight que os briefs
-C2+ devem carregar: `Markdown.tsx` **JÁ é theme-aware** (prop
-`surface: "themed"|"light"`) — o item Markdown da C2 vira só conferência; o
-risco real da C2 é o consumidor `dashboard/[token]/conteudo/[id]/page.tsx:122`
-(`surface="light"`) que precisa virar themed QUANDO o glass-card trocar para
-`bg-card/70`, senão texto escuro sobre card escuro (L-020). `glass-card` e
-`dashboard/layout` ainda têm as classes claras fixas (confirmado). C3–C5:
-contagens de classes claras conferidas em todos os arquivos do plano (2–15
-ocorrências por arquivo; caminhos válidos). Roteiro completo da trilha abaixo.
+**✅ 2º) TRILHA C — DARK-AWARE: FECHADA E PUSHADA (2026-07-22).** 5 tasks via
+SDD (implementer/reviewer sonnet, fixes haiku), cada uma revisada e aprovada:
+C1 blog `.force-light` (`3095c55`) · C2 alavancas glass-card/dashboard-shell +
+Markdown themed no consumidor (`787abbb`) · C3 5 páginas do dashboard
+(`2600dbb`) · C4 fórum/suporte/certificado/quiz (`dbfe1a4`) · C5 11
+widgets/forms (`e57d43d`). Revisão final **opus**: 1 Important real — o
+certificado (página de impressão) com tokens dark imprimiria texto invisível →
+fix `.force-light` (`942a539`, L-040) → **Ready to merge Yes**. **Visual
+executado ao vivo (dark E claro):** blog claro sob `html.dark`, dashboard/hub/
+suporte/fórum legíveis no dark e no claro (token de teste `ZWNT2H852C`), tema
+do Chrome restaurado. Backlog rastreado (não bloqueia): `QuizValidacao.tsx`
+dark-fixo fora de tokens (pré-existente), hydration #418 do `ShareLinks` no
+blog (pré-existente, confirmado idêntico em produção), pills do
+`category-badge` (autocontidas, legíveis), corpo do tópico do fórum em
+muted (Trilha D decide). **➡️ PRÓXIMA: Trilha D** (fórum aninhado,
+`spec-D-forum.md`/`plano-D-forum.md`; ⚠️ **migration `0027` aplicada e
+verificada ANTES do push — L-023**). Depois: E (conteúdo — pedir reexport do
+insumo ao usuário ANTES) → F → G → auditoria final.
 
 > 🔓 **Autonomia (declaração permanente do usuário, 2026-07-21):** *"você tem
 > autonomia, eu autorizo, não precisa ficar pedindo permissão, atue sempre no que
@@ -614,6 +618,23 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
   ver [hardening-criticos](frentes/hardening-criticos/README.md).
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
+
+- **2026-07-22 (Fable 5) — TRILHA C (DARK-AWARE) EXECUTADA INTEIRA E FECHADA
+  + reclamação de cobrança preparada:** (1) Investigação do "monthly spend
+  limit": era real e indevido — R$ 64,44 cobrados como créditos de uso (117%
+  do teto de R$ 55) com o plano Max em só 16-18%; bug do rollout do Fable 5
+  admitido no banner da própria página de Uso. Pasta local
+  `reclamacao-anthropic/` criada (guia + texto EN/PT + 2 prints;
+  `.gitignore`ada) para o usuário acionar support.claude.com. Créditos de uso
+  agora desativados; sessões novas debitam do plano. (2) Trilha C via SDD:
+  C1–C5 implementadas/revisadas (detalhe no topo), revisão final opus achou a
+  regressão de impressão do certificado (L-040) → fix → Ready to merge Yes.
+  (3) Visual dark+claro executado ao vivo no dev server (localStorage
+  `mc-theme`; dashboard via token de teste). Hydration #418 do ShareLinks
+  investigada e confirmada PRÉ-EXISTENTE (produção sem a trilha dá o mesmo
+  erro; React se recupera sozinho) — backlog, não bloqueador. (4) L-040 no
+  LICOES.md; ESTADO/README atualizados; push. Gate final: tsc 0 · 340 testes ·
+  lint 0. Próxima: **Trilha D**.
 
 - **2026-07-22 (Fable 5) — FECHAMENTO DE SESSÃO pós-glitch de limite:** no
   meio do setup da Trilha C (brief da C1 recém-escrito), o CLI travou com
