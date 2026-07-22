@@ -1060,3 +1060,16 @@ Este briefing é sua "fonte única de verdade" para a logo entre qualquer contex
 
 
 Faça sua própria pergunta ao Claude
+---
+
+## ADENDO 2026-07-22 (decisão do fundador na sessão do Claude Design)
+
+O brand board v1 do Claude Design reconstruiu o M-hexágono, mas o fundador
+decidiu o **pivot**: a marca é **APENAS o cubo isométrico de 3 faces em 3 tons
+de violeta** que aparecia no centro do M. O M e o contorno hexagonal foram
+descartados. Tons definidos: topo ~#a78bfa (claro), esquerda #7c5cff (médio,
+token do site), direita #7c3aed (profundo, do briefing original). Significado:
+bloco de conhecimento, estrutura, profundidade = camadas de aprendizado.
+Wordmark: MATRIZ CENTRAL em caixa alta, fonte geométrica, lockup horizontal.
+Projeto no Claude Design: "Identidade visual Matriz Central"
+(claude.ai/design/p/97304517-cf92-4202-90bf-fcce79cda068).
