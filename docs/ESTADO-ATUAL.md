@@ -39,8 +39,18 @@ lições) no fluxo do PLAYBOOK + item 2b (injetar lições nos briefs). Revisão
 opus = Ready to merge. **Ao montar qualquer brief de task, consultar a seção do
 gatilho em `LICOES.md`.**
 
-**➡️ PRÓXIMA FRENTE: Trilha C — Dark-aware. Roteiro completo abaixo — comece por
-ele, sem perguntar.**
+**➡️ PRÓXIMA SESSÃO — duas atividades, nesta ordem, sem perguntar:**
+
+**1º) 🎯 FRENTE SEGMENTAÇÃO DE PÚBLICO (nova, engatilhada pelo usuário):** o
+pedido completo + contexto de aterrissagem + método estão em
+[`frentes/segmentacao-publico/pedido.md`](frentes/segmentacao-publico/pedido.md)
+(versionado — o original era o arquivo local `proxima-tarefa.md`). Começar com
+`superpowers:brainstorming` LENDO o pedido.md primeiro; 3 perfis (avançados/
+equilibrados/limitado) tocando feed, marketing, CRM e funil; **já existe sistema
+de perfis/triagem (0022/SP1) — partir dele, não do zero.** Depois: spec →
+`writing-plans` → SDD. Decisões de escopo de produto = usuário; o resto, decidir.
+
+**2º) Trilha C — Dark-aware. Roteiro completo abaixo.**
 
 > 🔓 **Autonomia (declaração permanente do usuário, 2026-07-21):** *"você tem
 > autonomia, eu autorizo, não precisa ficar pedindo permissão, atue sempre no que
@@ -591,6 +601,15 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
   ver [hardening-criticos](frentes/hardening-criticos/README.md).
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
+
+- **2026-07-21 (Fable 5) — [addendum ao handoff] NOVA FRENTE ENGATILHADA:
+  segmentação de público.** Descoberto o `proxima-tarefa.md` local do usuário com
+  o pedido da próxima tarefa (3 perfis: avançados/equilibrados/limitado; afeta
+  feed, marketing, CRM, funil). Conteúdo **versionado verbatim** em
+  `frentes/segmentacao-publico/pedido.md` (aplicando a lição do insumo perdido da
+  Trilha E — arquivo local não versionado se perde/sobrescreve) + contexto de
+  aterrissagem (sistema de perfis 0022/SP1 já existe; crm.md; funil da landing).
+  Ordem da próxima sessão ajustada: **1º segmentação (brainstorm), 2º Trilha C.**
 
 - **2026-07-21 (Fable 5) — HANDOFF DA TRILHA C preparado + pendência de pagamento
   registrada + L-035:** a pedido do usuário, a próxima sessão ficou pronta para
