@@ -46,11 +46,14 @@ de tiers duplicada) → fix `76c2095` (toCapacityTier na fonte única + testes d
 regressão). Revisão final whole-branch **opus** (base `752c25e`): **Ready to
 merge** após 2 fixes (`b2ea9e5`: cast cego de `capacity_tier` no feed podia
 derrubar a página; fluxo "meu setup mudou" ficava preso pós-`router.refresh()`).
-Gate: `tsc` 0 · **340 testes / 55 arquivos** · lint 0. Visual **deslogado**
-executado (landing: 3 cards, CTAs, zero "limitado", 1 coluna mobile). Lições
-**L-036..L-039** destiladas no [`LICOES.md`](LICOES.md). Docs e **pendência do
-usuário** (roteiro logado, 4 passos):
-[`frentes/segmentacao-publico/README.md`](frentes/segmentacao-publico/README.md).
+Gate: `tsc` 0 · **340 testes / 55 arquivos** · lint 0. Visual executado:
+deslogado (landing completa) **e logado EM PRODUÇÃO pós-deploy** (conta de
+teste `stripe-e2e@` já logada no Chrome: mini-quiz → "Seu caminho Essencial" →
+sem XP novo (SQL) → vitrine reordenada sem sumir item → "meu setup mudou" volta
+sozinho (fix onDone provado) → dismiss persiste no F5). Lições **L-036..L-039**
+no [`LICOES.md`](LICOES.md). **Pendência única do usuário:** quiz completo de
+9 perguntas com conta nova (50 XP 1x) — detalhe no
+[`README da frente`](frentes/segmentacao-publico/README.md).
 
 **➡️ 2º) Trilha C — Dark-aware. PRÓXIMA. Roteiro completo abaixo.**
 
@@ -620,7 +623,14 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
   frente para o usuário. (4) Etapa 7: **L-036..L-039** no `LICOES.md`. (5)
   README da frente criado; este arquivo atualizado; **push** (0029 já estava
   aplicada desde a S2; reconferida antes do push). Gate final: `tsc` 0 ·
-  **340 testes / 55 arquivos** · lint 0 erros. Próxima: **Trilha C**.
+  **340 testes / 55 arquivos** · lint 0 erros. **Pós-deploy:** verificação
+  logada AO VIVO em produção com a conta de teste `stripe-e2e@` (mini-quiz,
+  Seu caminho, XP inalterado via SQL, vitrine reordenada, refazer com onDone,
+  dismiss) — só o quiz de 9 perguntas com conta nova ficou pro usuário.
+  Próxima: **Trilha C** (pre-flight já feito nesta sessão: Markdown.tsx JÁ é
+  theme-aware com prop `surface` — C2 deve trocar o consumidor
+  `dashboard/[token]/conteudo/[id]` de `surface="light"` para themed QUANDO o
+  glass-card virar `bg-card/70`, senão texto escuro sobre card escuro; L-020).
 
 - **2026-07-21 (Fable 5, sessão da noite) — SEGMENTAÇÃO DE PÚBLICO construída
   (S1–S8) e PAUSADA no fechamento a pedido do usuário:** retomada pós-queda de

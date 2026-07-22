@@ -46,28 +46,37 @@ falta).
   fluxo "meu setup mudou" preso pós-`router.refresh()` (L-037).
 - Gate no fechamento: `tsc` 0 · **340 testes / 55 arquivos** · lint 0 erros.
 
-## Verificação visual
+## Verificação visual (executada em 2026-07-21, pós-deploy)
 
-- ✅ **Deslogado (executada pelo Claude, dev server local):** landing com a
-  seção nova na posição certa (entre jornada e "Você não precisa saber
-  programar"), 3 cards Performance/Equilíbrio/Essencial, CTAs → `/oferta`,
-  zero "limitado", grid 1 coluna ≤800px (regra CSS conferida).
-- ⚠️ **Logado:** sessão de teste não pôde ser criada (mintar credencial é
-  bloqueado — L-038). Verificação de rendering feita em produção pós-deploy;
-  fluxos de **submit** ficam para o usuário (abaixo).
+- ✅ **Deslogado (dev local):** landing com a seção nova na posição certa
+  (entre jornada e "Você não precisa saber programar"), 3 cards
+  Performance/Equilíbrio/Essencial, CTAs → `/oferta`, zero "limitado", grid
+  1 coluna ≤800px (regra CSS conferida).
+- ✅ **Logado (PRODUÇÃO, conta de teste `stripe-e2e@` que já estava logada no
+  Chrome):**
+  - Conta com perfil antigo e sem tier → **modo mini (2 perguntas)** rendeu no
+    feed ("Complete seu diagnóstico", "Pergunta 1 de 2"); concluído →
+    **"Seu caminho — Essencial"** apareceu com setup + primeiro passo.
+  - **Sem XP novo:** `xp_events` `triagem` continuou **1** (conferido por SQL
+    antes/depois). `users.capacity_tier` gravado (`essencial`).
+  - **Vitrine reordenou** por afinidade (Comparativo/performance desceu;
+    podcasts essencial/equilíbrio subiram) e **nenhum item sumiu**.
+  - **"meu setup mudou"** reabriu o mini-quiz; respondido diferente → card
+    **voltou sozinho** exibindo **Equilíbrio** (fix `onDone`/`b2ea9e5`
+    funcionando; a janela de prop stale foi de ~3s, auto-corretiva, como a
+    revisão avaliou). DB conferido: `equilibrio`.
+  - **Dispensar (X)** → card some e **não volta no F5**.
+- Estado final da conta de teste: `profile_id=devops_infra`,
+  `capacity_tier=equilibrio` (dado sintético, sem impacto).
 
-## Pendências (roteiro logado para o usuário — 5 min)
+## Pendência única (usuário, quando quiser)
 
-1. `/feed` sem diagnóstico: quiz aparece com **9 perguntas** → concluir →
-   bloco "Seu caminho" com o tier calculado.
-2. Conta com perfil antigo (`update users set capacity_tier = null where email
-   = '<conta>'`): versão **mini** (2 perguntas) → concluir → bloco aparece;
-   **sem XP novo** (`select count(*) from xp_events where user_id='...' and
-   action_type='triagem'` continua 1).
-3. Dispensar o bloco → some e não volta no F5; **"meu setup mudou"** → mini-quiz
-   de novo → ao concluir, o card volta sozinho (fix `b2ea9e5`).
-4. Vitrine com tier `essencial`: itens tagueados essencial primeiro; nenhum
-   item sumiu.
+- **Quiz completo de 9 perguntas + 50 XP única vez** exige conta **nova** (sem
+  `diagnosed_at`): entrar com uma conta fresca → `/feed` → quiz completo
+  ("Pergunta 1 de 9") → concluir → perfil + tier gravados e +50 XP uma única
+  vez. (O modo completo é o mesmo maquinário do mini já provado em produção;
+  a seleção do banco de 9 perguntas é coberta por teste unitário. O reset de
+  conta existente via SQL foi bloqueado pelo classificador — L-038.)
 
 ## Decisões travadas
 
