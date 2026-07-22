@@ -40,8 +40,8 @@ Um modelo sozinho não automatiza nada — ele precisa de um orquestrador que de
 | Omnistack-agent | Agente full stack com 10 papéis (arquiteto, DevOps, QA etc.), compila adaptadores para múltiplos LLMs | Node 18+ para build; requisito real depende do LLM hospedeiro | Agnóstico a plataforma; núcleo compilado em adaptadores |
 | Ollama | Rodar, gerenciar e servir modelos locais (chat, código, visão, embeddings, tool calling) | macOS, Windows, Linux ou Docker; requisito varia com o modelo carregado | API REST compatível com OpenAI e Anthropic |
 | vLLM | Servir modelos para múltiplos usuários com API estilo OpenAI | Pensado para servidor de inferência em produção | Runtime de alto desempenho |
-| Llama.cpp | Execução local de LLMs em formato GGUF | Indicado para uso local individual | Runtime enxuto, sem servidor multiusuário |
-| LM Studio | Rodar modelos localmente com interface gráfica, sem terminal | Máquina local | Ferramenta gratuita |
+| Llama.cpp | Execução local de LLMs em formato GGUF | Indicado para uso local individual | Runtime para inferência local |
+| LM Studio | Rodar IAs localmente, gratuito | Máquina local | Ferramenta gratuita |
 
 ## Automação de terminal e utilitários
 
