@@ -10,6 +10,10 @@ const nextConfig = {
       "/biblioteca/[slug]": ["./content/**/*"],
       "/dashboard/[token]/conteudo/[id]": ["./content/**/*"],
       "/blog/[slug]": ["./content/**/*"],
+      // A rota de progresso de leitura revalida seção contra o .md do disco —
+      // sem o tracing, o POST cai no catch e o livro-razão reading_events para
+      // de gravar EM SILÊNCIO (achado da review final da Trilha E).
+      "/api/leitura": ["./content/**/*"],
     },
   },
 };

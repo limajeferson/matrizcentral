@@ -42,7 +42,7 @@ Segundo os testes divulgados pela comunidade e pela Moonshot AI, o K3 fica no to
 
 ## Programmatic Tool Calling (PTC)
 
-O K3 introduz o Programmatic Tool Calling, um modo de operação distinto do raciocínio puramente linguístico. O modelo usa Inference-Time Reasoning (Max Thinking) para decisões arquiteturais e diagnósticos complexos, mas alterna automaticamente para PTC em tarefas repetitivas.
+O K3 implementa seu próprio modo de Programmatic Tool Calling, distinto do raciocínio puramente linguístico. O modelo usa Inference-Time Reasoning (Max Thinking) para decisões arquiteturais e diagnósticos complexos, mas alterna automaticamente para PTC em tarefas repetitivas.
 
 Na prática, o PTC permite que o agente gere chamadas estruturadas de ferramentas direto no terminal sem precisar narrar cada passo em Chain of Thought (CoT). Isso reduz latência e consumo de tokens em fluxos agênticos — o modelo executa em vez de descrever o que está executando.
 
