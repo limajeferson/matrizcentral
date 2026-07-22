@@ -39,11 +39,55 @@ lições) no fluxo do PLAYBOOK + item 2b (injetar lições nos briefs). Revisão
 opus = Ready to merge. **Ao montar qualquer brief de task, consultar a seção do
 gatilho em `LICOES.md`.**
 
-**➡️ PRÓXIMA FRENTE: Trilha C — Dark-aware** (`lancamento-final/plano-C-dark-aware.md`).
-Blog force-light (Bucket A) + área logada→tokens semânticos (Bucket B). Começar por
-`glass-card` (cascateia 6 telas) + `dashboard/layout` + `Markdown`. Verificação
-visual é o gate. ℹ️ `Markdown.tsx` já virou dark-aware (prop `surface`) — o resto
-do plano segue válido.
+**➡️ PRÓXIMA FRENTE: Trilha C — Dark-aware. Roteiro completo abaixo — comece por
+ele, sem perguntar.**
+
+> 🔓 **Autonomia (declaração permanente do usuário, 2026-07-21):** *"você tem
+> autonomia, eu autorizo, não precisa ficar pedindo permissão, atue sempre no que
+> você decidir ser recomendado e foque na entrega objetiva."* Ter iniciativa,
+> decidir e apresentar soluções (não menus). Limites que permanecem: os 4 do
+> `CLAUDE.md` (credenciais, push com pré-requisito pendente, termos com efeito
+> jurídico, conta de terceiro).
+
+### Roteiro da Trilha C (dark-aware) — método e ferramentas por etapa
+
+**O quê:** blog/marketing force-light (Bucket A) + área logada→tokens semânticos
+(Bucket B). Spec `lancamento-final/spec-C-dark-aware.md` · plano
+`lancamento-final/plano-C-dark-aware.md` (**5 tasks C1–C5** prontas, com mapa de
+troca de classes). Sem migration — push livre ao fechar.
+
+1. **Setup (sem skill de processo):** spec+plano JÁ existem → **não** rodar
+   `brainstorming`/`writing-plans`. Ler os dois + **pre-flight** do plano contra o
+   código (L-017/L-018: planos drift — `Markdown.tsx` JÁ é dark-aware via prop
+   `surface`, parte da C2 pode estar adiantada; revalidar task a task antes de
+   despachar).
+2. **Execução: `superpowers:subagent-driven-development`** com o plano-C. Por task:
+   - Brief: `bash "<skill-dir>/scripts/task-brief" docs/frentes/lancamento-final/plano-C-dark-aware.md N`
+     → renomear para `task-N`**`c`**`-brief.md` (L-026: nomes colidem entre frentes).
+   - **Injetar no brief as lições dos gatilhos `visual` + `spec` do
+     [`LICOES.md`](LICOES.md)** (item 2b do playbook — máx ~6, as mais específicas).
+   - Implementer: agente `general-purpose` **sonnet** (multi-arquivo, julgamento
+     visual). Reviewer: **sonnet** via `scripts/review-package BASE HEAD` (BASE =
+     commit antes do implementer, nunca HEAD~1). Fixes: **haiku** → re-review.
+   - Ledger: 1 linha por task fechada em `.superpowers/sdd/progress.md`.
+3. **Gate por task:** `npx tsc --noEmit` 0 · `npm run test` (322+) · `npx next lint`
+   0 erros. **Gate DA FRENTE (não negociável): verificação visual** — `npm run dev
+   -- -p 3000`, conferir dark **e** claro, desktop **e** mobile (drawer/pill).
+   Navegador indisponível → **não fingir** (L-030): roteiro numerado no report +
+   pendência aqui.
+4. **Fechamento:** revisão final whole-branch **opus** → fixes → **etapa 7 do
+   playbook** (destilar lições novas da frente no `LICOES.md`, dedup primeiro) →
+   atualizar este arquivo (topo sobrescrito + log append) → commit → `git push`
+   (sem migration nesta trilha; a Vercel publica).
+5. **Depois da C, a fila é:** **D** (fórum aninhado — migration `0027` **antes** do
+   push, L-023) → **E** (conteúdo — pedir ao usuário o reexport do insumo das 26
+   fontes ANTES de começar; ver README memoria-licoes) → **F** (polish; F6 termos
+   BLOQUEADA por decisão do usuário) → **G** (tech-debt; G1/G3 review **opus**) →
+   auditoria final (3 `Explore` paralelos, receita no playbook).
+
+**Referência de método completa:** [`PLAYBOOK-EXECUCAO.md`](PLAYBOOK-EXECUCAO.md)
+(árvore de skills, tabela agente×modelo, receita de prompt de subagente, gate,
+ordem de deploy) + [`LICOES.md`](LICOES.md) (34+ lições por gatilho).
 
 ---
 
@@ -500,6 +544,26 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
 
 ## ⏳ Pendências / decisões em aberto
 
+- **💳 Meio de pagamento do go-live — DECISÃO DO USUÁRIO (dinheiro), pesquisada
+  em 2026-07-21 (fontes oficiais, verificação adversarial):** a Stripe BR aceita
+  **CPF** (conta *Individual*; ⚠️ tipo PF/PJ **irreversível** após verificar —
+  decidir antes de enviar documentos; verificação: Dashboard → banner → *Account
+  verifications*; RG/CNH **com CPF visível** + selfie + endereço, ~24h), mas tem
+  limitação comercial séria p/ ticket R$47–497 BR: **sem parcelamento** (não
+  existe no BR), **Pix invite-only** (60d+ processando, teto R$3k), só
+  Visa/Master, repasse cartão D+30. ⚠️ **A `/oferta` anuncia "12x R$47"
+  (`OfferPricing.tsx:73`) que a Stripe BR não entrega** — corrigir na frente de
+  pagamento. **Recomendação registrada do Claude:** **Kiwify como caixa**
+  (modos "Área de Membros Externa"/"Apenas Receber Pagamentos" documentados,
+  SEM exclusividade, Pix+parcelamento nativos, D+15; 8,99%+R$2,49) **mantendo a
+  entrega na nossa plataforma** (webhooks `compra_aprovada`/`compra_reembolsada`/
+  `chargeback`; assinatura não documentada → conceder acesso validando na API
+  deles + cron de reconciliação). Hotmart tem **cláusula de exclusividade de
+  venda** (5.1); Mercado Pago **exclui infoproduto da proteção** a chargeback.
+  Nenhuma das 5 é merchant of record local — NF ao comprador é sempre nossa,
+  pelo valor cheio (checar NFS-e PF com contador). **Quando o usuário decidir,
+  o Claude escreve a spec da frente de integração.**
+
 - ✅ **E-mail (Brevo) — RESOLVIDO (2026-07-13):** causa raiz era o remetente
   `contato@matrizcentral.com.br` **não validado** no Brevo (log de evento:
   "sender is not valid"). Corrigido **autenticando o domínio** `matrizcentral.com.br`
@@ -527,6 +591,20 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
   ver [hardening-criticos](frentes/hardening-criticos/README.md).
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
+
+- **2026-07-21 (Fable 5) — HANDOFF DA TRILHA C preparado + pendência de pagamento
+  registrada + L-035:** a pedido do usuário, a próxima sessão ficou pronta para
+  agir sem perguntar: o topo deste arquivo agora traz o **roteiro completo da
+  Trilha C** (método SDD direto — spec+plano existem; skills, agentes e modelos
+  por etapa; injeção das lições `visual`+`spec` nos briefs via item 2b; gate
+  visual; fila D→E→F→G) e a **declaração de autonomia permanente** do usuário.
+  Registrada a pendência **💳 meio de pagamento** (pesquisa do dia: Stripe BR sem
+  parcelamento/Pix aberto; recomendação Kiwify-como-caixa; decisão é do usuário —
+  só existia na conversa, agora está no repo). Dogfooding da etapa 7 recém-criada:
+  **L-035** adicionada ao `LICOES.md` (fontes citadas por subagente de mineração
+  precisam ser abertas e conferidas — achado real da review da Task 2 desta
+  frente). Nota: o insumo da pesquisa de pagamento também atualizou a memória
+  local (Stripe BR aceita CPF; tipo PF/PJ irreversível).
 
 - **2026-07-21 (Fable 5) — FRENTE MEMORIA-LICOES: EMG avaliado e aplicado ao
   processo (não ao produto):** o usuário trouxe a análise do paper *Experience

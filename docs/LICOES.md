@@ -198,6 +198,12 @@ Criar tag nova exige editar este arquivo e o PLAYBOOK juntos.
 - **Faça:** ao detectar que um subagente caiu no meio, o coordenador verifica o estado real do working tree antes de decidir, e se o trabalho estiver correto, ele mesmo roda o gate (`tsc`/testes) e faz o commit — sem perder o progresso já feito pelo agente que caiu.
 - **Fonte:** .superpowers/sdd/progress.md (Design v2 Frente 2, "Item PostCard + relativeTime", commit `2eb211d`).
 
+### L-035 · Citação de fonte feita por subagente de mineração/pesquisa só vale depois de aberta e conferida
+- **Gatilho:** `subagentes`
+- **Não faça:** aceitar o output de um subagente de mineração/pesquisa confiando que os arquivos/URLs citados como fonte sustentam a alegação — na mineração da base de lições, 2 de 23 candidatas citavam arquivos reais que **não continham** o que a candidata afirmava (a alegação vinha de outra fonte do mesmo lote).
+- **Faça:** o revisor desse tipo de task abre por amostragem as fontes citadas e confere que cada uma sustenta a alegação específica; fonte que não sustenta é achado Important (mesmo quando a lição/claim em si é verdadeira por outra fonte).
+- **Fonte:** review da Task 2 da frente memoria-licoes (.superpowers/sdd/task-2lic-report.md, fix `677b310`).
+
 ## `docs-continuidade`
 
 ### L-025 · Seções de estado tratadas como append-only causam drift entre o topo e o corpo do documento
