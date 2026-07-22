@@ -13,6 +13,8 @@ import DiagnosticoInline from "@/components/quiz/DiagnosticoInline";
 import { UserMenu } from "@/components/app/UserMenu";
 import { AppShell } from "@/components/app/AppShell";
 import { ProfileCard, type ProfileCardPlan } from "@/components/app/ProfileCard";
+import { SeuCaminhoCard } from "@/components/app/SeuCaminhoCard";
+import type { CapacityTier } from "@/lib/capacity";
 import { LeftSidebar } from "@/components/app/feed/LeftSidebar";
 import { CenterColumn } from "@/components/app/feed/CenterColumn";
 import { RightSidebar } from "@/components/app/feed/RightSidebar";
@@ -106,6 +108,7 @@ export default async function FeedPage() {
           <>
             {user && !profileId && <DiagnosticoInline mode="completo" />}
             {user && profileId && !capacityTier && <DiagnosticoInline mode="capacidade" />}
+            {user && capacityTier && <SeuCaminhoCard tier={capacityTier as CapacityTier} />}
             {user && <StoryBar groups={stories} />}
             <CenterColumn
               cards={cards}
