@@ -82,45 +82,45 @@ insumo ao usuário ANTES) → F → G → auditoria final.
 > `CLAUDE.md` (credenciais, push com pré-requisito pendente, termos com efeito
 > jurídico, conta de terceiro).
 
-### Roteiro da Trilha C (dark-aware) — método e ferramentas por etapa
+### Roteiro da Trilha D (fórum aninhado) — método e ferramentas por etapa
 
-**O quê:** blog/marketing force-light (Bucket A) + área logada→tokens semânticos
-(Bucket B). Spec `lancamento-final/spec-C-dark-aware.md` · plano
-`lancamento-final/plano-C-dark-aware.md` (**5 tasks C1–C5** prontas, com mapa de
-troca de classes). Sem migration — push livre ao fechar.
+**O quê:** respostas aninhadas no fórum (`parent_reply_id`). Spec
+`lancamento-final/spec-D-forum.md` · plano `lancamento-final/plano-D-forum.md`.
+⚠️ **TEM migration: `0027` — aplicar e VERIFICAR no remoto ANTES de qualquer
+push (L-023).** Caminho do SQL: `npx supabase db query --linked -f`.
 
 1. **Setup (sem skill de processo):** spec+plano JÁ existem → **não** rodar
-   `brainstorming`/`writing-plans`. Ler os dois + **pre-flight** do plano contra o
-   código (L-017/L-018: planos drift — `Markdown.tsx` JÁ é dark-aware via prop
-   `surface`, parte da C2 pode estar adiantada; revalidar task a task antes de
-   despachar).
-2. **Execução: `superpowers:subagent-driven-development`** com o plano-C. Por task:
-   - Brief: `bash "<skill-dir>/scripts/task-brief" docs/frentes/lancamento-final/plano-C-dark-aware.md N`
-     → renomear para `task-N`**`c`**`-brief.md` (L-026: nomes colidem entre frentes).
-   - **Injetar no brief as lições dos gatilhos `visual` + `spec` do
-     [`LICOES.md`](LICOES.md)** (item 2b do playbook — máx ~6, as mais específicas).
-   - Implementer: agente `general-purpose` **sonnet** (multi-arquivo, julgamento
-     visual). Reviewer: **sonnet** via `scripts/review-package BASE HEAD` (BASE =
-     commit antes do implementer, nunca HEAD~1). Fixes: **haiku** → re-review.
-   - Ledger: 1 linha por task fechada em `.superpowers/sdd/progress.md`.
-3. **Gate por task:** `npx tsc --noEmit` 0 · `npm run test` (322+) · `npx next lint`
-   0 erros. **Gate DA FRENTE (não negociável): verificação visual** — `npm run dev
-   -- -p 3000`, conferir dark **e** claro, desktop **e** mobile (drawer/pill).
-   Navegador indisponível → **não fingir** (L-030): roteiro numerado no report +
-   pendência aqui.
-4. **Fechamento:** revisão final whole-branch **opus** → fixes → **etapa 7 do
-   playbook** (destilar lições novas da frente no `LICOES.md`, dedup primeiro) →
-   atualizar este arquivo (topo sobrescrito + log append) → commit → `git push`
-   (sem migration nesta trilha; a Vercel publica).
-5. **Depois da C, a fila é:** **D** (fórum aninhado — migration `0027` **antes** do
-   push, L-023) → **E** (conteúdo — pedir ao usuário o reexport do insumo das 26
-   fontes ANTES de começar; ver README memoria-licoes) → **F** (polish; F6 termos
-   BLOQUEADA por decisão do usuário) → **G** (tech-debt; G1/G3 review **opus**) →
-   auditoria final (3 `Explore` paralelos, receita no playbook).
+   `brainstorming`/`writing-plans`. Ler os dois + **pre-flight** contra o código
+   (L-018: a Trilha C acabou de trocar classes nas páginas do fórum; a C4 fez
+   "só o mapa" de propósito para o D reescrever a apresentação por cima —
+   revalidar task a task; decidir na hora o minor "corpo do tópico em
+   `text-muted-foreground`" da review C4).
+2. **Execução: `superpowers:subagent-driven-development`** com o plano-D. Por task:
+   - Brief: `bash "<skill-dir>/scripts/task-brief" docs/frentes/lancamento-final/plano-D-forum.md N`
+     → renomear para `task-N`**`d`**`-brief.md` (L-026: nomes colidem entre frentes).
+   - **Injetar no brief as lições dos gatilhos `migration` + `spec` do
+     [`LICOES.md`](LICOES.md)** (item 2b do playbook — máx ~6, as mais específicas;
+     L-014: migration + tipos TS na MESMA task).
+   - Implementer: `general-purpose` **sonnet**. Reviewer: **sonnet** via
+     `scripts/review-package BASE HEAD` (BASE = commit antes do implementer,
+     nunca HEAD~1). Fixes: **haiku** → re-review.
+   - Ledger: 1 linha por task em `.superpowers/sdd/progress.md`.
+3. **Gate por task:** `npx tsc --noEmit` 0 · `npm run test` (**340+**) · `npx next
+   lint` 0 erros. **Gate DA FRENTE: verificação visual** dark **e** claro +
+   **as rotas que leem banco/arquivo conferidas EM PRODUÇÃO pós-deploy (L-041)**.
+   Sessão logada: o Chrome de produção tem a conta de teste `stripe-e2e@` logada;
+   token de dashboard de teste: `ZWNT2H852C`. Não mintar credencial (L-038).
+4. **Fechamento:** aplicar+verificar `0027` no remoto → revisão final whole-branch
+   **opus** → fixes → etapa 7 (lições no `LICOES.md`) → atualizar este arquivo
+   (topo sobrescrito + log append) → commit → `git push` → smoke em produção.
+5. **Depois da D, a fila é:** **E** (conteúdo — pedir ao usuário o reexport do
+   insumo das 26 fontes ANTES de começar; ver README memoria-licoes) → **F**
+   (polish; F6 termos BLOQUEADA por decisão do usuário) → **G** (tech-debt; G1/G3
+   review **opus**) → auditoria final (3 `Explore` paralelos, receita no playbook).
 
 **Referência de método completa:** [`PLAYBOOK-EXECUCAO.md`](PLAYBOOK-EXECUCAO.md)
 (árvore de skills, tabela agente×modelo, receita de prompt de subagente, gate,
-ordem de deploy) + [`LICOES.md`](LICOES.md) (34+ lições por gatilho).
+ordem de deploy) + [`LICOES.md`](LICOES.md) (41 lições por gatilho).
 
 ---
 
@@ -164,7 +164,7 @@ disparado automaticamente pela Vercel. Gate no momento do push: `tsc` 0 ·
 
 ---
 
-## 🚨 (histórico) PARE — ESTADO NÃO-SINCRONIZADO (2026-07-20, manhã)
+## 🚨 (histórico — TUDO RESOLVIDO em 2026-07-21; manter só como registro, NÃO seguir estas instruções) PARE — ESTADO NÃO-SINCRONIZADO (2026-07-20, manhã)
 
 **Há 25 commits LOCAIS, não pushados. NÃO DÊ `git push` antes de ler isto.**
 
@@ -198,67 +198,29 @@ o usuário) e **Trilha B (segurança do dinheiro) COMPLETAS e no ar**. Este prog
 **absorve** a Frente 5 do design-v2 (vira Trilha D) e os backlogs herdados de
 a11y/tech-debt (Trilhas F e G) — não há fila concorrente.
 
-**Inserida fora da fila (2026-07-20):** a frente **leitor-protegido**, nascida de
-um brainstorm sobre reembolso de má-fé. Ela **precede** a retomada das trilhas
-porque já está construída e só falta destravar.
-
 > 🔓 **Você tem autonomia — comece a trabalhar, não pergunte por onde começar.**
 > Método, agentes e modelos por frente: [`PLAYBOOK-EXECUCAO.md`](PLAYBOOK-EXECUCAO.md).
 
-**Faça, nesta ordem (retomar aqui):**
+**Faça, nesta ordem (retomar aqui — 2026-07-22):**
 
-### 0. FRENTE ATIVA — destravar o leitor-protegido (comece por aqui, sem perguntar)
-
-Não precisa de skill de processo; é operação. **Roteiro exato:**
-
-**0.1 — Aplicar a migration.** Abrir o SQL Editor do projeto `rzolsrzyafijaogjcjjb`
-no Chrome (já logado), colar o conteúdo de `supabase/migrations/0028_reading_progress.sql`
-via `monaco.editor.getModels()[<último>].setValue(...)` e Run. Verificar:
-```sql
-select tablename, relrowsecurity from pg_tables t
-  join pg_class c on c.relname = t.tablename
-  where tablename in ('reading_progress','reading_events');
-```
-Esperado: 2 linhas, `relrowsecurity = true`.
-
-**0.2 — Auditar compras legadas** (o risco mais caro):
-```sql
-select status, product_id, count(*) from purchases group by 1,2 order by 3 desc;
-```
-Toda linha precisa ser `status='paid'` com `product_id` ∈ {`ebook_llm_local`,
-`regular_pass`, `advanced_pass`}. **Qualquer coisa fora disso = cliente que pagou
-e ficará sem acesso** (o download já foi aposentado). Corrigir os dados antes de
-seguir. Se aparecer algo inesperado, **avisar o usuário** — é dinheiro de cliente.
-
-**0.3 — Verificação visual.** `npm run dev -- -p 3000`, logado. Roteiros numerados
-em `.superpowers/sdd/task-4-report.md`, `task-5-report.md`, `task-6-report.md`.
-O item crítico: `Ctrl+U` no leitor e confirmar que **o markdown das outras seções
-não aparece no HTML**.
-
-**0.4 — Push.** `git push origin master`. (O trabalho já está salvo na branch
-remota `leitor-protegido` — a `master` é o deploy.)
-
-**0.5 — Decidir o C3** (última decisão aberta da frente): os relatórios ainda têm
-um segundo caminho de entrega sem registro. Recomendação registrada: fechar junto
-com a Trilha G. Ver `frentes/leitor-protegido/README.md`.
-
-> ⚠️ **Se o navegador não estiver disponível:** não pushe. Diga isso ao usuário,
-> pule para a Trilha C (que não depende de banco) e volte ao 0.1 quando der.
-1. **Trilha C — Dark-aware**: `plano-C-dark-aware.md`. Blog force-light
-   (Bucket A) + área logada→tokens semânticos (Bucket B). Começar por `glass-card`
-   (cascateia 6 telas) + `dashboard/layout` + `Markdown`. Verificação visual é o gate.
-   ℹ️ **Parcialmente adiantada:** `Markdown.tsx` já virou dark-aware (com prop
-   `surface` para superfícies claras fixas). O resto do plano-C segue válido.
-2. Depois: **D (Fórum, `parent_reply_id`, migration 0027) → E (conteúdo, paralelo)
+1. **Trilha D — Fórum aninhado** (`spec-D-forum.md` / `plano-D-forum.md`).
+   Roteiro completo na seção "Roteiro da Trilha D" acima. ⚠️ Migration `0027`
+   aplicada e verificada no remoto **ANTES** do push (L-023).
+2. Depois: **E (conteúdo, paralelo — pedir reexport do insumo ao usuário ANTES)
    → F (polish + herdados; ⚠️ a **F6 foi reescrita** — a garantia NÃO é mais
    "7 dias condicional", ver `lancamento-final/README.md`) → G (tech-debt/SP2) →
    auditoria final.**
-3. **Aguardando o usuário:** anotações de design da **`RightSidebar`** (entram na
-   Trilha F); Stripe live (verificação de empresa); subir a mídia que o Claude
-   gerar no NotebookLM (Trilha E).
-4. **Follow-up não-bloqueante:** E2E ao vivo do refund (Stripe modo teste) —
-   simular `charge.refunded` e confirmar token/entitlement expirados. As migrations
-   do programa: 0025/0026 aplicadas ✅; **0027 (fórum) a aplicar na Trilha D**.
+3. **Aguardando o usuário:** enviar a **reclamação de cobrança** (pasta local
+   `reclamacao-anthropic/`, guia pronto); roteiro logado da segmentação — só o
+   **quiz de 9 perguntas com conta nova** (README da frente); anotações de design
+   da **`RightSidebar`** (Trilha F); Stripe live (verificação de empresa); subir
+   a mídia do NotebookLM (Trilha E).
+4. **Follow-ups não-bloqueantes rastreados:** E2E ao vivo do refund (Stripe modo
+   teste); hydration #418 do `ShareLinks` no blog (pré-existente, React
+   recupera); `QuizValidacao.tsx` com paleta dark fixa fora de tokens; `catch`
+   silencioso no corpo do blog (logar o erro — L-041); glitch de tabela escapada
+   no relatório panorama. Migrations: aplicadas até a **0029**; **0027 (fórum)
+   a criar e aplicar na Trilha D**.
 
 **Como trabalhar aqui (harness):** commit por item, gate `tsc` 0 + `npm run test` +
 `next lint` sem erros antes de cada commit; custo zero (sem dep npm nova); área
