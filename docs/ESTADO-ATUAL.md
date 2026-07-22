@@ -8,13 +8,14 @@
 > Ordem de leitura ao retomar: **este arquivo → `CLAUDE.md` → o `README.md` da
 > frente ativa → o código fonte-de-verdade.**
 
-_Última atualização: 2026-07-22 (**Trilha C dark-aware FECHADA e pushada** —
-5 tasks C1–C5 + fix do certificado, revisão final opus "Ready to merge Yes",
-verificação visual dark E claro executada ao vivo (blog claro sob dark,
-dashboard/hub/suporte/fórum no dark, tema restaurado). **340 testes**, `tsc` 0,
-lint 0. **Próxima = Trilha D (fórum aninhado; migration 0027 ANTES do push,
-L-023)**. Pendências do usuário: roteiro logado da segmentação (README da
-frente) + reclamação de cobrança (pasta `reclamacao-anthropic/`).)_
+_Última atualização: 2026-07-22 (**Trilha D fórum aninhado FECHADA** — D1–D3
+via SDD + fixes da revisão final opus "Ready to merge Yes" (`1af94bf..100c37b`).
+**Migrations 0027 + 0019 + 0020 aplicadas e verificadas no remoto** — descoberta:
+0019/0020 constavam como aplicadas desde 13/07 mas NÃO existiam no banco (L-042).
+**345 testes**, `tsc` 0, lint 0. **Próxima = verificação ao vivo do fórum em
+produção (logado) e depois Trilha E (conteúdo — pedir reexport do insumo ao
+usuário ANTES)**. Pendências do usuário: reclamação de cobrança
+(`reclamacao-anthropic/`) + quiz 9 perguntas com conta nova.)_
 
 > **Convenção deste arquivo:** as seções de **estado** (`PRÓXIMA AÇÃO`,
 > `Estado do git`, tabela de frentes) são **sobrescritas** a cada atualização —
@@ -27,53 +28,47 @@ frente) + reclamação de cobrança (pasta `reclamacao-anthropic/`).)_
 ## ⏭️ PRÓXIMA AÇÃO (leia isto primeiro ao retomar)
 
 **Estado agora:** site **no ar** em `www.matrizcentral.com.br` (Vercel, auto-deploy
-na `master`). Design v2 Frentes **1–4 no ar**; **frente leitor-protegido NO AR**
-(deploy de produção do commit `c50b667`, 2026-07-21). Banco **em dia até a `0028`**
-(0024 feed_posts, 0025 xp dedup, 0026 waitlist unique, 0028 reading_progress —
-todas aplicadas pelo Claude). Não há migration no disco esperando: a `0027` é da
-Trilha D e ainda não foi criada.
-`npx tsc --noEmit` 0 · `npm run test` **322 testes** verdes (54 arquivos).
-✅ **`master` sincronizada com `origin/master`** — o bloqueio de push
-que valeu de 20/07 até agora **acabou**.
+na `master`). Banco **em dia com TODAS as migrations do disco (0001–0029)** —
+em 2026-07-22 foram aplicadas a `0027` (fórum aninhado) **e as `0019`/`0020`
+que faltavam** (constavam como aplicadas desde 13/07 mas não existiam no banco —
+fórum e dedup de e-mails de ciclo nunca tinham persistido nada; só contas de
+teste afetadas; lição **L-042**). Verificação real de catálogo feita: 3 tabelas
+com RLS, `parent_reply_id` + índices presentes.
+`npx tsc --noEmit` 0 · `npm run test` **345 testes** verdes (56 arquivos) ·
+lint 0 erros.
 ✅ **Frente `memoria-licoes` CONCLUÍDA (2026-07-21):** `docs/LICOES.md` (34 lições
 L-001..L-034 mineradas dos reports/docs reais, por gatilho) + etapa 7 (destilar
 lições) no fluxo do PLAYBOOK + item 2b (injetar lições nos briefs). Revisão final
 opus = Ready to merge. **Ao montar qualquer brief de task, consultar a seção do
 gatilho em `LICOES.md`.**
 
-**✅ 1º) FRENTE SEGMENTAÇÃO DE PÚBLICO — FECHADA E PUSHADA (2026-07-21, noite).**
-Re-review S8 achou 2 Importants reais (import morto quebrando `next lint`; lista
-de tiers duplicada) → fix `76c2095` (toCapacityTier na fonte única + testes de
-regressão). Revisão final whole-branch **opus** (base `752c25e`): **Ready to
-merge** após 2 fixes (`b2ea9e5`: cast cego de `capacity_tier` no feed podia
-derrubar a página; fluxo "meu setup mudou" ficava preso pós-`router.refresh()`).
-Gate: `tsc` 0 · **340 testes / 55 arquivos** · lint 0. Visual executado:
-deslogado (landing completa) **e logado EM PRODUÇÃO pós-deploy** (conta de
-teste `stripe-e2e@` já logada no Chrome: mini-quiz → "Seu caminho Essencial" →
-sem XP novo (SQL) → vitrine reordenada sem sumir item → "meu setup mudou" volta
-sozinho (fix onDone provado) → dismiss persiste no F5). Lições **L-036..L-039**
-no [`LICOES.md`](LICOES.md). **Pendência única do usuário:** quiz completo de
-9 perguntas com conta nova (50 XP 1x) — detalhe no
-[`README da frente`](frentes/segmentacao-publico/README.md).
+**✅ Frentes fechadas recentes (resumo):** **segmentação-público** (2026-07-21,
+no ar; pendência do usuário: quiz 9 perguntas com conta nova — README da frente)
+· **Trilha C dark-aware** (2026-07-22, no ar; backlog rastreado:
+`QuizValidacao.tsx` dark-fixo, hydration #418 do `ShareLinks`, pills do
+`category-badge`).
 
-**✅ 2º) TRILHA C — DARK-AWARE: FECHADA E PUSHADA (2026-07-22).** 5 tasks via
-SDD (implementer/reviewer sonnet, fixes haiku), cada uma revisada e aprovada:
-C1 blog `.force-light` (`3095c55`) · C2 alavancas glass-card/dashboard-shell +
-Markdown themed no consumidor (`787abbb`) · C3 5 páginas do dashboard
-(`2600dbb`) · C4 fórum/suporte/certificado/quiz (`dbfe1a4`) · C5 11
-widgets/forms (`e57d43d`). Revisão final **opus**: 1 Important real — o
-certificado (página de impressão) com tokens dark imprimiria texto invisível →
-fix `.force-light` (`942a539`, L-040) → **Ready to merge Yes**. **Visual
-executado ao vivo (dark E claro):** blog claro sob `html.dark`, dashboard/hub/
-suporte/fórum legíveis no dark e no claro (token de teste `ZWNT2H852C`), tema
-do Chrome restaurado. Backlog rastreado (não bloqueia): `QuizValidacao.tsx`
-dark-fixo fora de tokens (pré-existente), hydration #418 do `ShareLinks` no
-blog (pré-existente, confirmado idêntico em produção), pills do
-`category-badge` (autocontidas, legíveis), corpo do tópico do fórum em
-muted (Trilha D decide). **➡️ PRÓXIMA: Trilha D** (fórum aninhado,
-`spec-D-forum.md`/`plano-D-forum.md`; ⚠️ **migration `0027` aplicada e
-verificada ANTES do push — L-023**). Depois: E (conteúdo — pedir reexport do
-insumo ao usuário ANTES) → F → G → auditoria final.
+**✅ 3º) TRILHA D — FÓRUM ANINHADO: CÓDIGO FECHADO (2026-07-22).** 3 tasks via
+SDD (implementer/reviewer sonnet, fix haiku): D1 backend (`f2aa265`: migration
+`0027` + `buildReplyTree` puro TDD + `parentReplyId` na rota/validação/tipos) ·
+D2 `ReplyThread` recursivo (`e864833` + fix `e91227f` — review pegou indentação
+acumulando pela recursão sem cap real) · D3 apresentação Q&A (`6682b8c`: pergunta
+em destaque com corpo `text-foreground` — decisão da review C4 — + cards na
+lista). Revisão final **opus**: With fixes → `100c37b` (parent da resposta
+validado no servidor **no mesmo tópico** com 400 p/ parent inválido/não-uuid;
+corpo da resposta como texto primário; 3 testes do `validateReplyInput`) →
+re-review **Ready to merge Yes**. Gate: `tsc` 0 · **345 testes / 56 arquivos** ·
+lint 0. **Migrations 0027 + 0019 + 0020 aplicadas e VERIFICADAS no remoto**
+(descoberta L-042: 0019/0020 nunca tinham sido aplicadas de fato). Smoke local
+`/forum` 200. **Pendente do fechamento: verificação ao vivo em produção
+pós-deploy (logado: criar tópico → responder → responder resposta → aninhamento;
+dark E claro; L-041).** Backlog da review final (não bloqueia): cap lógico de
+depth (SSR de thread patológica), desempate por `id` no sort do `forum-tree`,
+`replyCountLabel` duplicado nas 2 páginas, normalização parcialmente morta na
+rota, padrão global `relativeTime`+hydration. **➡️ PRÓXIMA: Trilha E**
+(conteúdo — **pedir ao usuário o reexport do insumo das 26 fontes ANTES de
+começar**; despejos do NotebookLM = conteúdo p/ alunos). Depois: F → G →
+auditoria final.
 
 > 🔓 **Autonomia (declaração permanente do usuário, 2026-07-21):** *"você tem
 > autonomia, eu autorizo, não precisa ficar pedindo permissão, atue sempre no que
@@ -82,45 +77,29 @@ insumo ao usuário ANTES) → F → G → auditoria final.
 > `CLAUDE.md` (credenciais, push com pré-requisito pendente, termos com efeito
 > jurídico, conta de terceiro).
 
-### Roteiro da Trilha D (fórum aninhado) — método e ferramentas por etapa
+### Roteiro da Trilha E (conteúdo) — próxima frente
 
-**O quê:** respostas aninhadas no fórum (`parent_reply_id`). Spec
-`lancamento-final/spec-D-forum.md` · plano `lancamento-final/plano-D-forum.md`.
-⚠️ **TEM migration: `0027` — aplicar e VERIFICAR no remoto ANTES de qualquer
-push (L-023).** Caminho do SQL: `npx supabase db query --linked -f`.
+**O quê:** conteúdo real da plataforma (texto agora; mídia via NotebookLM
+depois). Spec/plano: `lancamento-final/spec-E-conteudo.md` /
+`plano-E-conteudo.md` (conferir nomes reais na pasta — L-018: revalidar o plano
+contra o código antes de executar).
 
-1. **Setup (sem skill de processo):** spec+plano JÁ existem → **não** rodar
-   `brainstorming`/`writing-plans`. Ler os dois + **pre-flight** contra o código
-   (L-018: a Trilha C acabou de trocar classes nas páginas do fórum; a C4 fez
-   "só o mapa" de propósito para o D reescrever a apresentação por cima —
-   revalidar task a task; decidir na hora o minor "corpo do tópico em
-   `text-muted-foreground`" da review C4).
-2. **Execução: `superpowers:subagent-driven-development`** com o plano-D. Por task:
-   - Brief: `bash "<skill-dir>/scripts/task-brief" docs/frentes/lancamento-final/plano-D-forum.md N`
-     → renomear para `task-N`**`d`**`-brief.md` (L-026: nomes colidem entre frentes).
-   - **Injetar no brief as lições dos gatilhos `migration` + `spec` do
-     [`LICOES.md`](LICOES.md)** (item 2b do playbook — máx ~6, as mais específicas;
-     L-014: migration + tipos TS na MESMA task).
-   - Implementer: `general-purpose` **sonnet**. Reviewer: **sonnet** via
-     `scripts/review-package BASE HEAD` (BASE = commit antes do implementer,
-     nunca HEAD~1). Fixes: **haiku** → re-review.
-   - Ledger: 1 linha por task em `.superpowers/sdd/progress.md`.
-3. **Gate por task:** `npx tsc --noEmit` 0 · `npm run test` (**340+**) · `npx next
-   lint` 0 erros. **Gate DA FRENTE: verificação visual** dark **e** claro +
-   **as rotas que leem banco/arquivo conferidas EM PRODUÇÃO pós-deploy (L-041)**.
-   Sessão logada: o Chrome de produção tem a conta de teste `stripe-e2e@` logada;
-   token de dashboard de teste: `ZWNT2H852C`. Não mintar credencial (L-038).
-4. **Fechamento:** aplicar+verificar `0027` no remoto → revisão final whole-branch
-   **opus** → fixes → etapa 7 (lições no `LICOES.md`) → atualizar este arquivo
-   (topo sobrescrito + log append) → commit → `git push` → smoke em produção.
-5. **Depois da D, a fila é:** **E** (conteúdo — pedir ao usuário o reexport do
-   insumo das 26 fontes ANTES de começar; ver README memoria-licoes) → **F**
-   (polish; F6 termos BLOQUEADA por decisão do usuário) → **G** (tech-debt; G1/G3
-   review **opus**) → auditoria final (3 `Explore` paralelos, receita no playbook).
+1. **⚠️ PRÉ-REQUISITO HUMANO ANTES DE COMEÇAR:** pedir ao usuário o **reexport
+   do insumo das 26 fontes** (ver README memoria-licoes) — o arquivo temporário
+   de despejo é sobrescrito, copiar o insumo antes. Despejos do NotebookLM =
+   conteúdo para alunos (lente 1 = Trilha E); infra é uso secundário.
+2. **Antes da E (rápido):** verificação ao vivo do fórum aninhado em produção
+   se ainda não feita (ver bloco 3º acima).
+3. **Método:** mesmo SDD das trilhas C/D (implementer/reviewer sonnet, fixes
+   haiku, briefs `task-Ne-brief.md`, lições por gatilho no brief, ledger no
+   `.superpowers/sdd/progress.md`). Gate por task: `tsc` 0 · testes · lint 0.
+4. **Depois da E, a fila é:** **F** (polish; F6 termos BLOQUEADA por decisão do
+   usuário) → **G** (tech-debt; G1/G3 review **opus**) → auditoria final
+   (3 `Explore` paralelos, receita no playbook).
 
 **Referência de método completa:** [`PLAYBOOK-EXECUCAO.md`](PLAYBOOK-EXECUCAO.md)
 (árvore de skills, tabela agente×modelo, receita de prompt de subagente, gate,
-ordem de deploy) + [`LICOES.md`](LICOES.md) (41 lições por gatilho).
+ordem de deploy) + [`LICOES.md`](LICOES.md) (42 lições por gatilho).
 
 ---
 
@@ -203,24 +182,29 @@ a11y/tech-debt (Trilhas F e G) — não há fila concorrente.
 
 **Faça, nesta ordem (retomar aqui — 2026-07-22):**
 
-1. **Trilha D — Fórum aninhado** (`spec-D-forum.md` / `plano-D-forum.md`).
-   Roteiro completo na seção "Roteiro da Trilha D" acima. ⚠️ Migration `0027`
-   aplicada e verificada no remoto **ANTES** do push (L-023).
-2. Depois: **E (conteúdo, paralelo — pedir reexport do insumo ao usuário ANTES)
-   → F (polish + herdados; ⚠️ a **F6 foi reescrita** — a garantia NÃO é mais
-   "7 dias condicional", ver `lancamento-final/README.md`) → G (tech-debt/SP2) →
-   auditoria final.**
-3. **Aguardando o usuário:** enviar a **reclamação de cobrança** (pasta local
+1. **Verificação ao vivo do fórum aninhado em produção** (se ainda não feita —
+   ver bloco 3º acima): logado com `stripe-e2e@` no Chrome de produção, criar
+   tópico → responder → responder a uma resposta (aninhamento indentado, cap
+   visual) → dark E claro. L-041.
+2. **Trilha E — Conteúdo** (roteiro na seção "Roteiro da Trilha E" acima).
+   ⚠️ **Pré-requisito humano: reexport do insumo das 26 fontes** — pedir ao
+   usuário ANTES de começar.
+3. Depois: **F (polish + herdados; ⚠️ a **F6 foi reescrita** — a garantia NÃO é
+   mais "7 dias condicional", ver `lancamento-final/README.md`) → G
+   (tech-debt/SP2) → auditoria final.**
+4. **Aguardando o usuário:** enviar a **reclamação de cobrança** (pasta local
    `reclamacao-anthropic/`, guia pronto); roteiro logado da segmentação — só o
    **quiz de 9 perguntas com conta nova** (README da frente); anotações de design
    da **`RightSidebar`** (Trilha F); Stripe live (verificação de empresa); subir
    a mídia do NotebookLM (Trilha E).
-4. **Follow-ups não-bloqueantes rastreados:** E2E ao vivo do refund (Stripe modo
+5. **Follow-ups não-bloqueantes rastreados:** E2E ao vivo do refund (Stripe modo
    teste); hydration #418 do `ShareLinks` no blog (pré-existente, React
    recupera); `QuizValidacao.tsx` com paleta dark fixa fora de tokens; `catch`
    silencioso no corpo do blog (logar o erro — L-041); glitch de tabela escapada
-   no relatório panorama. Migrations: aplicadas até a **0029**; **0027 (fórum)
-   a criar e aplicar na Trilha D**.
+   no relatório panorama; backlog da review final da Trilha D (cap lógico de
+   depth, desempate no sort do `forum-tree`, `replyCountLabel` duplicado).
+   Migrations: **TODAS as do disco aplicadas (0001–0029, incl. 0019/0020/0027
+   em 2026-07-22)**; nenhuma pendente.
 
 **Como trabalhar aqui (harness):** commit por item, gate `tsc` 0 + `npm run test` +
 `next lint` sem erros antes de cada commit; custo zero (sem dep npm nova); área
@@ -455,12 +439,12 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
 
 ## 🌿 Estado do git
 
-- **Branch ativa:** `master`, **sincronizada com `origin/master`** após o push
-  do fechamento da frente segmentacao-publico (2026-07-21, noite) — a frente
-  inteira (spec/plano + S1–S8 + 3 ondas de fix + docs de fechamento) está no ar
-  via auto-deploy da Vercel. Migrations aplicadas no remoto: até a **0029**
-  (`users.capacity_tier`). Não há migration no disco esperando (a `0027` do
-  fórum será criada na Trilha D).
+- **Branch ativa:** `master`. A Trilha D (`f2aa265..100c37b`, 5 commits de
+  código + docs de fechamento) é pushada no fechamento desta sessão — a
+  migration `0027` já está **aplicada e verificada** no remoto (pré-requisito
+  L-023 cumprido), então o push é seguro. Migrations aplicadas no remoto:
+  **todas as do disco (0001–0029)** — em 2026-07-22 entraram a `0027` e as
+  `0019`/`0020` que faltavam (L-042).
 - **Histórico:** o bloqueio de push do leitor-protegido (20–21/07) terminou em
   2026-07-21 com `b0a66cb..c50b667` (30 commits); depois vieram os commits da
   segmentação (`752c25e..` + fixes) pushados no fechamento.
@@ -507,9 +491,9 @@ imediatos que o Stripe live — ver o bloco 🚨 no topo deste arquivo.
 |---|---|---|
 | A | Go-live de receita (Brevo, Stripe live) | 🔄 Brevo ✅ · **Stripe live = único bloqueio externo do programa de lançamento** |
 | B | Segurança do dinheiro | ✅ **completa e no ar** (268 testes, 0025/0026 aplicadas) |
-| C | Dark-aware (blog force-light + logado→tokens) | 📐 planejada — **próxima** |
-| D | Fórum: respostas aninhadas (migration `0027`) | 📐 planejada |
-| E | Conteúdo (texto agora; mídia via NotebookLM) | 📐 planejada (paralela) |
+| C | Dark-aware (blog force-light + logado→tokens) | ✅ **completa e no ar** (2026-07-22) |
+| D | Fórum: respostas aninhadas (migration `0027`) | ✅ **código fechado + 0027 aplicada** (2026-07-22; falta só verificação ao vivo em produção) |
+| E | Conteúdo (texto agora; mídia via NotebookLM) | 📐 planejada — **próxima** (pedir insumo ao usuário ANTES) |
 | F | Polish UX/a11y/CX + garantia 7 dias + herdados | 📐 planejada |
 | G | Tech-debt (SP2, DRY, dead code) | 📐 planejada |
 | — | 🔍 Auditoria final + dogfooding | 🔜 ao fim |
@@ -580,6 +564,27 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
   ver [hardening-criticos](frentes/hardening-criticos/README.md).
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
+
+- **2026-07-22 (Opus 4.8) — TRILHA D (FÓRUM ANINHADO) EXECUTADA INTEIRA E
+  FECHADA + descoberta L-042:** retomada via pino sem perguntas. (1) Pre-flight
+  D contra o código (spec batia 100%; decisão C4 travada: corpo da pergunta →
+  `text-foreground`). (2) SDD: D1 backend (`f2aa265`, review clean), D2
+  `ReplyThread` (`e864833`; review pegou Important real — indentação acumulava
+  pela recursão, crescimento quadrático sem cap → fix `e91227f` com incremento
+  constante, re-review Approved), D3 Q&A (`6682b8c`, review clean). (3) Ao
+  aplicar a `0027` no remoto: **erro 42P01 revelou que `forum_topics`/
+  `forum_replies` (0020) e `sent_emails` (0019) NÃO existiam no banco** apesar
+  do log de 13/07 — o "/forum 200" da época era falso positivo (fetch engole
+  erro → lista vazia); fórum nunca persistiu e o cron de e-mails rodava sem
+  dedup (impacto: só contas de teste, Stripe sempre em modo teste). As 3
+  migrations aplicadas juntas e verificadas por catálogo (tabelas + RLS +
+  colunas + índices). Lição **L-042**. (4) Revisão final whole-branch opus:
+  With fixes → `100c37b` (parent da resposta validado no servidor no MESMO
+  tópico, 400 p/ parent inválido/não-uuid; corpo da resposta `text-foreground`;
+  3 testes novos) → re-review **Ready to merge Yes**. Gate final: `tsc` 0 ·
+  **345 testes / 56 arquivos** · lint 0. Smoke local `/forum` 200. Pendente:
+  verificação ao vivo logada em produção pós-deploy (item 1 do "Faça").
+  Próxima: **Trilha E** (pedir reexport do insumo ao usuário ANTES).
 
 - **2026-07-22 (Fable 5, mesmo bloco) — 🚨 INCIDENTE DE PRODUÇÃO descoberto no
   smoke pós-deploy e RESOLVIDO (pré-existente, sem relação com a Trilha C):**

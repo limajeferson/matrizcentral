@@ -53,6 +53,12 @@ Criar tag nova exige editar este arquivo e o PLAYBOOK juntos.
 - **Faça:** reverificar periodicamente se o CLI oficial ganhou um comando direto que substitui o workaround manual — foi assim que `npx supabase db query --linked` aposentou a dependência do navegador no meio do projeto.
 - **Fonte:** docs/ESTADO-ATUAL.md, log de 2026-07-20 ("LEITOR PROTEGIDO DESTRAVADO... descoberto o caminho definitivo de SQL").
 
+### L-042 · Registro histórico de "migration aplicada" não é prova — confirmar com select de catálogo antes de depender dela
+- **Gatilho:** `migration`
+- **Não faça:** confiar que uma migration marcada como "aplicada" em sessão anterior está de fato no banco, nem aceitar como verificação um 200 de página cujo data path engole erro (`const { data } = await supabase...` sem checar `error` rende lista vazia e a página "funciona") — as 0019/0020 constaram como aplicadas por 9 dias enquanto fórum e dedup de e-mails de ciclo **não existiam** no banco; o "`/forum` 200" da época era falso positivo.
+- **Faça:** no pre-flight de qualquer trilha que constrói sobre tabela "já aplicada", rodar um select real de catálogo (`information_schema.tables`/`pg_class`) confirmando tabela + colunas + índices; e nunca usar como prova de migration uma rota cujo fetch não distingue "tabela ausente" de "vazio".
+- **Fonte:** fechamento da Trilha D (2026-07-22): aplicar a 0027 falhou com 42P01, revelando 0019/0020 ausentes apesar do log de 2026-07-13; as 3 aplicadas e verificadas juntas.
+
 ## `acesso-dinheiro`
 
 ### L-003 · Checagem de acesso pago é fail-closed em qualquer erro ou dado ausente
