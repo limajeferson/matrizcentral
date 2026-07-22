@@ -15,6 +15,7 @@ export interface Database {
           leaderboard_opt_in: boolean;
           created_at: string;
           profile_id: string | null;
+          capacity_tier: string | null;
           diagnosed_at: string | null;
         };
         Insert: {
@@ -26,6 +27,7 @@ export interface Database {
           leaderboard_opt_in?: boolean;
           created_at?: string;
           profile_id?: string | null;
+          capacity_tier?: string | null;
           diagnosed_at?: string | null;
         };
         Update: Partial<Database["public"]["Tables"]["users"]["Insert"]>;
