@@ -52,7 +52,7 @@ A parte que sustenta a viabilidade econômica do K3 é o cache de contexto (prom
 
 Preço base: 3 dólares por milhão de tokens de input, 15 dólares por milhão de tokens de output. Com o cache habilitado, tokens já processados e armazenados no KV cache custam apenas um décimo do valor original.
 
-O impacto fica claro numa sessão real de engenharia com 113 milhões de tokens (o mesmo desenvolvimento do jogo 3D citado acima). Os valores abaixo vem dos testes divulgados pelas fontes da comunidade - trate como ordem de grandeza, nao como medicao nossa.
+O impacto fica claro numa sessão real de engenharia com 113 milhões de tokens (o mesmo desenvolvimento do jogo 3D citado acima). Os valores abaixo vêm dos testes divulgados pelas fontes da comunidade — trate como ordem de grandeza, não como medição nossa.
 
 | Modelo | Custo da sessão (113M tokens) |
 | --- | --- |
