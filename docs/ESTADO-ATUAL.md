@@ -41,14 +41,21 @@ gatilho em `LICOES.md`.**
 
 **➡️ PRÓXIMA SESSÃO — duas atividades, nesta ordem, sem perguntar:**
 
-**1º) 🎯 FRENTE SEGMENTAÇÃO DE PÚBLICO (nova, engatilhada pelo usuário):** o
-pedido completo + contexto de aterrissagem + método estão em
-[`frentes/segmentacao-publico/pedido.md`](frentes/segmentacao-publico/pedido.md)
-(versionado — o original era o arquivo local `proxima-tarefa.md`). Começar com
-`superpowers:brainstorming` LENDO o pedido.md primeiro; 3 perfis (avançados/
-equilibrados/limitado) tocando feed, marketing, CRM e funil; **já existe sistema
-de perfis/triagem (0022/SP1) — partir dele, não do zero.** Depois: spec →
-`writing-plans` → SDD. Decisões de escopo de produto = usuário; o resto, decidir.
+**1º) 🎯 FECHAR A FRENTE SEGMENTAÇÃO DE PÚBLICO — construída em 2026-07-21,
+PAUSADA a pedido do usuário no fechamento.** Spec + plano + **8 tasks S1–S8
+implementadas e revisadas** (S1–S7 aprovadas; S8 com fix aplicado aguardando
+re-review). **12 commits locais NÃO pushados** (752c25e..4491b39) — produção
+intocada; a migration **0029 JÁ está aplicada no remoto** (coluna nullable,
+inofensiva ao código no ar). Entregue: eixo de capacidade (`capacity.ts`,
+tiers Performance/Equilíbrio/Essencial), rota 2-eixos (review opus), quiz 9
+perguntas + modo mini, `SeuCaminhoCard`, `capacityFit` na vitrine,
+`MomentSection` na landing, e-mails tier-aware. **Retomar EXATAMENTE em** (ordem
+no ledger `.superpowers/sdd/progress.md`): re-review S8 (pacote
+`review-af82bea..4491b39.diff`) → revisão final whole-branch **opus** (base
+`752c25e`) → **verificação visual** (roteiro = Task S8 Step 4 do
+[`plano`](frentes/segmentacao-publico/plano.md)) → destilar lições (etapa 7) →
+atualizar este arquivo → **só então push**. Docs: spec/plano em
+[`frentes/segmentacao-publico/`](frentes/segmentacao-publico/).
 
 **2º) Trilha C — Dark-aware. Roteiro completo abaixo.**
 
@@ -601,6 +608,25 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
   ver [hardening-criticos](frentes/hardening-criticos/README.md).
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
+
+- **2026-07-21 (Fable 5, sessão da noite) — SEGMENTAÇÃO DE PÚBLICO construída
+  (S1–S8) e PAUSADA no fechamento a pedido do usuário:** retomada pós-queda de
+  sessão executou a frente que o pino marcava para a próxima sessão — o usuário
+  pausou no fim ("essa atividade precisa ser executada NA PRÓXIMA SESSÃO");
+  execução parada imediatamente após o fix da S8, antes da revisão final.
+  **Nada pushado; produção intocada.** O que existe (12 commits locais):
+  brainstorm com mapeamento por Explore → decisão central registrada na spec
+  (3 modelos do usuário = **eixo de capacidade ortogonal** aos 8 perfis;
+  "limitado" nunca na UI → Performance/Equilíbrio/Essencial) → plano 8 tasks →
+  SDD: S1 `capacity.ts` (review pegou **Critical no PLANO**: cast
+  `as TriagemQuestion[]` não compila — emenda S4 p/ interface mínima) · S2
+  migration 0029 aplicada+verificada no remoto · S3 rota 2-eixos (**review
+  opus**: análise de ataque, XP verbatim, melhorou edge pré-existente) · S4
+  quiz 9 perguntas/modo mini · S5 SeuCaminhoCard · S6 capacityFit+ordenação
+  (nunca filtro) · S7 MomentSection landing · S8 e-mails tier-aware + fix
+  (validação `in` aceitava chaves de protótipo → literais exatos). Gate em
+  toda task: tsc 0 · **336 testes** · lint 0. **Pendente para fechar:**
+  re-review S8 → revisão final opus → visual → lições → push (detalhe no topo).
 
 - **2026-07-21 (Fable 5) — [addendum ao handoff] NOVA FRENTE ENGATILHADA:
   segmentação de público.** Descoberto o `proxima-tarefa.md` local do usuário com
