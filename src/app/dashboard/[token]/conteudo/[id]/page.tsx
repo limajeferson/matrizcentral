@@ -119,7 +119,7 @@ export default async function ConteudoDetailPage({
         <>
           <ArticleToc headings={headings} />
           <GlassCard className="p-6">
-            <Markdown source={body} surface="light" />
+            <Markdown source={body} />
           </GlassCard>
         </>
       )}
