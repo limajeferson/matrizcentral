@@ -59,10 +59,14 @@ validado no servidor **no mesmo tópico** com 400 p/ parent inválido/não-uuid;
 corpo da resposta como texto primário; 3 testes do `validateReplyInput`) →
 re-review **Ready to merge Yes**. Gate: `tsc` 0 · **345 testes / 56 arquivos** ·
 lint 0. **Migrations 0027 + 0019 + 0020 aplicadas e VERIFICADAS no remoto**
-(descoberta L-042: 0019/0020 nunca tinham sido aplicadas de fato). Smoke local
-`/forum` 200. **Pendente do fechamento: verificação ao vivo em produção
-pós-deploy (logado: criar tópico → responder → responder resposta → aninhamento;
-dark E claro; L-041).** Backlog da review final (não bloqueia): cap lógico de
+(descoberta L-042: 0019/0020 nunca tinham sido aplicadas de fato). **✅ Verificação
+ao vivo EM PRODUÇÃO executada e aprovada (logado):** tópico → resposta raiz →
+aninhada (depth 1) → neta (depth 2), indentação linear com linha-guia, toggle
+Responder/Cancelar, parents corretos no banco, **dark E claro** legíveis, tema
+restaurado, dados de teste apagados. No caminho, 2 bugs de produção achados e
+corrigidos (`6b8faf6` force-dynamic + `a2ab956` **no-store no client Supabase de
+servidor** — Data Cache persistia entre deploys; e reload do schema do PostgREST
+— L-043/L-044). Backlog da review final (não bloqueia): cap lógico de
 depth (SSR de thread patológica), desempate por `id` no sort do `forum-tree`,
 `replyCountLabel` duplicado nas 2 páginas, normalização parcialmente morta na
 rota, padrão global `relativeTime`+hydration. **➡️ PRÓXIMA: Trilha E**
@@ -99,7 +103,7 @@ contra o código antes de executar).
 
 **Referência de método completa:** [`PLAYBOOK-EXECUCAO.md`](PLAYBOOK-EXECUCAO.md)
 (árvore de skills, tabela agente×modelo, receita de prompt de subagente, gate,
-ordem de deploy) + [`LICOES.md`](LICOES.md) (42 lições por gatilho).
+ordem de deploy) + [`LICOES.md`](LICOES.md) (44 lições por gatilho).
 
 ---
 
@@ -564,6 +568,21 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
   ver [hardening-criticos](frentes/hardening-criticos/README.md).
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
+
+- **2026-07-22 (Opus 4.8, mesmo bloco) — VERIFICAÇÃO AO VIVO DA TRILHA D
+  APROVADA + 2 bugs de produção corrigidos no caminho:** fluxo completo em
+  produção com a conta de teste logada (tópico → resposta → aninhada depth 1 →
+  neta depth 2; indentação linear com linha-guia; toggle Responder/Cancelar;
+  parents conferidos por SQL; dark E claro; tema restaurado; dados de teste
+  apagados). Dois achados reais no caminho: (1) a página do tópico servia
+  respostas velhas — Data Cache do Next 14 cacheou o GET do supabase-js e
+  **persistiu através de deploys**; `force-dynamic` (`6b8faf6`) não bastou;
+  resolvido com `cache: "no-store"` no fetch do `getSupabaseServerClient`
+  (`a2ab956`), cobrindo todas as rotas de banco. (2) o PostgREST não tinha
+  recarregado o schema após a DDL via CLI — o select de `parent_reply_id`
+  falhava com o banco correto; resolvido com `notify pgrst, 'reload schema'`.
+  Lições **L-043/L-044**. Trilha D **100% fechada**; próxima: **Trilha E**
+  (pedir reexport do insumo ao usuário ANTES).
 
 - **2026-07-22 (Opus 4.8) — TRILHA D (FÓRUM ANINHADO) EXECUTADA INTEIRA E
   FECHADA + descoberta L-042:** retomada via pino sem perguntas. (1) Pre-flight

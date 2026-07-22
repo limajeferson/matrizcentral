@@ -59,6 +59,12 @@ Criar tag nova exige editar este arquivo e o PLAYBOOK juntos.
 - **Faça:** no pre-flight de qualquer trilha que constrói sobre tabela "já aplicada", rodar um select real de catálogo (`information_schema.tables`/`pg_class`) confirmando tabela + colunas + índices; e nunca usar como prova de migration uma rota cujo fetch não distingue "tabela ausente" de "vazio".
 - **Fonte:** fechamento da Trilha D (2026-07-22): aplicar a 0027 falhou com 42P01, revelando 0019/0020 ausentes apesar do log de 2026-07-13; as 3 aplicadas e verificadas juntas.
 
+### L-043 · DDL aplicada via CLI não recarrega o schema cache do PostgREST — notificar e testar via REST
+- **Gatilho:** `migration`
+- **Não faça:** considerar uma migration de coluna nova "aplicada e verificada" só com select em `information_schema` — o PostgREST (API REST que o app usa) tem schema cache próprio, e DDL rodada por fora do SQL Editor (ex.: `db query --linked`) não dispara o reload; o app seleciona a coluna nova, recebe erro de schema cache e o data layer engole (lista vazia em produção com o banco correto).
+- **Faça:** após qualquer DDL via CLI, rodar `notify pgrst, 'reload schema';` e verificar com um select **via REST** (`curl $URL/rest/v1/tabela?select=coluna_nova` com a service key) — a verificação de catálogo prova o banco, só a REST prova o caminho que o app usa.
+- **Fonte:** verificação ao vivo da Trilha D (2026-07-22): fórum em produção rendia respostas vazias com a linha no banco; resolvido com o notify.
+
 ## `acesso-dinheiro`
 
 ### L-003 · Checagem de acesso pago é fail-closed em qualquer erro ou dado ausente
@@ -225,6 +231,12 @@ Criar tag nova exige editar este arquivo e o PLAYBOOK juntos.
 - **Não faça:** aprovar como "no ar" uma página que lê arquivo do repo em runtime (`fs.readFile` com caminho dinâmico — markdown de conteúdo, ebook, relatório) tendo verificado só no dev server — o tracing da Vercel não enxerga leitura dinâmica, os arquivos ficam fora do bundle serverless e a falha SÓ existe em produção: `/biblioteca` e relatórios pagos deram 500 para cliente pagante por dias, e o blog trocou o corpo pelo excerpt em silêncio (o `catch` engolia).
 - **Faça:** (1) todo `fs.readFile` de asset do repo exige a rota em `experimental.outputFileTracingIncludes` no `next.config` (feito para `content/**` no fix `7953b7e`); (2) o gate visual de qualquer rota que lê arquivo em runtime inclui abrir a rota **em produção** após o deploy — dev nunca reproduz esta classe de falha; (3) `catch` de fallback em conteúdo não pode ser silencioso: logar o erro para o problema aparecer nos logs da Vercel.
 - **Fonte:** smoke pós-deploy da Trilha C (2026-07-22); .superpowers/sdd/progress.md (incidente content/ fora do bundle).
+
+### L-044 · Data Cache do Next persiste entre deploys e cacheia GETs do supabase-js — no-store explícito no client de servidor
+- **Gatilho:** `deploy`, `visual`
+- **Não faça:** confiar que rota que lê o Supabase no servidor serve dado fresco só porque renderiza dinâmico (cookies) ou porque a página declara `dynamic = "force-dynamic"` — no Next 14, o GET do supabase-js (primeiro fetch da árvore, mesmo com header `Authorization`) pode cair no **Data Cache**, que **sobrevive a deploys**: a página do tópico do fórum congelou com respostas vazias mesmo após redeploy com force-dynamic.
+- **Faça:** o `getSupabaseServerClient` central usa `global.fetch` com `cache: "no-store"` (fix `a2ab956`) — manter em qualquer client novo. E o gate visual de rota nova que lê banco inclui **mutação em produção** (criar um dado e vê-lo aparecer), não só o render — cache stale não aparece num load único.
+- **Fonte:** verificação ao vivo da Trilha D (2026-07-22), commits `6b8faf6` (force-dynamic, insuficiente sozinho) e `a2ab956` (no-store no wrapper, resolveu).
 
 ## `subagentes`
 
