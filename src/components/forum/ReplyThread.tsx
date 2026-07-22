@@ -5,26 +5,21 @@ import type { ReplyNode } from "@/lib/forum-tree";
 import ResponderForm from "./ResponderForm";
 
 /** Cap visual de indentação: a partir daqui, respostas continuam aninhadas
- * na árvore mas não ganham mais recuo (evita paredão de indentação infinita). */
+ * na árvore mas não ganham mais recuo (evita paredão de indentação infinita).
+ * Cada nível aplica ml-4 + border-l + pl-4 (constante por nível, sem compounding
+ * porque nesting o coloca fora do pai já margined). */
 const MAX_INDENT_DEPTH = 5;
 
-/** Classes literais por nível (JIT do Tailwind precisa da string completa em
- * código-fonte — não dá para montar "ml-{n}" em runtime). Índice = depth capado. */
-const INDENT_CLASSES = [
-  "",
-  "ml-4 border-l border-border pl-4",
-  "ml-8 border-l border-border pl-4",
-  "ml-12 border-l border-border pl-4",
-  "ml-16 border-l border-border pl-4",
-  "ml-20 border-l border-border pl-4",
-];
+/** Classe constante por nível (1–5): cada profundidade adiciona ml-4.
+ * Profundidades > 5 usam classe vazia para capping. */
+const INDENT_CLASS = "ml-4 border-l border-border pl-4";
 
 function ReplyNodeItem({ node, topicId }: { node: ReplyNode; topicId: string }) {
   const [replying, setReplying] = useState(false);
-  const indentDepth = Math.min(node.depth, MAX_INDENT_DEPTH);
+  const indentClass = node.depth > 0 && node.depth <= MAX_INDENT_DEPTH ? INDENT_CLASS : "";
 
   return (
-    <div className={INDENT_CLASSES[indentDepth]}>
+    <div className={indentClass}>
       <div className="rounded-lg border border-border bg-card/60 p-3">
         <div className="flex items-baseline gap-2">
           <p className="text-xs font-medium text-foreground">{node.author}</p>
