@@ -619,6 +619,24 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
 
+- **2026-07-22 (Fable 5, mesmo bloco) — 🚨 INCIDENTE DE PRODUÇÃO descoberto no
+  smoke pós-deploy e RESOLVIDO (pré-existente, sem relação com a Trilha C):**
+  os `.md` de `content/` (ebook, relatórios, blog) são lidos em runtime com
+  `fs.readFile` dinâmico e ficavam **fora do bundle serverless da Vercel**.
+  Efeito confirmado ao vivo ANTES do fix: `/biblioteca/guia-llm-local` =
+  "Application error" para conta pagante logada (**cliente pagante sem NENHUM
+  caminho pro ebook desde o push do leitor em 21/07** — o download foi
+  aposentado); relatório pago do dashboard = mesmo 500 (**desde a F4 do
+  design-v2**); `/blog/[slug]` = corpo silenciosamente trocado pelo excerpt
+  (o `catch` engolia). Dev nunca reproduziu (lê do disco) — por isso passou
+  por todos os gates visuais anteriores. **Fix `7953b7e`:**
+  `experimental.outputFileTracingIncludes` com `content/**` nas 3 rotas no
+  `next.config.mjs`. **Verificado em produção pós-deploy:** leitor abre (16
+  seções + progresso + watermark), relatório renderiza o corpo inteiro, blog
+  com corpo de volta. Lição **L-041**. Follow-up rastreado: logar o erro no
+  `catch` do blog (hoje silencioso); glitch de render de tabela escapada no
+  relatório panorama (pré-existente, backlog de conteúdo).
+
 - **2026-07-22 (Fable 5) — TRILHA C (DARK-AWARE) EXECUTADA INTEIRA E FECHADA
   + reclamação de cobrança preparada:** (1) Investigação do "monthly spend
   limit": era real e indevido — R$ 64,44 cobrados como créditos de uso (117%

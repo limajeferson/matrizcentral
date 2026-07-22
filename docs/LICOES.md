@@ -214,6 +214,12 @@ Criar tag nova exige editar este arquivo e o PLAYBOOK juntos.
 - **Fonte:** .superpowers/sdd/progress.md (Trilha B, ">>> ORDEM DE DEPLOY (CRITICO)"); docs/frentes/leitor-protegido/README.md ("🚨 LEIA ANTES DE FAZER QUALQUER COISA"); docs/ESTADO-ATUAL.md log de 2026-07-16 (Migrations 0025/0026 aplicadas antes do push).
   — resumida também no PLAYBOOK (seção "🚀 Ordem de deploy": "Migration primeiro. Push depois. Sempre.").
 
+### L-041 · Arquivo lido do disco em runtime não existe em produção serverless até ser incluído no tracing
+- **Gatilho:** `deploy`, `visual`
+- **Não faça:** aprovar como "no ar" uma página que lê arquivo do repo em runtime (`fs.readFile` com caminho dinâmico — markdown de conteúdo, ebook, relatório) tendo verificado só no dev server — o tracing da Vercel não enxerga leitura dinâmica, os arquivos ficam fora do bundle serverless e a falha SÓ existe em produção: `/biblioteca` e relatórios pagos deram 500 para cliente pagante por dias, e o blog trocou o corpo pelo excerpt em silêncio (o `catch` engolia).
+- **Faça:** (1) todo `fs.readFile` de asset do repo exige a rota em `experimental.outputFileTracingIncludes` no `next.config` (feito para `content/**` no fix `7953b7e`); (2) o gate visual de qualquer rota que lê arquivo em runtime inclui abrir a rota **em produção** após o deploy — dev nunca reproduz esta classe de falha; (3) `catch` de fallback em conteúdo não pode ser silencioso: logar o erro para o problema aparecer nos logs da Vercel.
+- **Fonte:** smoke pós-deploy da Trilha C (2026-07-22); .superpowers/sdd/progress.md (incidente content/ fora do bundle).
+
 ## `subagentes`
 
 ### L-024 · Coordenador deve assumir gate e commit quando um subagente cai no meio por falha de API
