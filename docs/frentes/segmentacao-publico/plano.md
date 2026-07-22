@@ -199,7 +199,7 @@ export const CAPACITY_PATHS: Record<CapacityTier, CapacityPath> = {
 };
 ```
 
-- [ ] **Step 4:** Run: `npx vitest run src/lib/capacity.test.ts` → Expected: PASS (7 testes).
+- [ ] **Step 4:** Run: `npx vitest run src/lib/capacity.test.ts` → Expected: PASS (8 testes).
 - [ ] **Step 5:** `npx tsc --noEmit` → exit 0. Commit:
 
 ```bash
@@ -327,16 +327,29 @@ git commit -m "feat(segmentacao): /api/diagnostico grava os dois eixos; modo so-
 - Consumes: `CAPACITY_QUESTIONS` (S1); rota S3.
 - Produces: prop `mode: "completo" | "capacidade"`; no feed: `completo` quando `!profileId`; `capacidade` quando `profileId && !capacityTier`.
 
-- [ ] **Step 1:** no `DiagnosticoInline.tsx`: aceitar `{ mode = "completo" }`; o banco de perguntas vira
+- [ ] **Step 1:** no `DiagnosticoInline.tsx`: aceitar `{ mode = "completo" }`. ⚠️ **O cast direto `as TriagemQuestion[]` NÃO compila** (`CapacityOption.capacityPoints` ≠ `TriagemOption.points`, sem overlap estrutural — verificado com `tsc` na revisão da S1). Use a interface mínima de render (o componente só precisa de `id`/`text`/`type`/`options[].text`/`showIf`):
 
 ```ts
-const bank = mode === "capacidade"
+// Em src/lib/quiz-branching.ts: tornar visibleQuestions genérica —
+// export function visibleQuestions<Q extends { id: number; showIf?: TriagemQuestion["showIf"] }>(
+//   questions: Q[], answers: TriagemAnswer[]): Q[]
+// (o corpo não muda; ela só usa id/showIf.)
+
+// No DiagnosticoInline.tsx:
+type AskableQuestion = {
+  id: number;
+  text: string;
+  type: "radio" | "checkbox";
+  options: { text: string }[];
+  showIf?: TriagemQuestion["showIf"];
+};
+const bank: AskableQuestion[] = mode === "capacidade"
   ? CAPACITY_QUESTIONS
   : [...QUIZ_TRIAGEM, ...CAPACITY_QUESTIONS];
-const visible = visibleQuestions(bank as TriagemQuestion[], answers);
+const visible = visibleQuestions(bank, answers);
 ```
 
-(`CapacityQuestion` é estruturalmente compatível com o render: `id`/`text`/`type:"radio"`/`options[].text`; `visibleQuestions` ignora quem não tem `showIf`.) Copy do modo mini: título "Complete seu diagnóstico" e sub "2 perguntas para calibrar as recomendações ao seu equipamento"; botão final "Calibrar recomendações". Modo completo mantém a copy atual ("Pergunta X de N" passa a contar 9).
+(`TriagemQuestion[]` e `CapacityQuestion[]` são ambos atribuíveis a `AskableQuestion[]` — atribuição alarga, cast não.) Copy do modo mini: título "Complete seu diagnóstico" e sub "2 perguntas para calibrar as recomendações ao seu equipamento"; botão final "Calibrar recomendações". Modo completo mantém a copy atual ("Pergunta X de N" passa a contar 9).
 - [ ] **Step 2:** no `feed/page.tsx`: incluir `capacity_tier` no select de `users` (junto de `profile_id`/`total_xp`); substituir a linha `{user && !profileId && <DiagnosticoInline />}` por:
 
 ```tsx
