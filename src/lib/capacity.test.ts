@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { CAPACITY_QUESTIONS, CAPACITY_PATHS, hasCapacityAnswers, scoreCapacity } from "./capacity";
+import { CAPACITY_QUESTIONS, CAPACITY_PATHS, hasCapacityAnswers, scoreCapacity, toCapacityTier } from "./capacity";
 
 describe("scoreCapacity", () => {
   it("classifica performance quando investimento e equipamento apontam pra cima", () => {
@@ -36,6 +36,29 @@ describe("hasCapacityAnswers", () => {
   it("true só quando há resposta para as perguntas 8/9", () => {
     expect(hasCapacityAnswers([{ questionId: 8, selectedOptionIndexes: [0] }])).toBe(true);
     expect(hasCapacityAnswers([{ questionId: 3, selectedOptionIndexes: [0] }])).toBe(false);
+  });
+});
+
+describe("toCapacityTier", () => {
+  it("valida os 3 tiers válidos", () => {
+    expect(toCapacityTier("performance")).toBe("performance");
+    expect(toCapacityTier("equilibrio")).toBe("equilibrio");
+    expect(toCapacityTier("essencial")).toBe("essencial");
+  });
+  it("rejeita prototype keys (toString, constructor)", () => {
+    expect(toCapacityTier("toString")).toBeUndefined();
+    expect(toCapacityTier("constructor")).toBeUndefined();
+  });
+  it("rejeita valores não-string", () => {
+    expect(toCapacityTier(null)).toBeUndefined();
+    expect(toCapacityTier(undefined)).toBeUndefined();
+    expect(toCapacityTier(2)).toBeUndefined();
+    expect(toCapacityTier({})).toBeUndefined();
+  });
+  it("rejeita strings inválidas", () => {
+    expect(toCapacityTier("invalid")).toBeUndefined();
+    expect(toCapacityTier("")).toBeUndefined();
+    expect(toCapacityTier("Performance")).toBeUndefined(); // case-sensitive
   });
 });
 

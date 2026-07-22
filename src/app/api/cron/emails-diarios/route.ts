@@ -2,13 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { computeDueEmails } from "@/lib/email-cycle";
 import { sendNewCycleEmail, sendExpiryEmail } from "@/lib/email";
-import { CAPACITY_PATHS, type CapacityTier } from "@/lib/capacity";
-
-/** Valida o valor cru do banco contra os 3 tiers — nunca `as CapacityTier` cego. */
-const CAPACITY_TIERS: readonly CapacityTier[] = ["performance", "equilibrio", "essencial"];
-function toCapacityTier(value: string | null | undefined): CapacityTier | undefined {
-  return CAPACITY_TIERS.includes(value as CapacityTier) ? (value as CapacityTier) : undefined;
-}
+import { toCapacityTier } from "@/lib/capacity";
 
 export async function GET(req: NextRequest) {
   // Se CRON_SECRET não estiver setado, nega tudo (evita passar com "Bearer undefined").

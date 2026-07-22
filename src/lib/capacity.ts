@@ -100,3 +100,11 @@ export const CAPACITY_PATHS: Record<CapacityTier, CapacityPath> = {
     primeiroPasso: "Comece pela jornada básica: um modelo leve rodando hoje vale mais que um setup ideal amanhã.",
   },
 };
+
+/** Valida valor cru (do banco/requisição) contra os 3 tiers — nunca `as CapacityTier` cego.
+ *  Rejeita prototype keys ("toString", "constructor" etc) e valores não-string. */
+export function toCapacityTier(value: unknown): CapacityTier | undefined {
+  if (typeof value !== "string") return undefined;
+  const tiers = Object.keys(CAPACITY_PATHS) as CapacityTier[];
+  return tiers.includes(value as CapacityTier) ? (value as CapacityTier) : undefined;
+}
