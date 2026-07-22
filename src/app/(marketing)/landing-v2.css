@@ -1127,6 +1127,33 @@
   .mcv2 .mc-strategy-grid { grid-template-columns: 1fr; }
 }
 
+/* ---- Qual é o seu momento? (3 caminhos de capacidade) ---- */
+.mcv2 .mc-moment-grid {
+  margin-top: 48px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.mcv2 .mc-moment-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 28px;
+  background: var(--mc-surface);
+  border: 1px solid var(--mc-line);
+  border-radius: var(--mc-radius);
+  transition: border-color 0.2s ease;
+}
+.mcv2 .mc-moment-card:hover { border-color: var(--mc-accent); }
+.mcv2 .mc-moment-card h3 { font-size: 1.2rem; }
+.mcv2 .mc-moment-tagline { margin-top: 12px; font-size: 1rem; color: var(--mc-white); }
+.mcv2 .mc-moment-setup { margin-top: 8px; margin-bottom: 20px; color: var(--mc-gray); font-size: 0.9rem; flex: 1; }
+.mcv2 .mc-moment-card .mc-btn { align-self: flex-start; padding: 12px 20px; font-size: 0.9rem; }
+@media (max-width: 800px) {
+  .mcv2 .mc-moment-grid { grid-template-columns: 1fr; }
+}
+
 /* ---- Página /sobre ---- */
 .mcv2 .mc-about-title { font-size: clamp(2.2rem, 6vw, 4.5rem); margin-top: 16px; }
 .mcv2 .mc-about-lead { max-width: 640px; margin-top: 24px; color: var(--mc-gray); font-size: 1.05rem; line-height: 1.7; }
