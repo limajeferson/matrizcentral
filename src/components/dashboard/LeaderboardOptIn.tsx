@@ -29,8 +29,8 @@ export default function LeaderboardOptIn({
   };
 
   return (
-    <div className="rounded-xl border border-zinc-200 bg-white p-4">
-      <label className="flex items-center gap-2 text-sm font-semibold text-zinc-900">
+    <div className="rounded-xl border border-border bg-card p-4">
+      <label className="flex items-center gap-2 text-sm font-semibold text-foreground">
         <input
           type="checkbox"
           checked={optIn}
@@ -44,7 +44,7 @@ export default function LeaderboardOptIn({
           value={displayName}
           onChange={(e) => setDisplayName(e.target.value)}
           placeholder="Seu nome de exibição"
-          className="mt-2 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm"
+          className="mt-2 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-violet-500 focus:outline-none"
         />
       )}
       <button

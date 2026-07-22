@@ -12,7 +12,7 @@ export default function BadgeShelf({ earnedBadgeIds }: BadgeShelfProps) {
 
   return (
     <GlassCard className="p-6">
-      <h2 className="mb-3 font-bold text-zinc-900">Conquistas</h2>
+      <h2 className="mb-3 font-bold text-foreground">Conquistas</h2>
       <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
         {BADGES.map((badge) => {
           const earned = earnedSet.has(badge.id);
@@ -24,12 +24,12 @@ export default function BadgeShelf({ earnedBadgeIds }: BadgeShelfProps) {
               className={cn(
                 "flex flex-col items-center rounded-xl border p-3 text-center",
                 earned
-                  ? "border-violet-300 bg-violet-50"
-                  : "border-zinc-200 bg-zinc-50 opacity-40 grayscale"
+                  ? "border-violet-300 bg-violet-500/10"
+                  : "border-border bg-muted opacity-40 grayscale"
               )}
             >
-              <Icon size={24} className={earned ? "text-violet-600" : "text-zinc-400"} />
-              <span className="mt-1 text-xs font-semibold text-zinc-800">{badge.name}</span>
+              <Icon size={24} className={earned ? "text-violet-600" : "text-muted-foreground"} />
+              <span className="mt-1 text-xs font-semibold text-foreground">{badge.name}</span>
             </div>
           );
         })}

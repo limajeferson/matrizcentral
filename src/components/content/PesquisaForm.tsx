@@ -52,7 +52,7 @@ export default function PesquisaForm({ token, surveyId, options }: Props) {
           type="button"
           onClick={() => handleVote(option.id)}
           disabled={loadingOptionId !== null}
-          className="w-full rounded-xl border border-zinc-200 px-4 py-3 text-left text-sm text-zinc-700 transition hover:border-violet-400 hover:bg-violet-50 disabled:opacity-60"
+          className="w-full rounded-xl border border-border px-4 py-3 text-left text-sm text-muted-foreground transition hover:border-violet-400 hover:bg-violet-500/10 disabled:opacity-60"
         >
           {loadingOptionId === option.id ? "Enviando..." : option.label}
         </button>

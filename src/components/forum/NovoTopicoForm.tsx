@@ -20,11 +20,11 @@ export default function NovoTopicoForm() {
   }
 
   return (
-    <form onSubmit={submit} className="space-y-3 rounded-xl border border-zinc-200 bg-white p-4">
+    <form onSubmit={submit} className="space-y-3 rounded-xl border border-border bg-card p-4">
       <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Título do tópico"
-        className="w-full rounded-lg border px-3 py-2" />
+        className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground placeholder:text-muted-foreground focus:border-violet-500 focus:outline-none" />
       <textarea value={body} onChange={(e) => setBody(e.target.value)} placeholder="O que você quer discutir?"
-        rows={4} className="w-full rounded-lg border px-3 py-2" />
+        rows={4} className="w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground placeholder:text-muted-foreground focus:border-violet-500 focus:outline-none" />
       {error && <p className="text-sm text-red-600">{error}</p>}
       <button type="submit" disabled={loading}
         className="rounded-lg bg-violet-600 px-4 py-2 font-semibold text-white disabled:opacity-60">

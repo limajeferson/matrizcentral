@@ -24,10 +24,10 @@ export default function JornadaToc({ completedStages }: Props) {
 
   return (
     <div className="hidden xl:block sticky top-24 w-56 shrink-0">
-      <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-zinc-500">
+      <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
         Sua jornada
       </h3>
-      <div className="mb-4 h-1.5 w-full rounded-full bg-zinc-200">
+      <div className="mb-4 h-1.5 w-full rounded-full bg-muted">
         <div
           className="h-1.5 rounded-full bg-violet-600 transition-all"
           style={{ width: `${view.progressPercent}%` }}
@@ -47,8 +47,8 @@ export default function JornadaToc({ completedStages }: Props) {
                   onClick={(e) => handleClick(e, key)}
                   className={`flex items-center gap-2 text-sm transition ${
                     status === "active"
-                      ? "font-medium text-zinc-900"
-                      : "text-zinc-500 hover:text-zinc-700"
+                      ? "font-medium text-foreground"
+                      : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   {status === "done" && (
@@ -63,7 +63,7 @@ export default function JornadaToc({ completedStages }: Props) {
                     />
                   )}
                   {status === "locked" && (
-                    <IconLock size={14} className="shrink-0 text-zinc-400" />
+                    <IconLock size={14} className="shrink-0 text-muted-foreground" />
                   )}
                   <span className="truncate">{label}</span>
                 </a>

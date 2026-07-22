@@ -41,11 +41,11 @@ export default function RoadmapCard({ roadmap, completedStages, token }: Props) 
 
   return (
     <div>
-      <h2 className="mb-2 text-xl font-bold text-zinc-900">Sua Trilha Recomendada</h2>
-      <p className="mb-1 text-sm text-zinc-500">
+      <h2 className="mb-2 text-xl font-bold text-foreground">Sua Trilha Recomendada</h2>
+      <p className="mb-1 text-sm text-muted-foreground">
         Etapa {view.currentStageNumber} de {ROADMAP_STAGE_KEYS.length}
       </p>
-      <div className="mb-6 h-2 w-full rounded-full bg-zinc-200">
+      <div className="mb-6 h-2 w-full rounded-full bg-muted">
         <div
           className="h-2 rounded-full bg-violet-600 transition-all"
           style={{ width: `${view.progressPercent}%` }}
@@ -65,7 +65,7 @@ export default function RoadmapCard({ roadmap, completedStages, token }: Props) 
                 id={`etapa-${key}`}
                 className="scroll-mt-24 border-l-4 border-emerald-400 pl-4 py-2"
               >
-                <h3 className="flex items-center gap-1.5 font-semibold text-zinc-900">
+                <h3 className="flex items-center gap-1.5 font-semibold text-foreground">
                   <IconCheck size={16} className="text-emerald-500" />
                   {label}
                 </h3>
@@ -78,11 +78,11 @@ export default function RoadmapCard({ roadmap, completedStages, token }: Props) 
               <div
                 key={key}
                 id={`etapa-${key}`}
-                className="scroll-mt-24 border-l-4 border-violet-500 bg-violet-50 pl-4 py-4 rounded-r-xl"
+                className="scroll-mt-24 border-l-4 border-violet-500 bg-violet-500/10 pl-4 py-4 rounded-r-xl"
               >
-                <h3 className="font-semibold text-zinc-900">{label}</h3>
-                <p className="mt-1 text-sm text-zinc-600">{stage.objective}</p>
-                <ul className="mt-3 space-y-1 text-sm text-zinc-600">
+                <h3 className="font-semibold text-foreground">{label}</h3>
+                <p className="mt-1 text-sm text-muted-foreground">{stage.objective}</p>
+                <ul className="mt-3 space-y-1 text-sm text-muted-foreground">
                   {stage.checklist.map((item) => (
                     <li key={item}>• {item}</li>
                   ))}
@@ -104,7 +104,7 @@ export default function RoadmapCard({ roadmap, completedStages, token }: Props) 
             <div
               key={key}
               id={`etapa-${key}`}
-              className="scroll-mt-24 border-l-4 border-zinc-200 pl-4 py-2 text-zinc-400"
+              className="scroll-mt-24 border-l-4 border-border pl-4 py-2 text-muted-foreground"
             >
               <h3 className="flex items-center gap-1.5 font-semibold">
                 <IconLock size={16} />

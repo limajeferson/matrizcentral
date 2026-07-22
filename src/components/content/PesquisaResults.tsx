@@ -10,7 +10,7 @@ export default function PesquisaResults({ options, counts }: Props) {
 
   return (
     <div className="space-y-3">
-      <p className="text-sm text-zinc-500">
+      <p className="text-sm text-muted-foreground">
         {total} {total === 1 ? "resposta" : "respostas"} da comunidade
       </p>
       {options.map((option) => {
@@ -19,10 +19,10 @@ export default function PesquisaResults({ options, counts }: Props) {
         return (
           <div key={option.id}>
             <div className="mb-1 flex items-center justify-between text-sm">
-              <span className="text-zinc-700">{option.label}</span>
-              <span className="font-semibold text-zinc-900">{pct}%</span>
+              <span className="text-muted-foreground">{option.label}</span>
+              <span className="font-semibold text-foreground">{pct}%</span>
             </div>
-            <div className="h-2.5 w-full rounded-full bg-zinc-100">
+            <div className="h-2.5 w-full rounded-full bg-muted">
               <div
                 className="h-2.5 rounded-full bg-violet-600"
                 style={{ width: `${pct}%` }}

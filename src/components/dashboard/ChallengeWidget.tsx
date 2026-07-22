@@ -45,9 +45,9 @@ export default function ChallengeWidget({
       <div className="mb-2">
         <CategoryBadge variant="roadmap">Desafio da Semana</CategoryBadge>
       </div>
-      <h2 className="font-bold text-zinc-900">{title}</h2>
-      <p className="mt-1 text-sm text-zinc-600">{description}</p>
-      <p className="mt-2 text-xs text-zinc-500">
+      <h2 className="font-bold text-foreground">{title}</h2>
+      <p className="mt-1 text-sm text-muted-foreground">{description}</p>
+      <p className="mt-2 text-xs text-muted-foreground">
         Progresso: {Math.min(progress, target)}/{target} · Recompensa: +{xpReward} XP
       </p>
       {status === "claimed" ? (

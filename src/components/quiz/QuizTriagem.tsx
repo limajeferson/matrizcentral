@@ -64,17 +64,17 @@ export default function QuizTriagem({ token }: Props) {
 
   return (
     <div className="mx-auto max-w-2xl p-6">
-      <p className="mb-2 text-sm text-zinc-500">
+      <p className="mb-2 text-sm text-muted-foreground">
         Pergunta {currentQ + 1} de {visible.length}
       </p>
-      <div className="mb-6 h-2 w-full rounded-full bg-zinc-200">
+      <div className="mb-6 h-2 w-full rounded-full bg-muted">
         <div
           className="h-2 rounded-full bg-violet-600 transition-all"
           style={{ width: `${((currentQ + 1) / visible.length) * 100}%` }}
         />
       </div>
 
-      <h2 className="mb-4 text-lg font-semibold text-zinc-900">{question.text}</h2>
+      <h2 className="mb-4 text-lg font-semibold text-foreground">{question.text}</h2>
 
       <div className="space-y-3">
         {question.options.map((option, index) => (
@@ -84,8 +84,8 @@ export default function QuizTriagem({ token }: Props) {
             onClick={() => toggleOption(index)}
             className={`w-full rounded-xl border-2 p-3 text-left transition ${
               selectedIndexes.includes(index)
-                ? "border-violet-500 bg-violet-50"
-                : "border-zinc-300 hover:border-violet-300"
+                ? "border-violet-500 bg-violet-500/10"
+                : "border-border hover:border-violet-300"
             }`}
           >
             {option.text}
