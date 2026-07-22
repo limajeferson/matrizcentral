@@ -42,8 +42,8 @@ export default async function RankingPage({ params }: { params: { token: string 
   return (
     <div className="mx-auto max-w-2xl space-y-6 p-6">
       <div>
-        <h1 className="text-2xl font-bold text-zinc-900">Ranking</h1>
-        <p className="text-zinc-600">
+        <h1 className="text-2xl font-bold text-foreground">Ranking</h1>
+        <p className="text-muted-foreground">
           Top 20 alunos que optaram por aparecer publicamente no ranking.
         </p>
       </div>
@@ -62,7 +62,7 @@ export default async function RankingPage({ params }: { params: { token: string 
             <li
               key={user.id}
               className={`flex items-center justify-between rounded-lg px-3 py-2 ${
-                user.id === currentUserId ? "bg-violet-100 font-semibold" : ""
+                user.id === currentUserId ? "bg-violet-500/15 font-semibold" : ""
               }`}
             >
               <span>
@@ -73,11 +73,11 @@ export default async function RankingPage({ params }: { params: { token: string 
             </li>
           ))}
           {(topUsers ?? []).length === 0 && (
-            <li className="text-zinc-500">Ninguém optou por aparecer no ranking ainda.</li>
+            <li className="text-muted-foreground">Ninguém optou por aparecer no ranking ainda.</li>
           )}
         </ol>
         {!isCurrentUserInList && (
-          <p className="mt-4 text-sm text-zinc-500">
+          <p className="mt-4 text-sm text-muted-foreground">
             Você não está no ranking público. Ative isso no seu dashboard para aparecer aqui.
           </p>
         )}

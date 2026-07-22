@@ -121,21 +121,21 @@ export default async function DashboardPage({ params }: { params: { token: strin
           <CategoryBadge variant="xp">
             Nível {levelProgress.level} — {levelProgress.name}
           </CategoryBadge>
-          <span className="text-xs text-zinc-500">{totalXp} XP total</span>
+          <span className="text-xs text-muted-foreground">{totalXp} XP total</span>
         </div>
-        <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-200">
+        <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
           <div
             className="h-full rounded-full bg-violet-600 transition-all"
             style={{ width: `${levelProgress.progressPercent}%` }}
           />
         </div>
         {levelProgress.nextLevelName ? (
-          <p className="mt-1 text-xs text-zinc-500">
+          <p className="mt-1 text-xs text-muted-foreground">
             {levelProgress.xpToNext} XP para o nível {levelProgress.level + 1} —{" "}
             {levelProgress.nextLevelName}
           </p>
         ) : (
-          <p className="mt-1 text-xs text-zinc-500">Nível máximo alcançado!</p>
+          <p className="mt-1 text-xs text-muted-foreground">Nível máximo alcançado!</p>
         )}
       </GlassCard>
 
@@ -157,24 +157,24 @@ export default async function DashboardPage({ params }: { params: { token: strin
         </div>
         <dl className="space-y-4">
           <div>
-            <dt className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
+            <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
               Objetivo principal
             </dt>
-            <dd className="text-lg font-bold text-zinc-900">{profile.description}</dd>
+            <dd className="text-lg font-bold text-foreground">{profile.description}</dd>
           </div>
           <div>
-            <dt className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
+            <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
               Ponto de partida
             </dt>
-            <dd className="text-zinc-700">
+            <dd className="text-muted-foreground">
               {ROADMAP_STAGE_LABELS[ROADMAP_STAGE_KEYS[0]]}
             </dd>
           </div>
           <div>
-            <dt className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
+            <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
               Tempo estimado
             </dt>
-            <dd className="text-zinc-700">≈ 45–60 minutos nos primeiros passos</dd>
+            <dd className="text-muted-foreground">≈ 45–60 minutos nos primeiros passos</dd>
           </div>
         </dl>
       </GlassCard>
@@ -194,7 +194,7 @@ export default async function DashboardPage({ params }: { params: { token: strin
         <div className="mb-2">
           <CategoryBadge variant="ebook">Ebook</CategoryBadge>
         </div>
-        <h2 className="mb-3 font-bold text-zinc-900">Seu primeiro ebook</h2>
+        <h2 className="mb-3 font-bold text-foreground">Seu primeiro ebook</h2>
         <a
           href={`/entrar/resgate?token=${params.token}`}
           className="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-6 py-2 font-semibold text-white transition hover:bg-violet-700"
@@ -208,8 +208,8 @@ export default async function DashboardPage({ params }: { params: { token: strin
         <div className="mb-2">
           <CategoryBadge variant="hub">Hub de conteúdo</CategoryBadge>
         </div>
-        <h2 className="mb-3 font-bold text-zinc-900">Relatórios, podcasts e vídeos</h2>
-        <p className="mb-3 text-zinc-600">
+        <h2 className="mb-3 font-bold text-foreground">Relatórios, podcasts e vídeos</h2>
+        <p className="mb-3 text-muted-foreground">
           Aprofunde-se em IA local no seu ritmo — cada conteúdo concluído gera XP.
         </p>
         <a
@@ -225,7 +225,7 @@ export default async function DashboardPage({ params }: { params: { token: strin
         <div className="mb-2">
           <CategoryBadge variant="xp">Ranking</CategoryBadge>
         </div>
-        <h2 className="mb-3 font-bold text-zinc-900">Veja sua posição</h2>
+        <h2 className="mb-3 font-bold text-foreground">Veja sua posição</h2>
         <a
           href={`/dashboard/${params.token}/ranking`}
           className="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-6 py-2 font-semibold text-white transition hover:bg-violet-700"
@@ -238,7 +238,7 @@ export default async function DashboardPage({ params }: { params: { token: strin
       <div>
         <div className="mb-4 flex items-center gap-2">
           <CategoryBadge variant="quiz">Validação</CategoryBadge>
-          <h2 className="text-xl font-bold text-zinc-900">Validação de Conhecimento</h2>
+          <h2 className="text-xl font-bold text-foreground">Validação de Conhecimento</h2>
         </div>
         <QuizValidacaoContainer token={params.token} />
       </div>

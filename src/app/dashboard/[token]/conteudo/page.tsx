@@ -68,8 +68,8 @@ export default async function ConteudoHubPage({ params }: { params: { token: str
     <div className="mx-auto max-w-4xl space-y-6 p-6">
       <div>
         <CategoryBadge variant="hub">Hub de conteúdo</CategoryBadge>
-        <h1 className="mt-2 text-2xl font-bold text-zinc-900">Aprenda no seu ritmo</h1>
-        <p className="text-zinc-600">
+        <h1 className="mt-2 text-2xl font-bold text-foreground">Aprenda no seu ritmo</h1>
+        <p className="text-muted-foreground">
           Relatórios, podcasts, vídeos e pesquisas com a comunidade sobre IA local — cada conteúdo
           concluído gera XP.
         </p>
@@ -83,13 +83,13 @@ export default async function ConteudoHubPage({ params }: { params: { token: str
           <div className="mt-3 grid gap-4 sm:grid-cols-2">
             {recommended.map((item) => (
               <Link key={item.id} href={`/dashboard/${params.token}/conteudo/${item.id}`}>
-                <GlassCard className="h-full border-2 border-violet-300 bg-violet-50 p-5 transition hover:-translate-y-0.5">
+                <GlassCard className="h-full border-2 border-violet-500/40 bg-violet-500/10 p-5 transition hover:-translate-y-0.5">
                   <div className="mb-2 flex items-center justify-between">
                     <TypeBadge type={item.type} />
                   </div>
-                  <h2 className="font-bold text-zinc-900">{item.title}</h2>
-                  <p className="mt-1 text-sm text-zinc-600">{item.description}</p>
-                  <div className="mt-3 text-xs text-zinc-500">
+                  <h2 className="font-bold text-foreground">{item.title}</h2>
+                  <p className="mt-1 text-sm text-muted-foreground">{item.description}</p>
+                  <div className="mt-3 text-xs text-muted-foreground">
                     {item.durationMinutes} min · +{item.xpReward} XP
                   </div>
                 </GlassCard>
@@ -100,7 +100,7 @@ export default async function ConteudoHubPage({ params }: { params: { token: str
       )}
 
       <div>
-        <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-zinc-500">
+        <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
           Explore mais
         </h2>
         <div className="grid gap-4 sm:grid-cols-2">
@@ -121,9 +121,9 @@ export default async function ConteudoHubPage({ params }: { params: { token: str
                     </span>
                   )}
                 </div>
-                <h2 className="font-bold text-zinc-900">{item.title}</h2>
-                <p className="mt-1 text-sm text-zinc-600">{item.description}</p>
-                <div className="mt-3 flex items-center justify-between text-xs text-zinc-500">
+                <h2 className="font-bold text-foreground">{item.title}</h2>
+                <p className="mt-1 text-sm text-muted-foreground">{item.description}</p>
+                <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
                   <span>{item.durationMinutes} min · +{item.xpReward} XP</span>
                   {comingSoon && <span className="font-semibold text-amber-600">em breve</span>}
                 </div>

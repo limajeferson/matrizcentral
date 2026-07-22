@@ -43,9 +43,9 @@ export default async function CertificadoPage({ params }: { params: { token: str
   return (
     <div className="mx-auto max-w-2xl space-y-6 p-6 print:p-0">
       <div className="rounded-2xl border-4 border-violet-600 p-10 text-center print:border-2">
-        <p className="text-sm uppercase tracking-widest text-zinc-500">Matriz Central</p>
-        <h1 className="mt-4 text-3xl font-bold text-zinc-900">{certificate.title}</h1>
-        <p className="mt-4 text-zinc-600">
+        <p className="text-sm uppercase tracking-widest text-muted-foreground">Matriz Central</p>
+        <h1 className="mt-4 text-3xl font-bold text-foreground">{certificate.title}</h1>
+        <p className="mt-4 text-muted-foreground">
           Emitido em{" "}
           {new Date(certificate.issued_at).toLocaleDateString("pt-BR", {
             day: "2-digit",
@@ -53,14 +53,14 @@ export default async function CertificadoPage({ params }: { params: { token: str
             year: "numeric",
           })}
         </p>
-        <p className="mt-6 text-xs text-zinc-400">
+        <p className="mt-6 text-xs text-muted-foreground">
           Código de verificação: {certificate.verification_code}
         </p>
-        <p className="text-xs text-zinc-400">
+        <p className="text-xs text-muted-foreground">
           Verifique em matrizcentral.com.br/certificado/{certificate.verification_code}
         </p>
       </div>
-      <p className="text-center text-sm text-zinc-500 print:hidden">
+      <p className="text-center text-sm text-muted-foreground print:hidden">
         Use Ctrl+P (ou Cmd+P) para salvar este certificado como PDF.
       </p>
     </div>

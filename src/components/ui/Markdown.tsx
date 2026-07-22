@@ -12,7 +12,8 @@ import { parseMarkdown, type MdBlock } from "@/lib/markdown";
  *   (leitor protegido, corpo do blog).
  * - "light": texto fixo `zinc-900`/`zinc-700`, independente do tema. Use
  *   quando o Markdown é renderizado dentro de uma superfície clara fixa
- *   (ex.: `<GlassCard>`, que é `bg-white/70` sempre, mesmo no dark mode) —
+ *   (ex.: um card com `bg-white` forçado via `force-light`, não o
+ *   `<GlassCard>` padrão — que hoje é `bg-card/70` e já acompanha o tema) —
  *   texto dark-aware ficaria quase branco sobre um card branco.
  */
 export type MarkdownProps = ({ source: string } | { blocks: MdBlock[] }) & {

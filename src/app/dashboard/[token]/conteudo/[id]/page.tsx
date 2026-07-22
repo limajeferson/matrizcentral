@@ -49,7 +49,7 @@ export default async function ConteudoDetailPage({
     return (
       <div className="mx-auto max-w-3xl space-y-6 p-6">
         <CategoryBadge variant="hub">{item.title}</CategoryBadge>
-        <p className="text-sm text-zinc-500">{item.description}</p>
+        <p className="text-sm text-muted-foreground">{item.description}</p>
         <ContentGate
           title={item.title}
           nextPath={nextPath}
@@ -97,7 +97,7 @@ export default async function ConteudoDetailPage({
     return (
       <div className="mx-auto max-w-3xl space-y-6 p-6">
         <CategoryBadge variant="hub">{item.title}</CategoryBadge>
-        <p className="text-sm text-zinc-500">+{item.xpReward} XP ao responder</p>
+        <p className="text-sm text-muted-foreground">+{item.xpReward} XP ao responder</p>
 
         <GlassCard className="p-6">
           {results ?? (
@@ -111,7 +111,7 @@ export default async function ConteudoDetailPage({
   return (
     <div className="mx-auto max-w-3xl space-y-6 p-6">
       <CategoryBadge variant="hub">{item.title}</CategoryBadge>
-      <p className="text-sm text-zinc-500">
+      <p className="text-sm text-muted-foreground">
         {item.durationMinutes} min · +{item.xpReward} XP
       </p>
 
@@ -137,7 +137,7 @@ export default async function ConteudoDetailPage({
         ) : item.embedUrl === null ? (
           <GlassCard className="p-6 text-center">
             <p className="font-semibold text-amber-600">Em breve</p>
-            <p className="mt-1 text-zinc-600">{item.description}</p>
+            <p className="mt-1 text-muted-foreground">{item.description}</p>
           </GlassCard>
         ) : (
           <GlassCard className="p-6">
