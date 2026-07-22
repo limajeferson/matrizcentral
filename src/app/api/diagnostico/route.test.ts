@@ -116,4 +116,60 @@ describe("POST /api/diagnostico", () => {
     expect(mockSupabase.updated[0]).toMatchObject({ profile_id: "profissional_produtividade" });
     expect(mockSupabase.inserted.xp_events).toHaveLength(0);
   });
+
+  it("modo só-capacidade grava capacity_tier e NÃO chama update de profile_id nem xp_events", async () => {
+    sessionUser = { id: "u1", email: "a@b.com" };
+    mockSupabase = buildSupabaseMock();
+    const { POST } = await import("./route");
+    // Q8/opção 2 ("sem gastar agora") e Q9/opção 3 ("só smartphone") -> essencial.
+    const res = await POST(
+      req({
+        answers: [
+          { questionId: 8, selectedOptionIndexes: [2] },
+          { questionId: 9, selectedOptionIndexes: [3] },
+        ],
+      })
+    );
+    const json = await res.json();
+    expect(res.status).toBe(200);
+    expect(json.profileId).toBeUndefined();
+    expect(json.capacityTier).toBe("essencial");
+    expect(mockSupabase.updated).toHaveLength(1);
+    expect(mockSupabase.updated[0]).toMatchObject({ capacity_tier: "essencial" });
+    expect(mockSupabase.updated.some((u) => "profile_id" in u)).toBe(false);
+    expect(mockSupabase.inserted.xp_events).toHaveLength(0);
+  });
+
+  it("modo completo grava os dois e responde { profileId, capacityTier }", async () => {
+    sessionUser = { id: "u1", email: "a@b.com" };
+    mockSupabase = buildSupabaseMock({ claimed: { id: "u1" } });
+    const { POST } = await import("./route");
+    const res = await POST(
+      req({
+        answers: [
+          { questionId: 1, selectedOptionIndexes: [0] },
+          { questionId: 8, selectedOptionIndexes: [0] },
+          { questionId: 9, selectedOptionIndexes: [0] },
+        ],
+      })
+    );
+    const json = await res.json();
+    expect(res.status).toBe(200);
+    expect(json.profileId).toBe("profissional_produtividade");
+    expect(json.capacityTier).toBe("performance");
+    expect(mockSupabase.updated.some((u) => u.profile_id === "profissional_produtividade")).toBe(true);
+    expect(mockSupabase.updated.some((u) => u.capacity_tier === "performance")).toBe(true);
+    expect(mockSupabase.inserted.xp_events).toHaveLength(1);
+  });
+
+  it("payload sem respostas de capacidade não sobrescreve capacity_tier", async () => {
+    sessionUser = { id: "u1", email: "a@b.com" };
+    mockSupabase = buildSupabaseMock({ claimed: { id: "u1" } });
+    const { POST } = await import("./route");
+    const res = await POST(req({ answers: [{ questionId: 1, selectedOptionIndexes: [0] }] }));
+    const json = await res.json();
+    expect(res.status).toBe(200);
+    expect(json.capacityTier).toBeUndefined();
+    expect(mockSupabase.updated.some((u) => "capacity_tier" in u)).toBe(false);
+  });
 });
