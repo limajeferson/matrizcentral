@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { sendNewContentEmail } from "@/lib/email";
+import { CAPACITY_PATHS, type CapacityTier } from "@/lib/capacity";
+
+/** Valida o valor cru do banco contra os 3 tiers — nunca `as CapacityTier` cego. */
+function toCapacityTier(value: string | null | undefined): CapacityTier | undefined {
+  return value != null && value in CAPACITY_PATHS ? (value as CapacityTier) : undefined;
+}
 
 export async function POST(req: NextRequest) {
   if (!process.env.CRON_SECRET || req.headers.get("authorization") !== `Bearer ${process.env.CRON_SECRET}`) {
@@ -19,10 +25,10 @@ export async function POST(req: NextRequest) {
   const userIds = Array.from(new Set((ents ?? []).map((e) => e.user_id)));
   if (userIds.length === 0) return NextResponse.json({ sent: 0 });
 
-  const { data: users } = await supabase.from("users").select("email").in("id", userIds);
+  const { data: users } = await supabase.from("users").select("email, capacity_tier").in("id", userIds);
   let count = 0;
   for (const u of users ?? []) {
-    try { await sendNewContentEmail({ to: u.email, contentTitle }); count++; }
+    try { await sendNewContentEmail({ to: u.email, contentTitle, tier: toCapacityTier(u.capacity_tier) }); count++; }
     catch (err) { console.error("Falha ao avisar novo conteúdo:", u.email, err); }
   }
   return NextResponse.json({ sent: count });

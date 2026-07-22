@@ -1,4 +1,14 @@
+import { CAPACITY_PATHS, type CapacityTier } from "@/lib/capacity";
+
 const BREVO_API_URL = "https://api.brevo.com/v3/smtp/email";
+
+/** Parágrafo de dica de setup por tier — reusado pelos e-mails de ciclo/conteúdo.
+ *  Sem tier, retorna string vazia (HTML idêntico ao anterior). */
+function tierHint(tier?: CapacityTier): string {
+  if (!tier) return "";
+  const path = CAPACITY_PATHS[tier];
+  return `<p>Para o seu caminho <strong>${path.publicName}</strong>: ${path.setup}</p>`;
+}
 
 export async function sendTokenEmail(params: { to: string; token: string }): Promise<void> {
   const quizUrl = `${process.env.NEXT_PUBLIC_URL}/quiz/${params.token}`;
@@ -148,21 +158,21 @@ export async function sendPassPurchaseEmail(params: { to: string; plan: "regular
   );
 }
 
-export async function sendNewCycleEmail(params: { to: string }): Promise<void> {
+export async function sendNewCycleEmail(params: { to: string; tier?: CapacityTier }): Promise<void> {
   await sendBrevo(
     params.to,
     "Novo ciclo: escolha seu conteúdo do mês",
     `<p>Seu novo ciclo abriu — você pode desbloquear <strong>mais 1 conteúdo</strong> este mês.</p>
-     <p>Escolha em <a href="${process.env.NEXT_PUBLIC_URL}/conta">sua conta</a>.</p>`
+     <p>Escolha em <a href="${process.env.NEXT_PUBLIC_URL}/conta">sua conta</a>.</p>${tierHint(params.tier)}`
   );
 }
 
-export async function sendNewContentEmail(params: { to: string; contentTitle: string }): Promise<void> {
+export async function sendNewContentEmail(params: { to: string; contentTitle: string; tier?: CapacityTier }): Promise<void> {
   await sendBrevo(
     params.to,
     "Novo conteúdo disponível na Matriz Central",
     `<p>Acabou de sair: <strong>${params.contentTitle}</strong>.</p>
-     <p>Como Advanced, já está liberado pra você em <a href="${process.env.NEXT_PUBLIC_URL}/conta">sua conta</a>.</p>`
+     <p>Como Advanced, já está liberado pra você em <a href="${process.env.NEXT_PUBLIC_URL}/conta">sua conta</a>.</p>${tierHint(params.tier)}`
   );
 }
 

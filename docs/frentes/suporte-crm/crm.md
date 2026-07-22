@@ -115,7 +115,32 @@ Dúvida  →  FAQ em /suporte  →  Formulário de contato  →  support_message
   (`aberto`/`respondido`/`fechado`), respostas dentro do app, base de
   conhecimento além do FAQ estático, chat ao vivo.
 
-## 5. Métricas por etapa do funil pós-venda
+## 5. Segmentação por capacidade (Performance/Equilíbrio/Essencial)
+
+A triagem também classifica o cliente num **tier de capacidade** (infra
+disponível, eixo ortogonal ao perfil de caso de uso — ver `src/lib/capacity.ts`),
+usado para personalizar a comunicação por etapa do funil sem criar um canal
+novo:
+
+- **Onboarding:** o primeiro passo sugerido em `/dashboard/[token]` já vem
+  calibrado pelo tier — Performance parte direto para o benchmark de setup,
+  Equilíbrio segue a trilha do diagnóstico, Essencial começa pela jornada
+  básica com um modelo leve. O objetivo é o cliente sair da triagem com uma
+  ação possível **hoje**, no equipamento que ele já tem, não com um setup
+  aspiracional.
+- **Retenção:** os e-mails de ciclo (`sendNewCycleEmail`) e de conteúdo novo
+  (`sendNewContentEmail`) carregam uma linha extra de dica de setup do tier
+  do cliente (fonte única: `CAPACITY_PATHS`) — reforça que o valor do mês
+  cabe no caminho que ele já escolheu, em vez de um lembrete genérico.
+- **Win-back:** ao reengajar um passe expirado, a mensagem pode puxar pelo
+  caminho do cliente em vez de por preço — ex. Essencial→"seu modelo leve
+  continua aqui, sem precisar de setup novo"; Performance→"seu setup de
+  referência está esperando"; Equilíbrio→"a trilha do seu diagnóstico segue
+  disponível". Hoje o e-mail de expiração (`sendExpiryEmail`) não usa essa
+  segmentação — é a próxima extensão natural se a taxa de recompra pós-D+30
+  precisar de um empurrão mais direcionado.
+
+## 6. Métricas por etapa do funil pós-venda
 
 | Etapa | Métrica principal | Métrica secundária |
 |---|---|---|
@@ -135,7 +160,7 @@ Dúvida  →  FAQ em /suporte  →  Formulário de contato  →  support_message
   redesenhar a oferta, checar entregabilidade no Brevo primeiro (já houve
   um incidente de domínio não autenticado, ver `ESTADO-ATUAL.md`).
 
-## 6. Custo e operação
+## 7. Custo e operação
 
 - **Custo zero de infraestrutura:** toda a jornada usa peças já existentes
   — Brevo (tier gratuito, domínio autenticado), Supabase (tabelas já
