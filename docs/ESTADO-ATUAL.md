@@ -8,14 +8,12 @@
 > Ordem de leitura ao retomar: **este arquivo → `CLAUDE.md` → o `README.md` da
 > frente ativa → o código fonte-de-verdade.**
 
-_Última atualização: 2026-07-22 (**Trilhas D E E fechadas no MESMO dia**. D:
-fórum aninhado no ar e verificado em produção. E: insumo NotebookLM resgatado
-(pasta `insumos/`), E1–E4+E6 entregues (2 relatórios, 3 posts, 2 pesquisas, 3
-mídias na vitrine, 9 arquivos baixados), revisão final opus "Ready to merge
-Yes". **E5 aguarda o usuário subir as 9 mídias** (`handoff-midia.md`) **e
-devolver as URLs**. 345 testes, `tsc` 0, lint 0. **Próxima = Trilha F
-(polish)**. Pendências do usuário: upload das mídias + reclamação de cobrança +
-quiz 9 perguntas com conta nova.)_
+_Última atualização: 2026-07-22, noite (**sessão tripla: Trilha D ✅ + Trilha E
+✅ (E5 aguarda usuário) + IDENTIDADE VISUAL ✅** — cubo 3 violetas + Outfit/Inter,
+brand board no Claude Design, assets em `public/brand/` e no ar. Gate
+certificado no fechamento: `tsc` 0 · **345 testes** · lint 0 · master ==
+origin (`58baa1a`). **Próxima = Trilha F (polish)** — roteiro abaixo. A seção
+"O QUE FALTA PARA O LANÇAMENTO" é o checklist mestre da inauguração.)_
 
 > **Convenção deste arquivo:** as seções de **estado** (`PRÓXIMA AÇÃO`,
 > `Estado do git`, tabela de frentes) são **sobrescritas** a cada atualização —
@@ -104,11 +102,22 @@ escolher-ias-sem-travar 25) e verifica os players EM PRODUÇÃO.
 
 Spec/plano: `lancamento-final/spec-F-polish.md` / `plano-F-polish.md`.
 ⚠️ **F6 (termos) segue BLOQUEADA por decisão do usuário**; a garantia NÃO é
-"7 dias condicional" (ver `lancamento-final/README.md`). L-018: revalidar o
-plano contra o código antes de executar (C/D/E mexeram em muita coisa).
+"7 dias condicional" (ver `lancamento-final/README.md`). **L-018 OBRIGATÓRIO:
+o plano-F foi escrito antes das trilhas C/D/E e da identidade — revalidar
+task a task contra o código ANTES de despachar.**
+
+**Escopo NOVO a somar ao plano-F (identidade aprovada em 2026-07-22):**
+aplicar a marca cubo no app — favicon (`public/brand/favicon.svg` no
+`layout.tsx`), logo no `AppHeader`/landing/e-mails, fonte **Outfit** nos
+títulos + **Inter** no corpo via `next/font/google` (self-hosted no build =
+custo zero ok), conferindo a escala M3 do conceito
+(`insumos/2026-07-22-conceito-tipografico.md`). OG image com a marca.
+
 Método: mesmo SDD (implementer/reviewer sonnet, fixes haiku, briefs
-`task-Nf-brief.md`, lições por gatilho, ledger). Depois: **G** (tech-debt;
-G1/G3 review **opus**) → auditoria final (3 `Explore` paralelos, playbook).
+`task-Nf-brief.md`, lições por gatilho no brief, ledger no
+`.superpowers/sdd/progress.md`). Sem migration prevista. Depois: **G**
+(tech-debt; G1/G3 review **opus**) → auditoria final (3 `Explore` paralelos,
+receita no playbook).
 
 **Referência de método completa:** [`PLAYBOOK-EXECUCAO.md`](PLAYBOOK-EXECUCAO.md)
 (árvore de skills, tabela agente×modelo, receita de prompt de subagente, gate,
@@ -193,28 +202,71 @@ a11y/tech-debt (Trilhas F e G) — não há fila concorrente.
 > 🔓 **Você tem autonomia — comece a trabalhar, não pergunte por onde começar.**
 > Método, agentes e modelos por frente: [`PLAYBOOK-EXECUCAO.md`](PLAYBOOK-EXECUCAO.md).
 
-**Faça, nesta ordem (retomar aqui — 2026-07-22, noite):**
+## 🏁 O QUE FALTA PARA O LANÇAMENTO (checklist mestre — auditado 2026-07-22)
 
-1. **Trilha F — Polish** (roteiro na seção acima; F6 termos BLOQUEADA).
-   Pre-flight L-018 primeiro.
-2. **E5 quando as URLs chegarem** (ver bloco da Trilha E acima — embeds +
-   durationMinutes reais + players em produção).
-3. Depois: **G (tech-debt/SP2; G1/G3 review opus) → auditoria final.**
-4. **Aguardando o usuário:** subir as **9 mídias** e devolver URLs
-   (`handoff-midia.md`); enviar a **reclamação de cobrança**
-   (`reclamacao-anthropic/`); **quiz de 9 perguntas com conta nova** (README
-   da segmentação); anotações de design da **`RightSidebar`** (Trilha F);
-   Stripe live (verificação de empresa).
-5. **Follow-ups não-bloqueantes rastreados:** E2E ao vivo do refund (Stripe modo
-   teste); hydration #418 do `ShareLinks` no blog (pré-existente); `QuizValidacao.tsx`
-   dark-fixo; `catch` silencioso no corpo do blog (logar o erro — L-041); glitch
-   de tabela escapada no relatório panorama; backlog Trilha D (cap lógico de
-   depth no `forum-tree`, desempate por `id` no sort, `replyCountLabel`
-   duplicado); backlog Trilha E (normalizar `**bold**`/listas numeradas dos 2
-   relatórios ANTIGOS p/ o subset do parser — L-045; H1 duplicado no corpo dos
-   posts do blog; data "27 de julho" no relatório Kimi K3 — revisitar pós-27/07;
-   slides/infográficos/quiz do Estúdio sem vitrine no produto).
-   Migrations: **TODAS as do disco aplicadas (0001–0029)**; nenhuma pendente.
+**Caminho crítico (nesta ordem):**
+
+1. **Trilha F — Polish** *(Claude, próxima sessão — roteiro na seção acima)*.
+   Escopo ampliado nesta sessão: **aplicar a identidade nova no app** (favicon
+   `public/brand/favicon.svg`, logo cubo no `AppHeader`/landing, fonte Outfit
+   nos títulos via `next/font` — conferir custo-zero: Google Fonts via
+   `next/font/google` é aceitável, sem request externo em runtime) + os F's do
+   plano (F5 links mortos/repontar Header antigo da `/oferta`; F7 descoberta do
+   certificado; F8 forms; a11y herdados UserMenu/ProfileCard). ⚠️ **F6 termos
+   segue BLOQUEADA** (efeito jurídico → usuário precisa ver antes de publicar).
+2. **E5 — publicar a mídia** *(Claude, quando o usuário devolver as URLs)*:
+   `embedUrl` + `publishedAt` escalonado nos 9 itens + **corrigir
+   `durationMinutes` dos 4 podcasts antigos** (reais: rode-ia 16, ias-poderosas
+   19, melhor-ia 23, escolher-sem-travar 25) + players verificados EM PRODUÇÃO.
+3. **Trilha G — Tech-debt** *(Claude)*: SP2 (aposentar fluxo token
+   `/dashboard/[token]` + triagem `/api/quiz`; podar `resolveQuizUrlBySessionId`
+   e `/api/access-status` mortos; mint-then-consume no auto-login), DRY, dead
+   code. G1/G3 com review **opus**.
+4. **💳 Meio de pagamento LIVE** *(DECISÃO DO USUÁRIO — único bloqueio externo
+   de receita)*: Stripe CPF vs Kiwify (pesquisa pronta na seção Pendências).
+   Ao decidir, o Claude escreve a spec da integração. Inclui **corrigir a
+   `/oferta` que anuncia "12x R$47"** (`OfferPricing.tsx:73`) — Stripe BR não
+   parcela.
+5. **Auditoria final + dogfooding** *(Claude)*: 3 `Explore` paralelos (receita
+   no PLAYBOOK) + jornada completa comprador→leitor→fórum→certificado em
+   produção.
+6. **Termos/garantia (F6)** *(Claude redige → usuário aprova → publica)*:
+   política vigente = 7 dias incondicionais (CDC art. 49) + dias 8–30
+   comercial (`leitor-protegido/politica-reembolso.md`).
+
+**Aguardando o USUÁRIO (destrava itens acima):**
+
+- **Criar canais + subir as 9 mídias + devolver URLs** — kit completo pronto em
+  [`handoff-midia.md`](frentes/lancamento-final/handoff-midia.md) (assets,
+  nomes, descrições para colar). Destrava o item 2.
+- **Decisão do meio de pagamento** (item 4) — dinheiro, decisão sua.
+- **Reclamação de cobrança Anthropic** (`reclamacao-anthropic/`, guia pronto).
+- **Quiz de 9 perguntas com conta nova** (50 XP 1x — README da segmentação).
+- **Anotações de design da `RightSidebar`** (entram na Trilha F).
+- *(Opcional)* `matriz_central_logo_briefing.md` do Claude Chat, se tiver o
+  download — soltar em `Downloads/` que o Claude incorpora ao `insumos/`.
+
+**Backlog técnico rastreado (não bloqueia lançamento; puxar na F/G ou depois):**
+
+- **Trilha D:** cap lógico de depth no `forum-tree` (SSR de thread patológica);
+  desempate por `id` no sort; `replyCountLabel` duplicado nas 2 páginas;
+  normalização parcialmente morta na rota reply.
+- **Trilha E:** normalizar `**bold**`/listas numeradas dos 2 relatórios ANTIGOS
+  (panorama/comparativo — o parser exibe cru, L-045); H1 duplicado no corpo dos
+  posts; **relatório Kimi K3 cita "pesos liberam 27/07/2026" — revisitar após
+  essa data (é DAQUI A 5 DIAS)**; slides/infográficos/quiz do Estúdio sem
+  vitrine no produto (avaliar formato novo no hub).
+- **Pré-existentes:** hydration #418 do `ShareLinks` no blog; `QuizValidacao.tsx`
+  dark-fixo fora de tokens; `catch` silencioso no corpo do blog (logar — L-041);
+  glitch de tabela escapada no relatório panorama; E2E ao vivo do refund
+  (Stripe teste); stories rAF `visibilitychange` (slide pula ao voltar de aba).
+- **Infra/portal:** OG image/social share com a marca nova (não existe);
+  e-mails Brevo ainda com identidade antiga (avaliar na F).
+
+**Estado dos sistemas:** migrations **todas aplicadas (0001–0029)**, nenhuma no
+disco pendente · banco com fórum/sent_emails/leitura funcionando (verificado ao
+vivo) · Supabase client server-side com `no-store` (L-044) · conteúdo:
+4 relatórios + 5 posts + 3 pesquisas no ar; 9 mídias baixadas aguardando upload.
 
 **Como trabalhar aqui (harness):** commit por item, gate `tsc` 0 + `npm run test` +
 `next lint` sem erros antes de cada commit; custo zero (sem dep npm nova); área
@@ -574,6 +626,17 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
   ver [hardening-criticos](frentes/hardening-criticos/README.md).
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
+
+- **2026-07-22 (Opus 4.8, fechamento de sessão) — HANDOFF COMPLETO PARA A
+  PRÓXIMA SESSÃO:** auditoria de tudo que ficou pendente/pulado/backlog na
+  sessão tripla (D + E + identidade) consolidada na seção nova **"🏁 O QUE
+  FALTA PARA O LANÇAMENTO"** (caminho crítico F → E5 → G → pagamento →
+  auditoria → termos; pendências do usuário; backlog técnico com donos).
+  Roteiro da Trilha F ampliado com a aplicação da identidade (favicon, logo,
+  Outfit/Inter via next/font, OG image). Gate certificado no fechamento:
+  `tsc` 0 · 345 testes · lint 0 · working tree limpo · master == origin
+  (`58baa1a`). Retomada: `/clear` + "continue de onde paramos" → cai no
+  pre-flight L-018 do plano-F.
 
 - **2026-07-22 (Opus 4.8, mesmo bloco) — IDENTIDADE VISUAL UNIFICADA CRIADA E
   APROVADA (hub: portal/YouTube/Spotify/Instagram):** a partir do chat do
