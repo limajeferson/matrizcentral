@@ -4,8 +4,9 @@ import { sendNewContentEmail } from "@/lib/email";
 import { CAPACITY_PATHS, type CapacityTier } from "@/lib/capacity";
 
 /** Valida o valor cru do banco contra os 3 tiers — nunca `as CapacityTier` cego. */
+const CAPACITY_TIERS: readonly CapacityTier[] = ["performance", "equilibrio", "essencial"];
 function toCapacityTier(value: string | null | undefined): CapacityTier | undefined {
-  return value != null && value in CAPACITY_PATHS ? (value as CapacityTier) : undefined;
+  return CAPACITY_TIERS.includes(value as CapacityTier) ? (value as CapacityTier) : undefined;
 }
 
 export async function POST(req: NextRequest) {
