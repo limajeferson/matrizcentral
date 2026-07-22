@@ -1,4 +1,5 @@
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import type { FlatReply } from "@/lib/forum-tree";
 
 export type TopicListItem = { id: string; title: string; author: string; created_at: string; replyCount: number };
 
@@ -24,7 +25,7 @@ export async function listTopics(limit = 50): Promise<TopicListItem[]> {
 
 export type TopicDetail = {
   id: string; title: string; body: string; author: string; created_at: string;
-  replies: { id: string; body: string; author: string; created_at: string }[];
+  replies: FlatReply[];
 };
 
 export async function getTopicWithReplies(topicId: string): Promise<TopicDetail | null> {
@@ -33,7 +34,7 @@ export async function getTopicWithReplies(topicId: string): Promise<TopicDetail 
     .from("forum_topics").select("id, title, body, user_id, created_at").eq("id", topicId).maybeSingle();
   if (!topic) return null;
   const { data: replies } = await supabase
-    .from("forum_replies").select("id, body, user_id, created_at").eq("topic_id", topicId)
+    .from("forum_replies").select("id, body, user_id, created_at, parent_reply_id").eq("topic_id", topicId)
     .order("created_at", { ascending: true });
   const userIds = Array.from(new Set([topic.user_id, ...(replies ?? []).map((r) => r.user_id)]));
   const { data: users } = await supabase.from("users").select("id, display_name").in("id", userIds);
@@ -43,6 +44,7 @@ export async function getTopicWithReplies(topicId: string): Promise<TopicDetail 
     author: nameById.get(topic.user_id) ?? "Aluno", created_at: topic.created_at,
     replies: (replies ?? []).map((r) => ({
       id: r.id, body: r.body, author: nameById.get(r.user_id) ?? "Aluno", created_at: r.created_at,
+      parent_reply_id: r.parent_reply_id,
     })),
   };
 }
@@ -54,9 +56,14 @@ export async function createTopic(userId: string, title: string, body: string): 
   return data?.id ?? null;
 }
 
-export async function createReply(userId: string, topicId: string, body: string): Promise<boolean> {
+export async function createReply(
+  userId: string,
+  topicId: string,
+  body: string,
+  parentReplyId?: string | null,
+): Promise<boolean> {
   const supabase = getSupabaseServerClient();
   const { error } = await supabase.from("forum_replies")
-    .insert({ user_id: userId, topic_id: topicId, body: body.trim() });
+    .insert({ user_id: userId, topic_id: topicId, body: body.trim(), parent_reply_id: parentReplyId ?? null });
   return !error;
 }

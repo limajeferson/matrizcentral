@@ -16,9 +16,13 @@ export function validateTopicInput(input: { title?: unknown; body?: unknown }): 
   return { ok: true };
 }
 
-export function validateReplyInput(input: { body?: unknown }): ValidationResult {
+export function validateReplyInput(input: { body?: unknown; parentReplyId?: unknown }): ValidationResult {
   const body = typeof input.body === "string" ? input.body.trim() : "";
   if (body.length < 1) return { ok: false, error: "Escreva sua resposta." };
   if (body.length > 5000) return { ok: false, error: "A resposta pode ter no máximo 5000 caracteres." };
+  if (input.parentReplyId !== undefined && input.parentReplyId !== null) {
+    const parentReplyId = typeof input.parentReplyId === "string" ? input.parentReplyId.trim() : "";
+    if (parentReplyId.length < 1) return { ok: false, error: "Resposta de origem inválida." };
+  }
   return { ok: true };
 }

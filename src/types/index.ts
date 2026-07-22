@@ -346,8 +346,8 @@ export interface Database {
         Relationships: [];
       };
       forum_replies: {
-        Row: { id: string; topic_id: string; user_id: string; body: string; created_at: string };
-        Insert: { id?: string; topic_id: string; user_id: string; body: string; created_at?: string };
+        Row: { id: string; topic_id: string; user_id: string; body: string; created_at: string; parent_reply_id: string | null };
+        Insert: { id?: string; topic_id: string; user_id: string; body: string; created_at?: string; parent_reply_id?: string | null };
         Update: Partial<Database["public"]["Tables"]["forum_replies"]["Insert"]>;
         Relationships: [];
       };

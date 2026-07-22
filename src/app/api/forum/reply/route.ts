@@ -12,9 +12,13 @@ export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
   const topicId = body?.topicId;
   if (!topicId || typeof topicId !== "string") return NextResponse.json({ error: "tópico inválido" }, { status: 400 });
-  const v = validateReplyInput({ body: body?.body });
+  const parentReplyId =
+    typeof body?.parentReplyId === "string" && body.parentReplyId.trim().length > 0
+      ? body.parentReplyId.trim()
+      : null;
+  const v = validateReplyInput({ body: body?.body, parentReplyId: body?.parentReplyId });
   if (!v.ok) return NextResponse.json({ error: v.error }, { status: 400 });
-  const ok = await createReply(user.id, topicId, body.body);
+  const ok = await createReply(user.id, topicId, body.body, parentReplyId);
   if (!ok) return NextResponse.json({ error: "não foi possível responder" }, { status: 500 });
   return NextResponse.json({ ok: true });
 }
