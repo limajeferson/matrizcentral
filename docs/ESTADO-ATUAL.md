@@ -575,6 +575,26 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
 
+- **2026-07-22 (Opus 4.8, mesmo bloco) — IDENTIDADE VISUAL UNIFICADA CRIADA E
+  APROVADA (hub: portal/YouTube/Spotify/Instagram):** a partir do chat do
+  usuário no Claude Haiku (share exportado p/ `insumos/`), o Claude operou o
+  Claude Design e criou o brand board "Identidade visual Matriz Central".
+  Decisões do fundador no processo: (1) **pivot da logo** — descartado o
+  M-hexágono; a marca é **apenas o cubo isométrico de 3 faces em 3 violetas**
+  (topo #a78bfa · esq #7c5cff · dir #7c3aed, fundo #0b0b0f); (2) **tipografia
+  variada com critério**: notebook NOVO no NotebookLM com fontes Material
+  Design 3 (applying-type/type-scale) + Google Fonts pairing + brief do
+  projeto → conceito com 3 candidatas → **vencedora Outfit** (wordmark caixa
+  alta 600-700, tracking +0.04em) + **Inter** corpo/UI, escala M3, números
+  tabulares p/ XP (`insumos/2026-07-22-conceito-tipografico.md`). Board v3
+  final: cubo + paleta hexes + Outfit/Inter + voz & tom + mockups dos 4 canais.
+  **Assets de produção gerados** (canvas+Outfit real, upload local via servidor
+  próprio — download programático é bloqueado sem gesto) em **`public/brand/`**:
+  logo-cubo.svg, favicon.svg, avatar 800, capa Spotify 3000, banner YouTube
+  2560×1440, template thumbnail. `handoff-midia.md` ganhou o kit de identidade
+  (nomes, descrições prontas dos canais). "Tudo aprovado" pelo usuário.
+  Aplicar favicon/logo no app = Trilha F.
+
 - **2026-07-22 (Opus 4.8, mesmo bloco) — TRILHA E EXECUTADA INTEIRA (menos E5)
   + INSUMO DAS 26 FONTES RECUPERADO:** usuário invocou brainstorming pedindo o
   resgate do insumo e autorizou operar o NotebookLM via Chrome. (1) Descoberta:

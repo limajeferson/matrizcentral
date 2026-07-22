@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-150 -150 300 300" width="16" height="16">
+  <title>Matriz Central</title>
+  <!-- Versão favicon: mesmo cubo ocupando quase todo o quadro (R=140) para leitura em 16px. -->
+  <polygon points="-121.24,-70 0,-140 121.24,-70 0,0" fill="#a78bfa"/>
+  <polygon points="-121.24,-70 0,0 0,140 -121.24,70" fill="#7c5cff"/>
+  <polygon points="0,0 121.24,-70 121.24,70 0,140" fill="#7c3aed"/>
+</svg>

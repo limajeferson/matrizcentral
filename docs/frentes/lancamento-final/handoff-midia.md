@@ -62,3 +62,40 @@
   formato "apresentação"/"infográfico" no hub numa trilha futura.
 - Os 2 relatórios texto do Estúdio já cobertos de outra forma: "Panorama
   Estratégico" (já publicado) e "Kimi K3" (curado na Task E6).
+
+---
+
+## Identidade dos canais (aprovada 2026-07-22) — use ao criar canal/programa
+
+**Marca:** cubo isométrico 3 faces (3 violetas) · wordmark **Outfit** caixa alta
+(+0.04em) · corpo **Inter** · fundo `#0b0b0f`. Brand board completo:
+claude.ai/design (projeto "Identidade visual Matriz Central"). Assets prontos
+em **`public/brand/`**:
+
+| Arquivo | Uso |
+|---|---|
+| `logo-cubo.svg` | master vetorial (qualquer material) |
+| `favicon.svg` | favicon do site (Trilha F liga no app) |
+| `mc-avatar-800.png` | foto de perfil YouTube / Spotify / Instagram |
+| `mc-capa-spotify-3000.png` | capa do programa no Spotify (3000×3000) |
+| `mc-banner-youtube-2560x1440.png` | banner do canal (conteúdo na área segura central) |
+| `mc-thumbnail-template-1280x720.png` | template de thumbnail (trocar o título por episódio) |
+
+**YouTube — nome do canal:** Matriz Central · **handle sugerido:** @matrizcentral
+**Descrição do canal (colar):**
+> IA rodando na sua máquina — sem mensalidade, sem nuvem alheia.
+> Relatórios, comparativos e debates sobre modelos locais, hardware e
+> automação, do iniciante ao avançado. Vídeos novos acompanham o portal:
+> https://www.matrizcentral.com.br
+
+**Spotify — nome do programa:** Matriz Central Podcast
+**Descrição do programa (colar):**
+> O podcast da Matriz Central sobre IA local: modelos que rodam no seu
+> computador, hardware que aguenta, automação que funciona. Com Jeferson e
+> Marina, e convidados por episódio. Sem hype — número, passo e resultado.
+> Portal: https://www.matrizcentral.com.br
+
+**Instagram — bio (colar):**
+> IA local, sem mensalidade.
+> Relatórios, podcasts e vídeos para rodar IA na sua máquina.
+> ↓ Portal
