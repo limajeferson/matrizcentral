@@ -4,8 +4,22 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { QUIZ_TRIAGEM } from "@/data/quiz-triagem";
 import { visibleQuestions } from "@/lib/quiz-branching";
+import { CAPACITY_QUESTIONS } from "@/lib/capacity";
+import type { TriagemQuestion } from "@/lib/quiz-scoring";
 
-export default function DiagnosticoInline() {
+type AskableQuestion = {
+  id: number;
+  text: string;
+  type: "radio" | "checkbox";
+  options: { text: string }[];
+  showIf?: TriagemQuestion["showIf"];
+};
+
+interface DiagnosticoInlineProps {
+  mode?: "completo" | "capacidade";
+}
+
+export default function DiagnosticoInline({ mode = "completo" }: DiagnosticoInlineProps) {
   const router = useRouter();
   const [currentQ, setCurrentQ] = useState(0);
   const [answers, setAnswers] = useState<{ questionId: number; selectedOptionIndexes: number[] }[]>([]);
@@ -13,7 +27,11 @@ export default function DiagnosticoInline() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const visible = visibleQuestions(QUIZ_TRIAGEM, answers);
+  const bank: AskableQuestion[] = mode === "capacidade"
+    ? CAPACITY_QUESTIONS
+    : [...QUIZ_TRIAGEM, ...CAPACITY_QUESTIONS];
+
+  const visible = visibleQuestions(bank, answers);
   const question = visible[currentQ];
   const isLast = currentQ === visible.length - 1;
 
@@ -33,7 +51,7 @@ export default function DiagnosticoInline() {
     setSelectedIndexes([]);
     setError(null);
 
-    const updatedVisible = visibleQuestions(QUIZ_TRIAGEM, updatedAnswers);
+    const updatedVisible = visibleQuestions(bank, updatedAnswers);
     if (currentQ + 1 < updatedVisible.length) {
       setCurrentQ((prev) => prev + 1);
       return;
@@ -57,12 +75,21 @@ export default function DiagnosticoInline() {
     setError("Não foi possível salvar seu diagnóstico agora. Tente novamente.");
   };
 
+  const title = mode === "capacidade"
+    ? "Complete seu diagnóstico"
+    : "Responda 1 minuto e personalizamos seu feed";
+  const subtitle = mode === "capacidade"
+    ? "2 perguntas para calibrar as recomendações ao seu equipamento"
+    : null;
+  const submitLabel = mode === "capacidade" ? "Calibrar recomendações" : "Personalizar meu feed";
+
   return (
     <div className="rounded-2xl border border-violet-200 bg-violet-50 p-5 dark:border-violet-800 dark:bg-violet-950/40">
       <p className="mb-1 text-sm font-semibold text-violet-700 dark:text-violet-300">Boas-vindas</p>
-      <h2 className="mb-3 text-lg font-bold text-zinc-900 dark:text-zinc-100">
-        Responda 1 minuto e personalizamos seu feed
-      </h2>
+      <h2 className="mb-3 text-lg font-bold text-zinc-900 dark:text-zinc-100">{title}</h2>
+      {subtitle && (
+        <p className="mb-3 text-sm text-zinc-600 dark:text-zinc-300">{subtitle}</p>
+      )}
       <p className="mb-1 text-sm text-zinc-500 dark:text-zinc-400">
         Pergunta {currentQ + 1} de {visible.length}
       </p>
@@ -90,7 +117,7 @@ export default function DiagnosticoInline() {
         disabled={selectedIndexes.length === 0 || submitting}
         className="mt-4 w-full rounded-xl bg-violet-600 py-3 font-bold text-white transition hover:bg-violet-700 disabled:opacity-50"
       >
-        {isLast ? (submitting ? "Salvando..." : "Personalizar meu feed") : "Próxima"}
+        {isLast ? (submitting ? "Salvando..." : submitLabel) : "Próxima"}
       </button>
     </div>
   );

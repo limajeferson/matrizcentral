@@ -46,15 +46,17 @@ export default async function FeedPage() {
 
   let profileId: string | null = null;
   let totalXp = 0;
+  let capacityTier: string | null = null;
   if (user) {
     const sb = getSupabaseServerClient();
     const { data: urow } = await sb
       .from("users")
-      .select("profile_id, total_xp")
+      .select("profile_id, total_xp, capacity_tier")
       .eq("id", user.id)
       .maybeSingle();
     profileId = (urow?.profile_id as string | null) ?? null;
     totalXp = (urow?.total_xp as number | null) ?? 0;
+    capacityTier = (urow?.capacity_tier as string | null) ?? null;
   }
 
   const token = user ? await resolveToken(user.id) : undefined;
@@ -102,7 +104,8 @@ export default async function FeedPage() {
         left={<LeftSidebar />}
         center={
           <>
-            {user && !profileId && <DiagnosticoInline />}
+            {user && !profileId && <DiagnosticoInline mode="completo" />}
+            {user && profileId && !capacityTier && <DiagnosticoInline mode="capacidade" />}
             {user && <StoryBar groups={stories} />}
             <CenterColumn
               cards={cards}

@@ -6,10 +6,10 @@ import type { TriagemQuestion, TriagemAnswer } from "./quiz-scoring";
  * `showIf` só aparecem quando a resposta à pergunta referenciada contém ao
  * menos um dos índices esperados. Preserva a ordem original do banco.
  */
-export function visibleQuestions(
-  questions: TriagemQuestion[],
+export function visibleQuestions<Q extends { id: number; showIf?: TriagemQuestion["showIf"] }>(
+  questions: Q[],
   answers: TriagemAnswer[]
-): TriagemQuestion[] {
+): Q[] {
   return questions.filter((question) => {
     if (!question.showIf) return true;
 
