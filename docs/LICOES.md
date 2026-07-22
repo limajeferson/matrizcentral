@@ -179,6 +179,12 @@ Criar tag nova exige editar este arquivo e o PLAYBOOK juntos.
 - **Faça:** grepar o nome do componente/arquivo em todo o repositório antes de remover — outra página (ex.: `/oferta`) pode ainda depender dele, e a ação certa é repontar, não apagar.
 - **Fonte:** docs/frentes/lancamento-final/README.md ("F5: `Header.tsx`/`Footer.tsx` ainda são usados por `/oferta` → repontar, não remover").
 
+### L-045 · Conteúdo novo do portal deve ser escrito no subset REAL do renderizador — conferir o parser antes de escrever
+- **Gatilho:** `spec`
+- **Não faça:** escrever markdown de conteúdo (relatório, post) presumindo suporte a `**bold**`, listas numeradas ou links inline — o `src/lib/markdown.ts` só renderiza `#`–`####`, listas `- `, tabelas pipe e parágrafos; o resto aparece CRU na página (os 2 relatórios mais antigos têm essa dívida visível).
+- **Faça:** todo brief de task de conteúdo declara o subset suportado (copiar da Task E1/E6 da Trilha E); ao criar conteúdo novo, conferir o parser real primeiro. Backlog registrado: normalizar `panorama` e `comparativo`.
+- **Fonte:** Trilha E, Task E1 (achado do implementer, 2026-07-22); review final da trilha confirmou zero ocorrências nos 5 arquivos novos.
+
 ## `visual`
 
 ### L-020 · Componente compartilhado que vira dark-aware precisa auditar contextos de cor fixa existentes
@@ -298,6 +304,12 @@ Criar tag nova exige editar este arquivo e o PLAYBOOK juntos.
 - **Não faça:** deixar a verificação visual (navegador automatizado) como o único caminho para fechar um invariante sensível — se o recurso cair numa sessão, o bloqueador trava a frente inteira até a próxima sessão em que ele voltar.
 - **Faça:** quando um passo de verificação depende de um recurso de ambiente instável (ex.: MCP de navegador indisponível), verificar por construção o que for possível sem ele (ex.: provar por análise estática que um dado sensível nunca sai do servidor) e deixar marcado, explicitamente, só o que realmente exige olho humano.
 - **Fonte:** docs/ESTADO-ATUAL.md log de 2026-07-20 ("LEITOR PROTEGIDO DESTRAVADO...": "Invariante do leitor provado por construção... Falta: olho humano no visual").
+
+### L-046 · Despejo de insumo em arquivo temporário único é perda anunciada — pasta versionada, um arquivo por despejo
+- **Gatilho:** `docs-continuidade`
+- **Não faça:** receber despejos valiosos do usuário (diálogos do NotebookLM, pesquisas, briefs) num único arquivo local reaproveitado (`texto-para-salvar-prompt-temporario.md`) — o despejo seguinte sobrescreve o anterior; foi assim que o diálogo das 26 fontes se perdeu (recuperado depois só porque o histórico do chat sobreviveu no NotebookLM).
+- **Faça:** todo despejo vai para `docs/frentes/lancamento-final/insumos/YYYY-MM-DD-<tema>.md` (versionado, nunca sobrescrever, com header de origem); o Claude mesmo faz a colagem quando o conteúdo chega pelo chat/navegador. Histórico de chat de ferramenta externa é recuperável — verificar antes de declarar insumo perdido.
+- **Fonte:** sessão 2026-07-22 (resgate do insumo da Trilha E; pasta `insumos/` criada com EMG + chat completo + inventário do Estúdio).
 
 ## `stripe-webhook`
 

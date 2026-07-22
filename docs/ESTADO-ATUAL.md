@@ -8,14 +8,14 @@
 > Ordem de leitura ao retomar: **este arquivo → `CLAUDE.md` → o `README.md` da
 > frente ativa → o código fonte-de-verdade.**
 
-_Última atualização: 2026-07-22 (**Trilha D fórum aninhado FECHADA** — D1–D3
-via SDD + fixes da revisão final opus "Ready to merge Yes" (`1af94bf..100c37b`).
-**Migrations 0027 + 0019 + 0020 aplicadas e verificadas no remoto** — descoberta:
-0019/0020 constavam como aplicadas desde 13/07 mas NÃO existiam no banco (L-042).
-**345 testes**, `tsc` 0, lint 0. **Próxima = verificação ao vivo do fórum em
-produção (logado) e depois Trilha E (conteúdo — pedir reexport do insumo ao
-usuário ANTES)**. Pendências do usuário: reclamação de cobrança
-(`reclamacao-anthropic/`) + quiz 9 perguntas com conta nova.)_
+_Última atualização: 2026-07-22 (**Trilhas D E E fechadas no MESMO dia**. D:
+fórum aninhado no ar e verificado em produção. E: insumo NotebookLM resgatado
+(pasta `insumos/`), E1–E4+E6 entregues (2 relatórios, 3 posts, 2 pesquisas, 3
+mídias na vitrine, 9 arquivos baixados), revisão final opus "Ready to merge
+Yes". **E5 aguarda o usuário subir as 9 mídias** (`handoff-midia.md`) **e
+devolver as URLs**. 345 testes, `tsc` 0, lint 0. **Próxima = Trilha F
+(polish)**. Pendências do usuário: upload das mídias + reclamação de cobrança +
+quiz 9 perguntas com conta nova.)_
 
 > **Convenção deste arquivo:** as seções de **estado** (`PRÓXIMA AÇÃO`,
 > `Estado do git`, tabela de frentes) são **sobrescritas** a cada atualização —
@@ -81,29 +81,38 @@ auditoria final.
 > `CLAUDE.md` (credenciais, push com pré-requisito pendente, termos com efeito
 > jurídico, conta de terceiro).
 
-### Roteiro da Trilha E (conteúdo) — próxima frente
+### ✅ Trilha E — FECHADA (exceto E5, que aguarda o usuário)
 
-**O quê:** conteúdo real da plataforma (texto agora; mídia via NotebookLM
-depois). Spec/plano: `lancamento-final/spec-E-conteudo.md` /
-`plano-E-conteudo.md` (conferir nomes reais na pasta — L-018: revalidar o plano
-contra o código antes de executar).
+**Entregue (2026-07-22, `1bd2bc3..0223214`):** E1 relatório "Ferramentas de
+Automação" (curado do CSV, 100% rastreável) · E2 blog 2→5 (privacidade, custo,
+casos de uso) · E3 +2 pesquisas · E4 (coordenador/browser) 9 mídias baixadas p/
+`notebooklm/audio|video/` + `handoff-midia.md` + Kimi K3 bruto extraído · E6
+relatório "Kimi K3" (benchmarks de terceiros ATRIBUÍDOS às fontes) + 3 mídias
+novas na vitrine ("em breve"). Insumos resgatados em
+`lancamento-final/insumos/` (L-046). Review final opus: Ready to merge Yes; o
+único Important (rota `/api/leitura` fora do tracing de `content/` — o
+livro-razão gravaria 500 em silêncio) corrigido em `0223214`.
 
-1. **⚠️ PRÉ-REQUISITO HUMANO ANTES DE COMEÇAR:** pedir ao usuário o **reexport
-   do insumo das 26 fontes** (ver README memoria-licoes) — o arquivo temporário
-   de despejo é sobrescrito, copiar o insumo antes. Despejos do NotebookLM =
-   conteúdo para alunos (lente 1 = Trilha E); infra é uso secundário.
-2. **Antes da E (rápido):** verificação ao vivo do fórum aninhado em produção
-   se ainda não feita (ver bloco 3º acima).
-3. **Método:** mesmo SDD das trilhas C/D (implementer/reviewer sonnet, fixes
-   haiku, briefs `task-Ne-brief.md`, lições por gatilho no brief, ledger no
-   `.superpowers/sdd/progress.md`). Gate por task: `tsc` 0 · testes · lint 0.
-4. **Depois da E, a fila é:** **F** (polish; F6 termos BLOQUEADA por decisão do
-   usuário) → **G** (tech-debt; G1/G3 review **opus**) → auditoria final
-   (3 `Explore` paralelos, receita no playbook).
+**E5 (diferida — depende do usuário):** subir os 9 arquivos
+(roteiro completo em [`handoff-midia.md`](frentes/lancamento-final/handoff-midia.md))
+e devolver as URLs no formato `id → URL`. Aí o Claude seta `embedUrl` +
+`publishedAt` escalonado + corrige os 4 `durationMinutes` dos podcasts antigos
+(reais do Estúdio: rode-ia-potente 16, ias-poderosas 19, melhor-ia-hardware 23,
+escolher-ias-sem-travar 25) e verifica os players EM PRODUÇÃO.
+
+### Roteiro da Trilha F (polish) — próxima frente
+
+Spec/plano: `lancamento-final/spec-F-polish.md` / `plano-F-polish.md`.
+⚠️ **F6 (termos) segue BLOQUEADA por decisão do usuário**; a garantia NÃO é
+"7 dias condicional" (ver `lancamento-final/README.md`). L-018: revalidar o
+plano contra o código antes de executar (C/D/E mexeram em muita coisa).
+Método: mesmo SDD (implementer/reviewer sonnet, fixes haiku, briefs
+`task-Nf-brief.md`, lições por gatilho, ledger). Depois: **G** (tech-debt;
+G1/G3 review **opus**) → auditoria final (3 `Explore` paralelos, playbook).
 
 **Referência de método completa:** [`PLAYBOOK-EXECUCAO.md`](PLAYBOOK-EXECUCAO.md)
 (árvore de skills, tabela agente×modelo, receita de prompt de subagente, gate,
-ordem de deploy) + [`LICOES.md`](LICOES.md) (44 lições por gatilho).
+ordem de deploy) + [`LICOES.md`](LICOES.md) (46 lições por gatilho).
 
 ---
 
@@ -184,31 +193,28 @@ a11y/tech-debt (Trilhas F e G) — não há fila concorrente.
 > 🔓 **Você tem autonomia — comece a trabalhar, não pergunte por onde começar.**
 > Método, agentes e modelos por frente: [`PLAYBOOK-EXECUCAO.md`](PLAYBOOK-EXECUCAO.md).
 
-**Faça, nesta ordem (retomar aqui — 2026-07-22):**
+**Faça, nesta ordem (retomar aqui — 2026-07-22, noite):**
 
-1. **Verificação ao vivo do fórum aninhado em produção** (se ainda não feita —
-   ver bloco 3º acima): logado com `stripe-e2e@` no Chrome de produção, criar
-   tópico → responder → responder a uma resposta (aninhamento indentado, cap
-   visual) → dark E claro. L-041.
-2. **Trilha E — Conteúdo** (roteiro na seção "Roteiro da Trilha E" acima).
-   ⚠️ **Pré-requisito humano: reexport do insumo das 26 fontes** — pedir ao
-   usuário ANTES de começar.
-3. Depois: **F (polish + herdados; ⚠️ a **F6 foi reescrita** — a garantia NÃO é
-   mais "7 dias condicional", ver `lancamento-final/README.md`) → G
-   (tech-debt/SP2) → auditoria final.**
-4. **Aguardando o usuário:** enviar a **reclamação de cobrança** (pasta local
-   `reclamacao-anthropic/`, guia pronto); roteiro logado da segmentação — só o
-   **quiz de 9 perguntas com conta nova** (README da frente); anotações de design
-   da **`RightSidebar`** (Trilha F); Stripe live (verificação de empresa); subir
-   a mídia do NotebookLM (Trilha E).
+1. **Trilha F — Polish** (roteiro na seção acima; F6 termos BLOQUEADA).
+   Pre-flight L-018 primeiro.
+2. **E5 quando as URLs chegarem** (ver bloco da Trilha E acima — embeds +
+   durationMinutes reais + players em produção).
+3. Depois: **G (tech-debt/SP2; G1/G3 review opus) → auditoria final.**
+4. **Aguardando o usuário:** subir as **9 mídias** e devolver URLs
+   (`handoff-midia.md`); enviar a **reclamação de cobrança**
+   (`reclamacao-anthropic/`); **quiz de 9 perguntas com conta nova** (README
+   da segmentação); anotações de design da **`RightSidebar`** (Trilha F);
+   Stripe live (verificação de empresa).
 5. **Follow-ups não-bloqueantes rastreados:** E2E ao vivo do refund (Stripe modo
-   teste); hydration #418 do `ShareLinks` no blog (pré-existente, React
-   recupera); `QuizValidacao.tsx` com paleta dark fixa fora de tokens; `catch`
-   silencioso no corpo do blog (logar o erro — L-041); glitch de tabela escapada
-   no relatório panorama; backlog da review final da Trilha D (cap lógico de
-   depth, desempate no sort do `forum-tree`, `replyCountLabel` duplicado).
-   Migrations: **TODAS as do disco aplicadas (0001–0029, incl. 0019/0020/0027
-   em 2026-07-22)**; nenhuma pendente.
+   teste); hydration #418 do `ShareLinks` no blog (pré-existente); `QuizValidacao.tsx`
+   dark-fixo; `catch` silencioso no corpo do blog (logar o erro — L-041); glitch
+   de tabela escapada no relatório panorama; backlog Trilha D (cap lógico de
+   depth no `forum-tree`, desempate por `id` no sort, `replyCountLabel`
+   duplicado); backlog Trilha E (normalizar `**bold**`/listas numeradas dos 2
+   relatórios ANTIGOS p/ o subset do parser — L-045; H1 duplicado no corpo dos
+   posts do blog; data "27 de julho" no relatório Kimi K3 — revisitar pós-27/07;
+   slides/infográficos/quiz do Estúdio sem vitrine no produto).
+   Migrations: **TODAS as do disco aplicadas (0001–0029)**; nenhuma pendente.
 
 **Como trabalhar aqui (harness):** commit por item, gate `tsc` 0 + `npm run test` +
 `next lint` sem erros antes de cada commit; custo zero (sem dep npm nova); área
@@ -497,8 +503,8 @@ imediatos que o Stripe live — ver o bloco 🚨 no topo deste arquivo.
 | B | Segurança do dinheiro | ✅ **completa e no ar** (268 testes, 0025/0026 aplicadas) |
 | C | Dark-aware (blog force-light + logado→tokens) | ✅ **completa e no ar** (2026-07-22) |
 | D | Fórum: respostas aninhadas (migration `0027`) | ✅ **código fechado + 0027 aplicada** (2026-07-22; falta só verificação ao vivo em produção) |
-| E | Conteúdo (texto agora; mídia via NotebookLM) | 📐 planejada — **próxima** (pedir insumo ao usuário ANTES) |
-| F | Polish UX/a11y/CX + garantia 7 dias + herdados | 📐 planejada |
+| E | Conteúdo (texto agora; mídia via NotebookLM) | ✅ **E1–E4+E6 no ar** (2026-07-22) · E5 aguarda upload das mídias pelo usuário |
+| F | Polish UX/a11y/CX + garantia 7 dias + herdados | 📐 planejada — **próxima** |
 | G | Tech-debt (SP2, DRY, dead code) | 📐 planejada |
 | — | 🔍 Auditoria final + dogfooding | 🔜 ao fim |
 
@@ -568,6 +574,28 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
   ver [hardening-criticos](frentes/hardening-criticos/README.md).
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
+
+- **2026-07-22 (Opus 4.8, mesmo bloco) — TRILHA E EXECUTADA INTEIRA (menos E5)
+  + INSUMO DAS 26 FONTES RECUPERADO:** usuário invocou brainstorming pedindo o
+  resgate do insumo e autorizou operar o NotebookLM via Chrome. (1) Descoberta:
+  o histórico do chat SOBREVIVEU no notebook — diálogo completo exportado (27
+  turnos, 121k chars) via DOM p/ `insumos/2026-07-22-chat-completo-66-fontes.md`;
+  os **5 artefatos recomendados JÁ estavam gerados** no Estúdio (+ 6 da era
+  18-fontes que batem 1:1 com os "em breve" do hub). Pasta `insumos/` criada
+  (um arquivo por despejo, L-046); despejo do EMG resgatado do temp file.
+  (2) A pedido do usuário: 10 fontes duplicadas excluídas do notebook (66→56).
+  (3) Plano-E revisado contra a realidade (E4 virou download+handoff; +E6) e
+  executado via SDD: E1 relatório do CSV (review pegou 2 células com detalhe
+  inventado → fix, 100% rastreável), E2 +3 posts, E3 +2 pesquisas, E6 relatório
+  Kimi K3 (review levantou risco de marca em benchmarks de terceiros →
+  adjudicado: nomes reais ficam, claims ATRIBUÍDOS às fontes) + 3 mídias na
+  vitrine. (4) E4 pelo coordenador: Kimi bruto extraído, 9 mídias baixadas
+  (click programático não baixa — precisa gesto real de mouse), organizadas em
+  `notebooklm/audio|video/`, `handoff-midia.md` com o passo a passo de upload.
+  (5) Review final opus: Ready to merge Yes; Important pré-existente embarcado
+  (`/api/leitura` no tracing de content/ — livro-razão gravaria 500 silencioso).
+  Lições L-045/L-046. Gate: tsc 0 · 345 testes · lint 0. Push + verificação em
+  produção no fechamento. **E5 aguarda o usuário** (URLs Spotify/YouTube).
 
 - **2026-07-22 (Opus 4.8, mesmo bloco) — VERIFICAÇÃO AO VIVO DA TRILHA D
   APROVADA + 2 bugs de produção corrigidos no caminho:** fluxo completo em
