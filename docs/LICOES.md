@@ -155,6 +155,12 @@ Criar tag nova exige editar este arquivo e o PLAYBOOK juntos.
 - **Faça:** antes de executar um plano antigo, fazer um sweep revalidando caminhos e referências de código contra o estado real do repositório.
 - **Fonte:** docs/frentes/lancamento-final/README.md ("✅ Revalidação dos planos (2026-07-20)").
 
+### L-036 · Valor externo tipado como união literal precisa de validador na fonte única — nem `in`, nem cast `as`
+- **Gatilho:** `spec`, `acesso-dinheiro`
+- **Não faça:** validar uma string vinda de fora (banco, request, e-mail) contra uma união literal usando `valor in OBJETO` (o operador `in` aceita chaves de protótipo como `"toString"`) nem confiar num cast cego `valor as MeuTipo` — no feed, o cast cego de `users.capacity_tier` faria `CAPACITY_PATHS[tier]` virar `undefined` e o Server Component lançar, derrubando a página inteira para aquele usuário.
+- **Faça:** exportar UM validador do módulo fonte-única (ex.: `toCapacityTier(value: unknown): Tier | undefined` com allow-list derivada de `Object.keys(FONTE)`), usá-lo em TODO ponto de entrada do valor (rotas, páginas, e-mails) e degradar `undefined` para o comportamento neutro (card não renderiza, e-mail sem a dica). Teste de regressão: chaves de protótipo → `undefined`.
+- **Fonte:** .superpowers/sdd/progress.md (frente segmentacao-publico, S8 fix2 `76c2095` e fix pós-revisão final `b2ea9e5`).
+
 ### L-019 · Componente aparentemente morto pode ainda ter consumidor em outra página — grep antes de remover
 - **Gatilho:** `spec`
 - **Não faça:** planejar a remoção de um componente antigo (ex.: `Header.tsx`/`Footer.tsx`) só porque a página principal já não o usa mais.
@@ -181,6 +187,18 @@ Criar tag nova exige editar este arquivo e o PLAYBOOK juntos.
 - **Faça:** ao corrigir um bug visual específico (ex.: opacidade/traço de um valor de preço), grepar por outros componentes que exibem o mesmo dado antes de considerar o fix encerrado.
 - **Fonte:** docs/ESTADO-ATUAL.md log de 2026-07-21 ("o valor aparecia em dois comparativos (`PricingV2` e `OpportunitySection`) e o segundo tinha passado batido").
 
+### L-037 · `router.refresh()` preserva estado de client component — fluxo de "refazer" precisa de callback explícito
+- **Gatilho:** `visual`
+- **Não faça:** assumir que, após um submit que chama `router.refresh()`, um client component "volta ao normal" sozinho — o refresh atualiza o payload RSC mas **preserva o estado local** dos client components; se a condição que monta o componente não inverte (ex.: `capacityTier` continua truthy), um flag local como `refazendo=true` fica preso e a UI trava no quiz concluído até F5.
+- **Faça:** dar ao componente filho um callback `onDone?: () => void` disparado no sucesso do submit e resetar o estado local do pai explicitamente (`setRefazendo(false)`), mantendo o `router.refresh()` para os dados. Fluxos que já funcionam por inversão de condição de montagem não precisam do callback (prop opcional).
+- **Fonte:** revisão final da frente segmentacao-publico (Important #2, fix `b2ea9e5`).
+
+### L-038 · Verificação visual de fluxo logado precisa de sessão preexistente — mintar credencial é linha vermelha
+- **Gatilho:** `visual`
+- **Não faça:** planejar o roteiro visual de uma frente com passos que exigem login presumindo que a sessão se resolve na hora — gerar segredo de sessão/magic-link por conta própria é bloqueado pelo classificador de permissões (e a linha é correta: coordenador não minta credencial), e o e-mail de magic link de conta de teste não chega em lugar nenhum.
+- **Faça:** tratar "sessão logada disponível" como pré-requisito de ambiente do roteiro (como o navegador em L-030): verificar ANTES se o Chrome tem sessão viva (local ou produção); se não tiver, executar os passos deslogados, entregar os passos logados como roteiro numerado para o usuário e registrar a pendência — sem fingir e sem contornar o bloqueio.
+- **Fonte:** sessão 2026-07-21 (fechamento da frente segmentacao-publico, itens 3–6 do roteiro da Task S8).
+
 ## `deploy`
 
 ### L-023 · Nunca pushar código que dependa de migration nova antes de aplicá-la e verificá-la no remoto
@@ -197,6 +215,12 @@ Criar tag nova exige editar este arquivo e o PLAYBOOK juntos.
 - **Não faça:** descartar ou reiniciar do zero uma task cujo subagente implementador caiu no meio por instabilidade de API — o trabalho já feito (arquivos criados/editados) pode estar correto e só falta fechar o ciclo.
 - **Faça:** ao detectar que um subagente caiu no meio, o coordenador verifica o estado real do working tree antes de decidir, e se o trabalho estiver correto, ele mesmo roda o gate (`tsc`/testes) e faz o commit — sem perder o progresso já feito pelo agente que caiu.
 - **Fonte:** .superpowers/sdd/progress.md (Design v2 Frente 2, "Item PostCard + relativeTime", commit `2eb211d`).
+
+### L-039 · Fix pontual re-roda o gate INTEIRO (tsc + testes + lint), não só o pedaço que o fix tocou
+- **Gatilho:** `subagentes`
+- **Não faça:** aceitar report de fix que declara gate limpo re-rodando só `tsc`/testes — um fix que removeu o último uso de um import deixou o import morto, `next lint` passou a falhar com 2 erros (`no-unused-vars` é error no preset) e o report anterior de "lint 0 erros" ficou falso sem ninguém notar até o re-review rodar o eslint de verdade.
+- **Faça:** todo dispatch de fix exige o trio completo no report (`tsc --noEmit` 0 · suíte verde · `next lint` 0 erros) com output real; o re-reviewer confere o gate de forma independente quando o fix mexeu em imports/estrutura.
+- **Fonte:** re-review da Task S8 da frente segmentacao-publico (.superpowers/sdd/task-s8-report.md, fix2 `76c2095`).
 
 ### L-035 · Citação de fonte feita por subagente de mineração/pesquisa só vale depois de aberta e conferida
 - **Gatilho:** `subagentes`

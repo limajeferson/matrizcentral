@@ -8,11 +8,12 @@
 > Ordem de leitura ao retomar: **este arquivo → `CLAUDE.md` → o `README.md` da
 > frente ativa → o código fonte-de-verdade.**
 
-_Última atualização: 2026-07-21 (frente **leitor-protegido NO AR**: `0028`
-aplicada, `purchases` auditadas e normalizadas, visual aprovado pelo usuário e
-**30 commits pushados** (`b0a66cb..c50b667`) — a `master` voltou a estar
-**sincronizada** com `origin`. Estado: **322 testes**, `tsc` 0. Trilhas A e B no
-ar; **próxima = Trilha C (dark-aware)**.)_
+_Última atualização: 2026-07-21 (noite, retomada: frente **segmentacao-publico
+FECHADA e pushada** — re-review S8 + revisão final opus "Ready to merge" + 2
+ondas de fixes + visual deslogado executado; **340 testes**, `tsc` 0, lint 0.
+`master` sincronizada com `origin`. **Próxima = Trilha C (dark-aware)**;
+pendência do usuário: roteiro logado da segmentação, 4 passos no README da
+frente.)_
 
 > **Convenção deste arquivo:** as seções de **estado** (`PRÓXIMA AÇÃO`,
 > `Estado do git`, tabela de frentes) são **sobrescritas** a cada atualização —
@@ -39,25 +40,19 @@ lições) no fluxo do PLAYBOOK + item 2b (injetar lições nos briefs). Revisão
 opus = Ready to merge. **Ao montar qualquer brief de task, consultar a seção do
 gatilho em `LICOES.md`.**
 
-**➡️ PRÓXIMA SESSÃO — duas atividades, nesta ordem, sem perguntar:**
+**✅ 1º) FRENTE SEGMENTAÇÃO DE PÚBLICO — FECHADA E PUSHADA (2026-07-21, noite).**
+Re-review S8 achou 2 Importants reais (import morto quebrando `next lint`; lista
+de tiers duplicada) → fix `76c2095` (toCapacityTier na fonte única + testes de
+regressão). Revisão final whole-branch **opus** (base `752c25e`): **Ready to
+merge** após 2 fixes (`b2ea9e5`: cast cego de `capacity_tier` no feed podia
+derrubar a página; fluxo "meu setup mudou" ficava preso pós-`router.refresh()`).
+Gate: `tsc` 0 · **340 testes / 55 arquivos** · lint 0. Visual **deslogado**
+executado (landing: 3 cards, CTAs, zero "limitado", 1 coluna mobile). Lições
+**L-036..L-039** destiladas no [`LICOES.md`](LICOES.md). Docs e **pendência do
+usuário** (roteiro logado, 4 passos):
+[`frentes/segmentacao-publico/README.md`](frentes/segmentacao-publico/README.md).
 
-**1º) 🎯 FECHAR A FRENTE SEGMENTAÇÃO DE PÚBLICO — construída em 2026-07-21,
-PAUSADA a pedido do usuário no fechamento.** Spec + plano + **8 tasks S1–S8
-implementadas e revisadas** (S1–S7 aprovadas; S8 com fix aplicado aguardando
-re-review). **12 commits locais NÃO pushados** (752c25e..4491b39) — produção
-intocada; a migration **0029 JÁ está aplicada no remoto** (coluna nullable,
-inofensiva ao código no ar). Entregue: eixo de capacidade (`capacity.ts`,
-tiers Performance/Equilíbrio/Essencial), rota 2-eixos (review opus), quiz 9
-perguntas + modo mini, `SeuCaminhoCard`, `capacityFit` na vitrine,
-`MomentSection` na landing, e-mails tier-aware. **Retomar EXATAMENTE em** (ordem
-no ledger `.superpowers/sdd/progress.md`): re-review S8 (pacote
-`review-af82bea..4491b39.diff`) → revisão final whole-branch **opus** (base
-`752c25e`) → **verificação visual** (roteiro = Task S8 Step 4 do
-[`plano`](frentes/segmentacao-publico/plano.md)) → destilar lições (etapa 7) →
-atualizar este arquivo → **só então push**. Docs: spec/plano em
-[`frentes/segmentacao-publico/`](frentes/segmentacao-publico/).
-
-**2º) Trilha C — Dark-aware. Roteiro completo abaixo.**
+**➡️ 2º) Trilha C — Dark-aware. PRÓXIMA. Roteiro completo abaixo.**
 
 > 🔓 **Autonomia (declaração permanente do usuário, 2026-07-21):** *"você tem
 > autonomia, eu autorizo, não precisa ficar pedindo permissão, atue sempre no que
@@ -477,22 +472,15 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
 
 ## 🌿 Estado do git
 
-- **Branch ativa:** `master`, **NÃO sincronizada com `origin/master`**. HEAD local
-  `da0ce5d`; `origin/master` está em `b0a66cb` — **23 commits locais não
-  pushados**. Isso é **de propósito**: a frente
-  [leitor-protegido](frentes/leitor-protegido/README.md) está pronta mas
-  bloqueada (ver o bloco 🚨 no topo deste arquivo) e a `master` tem auto-deploy
-  no push, então pushar antes de destravá-la coloca no ar um leitor com
-  livro-razão vazio. **O outro computador NÃO recebe esses 23 commits** até o
-  push acontecer — `git pull origin master` só traz até `b0a66cb`.
-- **Inclui (nesses 23 commits, ainda locais):** a frente **leitor-protegido**
-  completa (6 tasks, 322 testes, migration `0028` no disco); **Trilha B do
-  lançamento final** — reembolso/disputa revoga acesso, XP não-duplicável
-  (`0025`), rate limiter, validação+dedupe do waitlist (`0026`), testes de
-  `entitlement-access` e `auth-session`; + os **6 specs e 6 planos** das
-  trilhas B–G. Antes (já em `origin/master`, `b0a66cb`): design v2 Frentes 1–4
-  (moldura, feed com `0024`, comunidade, conteúdo/mídia + design pass), barra
-  de histórias, feed-redesign baseline, SP1.
+- **Branch ativa:** `master`, **sincronizada com `origin/master`** após o push
+  do fechamento da frente segmentacao-publico (2026-07-21, noite) — a frente
+  inteira (spec/plano + S1–S8 + 3 ondas de fix + docs de fechamento) está no ar
+  via auto-deploy da Vercel. Migrations aplicadas no remoto: até a **0029**
+  (`users.capacity_tier`). Não há migration no disco esperando (a `0027` do
+  fórum será criada na Trilha D).
+- **Histórico:** o bloqueio de push do leitor-protegido (20–21/07) terminou em
+  2026-07-21 com `b0a66cb..c50b667` (30 commits); depois vieram os commits da
+  segmentação (`752c25e..` + fixes) pushados no fechamento.
 - **Não versionado (local, de propósito):** `.env.local` (segredos),
   `SETUP.md`, `claude-chat.md`, `CLAUDE.local-draft.md`, `erro.png`,
   `texto-para-salvar-prompt-temporario.md`.
@@ -521,9 +509,10 @@ Ordem escolhida pelo usuário: **receita primeiro**.
 > a Trilha D) · 🔄 **lancamento-final** (**programa ativo**, 7 trilhas até a versão
 > final — progresso em
 > [`frentes/lancamento-final/README.md`](frentes/lancamento-final/README.md)) ·
-> 🟡 **leitor-protegido** (construída, revisada, 322 testes — **NÃO no ar**,
-> ver [`frentes/leitor-protegido/README.md`](frentes/leitor-protegido/README.md)
-> e o bloco 🚨 no topo deste arquivo).
+> ✅ **leitor-protegido** (no ar desde 2026-07-21, push `b0a66cb..c50b667`) ·
+> ✅ **segmentacao-publico** (eixo de capacidade Performance/Equilíbrio/
+> Essencial — fechada e no ar em 2026-07-21;
+> [`frentes/segmentacao-publico/README.md`](frentes/segmentacao-publico/README.md)).
 
 ### 🚀 Programa de Lançamento Final (fila ativa)
 
@@ -608,6 +597,30 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
   ver [hardening-criticos](frentes/hardening-criticos/README.md).
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
+
+- **2026-07-21 (Fable 5, retomada da noite) — SEGMENTAÇÃO DE PÚBLICO FECHADA E
+  PUSHADA:** usuário reenviou o pedido original da frente + "continue de onde
+  paramos"; o pino apontava o fechamento exato e ele foi executado sem
+  re-brainstorm. (1) Re-review S8: 2 Importants REAIS no próprio fix anterior —
+  import morto de `CAPACITY_PATHS` fazia `next lint` falhar com 2 erros (o
+  report de gate limpo era falso) e a lista de tiers estava duplicada à mão em
+  2 rotas → fix `76c2095` (`toCapacityTier` na fonte única derivando de
+  `Object.keys(CAPACITY_PATHS)` + testes de regressão contra chaves de
+  protótipo); aprovado com verificação independente do reviewer (eslint/tsc/
+  vitest reais). (2) Revisão final whole-branch **opus** (13 commits, base
+  `752c25e`): Ready to merge WITH FIXES → 2 Importants corrigidos em `b2ea9e5`
+  (cast cego `as CapacityTier` no `/feed` podia derrubar a página de um usuário
+  com valor fora dos literais; "meu setup mudou" ficava preso porque
+  `router.refresh()` preserva estado de client component → prop `onDone`) →
+  re-review: **Ready to merge Yes**. (3) Visual: dev server já de pé na 3000
+  servindo o working tree; landing verificada (3 cards, CTAs `/oferta`, zero
+  "limitado", posição correta, grid 1 coluna ≤800px). Fluxos LOGADOS não
+  verificáveis por mim: classificador bloqueou (corretamente) mintar
+  magic-link/segredo de sessão → L-038; roteiro de 4 passos ficou no README da
+  frente para o usuário. (4) Etapa 7: **L-036..L-039** no `LICOES.md`. (5)
+  README da frente criado; este arquivo atualizado; **push** (0029 já estava
+  aplicada desde a S2; reconferida antes do push). Gate final: `tsc` 0 ·
+  **340 testes / 55 arquivos** · lint 0 erros. Próxima: **Trilha C**.
 
 - **2026-07-21 (Fable 5, sessão da noite) — SEGMENTAÇÃO DE PÚBLICO construída
   (S1–S8) e PAUSADA no fechamento a pedido do usuário:** retomada pós-queda de
