@@ -22,3 +22,6 @@ new-prompt.md
 modelo-esfera.ia.png
 .vercel
 .env*
+
+# Local: dados de conta/billing (nao versionar)
+reclamacao-anthropic/
