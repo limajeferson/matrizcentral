@@ -81,6 +81,7 @@ Cada frente vive em `docs/frentes/<slug>/` com `spec.md` (o quê/porquê), `plan
 - ✅ [feed-conteudo-recomendado](frentes/feed-conteudo-recomendado/README.md) — seção recomendada no hub de conteúdo
 - ✅ [ecossistema-frentes](frentes/ecossistema-frentes/README.md) — este próprio reorganização (você está aqui)
 - ✅ [hardening-criticos](frentes/hardening-criticos/README.md) — auditoria completa (5 subagentes) + conserto dos 4 críticos (certificado forjável, paga-e-não-recebe, certificado inalcançável, promessa desalinhada). Na master, verificado.
+- ✅ [kit-ecossistema-dragum](frentes/kit-ecossistema-dragum/README.md) — exportação destilada do ecossistema para o projeto DRAGUM (2 kits + COMECE-AQUI; entregáveis fora do repo, em `Projects\dragum`).
 
 ### 🔄 / 🔜 Roadmap por frentes
 

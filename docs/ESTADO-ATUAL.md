@@ -8,12 +8,15 @@
 > Ordem de leitura ao retomar: **este arquivo → `CLAUDE.md` → o `README.md` da
 > frente ativa → o código fonte-de-verdade.**
 
-_Última atualização: 2026-07-22, noite (**sessão tripla: Trilha D ✅ + Trilha E
-✅ (E5 aguarda usuário) + IDENTIDADE VISUAL ✅** — cubo 3 violetas + Outfit/Inter,
-brand board no Claude Design, assets em `public/brand/` e no ar. Gate
-certificado no fechamento: `tsc` 0 · **345 testes** · lint 0 · master ==
-origin (`58baa1a`). **Próxima = Trilha F (polish)** — roteiro abaixo. A seção
-"O QUE FALTA PARA O LANÇAMENTO" é o checklist mestre da inauguração.)_
+_Última atualização: 2026-07-23 (**frente lateral kit-ecossistema-dragum ✅** —
+exportação destilada do ecossistema para o projeto novo DRAGUM; entregáveis
+FORA deste repo, em `C:\Users\Grazi\Claude\Projects\dragum\` (2 kits + 22
+arquivos + COMECE-AQUI.md); aqui só docs da frente. **Master 3 commits à frente
+do origin, todos docs-only desta frente — sem push nesta sessão, seguro pushar
+na próxima.** O estado do produto segue o de 2026-07-22, noite: sessão tripla
+Trilha D ✅ + E ✅ (E5 aguarda usuário) + identidade ✅, gate `tsc` 0 · 345
+testes · lint 0 em `58baa1a`. **Próxima = Trilha F (polish)** — roteiro abaixo.
+A seção "O QUE FALTA PARA O LANÇAMENTO" é o checklist mestre da inauguração.)_
 
 > **Convenção deste arquivo:** as seções de **estado** (`PRÓXIMA AÇÃO`,
 > `Estado do git`, tabela de frentes) são **sobrescritas** a cada atualização —
@@ -626,6 +629,19 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
   ver [hardening-criticos](frentes/hardening-criticos/README.md).
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
+
+- **2026-07-23 (Opus 4.8) — FRENTE LATERAL: KIT DE ECOSSISTEMA PARA O DRAGUM ✅:**
+  brainstorming → spec → plano → execução inline. Entregues em
+  `C:\Users\Grazi\Claude\Projects\dragum\`: `ecossistema-matrizcentral/` (LEIA-ME
+  hub + 6 guias destilados + 8 templates), `ecossistema-promobest/` (LEIA-ME +
+  3 arquivos de origem, destilados de clone shallow do GitHub, removido do
+  scratchpad após uso) e `COMECE-AQUI.md` (prompt de missão: herdar → instanciar
+  → NotebookLM via Chrome → spec destilada com 1 checkpoint → writing-plans).
+  Decisões do usuário: só destilado (sem cópias fiéis); fluxo da sessão nova com
+  1 checkpoint. Verificações: grep de contaminação global 0 hits; simulação de
+  bootstrap fecha as 5 perguntas; caminhos citados existem. Neste repo: spec +
+  plano + README da frente (`docs/frentes/kit-ecossistema-dragum/`), 3 commits
+  docs-only **não pushados** (seguro pushar). Não afeta o produto nem a Trilha F.
 
 - **2026-07-22 (Opus 4.8, fechamento de sessão) — HANDOFF COMPLETO PARA A
   PRÓXIMA SESSÃO:** auditoria de tudo que ficou pendente/pulado/backlog na
