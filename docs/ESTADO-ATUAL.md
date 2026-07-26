@@ -48,10 +48,14 @@ A seção "O QUE FALTA PARA O LANÇAMENTO" é o checklist mestre da inauguraçã
 > estático, sem runtime) · **medição de funil própria** (`funnel_events` +
 > `/api/track`, migration `0030` aplicada e verificada) · 404/`error`/
 > `global-error`/`loading` com a marca. Gate: `tsc` 0 · **364 testes / 58
-> arquivos** · lint 0.
+> arquivos** · lint 0. **Review final whole-branch (opus) = Ready to merge Yes**
+> depois de 1 rodada de fixes: os 3 `loading.tsx` viravam **soft-404 (HTTP 200)**
+> em `/blog/[slug]` — o boundary de Suspense libera o header antes de
+> `notFound()` — e a classe do "metadata não faz merge profundo" tinha
+> sobrevivido no `twitter` e nos `og:site_name`/`locale`/`type`. Tudo corrigido
+> e reverificado por HTTP ao vivo.
 >
-> **➡️ PRÓXIMA: Onda 2 — Identidade & Polish.** Escrever `plano-onda2.md`
-> (a spec já lista o escopo) e executar: cubo no favicon/header/OG, **Outfit +
+> Executar: cubo no favicon/header/OG, **Outfit +
 > Inter** aposentando as 6 famílias de fonte espalhadas, certificado
 > descobrível, a11y do `UserMenu`/`ProfileCard`, `ContentGate` em tokens.
 >
