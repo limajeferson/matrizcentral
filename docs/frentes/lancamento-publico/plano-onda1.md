@@ -1275,14 +1275,21 @@ export default function GlobalError({
 
 - [ ] **Step 4: Estados de carregamento nas rotas que leem disco**
 
-Criar os **três** arquivos com o mesmo conteúdo:
-`src/app/blog/[slug]/loading.tsx`, `src/app/biblioteca/[slug]/loading.tsx` e
-`src/app/dashboard/[token]/conteudo/[id]/loading.tsx`:
+As três rotas mostram o mesmo esqueleto, então o esqueleto mora num lugar só e
+os `loading.tsx` apenas o reexportam — **não** copiar o corpo três vezes.
+
+Criar `src/components/ui/ContentSkeleton.tsx`:
 
 ```tsx
-export default function Loading() {
+/** Esqueleto de leitura: usado pelos loading.tsx das rotas que leem markdown
+ *  do disco em runtime (blog, biblioteca, conteúdo por token). */
+export default function ContentSkeleton() {
   return (
-    <div className="mx-auto max-w-3xl animate-pulse space-y-4 px-6 py-16" aria-busy="true" aria-label="Carregando conteúdo">
+    <div
+      className="mx-auto max-w-3xl animate-pulse space-y-4 px-6 py-16"
+      aria-busy="true"
+      aria-label="Carregando conteúdo"
+    >
       <div className="h-8 w-2/3 rounded bg-current opacity-10" />
       <div className="h-4 w-1/3 rounded bg-current opacity-10" />
       <div className="h-4 w-full rounded bg-current opacity-10" />
@@ -1291,6 +1298,16 @@ export default function Loading() {
     </div>
   );
 }
+```
+
+E criar os três `loading.tsx` — `src/app/blog/[slug]/loading.tsx`,
+`src/app/biblioteca/[slug]/loading.tsx` e
+`src/app/dashboard/[token]/conteudo/[id]/loading.tsx` — cada um com **exatamente**
+esta linha (a convenção do App Router exige o default export por arquivo; o
+reexport satisfaz isso sem duplicar o corpo):
+
+```tsx
+export { default } from "@/components/ui/ContentSkeleton";
 ```
 
 - [ ] **Step 5: Gate + verificação**
