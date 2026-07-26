@@ -3,6 +3,7 @@ import "../../landing-v2.css";
 import PixelGridBackground from "@/components/marketing/v2/PixelGridBackground";
 import LandingHeader from "@/components/marketing/v2/LandingHeader";
 import FooterV2 from "@/components/marketing/v2/FooterV2";
+import { pageOpenGraph } from "@/lib/seo";
 
 const archivoBlack = Archivo_Black({ subsets: ["latin"], weight: "400", variable: "--font-mc-display" });
 const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-mc-sans" });
@@ -11,11 +12,11 @@ export const metadata = {
   title: "Termos de Uso",
   description: "Termos e condições de uso da plataforma Matriz Central.",
   alternates: { canonical: "/legal/termos" },
-  openGraph: {
+  openGraph: pageOpenGraph({
     title: "Termos de Uso",
     description: "Termos e condições de uso da plataforma Matriz Central.",
-    url: "/legal/termos",
-  },
+    path: "/legal/termos",
+  }),
 };
 
 export default function TermosPage() {

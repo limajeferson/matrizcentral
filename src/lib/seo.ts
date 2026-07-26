@@ -2,6 +2,33 @@
 export const SITE_URL = "https://www.matrizcentral.com.br";
 
 /**
+ * Imagem de compartilhamento padrão (arquivo de convenção em src/app/).
+ * É um PNG estático, não uma rota dinâmica — por isso o Next serve com a
+ * extensão no caminho (".png"), diferente do antigo opengraph-image.tsx
+ * (ImageResponse), que respondia em "/opengraph-image" sem extensão.
+ */
+export const OG_IMAGE_PATH = "/opengraph-image.png";
+
+/**
+ * Monta o openGraph de uma página. Existe porque o Next NÃO faz merge profundo
+ * de openGraph entre segmentos: quem declara o campo substitui o objeto do pai
+ * inteiro e perde o og:image da convenção — então toda página precisa repetir a
+ * imagem, e é melhor repetir por uma função do que por copiar-e-colar.
+ */
+export function pageOpenGraph(input: {
+  title: string;
+  description: string;
+  path: string;
+}) {
+  return {
+    title: input.title,
+    description: input.description,
+    url: input.path,
+    images: [OG_IMAGE_PATH],
+  };
+}
+
+/**
  * Caminhos que nunca podem ser indexados nem entrar no sitemap: área logada,
  * APIs, leitor protegido, checkout e páginas por token/código.
  * Entrada terminada em "/" é prefixo; sem "/" casa exata ou seguida de "/".

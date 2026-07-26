@@ -8,7 +8,7 @@ import Markdown from "@/components/ui/Markdown";
 import { ArticleToc } from "@/components/app/content/ArticleToc";
 import { ShareLinks } from "@/components/app/content/ShareLinks";
 import { extractHeadings, parseMarkdown } from "@/lib/markdown";
-import { SITE_URL } from "@/lib/seo";
+import { SITE_URL, pageOpenGraph } from "@/lib/seo";
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const post = getPostBySlug(BLOG_POSTS, params.slug);
@@ -18,9 +18,11 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     description: post.excerpt,
     alternates: { canonical: `/blog/${post.slug}` },
     openGraph: {
-      title: post.title,
-      description: post.excerpt,
-      url: `/blog/${post.slug}`,
+      ...pageOpenGraph({
+        title: post.title,
+        description: post.excerpt,
+        path: `/blog/${post.slug}`,
+      }),
       type: "article",
       publishedTime: post.date,
     },

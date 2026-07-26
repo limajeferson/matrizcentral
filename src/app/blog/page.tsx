@@ -1,15 +1,16 @@
 import { BLOG_POSTS } from "@/data/blog";
 import { getSortedPosts } from "@/lib/blog";
+import { pageOpenGraph } from "@/lib/seo";
 
 export const metadata = {
   title: "Blog",
   description: "Artigos sobre IA local: privacidade, custo, hardware e como sair das mensalidades.",
   alternates: { canonical: "/blog" },
-  openGraph: {
+  openGraph: pageOpenGraph({
     title: "Blog",
     description: "Artigos sobre IA local: privacidade, custo, hardware e como sair das mensalidades.",
-    url: "/blog",
-  },
+    path: "/blog",
+  }),
 };
 
 export default function BlogPage() {

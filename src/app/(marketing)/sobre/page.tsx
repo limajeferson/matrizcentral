@@ -1,5 +1,6 @@
 import { Archivo_Black, Inter, Press_Start_2P } from "next/font/google";
 import "../landing-v2.css";
+import { pageOpenGraph } from "@/lib/seo";
 
 import PixelGridBackground from "@/components/marketing/v2/PixelGridBackground";
 import LandingHeader from "@/components/marketing/v2/LandingHeader";
@@ -27,12 +28,12 @@ export const metadata = {
   description:
     "Plataforma brasileira dedicada à autonomia em Inteligência Artificial. Nossa história, missão, visão e valores.",
   alternates: { canonical: "/sobre" },
-  openGraph: {
+  openGraph: pageOpenGraph({
     title: "Sobre",
     description:
       "Plataforma brasileira dedicada à autonomia em Inteligência Artificial. Nossa história, missão, visão e valores.",
-    url: "/sobre",
-  },
+    path: "/sobre",
+  }),
 };
 
 export default function SobrePage() {
