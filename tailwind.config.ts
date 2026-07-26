@@ -11,7 +11,8 @@ const config: Config = {
   theme: {
   	extend: {
   		fontFamily: {
-  			"marketing-sans": ["var(--font-marketing-sans)", "system-ui", "sans-serif"],
+  			sans: ["var(--font-body)", "system-ui", "-apple-system", "sans-serif"],
+  			display: ["var(--font-display)", "sans-serif"],
   			"marketing-mono": ["var(--font-marketing-mono)", "monospace"],
   		},
   		colors: {

@@ -1,12 +1,11 @@
-import { Hanken_Grotesk, JetBrains_Mono } from "next/font/google";
+import { JetBrains_Mono } from "next/font/google";
 import "./landing-clone.css";
 
-const hankenGrotesk = Hanken_Grotesk({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-marketing-sans",
-});
-
+// Hanken_Grotesk removida: o corpo/interface já usa Inter (--font-body),
+// declarada uma vez no layout raiz (src/app/layout.tsx) e herdada aqui.
+// JetBrains_Mono preservada de propósito — usada em toda a .mc-mono (rótulos
+// em caixa alta, números de preço/estatística tabulares no design mcv2), não
+// é decorativa substituível.
 const jetBrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   weight: ["400", "500"],
@@ -15,7 +14,7 @@ const jetBrainsMono = JetBrains_Mono({
 
 export default function MarketingLayout({ children }: { children: React.ReactNode }) {
   return (
-    <main className={`${hankenGrotesk.variable} ${jetBrainsMono.variable} lp-guide`}>
+    <main className={`${jetBrainsMono.variable} lp-guide`}>
       {children}
     </main>
   );

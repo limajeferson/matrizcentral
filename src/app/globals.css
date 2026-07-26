@@ -129,4 +129,15 @@
   html {
     @apply font-sans;
   }
+  /* Identidade tipográfica (docs/frentes/lancamento-final/insumos/
+     2026-07-22-conceito-tipografico.md): títulos em Outfit (display),
+     corpo em Inter (herdado de font-sans acima). Aplica-se a qualquer
+     heading do app, inclusive fora dos escopos .mcv2/.lp-guide (/blog,
+     /suporte, /entrar etc.), sem alterar tamanho/peso/hierarquia. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display), var(--font-body), sans-serif;
+  }
 }

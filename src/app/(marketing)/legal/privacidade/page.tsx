@@ -1,12 +1,10 @@
-import { Archivo_Black, Inter } from "next/font/google";
 import "../../landing-v2.css";
 import PixelGridBackground from "@/components/marketing/v2/PixelGridBackground";
 import LandingHeader from "@/components/marketing/v2/LandingHeader";
 import FooterV2 from "@/components/marketing/v2/FooterV2";
 import { pageMetadata } from "@/lib/seo";
 
-const archivoBlack = Archivo_Black({ subsets: ["latin"], weight: "400", variable: "--font-mc-display" });
-const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-mc-sans" });
+// Display/corpo já vêm de Outfit/Inter (--font-display/--font-body) do layout raiz.
 
 export const metadata = {
   title: "Política de Privacidade",
@@ -20,7 +18,7 @@ export const metadata = {
 
 export default function PrivacidadePage() {
   return (
-    <div className={`${archivoBlack.variable} ${inter.variable} mcv2`}>
+    <div className="mcv2">
       <PixelGridBackground />
       <LandingHeader />
       <div className="mc-canvas">

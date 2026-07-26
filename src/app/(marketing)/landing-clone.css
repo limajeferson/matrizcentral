@@ -1,7 +1,8 @@
 /*
   Port quase literal do CSS de landing-clone.html (modelo guia), escopado sob
   .lp-guide para não vazar para o resto do app. Único desvio: --accent é
-  violeta (var(--font-marketing-sans/mono) já vêm do layout de marketing).
+  violeta. Corpo usa --font-body (Inter, global do layout raiz); mono usa
+  var(--font-marketing-mono) (JetBrains Mono, declarada no layout de marketing).
 */
 .lp-guide {
   --ink: #141414;
@@ -16,7 +17,7 @@
   --radius-md: 14px;
   --radius-sm: 10px;
 
-  font-family: var(--font-marketing-sans), system-ui, sans-serif;
+  font-family: var(--font-body), system-ui, sans-serif;
   color: var(--ink);
   background: var(--bg);
   /* Cobre a viewport para o body (dark por padrão) não vazar abaixo do

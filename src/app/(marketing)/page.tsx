@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Archivo_Black, Inter, Press_Start_2P } from "next/font/google";
+import { Press_Start_2P } from "next/font/google";
 import "./landing-v2.css";
 import { pageMetadata } from "@/lib/seo";
 
@@ -20,19 +20,10 @@ import ClosingSection from "@/components/marketing/v2/ClosingSection";
 import FooterV2 from "@/components/marketing/v2/FooterV2";
 import TrackView from "@/components/analytics/TrackView";
 
-const archivoBlack = Archivo_Black({
-  subsets: ["latin"],
-  weight: "400",
-  variable: "--font-mc-display",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-mc-sans",
-});
-
-// Fonte pixel/16-bit para o texto animado do hero (teste).
+// Archivo_Black e Inter removidas: display/corpo já vêm de Outfit/Inter
+// (--font-display/--font-body), declaradas uma vez no layout raiz.
+// Fonte pixel/16-bit para o texto animado do hero — efeito decorativo
+// intencional (retro/pixel art), preservada.
 const pressStart2P = Press_Start_2P({
   subsets: ["latin"],
   weight: "400",
@@ -55,7 +46,7 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   return (
-    <div className={`${archivoBlack.variable} ${inter.variable} ${pressStart2P.variable} mcv2`}>
+    <div className={`${pressStart2P.variable} mcv2`}>
       <TrackView event="landing_view" />
       <PixelGridBackground />
       <noscript>

@@ -1,19 +1,23 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { Outfit, Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { THEME_INIT_SCRIPT } from "@/components/theme/theme-script";
 import { SITE_URL } from "@/lib/seo";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
+// Identidade tipográfica aprovada (docs/frentes/lancamento-final/insumos/
+// 2026-07-22-conceito-tipografico.md): Outfit para display/título, Inter
+// para corpo/interface. Declaradas uma vez aqui e disponíveis em todo o app
+// via CSS custom properties no <body> — nenhuma página precisa redeclarar.
+const outfit = Outfit({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-display",
 });
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-body",
 });
 
 const SITE_DESCRIPTION =
@@ -48,10 +52,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="pt-BR" className={`${outfit.variable} ${inter.variable}`}>
+      {/* Variáveis de fonte no <html>, não no <body>: `html { @apply font-sans }`
+          (globals.css) referencia var(--font-body) e custom properties só
+          herdam para baixo — se a classe ficasse só no <body>, o <html> não
+          enxergaria a variável, a declaração ficaria inválida e o texto caía
+          para o serif padrão do navegador (bug real, pego na verificação). */}
+      <body className="antialiased">
         {/* Script anti-flash: aplica .dark antes da pintura (default "dark"). */}
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <ThemeProvider>{children}</ThemeProvider>

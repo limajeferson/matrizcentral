@@ -1,4 +1,3 @@
-import { Archivo_Black, Inter, Press_Start_2P } from "next/font/google";
 import "../landing-v2.css";
 import { pageMetadata } from "@/lib/seo";
 
@@ -10,9 +9,9 @@ import {
   IconChat, IconCompass, IconLock, IconBooks, IconTrophy, IconMonitor,
 } from "@/components/marketing/v2/icons";
 
-const archivoBlack = Archivo_Black({ subsets: ["latin"], weight: "400", variable: "--font-mc-display" });
-const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-mc-sans" });
-const pressStart2P = Press_Start_2P({ subsets: ["latin"], weight: "400", variable: "--font-mc-pixel" });
+// Display/corpo já vêm de Outfit/Inter (--font-display/--font-body) do
+// layout raiz. Press_Start_2P não é usada nesta página (sem RotatingWord) —
+// declaração removida.
 
 const VALORES = [
   { Icon: IconLock, title: "Autonomia", desc: "Você no controle da sua própria IA, do primeiro dia." },
@@ -38,7 +37,7 @@ export const metadata = {
 
 export default function SobrePage() {
   return (
-    <div className={`${archivoBlack.variable} ${inter.variable} ${pressStart2P.variable} mcv2`}>
+    <div className="mcv2">
       <PixelGridBackground />
       <LandingHeader />
       <div className="mc-canvas">

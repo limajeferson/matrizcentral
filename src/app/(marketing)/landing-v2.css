@@ -21,7 +21,7 @@
   --mc-radius: 24px;
   --mc-notch: 14px;
 
-  font-family: var(--font-mc-sans), system-ui, sans-serif;
+  font-family: var(--font-body), system-ui, sans-serif;
   background: #050308;
   color: var(--mc-white);
   line-height: 1.5;
@@ -45,7 +45,7 @@
 }
 
 .mcv2 .mc-display {
-  font-family: var(--font-mc-display), var(--font-mc-sans), sans-serif;
+  font-family: var(--font-display), var(--font-body), sans-serif;
   text-transform: uppercase;
   line-height: 0.94;
   letter-spacing: -0.01em;
@@ -884,7 +884,7 @@
   flex-wrap: wrap;
   align-items: baseline;
   color: var(--mc-accent);
-  font-family: var(--font-mc-pixel), var(--font-mc-display), monospace;
+  font-family: var(--font-mc-pixel), var(--font-display), monospace;
   font-size: 0.6em;
   letter-spacing: 0;
 }
