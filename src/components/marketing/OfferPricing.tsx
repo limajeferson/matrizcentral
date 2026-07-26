@@ -48,6 +48,9 @@ function PlanCheckout({ plan, cta }: { plan: "ebook" | "regular" | "advanced"; c
   return (
     <form onSubmit={handleSubmit}>
       <div className="waitlist-form">
+        <label htmlFor={inputId} className="sr-only">
+          Seu e-mail para receber o acesso
+        </label>
         <input
           id={inputId}
           name="email"
@@ -57,7 +60,6 @@ function PlanCheckout({ plan, cta }: { plan: "ebook" | "regular" | "advanced"; c
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           aria-invalid={error ? true : undefined}
-          aria-label="Seu e-mail para receber o acesso"
         />
       </div>
       <button
