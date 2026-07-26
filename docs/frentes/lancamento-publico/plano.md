@@ -51,8 +51,8 @@ Valem para **toda** task de **toda** onda:
 
 | Onda | Nome | Plano | Estado |
 |---|---|---|---|
-| 1 | Receita & Descoberta | [`plano-onda1.md`](plano-onda1.md) | 📋 escrito |
-| 2 | Identidade & Polish | `plano-onda2.md` | ✍️ escrever ao iniciar |
+| 1 | Receita & Descoberta | [`plano-onda1.md`](plano-onda1.md) | ✅ **executada** |
+| 2 | Identidade & Polish | [`plano-onda2.md`](plano-onda2.md) | 📋 escrito |
 | 3 | Verdade da Oferta *(portão humano)* | `plano-onda3.md` | ✍️ escrever ao iniciar |
 | 4 | Tech-debt & Segurança | `plano-onda4.md` | ✍️ escrever ao iniciar |
 | 5 | Motor de Marketing | `plano-onda5.md` | ✍️ escrever ao iniciar |

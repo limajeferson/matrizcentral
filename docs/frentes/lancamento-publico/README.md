@@ -8,8 +8,10 @@ sem perder venda, sem perder dado, sem prometer o que o código não entrega.
 
 ## Próximo passo
 
-**Onda 1, Task 1** — `/oferta` à prova de falha (bug de receita: o botão de
-compra trava para sempre em erro de rede). Plano: [`plano-onda1.md`](plano-onda1.md).
+**Onda 2, Task 1** — o cubo da marca no favicon. Plano detalhado (7 tasks):
+[`plano-onda2.md`](plano-onda2.md). A task de maior risco é a **2**
+(tipografia): mexe em todas as páginas públicas de uma vez, então é commit
+próprio e verificação visual antes de seguir.
 
 ## Documentos
 
@@ -17,15 +19,16 @@ compra trava para sempre em erro de rede). Plano: [`plano-onda1.md`](plano-onda1
 |---|---|
 | [`spec.md`](spec.md) | A auditoria de 2026-07-26 (achados com arquivo:linha) + as 6 ondas + decisões |
 | [`plano.md`](plano.md) | Plano mestre: restrições globais, sequência das ondas, **correções aos planos F e G antigos** |
-| [`plano-onda1.md`](plano-onda1.md) | Onda 1 detalhada, 6 tasks |
+| [`plano-onda1.md`](plano-onda1.md) | Onda 1 detalhada, 6 tasks — ✅ executada |
+| [`plano-onda2.md`](plano-onda2.md) | Onda 2 detalhada, 7 tasks |
 | [`backlog-conteudo.md`](backlog-conteudo.md) | Insumos editoriais rastreados — inclui o **case Dragum** |
 
 ## As 6 ondas
 
 | Onda | Nome | Estado |
 |---|---|---|
-| 1 | Receita & Descoberta | 🔄 **em execução** |
-| 2 | Identidade & Polish *(era Trilha F)* | 📐 planejar ao iniciar |
+| 1 | Receita & Descoberta | ✅ **fechada** (2026-07-26) |
+| 2 | Identidade & Polish *(era Trilha F)* | 📋 **planejada** — [`plano-onda2.md`](plano-onda2.md) |
 | 3 | Verdade da Oferta | 🔒 **portão humano** — Claude redige, usuário aprova |
 | 4 | Tech-debt & Segurança *(era Trilha G)* | 📐 planejar ao iniciar |
 | 5 | Motor de Marketing | 📐 planejar ao iniciar |
