@@ -127,6 +127,18 @@ Criar tag nova exige editar este arquivo e o PLAYBOOK juntos.
 - **Faça:** antes de subir um gate de acesso baseado em enum/lista fechada, rodar `select status, product_id, count(*) from purchases group by 1,2` (ou equivalente) e normalizar qualquer valor fora do esperado, com autorização explícita do usuário quando envolver `UPDATE` em tabela de dinheiro.
 - **Fonte:** docs/ESTADO-ATUAL.md, log de 2026-07-20 ("LEITOR PROTEGIDO DESTRAVADO..."); docs/frentes/leitor-protegido/README.md (bloqueador 2, "Conferir compras legadas — o risco mais caro da frente").
 
+### L-047 · Neste projeto a URL É a credencial — todo campo que carrega URL precisa do mesmo guard, inclusive o `referrer`
+- **Gatilho:** `acesso-dinheiro`
+- **Não faça:** proteger só o campo óbvio. Na medição de funil, o `path` tinha guard de caminho privado e o `referrer` **não** — e o token vazava pelo referrer, sem atacante nenhum: `ContentGate` tem `<a href="/oferta">` (navegação dura), o referrer same-origin manda a **URL completa** de `/dashboard/<token>/...`, e ela ia inteira para a tabela de métricas. Também não confie em checagem literal de prefixo: `//dashboard/T`, `/Dashboard/T`, `/./dashboard/T`, `/dashboard%2FT` e `/%64ashboard/T` passavam todos.
+- **Faça:** enumerar **todos** os campos que podem conter URL (path, referrer, `next`, callback, log, evento, meta) e passar todos pelo mesmo guard. Canonicalizar antes de comparar (decodificar percent-encoding, colapsar `//`, remover `/./`, minúsculas) e **falhar fechado**: entrada malformada é tratada como privada. Perder uma métrica é barato; vazar um token não é.
+- **Fonte:** Onda 1 Task 5, review opus (Critical C1, reproduzido com probe) → fix `5258918`.
+
+### L-048 · Chave de rate limit nunca pode ser valor controlado pelo cliente
+- **Gatilho:** `acesso-dinheiro`
+- **Não faça:** chavear o limitador por algo que o requisitante escolhe — em `/api/track` a chave era o `anon_id` do cookie, e quando não havia cookie o servidor **cunhava um UUID novo por request**: a chave nunca repetia e o limite nunca disparava. Trocar para `x-forwarded-for` sozinho tem o mesmo defeito: é header, o cliente forja. Resultado: escrita pública e ilimitada no Postgres de produção.
+- **Faça:** usar `req.ip` primeiro (preenchido pela Vercel, não vem de header), com `x-real-ip` e `x-forwarded-for` só como fallback fora da Vercel — a ordem que o `/api/resgate` já usa. E chavear por `ip:evento`, não só por `ip`: janela por visitante descarta o passo seguinte do funil de quem clica rápido.
+- **Fonte:** Onda 1 Task 5, review opus (I4/I6) e re-review (achado novo) → fixes `5258918` e `4bb617d`.
+
 ## `spec`
 
 ### L-013 · Revisão de acesso/dinheiro precisa reavaliar a spec, não só confiar no gate verde do brief
@@ -185,6 +197,18 @@ Criar tag nova exige editar este arquivo e o PLAYBOOK juntos.
 - **Faça:** todo brief de task de conteúdo declara o subset suportado (copiar da Task E1/E6 da Trilha E); ao criar conteúdo novo, conferir o parser real primeiro. Backlog registrado: normalizar `panorama` e `comparativo`.
 - **Fonte:** Trilha E, Task E1 (achado do implementer, 2026-07-22); review final da trilha confirmou zero ocorrências nos 5 arquivos novos.
 
+### L-049 · No Next, `metadata` NÃO faz merge profundo entre segmentos — quem declara o campo substitui o objeto inteiro do pai
+- **Gatilho:** `spec`
+- **Não faça:** pôr `alternates.canonical` ou um `openGraph` "padrão" no layout raiz achando que a página filha completa o que faltar. Ela não completa: **herda o objeto inteiro**. Pôr `canonical: "/"` na raiz fez `/blog`, cada post, `/sobre`, `/oferta` e `/legal/*` declararem a **home** como sua URL canônica — o oposto do que a task queria. E, na volta, cada página que passou a declarar `openGraph` próprio **perdeu o `og:image`** que o arquivo de convenção injetava.
+- **Faça:** metadata que varia por página (`canonical`, `og:title`, `og:description`, `og:url`, `og:image`) é declarada **em cada página**, por um helper único (`pageOpenGraph()` em `src/lib/seo.ts`) — nunca copiada à mão, porque a próxima página esquecida não dá erro, só fica errada em silêncio. Na raiz ficam só `metadataBase`, `title.template` e os defaults que valem para tudo. E `title.template` obriga a varrer **todas** as páginas com `title` para não duplicar o sufixo.
+- **Fonte:** Onda 1, Task 3 (Critical da review, confirmado por `curl` ao vivo, fix `369a293`) e Task 4 (mesma causa raiz reaparecendo, fix `e1fd7f4`).
+
+### L-050 · Varredura de ocorrência tem que ser por `grep`, não por memória do plano — o plano lista um lugar, o código tem dois
+- **Gatilho:** `spec`
+- **Não faça:** escrever no plano "conserte a âncora morta `/#features` no rodapé" e considerar o item fechado quando o rodapé foi consertado. A mesma âncora estava no **Header** antigo, em dois pontos (nav desktop e painel mobile) — sobreviveu à task, à review por task, e só apareceu no passe visual. O subagente faz o que o brief diz; a completude é responsabilidade de quem escreve o brief.
+- **Faça:** todo item de "corrigir X em todo lugar" nasce de um `grep` rodado **na hora de escrever o plano**, com a lista completa de arquivo:linha colada no brief. Se o brief não tem a lista, ele não é verificável — e o reviewer, que só vê o diff, não tem como saber o que ficou de fora.
+- **Fonte:** Onda 1, passe visual (fix `fc43267`); o `/#features` no Header estava na auditoria inicial e mesmo assim não entrou no plano-onda1.
+
 ## `visual`
 
 ### L-020 · Componente compartilhado que vira dark-aware precisa auditar contextos de cor fixa existentes
@@ -222,6 +246,12 @@ Criar tag nova exige editar este arquivo e o PLAYBOOK juntos.
 - **Não faça:** converter para tokens de tema (`text-foreground` etc.) uma página cujo fim é impressão/PDF (certificado, recibo) sem pensar no papel: no tema dark os tokens resolvem quase-branco, o navegador descarta cores de fundo ao imprimir, e o resultado é **texto invisível no papel branco** — regressão que os gates tsc/test/lint nunca pegam.
 - **Faça:** superfícies imprimíveis usam tema claro forçado (wrapper `.force-light`, que redeclara os tokens com os valores claros) ou um bloco `@media print` com cores fixas escuras. Na revisão de qualquer conversão dark-aware, perguntar: "alguma dessas telas vira papel?"
 - **Fonte:** revisão final da Trilha C (Important #1, fix `942a539`).
+
+### L-051 · `curl` prova que o HTML está certo — não prova que o usuário consegue ver
+- **Gatilho:** `visual`
+- **Não faça:** dar por verificado um elemento porque ele aparece no HTML servido. O `<a href="/legal/termos#garantia">ver termos</a>` estava perfeito no HTML e **invisível como link** na tela: no escopo `.lp-guide` não havia regra para `a` dentro do `<li>`, então ele herdava exatamente a cor do texto e vinha com `text-decoration: none`. Ninguém clicaria — e era o link da garantia, na página que cobra.
+- **Faça:** quando a entrega é "o usuário consegue chegar em X", a verificação é `getComputedStyle` no navegador (cor, `text-decoration`, contraste) ou o olho, não `grep` no HTML. Vale para link, foco, estado desabilitado e qualquer affordance: HTML correto e CSS ausente produzem exatamente o mesmo `curl`.
+- **Fonte:** Onda 1, passe visual da frente lancamento-publico (fix `fc43267`, 2026-07-26).
 
 ## `deploy`
 
