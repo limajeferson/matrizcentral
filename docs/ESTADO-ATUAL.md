@@ -14,7 +14,7 @@ cobria**, e o checklist antigo foi reordenado em **6 ondas** por critério de
 receita. **Onda 1 (Receita & Descoberta) FECHADA**: 6 tasks + passe visual,
 gate `tsc` 0 · **364 testes / 58 arquivos** · lint 0. Migration `0030` aplicada
 e verificada. As Trilhas F e G do `lancamento-final` foram **absorvidas** como
-Ondas 2 e 4 — não há fila concorrente. **Próxima = Onda 2 (Identidade & Polish).**
+Ondas 2 e 4 — não há fila concorrente. **Onda 1 no ar e verificada em produção; Onda 2 em execução (Task 1/7 fechada).**
 A seção "O QUE FALTA PARA O LANÇAMENTO" é o checklist mestre da inauguração.)_
 
 > **Convenção deste arquivo:** as seções de **estado** (`PRÓXIMA AÇÃO`,
@@ -55,9 +55,28 @@ A seção "O QUE FALTA PARA O LANÇAMENTO" é o checklist mestre da inauguraçã
 > sobrevivido no `twitter` e nos `og:site_name`/`locale`/`type`. Tudo corrigido
 > e reverificado por HTTP ao vivo.
 >
-> Executar: cubo no favicon/header/OG, **Outfit +
-> Inter** aposentando as 6 famílias de fonte espalhadas, certificado
-> descobrível, a11y do `UserMenu`/`ProfileCard`, `ContentGate` em tokens.
+> **✅ ONDA 1 VERIFICADA EM PRODUÇÃO** (push `b4253df..9eea539`):
+> `sitemap.xml` 200 com **12 URLs públicas e zero privadas** · `robots.txt` com
+> `Host`+`Sitemap`+`Disallow`s · OG completo na home e **próprio** em cada post
+> (`og:type=article`) · `opengraph-image.png` 200, 75 KB · `/rota-inexistente` e
+> `/blog/slug-morto` = **404 real** (o soft-404 morreu) · `/feed` com
+> `noindex,nofollow` · `POST /api/track` = **204** e a linha gravada trouxe
+> `referrer` **sem o token de prova** — o vazamento está fechado **em produção**.
+> Linha de teste apagada (`count = 0`).
+>
+> **🔄 ONDA 2 EM EXECUÇÃO — Task 1 (favicon) fechada e no ar** (`789a391`):
+> `icon.svg` é o cubo da marca (geometria idêntica ao
+> `public/brand/favicon.svg`, conferida lado a lado) e o `favicon.ico` antigo
+> foi **apagado** — ele tinha precedência sobre o SVG em vários navegadores e
+> seguraria o triângulo antigo no ar. Verificado em produção.
+>
+> **➡️ PRÓXIMA: Onda 2, Task 2 — tipografia (Outfit + Inter).** É a de **maior
+> risco visual da onda inteira**: mexe em todas as páginas públicas de uma vez
+> (hoje há **6 famílias** espalhadas e Outfit tem zero ocorrências em `src/`).
+> Commit próprio e verificação visual página a página antes de seguir.
+> Depois: logo cubo nas superfícies, âncoras do `LandingHeader` (ele renderiza
+> fora da landing), certificado descobrível, rótulos do `ContatoForm`, teclado
+> no `UserMenu`/`ProfileCard`, `ContentGate` em tokens.
 >
 > ⚠️ **A Onda 3 (Verdade da Oferta) tem portão humano** — garantia e preço têm
 > efeito jurídico e comercial; o Claude redige, o usuário aprova antes do deploy.
