@@ -6,6 +6,7 @@ import Starfield from "@/components/marketing/v2/Starfield";
 import { IconSpark } from "@/components/marketing/v2/icons";
 import "../landing-v2.css";
 import { SITE_URL, pageOpenGraph } from "@/lib/seo";
+import TrackView from "@/components/analytics/TrackView";
 
 const OFERTA_TITLE = "Planos e acesso";
 const OFERTA_DESCRIPTION =
@@ -25,6 +26,7 @@ export const metadata: Metadata = {
 export default function OfertaPage() {
   return (
     <div className="mc-oferta-wrapper">
+      <TrackView event="oferta_view" />
       <Starfield />
       <Header ctaLabel="Voltar para o início" ctaHref="/" />
       <section className="mc-oferta-intro">

@@ -1,6 +1,7 @@
 import NeuralBackdrop from "@/components/marketing/v2/NeuralBackdrop";
 import LegalLinks from "@/components/marketing/LegalLinks";
 import AccessReveal from "./AccessReveal";
+import TrackView from "@/components/analytics/TrackView";
 import "../checkout-dark.css";
 
 export const metadata = { robots: { index: false, follow: false } };
@@ -14,6 +15,7 @@ export default function CheckoutSucessoPage({
 
   return (
     <div className="mc-checkout">
+      <TrackView event="checkout_success" />
       <NeuralBackdrop />
       <div className="mc-checkout-card">
         <span className="mc-checkout-success" aria-hidden="true">

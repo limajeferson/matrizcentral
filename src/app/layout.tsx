@@ -55,6 +55,12 @@ export default function RootLayout({
         {/* Script anti-flash: aplica .dark antes da pintura (default "dark"). */}
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <ThemeProvider>{children}</ThemeProvider>
+        {/* Web Analytics da Vercel servido pela propria plataforma — sem dependencia
+            npm (custo zero). So carrega em producao; exige "Web Analytics" ligado no
+            painel do projeto na Vercel, senao o script simplesmente nao existe. */}
+        {process.env.NODE_ENV === "production" && (
+          <script defer src="/_vercel/insights/script.js" />
+        )}
       </body>
     </html>
   );

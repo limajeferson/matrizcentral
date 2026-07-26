@@ -17,6 +17,12 @@ function PlanCheckout({ plan, cta }: { plan: "ebook" | "regular" | "advanced"; c
     }
     setLoading(true);
     setError(null);
+    navigator.sendBeacon?.(
+      "/api/track",
+      new Blob([JSON.stringify({ event: "checkout_start", path: "/oferta", meta: { plan } })], {
+        type: "application/json",
+      })
+    );
     // Em caso de sucesso a navegação já foi disparada: manter o botão travado
     // evita duplo clique enquanto o browser troca de página.
     let redirecting = false;

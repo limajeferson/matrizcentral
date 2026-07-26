@@ -18,6 +18,7 @@ import PricingV2 from "@/components/marketing/v2/PricingV2";
 import FaqSection from "@/components/marketing/v2/FaqSection";
 import ClosingSection from "@/components/marketing/v2/ClosingSection";
 import FooterV2 from "@/components/marketing/v2/FooterV2";
+import TrackView from "@/components/analytics/TrackView";
 
 const archivoBlack = Archivo_Black({
   subsets: ["latin"],
@@ -56,6 +57,7 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <div className={`${archivoBlack.variable} ${inter.variable} ${pressStart2P.variable} mcv2`}>
+      <TrackView event="landing_view" />
       <PixelGridBackground />
       <noscript>
         <style>{`.mcv2 [style*="opacity"], .mcv2 [style*="opacity:0"] { opacity: 1 !important; transform: none !important; filter: none !important; height: auto !important; overflow: visible !important; }`}</style>

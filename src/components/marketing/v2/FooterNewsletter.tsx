@@ -23,6 +23,14 @@ export default function FooterNewsletter() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email }),
     }).catch(() => null);
+    if (res && res.ok) {
+      navigator.sendBeacon?.(
+        "/api/track",
+        new Blob([JSON.stringify({ event: "newsletter_signup", path: "/" })], {
+          type: "application/json",
+        })
+      );
+    }
     setStatus(res && res.ok ? "done" : "error");
   };
 

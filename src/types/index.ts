@@ -369,6 +369,12 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["feed_posts"]["Insert"]>;
         Relationships: [];
       };
+      funnel_events: {
+        Row: { id: string; event: string; anon_id: string; user_id: string | null; path: string | null; referrer: string | null; meta: Record<string, string | number | boolean> | null; created_at: string };
+        Insert: { id?: string; event: string; anon_id: string; user_id?: string | null; path?: string | null; referrer?: string | null; meta?: Record<string, string | number | boolean> | null; created_at?: string };
+        Update: Partial<Database["public"]["Tables"]["funnel_events"]["Insert"]>;
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
