@@ -1,6 +1,7 @@
 import EntrarForm from "./EntrarForm";
+import { NOINDEX_METADATA } from "@/lib/seo";
 
-export const metadata = { robots: { index: false, follow: false } };
+export const metadata = NOINDEX_METADATA;
 
 export default function EntrarPage({
   searchParams,

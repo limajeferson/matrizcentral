@@ -1,6 +1,8 @@
 import Link from "next/link";
 
-export const metadata = { title: "Página não encontrada", robots: { index: false } };
+// Next injeta "noindex" automaticamente em qualquer resposta 404 (via
+// notFound()) — declarar robots aqui de novo duplicava a meta tag.
+export const metadata = { title: "Página não encontrada" };
 
 export default function NotFound() {
   return (

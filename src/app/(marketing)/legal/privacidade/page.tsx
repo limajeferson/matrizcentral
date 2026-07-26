@@ -3,7 +3,7 @@ import "../../landing-v2.css";
 import PixelGridBackground from "@/components/marketing/v2/PixelGridBackground";
 import LandingHeader from "@/components/marketing/v2/LandingHeader";
 import FooterV2 from "@/components/marketing/v2/FooterV2";
-import { pageOpenGraph } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 
 const archivoBlack = Archivo_Black({ subsets: ["latin"], weight: "400", variable: "--font-mc-display" });
 const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-mc-sans" });
@@ -11,8 +11,7 @@ const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600"], variabl
 export const metadata = {
   title: "Política de Privacidade",
   description: "Como a Matriz Central coleta, usa e protege seus dados.",
-  alternates: { canonical: "/legal/privacidade" },
-  openGraph: pageOpenGraph({
+  ...pageMetadata({
     title: "Política de Privacidade",
     description: "Como a Matriz Central coleta, usa e protege seus dados.",
     path: "/legal/privacidade",

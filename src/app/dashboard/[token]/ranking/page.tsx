@@ -2,6 +2,9 @@ import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { isTokenExpired } from "@/lib/tokens";
 import GlassCard from "@/components/ui/glass-card";
 import LeaderboardOptIn from "@/components/dashboard/LeaderboardOptIn";
+import { NOINDEX_METADATA } from "@/lib/seo";
+
+export const metadata = NOINDEX_METADATA;
 
 export default async function RankingPage({ params }: { params: { token: string } }) {
   const supabase = getSupabaseServerClient();

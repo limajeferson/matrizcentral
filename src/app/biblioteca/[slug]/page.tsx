@@ -9,9 +9,11 @@ import { parseMarkdown } from "@/lib/markdown";
 import { splitIntoSections, findSection } from "@/lib/reader";
 import { ReaderShell } from "@/components/reader/ReaderShell";
 import { IconLock } from "@/components/ui/icons";
+import { NOINDEX_METADATA } from "@/lib/seo";
 
 // Depende de sessão (cookie) — nunca pode ser cacheado/prerenderizado.
 export const dynamic = "force-dynamic";
+export const metadata = NOINDEX_METADATA;
 
 type DenyReason = "revoked" | "cycle-used" | "gated" | "no-purchase" | "error";
 

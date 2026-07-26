@@ -1,14 +1,16 @@
 import { BLOG_POSTS } from "@/data/blog";
 import { getSortedPosts } from "@/lib/blog";
-import { pageOpenGraph } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
+
+const BLOG_DESCRIPTION =
+  "Artigos sobre IA local: privacidade, custo, hardware e como sair das mensalidades.";
 
 export const metadata = {
   title: "Blog",
-  description: "Artigos sobre IA local: privacidade, custo, hardware e como sair das mensalidades.",
-  alternates: { canonical: "/blog" },
-  openGraph: pageOpenGraph({
+  description: BLOG_DESCRIPTION,
+  ...pageMetadata({
     title: "Blog",
-    description: "Artigos sobre IA local: privacidade, custo, hardware e como sair das mensalidades.",
+    description: BLOG_DESCRIPTION,
     path: "/blog",
   }),
 };

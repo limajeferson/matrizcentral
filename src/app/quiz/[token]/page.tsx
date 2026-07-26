@@ -1,6 +1,9 @@
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { isTokenExpired } from "@/lib/tokens";
 import QuizTriagem from "@/components/quiz/QuizTriagem";
+import { NOINDEX_METADATA } from "@/lib/seo";
+
+export const metadata = NOINDEX_METADATA;
 
 function ErroToken({ mensagem, linkDashboard }: { mensagem: string; linkDashboard?: string }) {
   return (

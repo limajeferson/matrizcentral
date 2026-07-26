@@ -3,10 +3,11 @@ import { getSessionUser } from "@/lib/auth-session";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import LogoutButton from "@/components/auth/LogoutButton";
 import { READER_DOCS } from "@/data/reader-docs";
+import { NOINDEX_METADATA } from "@/lib/seo";
 
 const readerEbook = READER_DOCS.find((d) => d.kind === "ebook");
 
-export const metadata = { robots: { index: false, follow: false } };
+export const metadata = NOINDEX_METADATA;
 
 export default async function ContaPage() {
   const user = await getSessionUser();

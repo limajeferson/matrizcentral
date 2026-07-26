@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Archivo_Black, Inter, Press_Start_2P } from "next/font/google";
 import "./landing-v2.css";
-import { SITE_URL, pageOpenGraph } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 
 import PixelGridBackground from "@/components/marketing/v2/PixelGridBackground";
 import LandingHeader from "@/components/marketing/v2/LandingHeader";
@@ -46,11 +46,10 @@ const HOME_DESCRIPTION =
 export const metadata: Metadata = {
   title: HOME_TITLE,
   description: HOME_DESCRIPTION,
-  alternates: { canonical: "/" },
-  openGraph: pageOpenGraph({
+  ...pageMetadata({
     title: HOME_TITLE,
     description: HOME_DESCRIPTION,
-    path: SITE_URL,
+    path: "/",
   }),
 };
 

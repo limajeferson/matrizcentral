@@ -2,8 +2,9 @@ import Link from "next/link";
 import NeuralBackdrop from "@/components/marketing/v2/NeuralBackdrop";
 import LegalLinks from "@/components/marketing/LegalLinks";
 import "../checkout-dark.css";
+import { NOINDEX_METADATA } from "@/lib/seo";
 
-export const metadata = { robots: { index: false, follow: false } };
+export const metadata = NOINDEX_METADATA;
 
 export default function CheckoutCanceladoPage() {
   return (

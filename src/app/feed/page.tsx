@@ -23,8 +23,9 @@ import { buildStories } from "@/lib/stories";
 import { listPosts } from "@/lib/feed-posts";
 import { buildFeedTimeline } from "@/lib/feed-timeline";
 import type { AccessLevel } from "@/lib/entitlements";
+import { NOINDEX_METADATA } from "@/lib/seo";
 
-export const metadata = { robots: { index: false, follow: false } };
+export const metadata = NOINDEX_METADATA;
 
 const PLAN_LABEL: Record<AccessLevel, ProfileCardPlan> = {
   view: "Start",

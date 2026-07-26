@@ -15,6 +15,9 @@ import BadgeShelf from "@/components/dashboard/BadgeShelf";
 import ChallengeWidget from "@/components/dashboard/ChallengeWidget";
 import { getCurrentChallenge, getIsoWeekKey, getIsoWeekStart } from "@/lib/challenges";
 import { IconArrow } from "@/components/ui/icons";
+import { NOINDEX_METADATA } from "@/lib/seo";
+
+export const metadata = NOINDEX_METADATA;
 
 export default async function DashboardPage({ params }: { params: { token: string } }) {
   const supabase = getSupabaseServerClient();

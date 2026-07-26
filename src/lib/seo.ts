@@ -10,23 +10,44 @@ export const SITE_URL = "https://www.matrizcentral.com.br";
 export const OG_IMAGE_PATH = "/opengraph-image.png";
 
 /**
- * Monta o openGraph de uma página. Existe porque o Next NÃO faz merge profundo
- * de openGraph entre segmentos: quem declara o campo substitui o objeto do pai
- * inteiro e perde o og:image da convenção — então toda página precisa repetir a
- * imagem, e é melhor repetir por uma função do que por copiar-e-colar.
+ * Monta o fragmento de metadata (openGraph + twitter + canonical) de uma
+ * página. Existe porque o Next NÃO faz merge profundo de metadata entre
+ * segmentos: quem declara `openGraph`/`twitter` substitui o objeto do pai
+ * inteiro (perde og:image, og:site_name, og:locale, og:type, twitter:title
+ * da raiz) — então toda página que declara metadata própria precisa repetir
+ * o fragmento inteiro, e é melhor repetir por uma função do que por
+ * copiar-e-colar.
+ *
+ * `path` deve ser relativo (ex.: "/oferta", "/"); `metadataBase` (definido
+ * no layout raiz) resolve para absoluto.
  */
-export function pageOpenGraph(input: {
+export function pageMetadata(input: {
   title: string;
   description: string;
   path: string;
 }) {
   return {
-    title: input.title,
-    description: input.description,
-    url: input.path,
-    images: [OG_IMAGE_PATH],
+    alternates: { canonical: input.path },
+    openGraph: {
+      type: "website" as const,
+      siteName: "Matriz Central",
+      locale: "pt_BR",
+      title: input.title,
+      description: input.description,
+      url: input.path,
+      images: [OG_IMAGE_PATH],
+    },
+    twitter: {
+      card: "summary_large_image" as const,
+      title: input.title,
+      description: input.description,
+      images: [OG_IMAGE_PATH],
+    },
   };
 }
+
+/** Metadata de rota privada: a URL destas páginas carrega credencial. */
+export const NOINDEX_METADATA = { robots: { index: false, follow: false } } as const;
 
 /**
  * Caminhos que nunca podem ser indexados nem entrar no sitemap: área logada,

@@ -1,6 +1,9 @@
 import { notFound } from "next/navigation";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { isTokenExpired } from "@/lib/tokens";
+import { NOINDEX_METADATA } from "@/lib/seo";
+
+export const metadata = NOINDEX_METADATA;
 
 export default async function CertificadoPage({ params }: { params: { token: string } }) {
   const supabase = getSupabaseServerClient();

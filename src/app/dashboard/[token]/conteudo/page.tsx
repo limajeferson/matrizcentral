@@ -9,6 +9,9 @@ import { ROADMAP_STAGE_KEYS, ROADMAP_STAGE_LABELS } from "@/data/roadmap-stages"
 import { getRecommendedContent } from "@/lib/content-feed";
 import { CONTENT_ICON } from "@/lib/content-icons";
 import { IconCheck } from "@/components/ui/icons";
+import { NOINDEX_METADATA } from "@/lib/seo";
+
+export const metadata = NOINDEX_METADATA;
 
 const TYPE_LABEL: Record<ContentType, string> = {
   relatorio: "Relatório",

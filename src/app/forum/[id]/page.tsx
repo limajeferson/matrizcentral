@@ -6,11 +6,13 @@ import { isSubscriber } from "@/lib/forum";
 import { buildReplyTree } from "@/lib/forum-tree";
 import { relativeTime } from "@/lib/relative-time";
 import ContentGate from "@/components/auth/ContentGate";
+import { NOINDEX_METADATA } from "@/lib/seo";
 
 // Sem isto, o fetch do tópico (Authorization header, antes de qualquer leitura
 // de cookies) cai no Data Cache do Next 14 e a página serve respostas velhas
 // para sempre — mesmo padrão do /biblioteca/[slug].
 export const dynamic = "force-dynamic";
+export const metadata = NOINDEX_METADATA;
 import ResponderForm from "@/components/forum/ResponderForm";
 import ReplyThread from "@/components/forum/ReplyThread";
 

@@ -1,11 +1,16 @@
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { IconCheck } from "@/components/ui/icons";
+import { pageMetadata } from "@/lib/seo";
 
 export function generateMetadata({ params }: { params: { code: string } }) {
+  const title = "Certificado de conclusão";
+  const description = `Verificação pública do certificado ${params.code} emitido pela Matriz Central.`;
   return {
-    title: "Certificado de conclusão",
-    description: `Verificação pública do certificado ${params.code} emitido pela Matriz Central.`,
-    alternates: { canonical: `/certificado/${params.code}` },
+    title,
+    description,
+    ...pageMetadata({ title, description, path: `/certificado/${params.code}` }),
+    // Não indexa (é a página de uma pessoa), mas mantém openGraph/twitter
+    // para o card ficar bonito quando o aluno compartilhar o link.
     robots: { index: false, follow: true },
   };
 }

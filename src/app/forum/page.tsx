@@ -5,12 +5,13 @@ import { isSubscriber } from "@/lib/forum";
 import { relativeTime } from "@/lib/relative-time";
 import ContentGate from "@/components/auth/ContentGate";
 import NovoTopicoForm from "@/components/forum/NovoTopicoForm";
+import { NOINDEX_METADATA } from "@/lib/seo";
 
 // Explícito: a lista lê o banco a cada request (hoje já é dinâmica porque o
 // getSessionUser roda antes, mas isso é dependência de ordem — frágil).
 export const dynamic = "force-dynamic";
 
-export const metadata = { robots: { index: false, follow: false } };
+export const metadata = NOINDEX_METADATA;
 
 export default async function ForumPage() {
   const user = await getSessionUser();

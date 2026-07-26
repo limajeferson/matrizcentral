@@ -17,6 +17,9 @@ import { ShareLinks } from "@/components/app/content/ShareLinks";
 import { VideoPlayer } from "@/components/app/content/VideoPlayer";
 import { MusicPlayerCard } from "@/components/app/content/MusicPlayerCard";
 import { extractHeadings, parseMarkdown } from "@/lib/markdown";
+import { NOINDEX_METADATA } from "@/lib/seo";
+
+export const metadata = NOINDEX_METADATA;
 
 export default async function ConteudoDetailPage({
   params,

@@ -1,6 +1,6 @@
 import { Archivo_Black, Inter, Press_Start_2P } from "next/font/google";
 import "../landing-v2.css";
-import { pageOpenGraph } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 
 import PixelGridBackground from "@/components/marketing/v2/PixelGridBackground";
 import LandingHeader from "@/components/marketing/v2/LandingHeader";
@@ -23,15 +23,15 @@ const VALORES = [
   { Icon: IconTrophy, title: "Evolução contínua", desc: "A plataforma cresce, e você cresce com ela." },
 ];
 
+const SOBRE_DESCRIPTION =
+  "Plataforma brasileira dedicada à autonomia em Inteligência Artificial. Nossa história, missão, visão e valores.";
+
 export const metadata = {
   title: "Sobre",
-  description:
-    "Plataforma brasileira dedicada à autonomia em Inteligência Artificial. Nossa história, missão, visão e valores.",
-  alternates: { canonical: "/sobre" },
-  openGraph: pageOpenGraph({
+  description: SOBRE_DESCRIPTION,
+  ...pageMetadata({
     title: "Sobre",
-    description:
-      "Plataforma brasileira dedicada à autonomia em Inteligência Artificial. Nossa história, missão, visão e valores.",
+    description: SOBRE_DESCRIPTION,
     path: "/sobre",
   }),
 };

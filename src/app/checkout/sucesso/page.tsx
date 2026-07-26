@@ -3,8 +3,9 @@ import LegalLinks from "@/components/marketing/LegalLinks";
 import AccessReveal from "./AccessReveal";
 import TrackView from "@/components/analytics/TrackView";
 import "../checkout-dark.css";
+import { NOINDEX_METADATA } from "@/lib/seo";
 
-export const metadata = { robots: { index: false, follow: false } };
+export const metadata = NOINDEX_METADATA;
 
 export default function CheckoutSucessoPage({
   searchParams,
