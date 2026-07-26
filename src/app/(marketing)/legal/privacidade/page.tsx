@@ -8,7 +8,7 @@ const archivoBlack = Archivo_Black({ subsets: ["latin"], weight: "400", variable
 const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-mc-sans" });
 
 export const metadata = {
-  title: "Política de Privacidade — Matriz Central",
+  title: "Política de Privacidade",
   description: "Como a Matriz Central coleta, usa e protege seus dados.",
 };
 

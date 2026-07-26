@@ -8,7 +8,7 @@ const archivoBlack = Archivo_Black({ subsets: ["latin"], weight: "400", variable
 const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-mc-sans" });
 
 export const metadata = {
-  title: "Termos de Uso — Matriz Central",
+  title: "Termos de Uso",
   description: "Termos e condições de uso da plataforma Matriz Central.",
 };
 

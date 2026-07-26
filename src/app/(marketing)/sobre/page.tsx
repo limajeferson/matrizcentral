@@ -23,7 +23,7 @@ const VALORES = [
 ];
 
 export const metadata = {
-  title: "Sobre — Matriz Central",
+  title: "Sobre",
   description:
     "Plataforma brasileira dedicada à autonomia em Inteligência Artificial. Nossa história, missão, visão e valores.",
 };

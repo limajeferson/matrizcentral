@@ -11,8 +11,8 @@ import { extractHeadings, parseMarkdown } from "@/lib/markdown";
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const post = getPostBySlug(BLOG_POSTS, params.slug);
-  if (!post) return { title: "Artigo não encontrado — Matriz Central" };
-  return { title: `${post.title} — Matriz Central`, description: post.excerpt };
+  if (!post) return { title: "Artigo não encontrado" };
+  return { title: post.title, description: post.excerpt };
 }
 
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {

@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { THEME_INIT_SCRIPT } from "@/components/theme/theme-script";
+import { SITE_URL } from "@/lib/seo";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -15,9 +16,31 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
+const SITE_DESCRIPTION =
+  "Plataforma de aprendizado sobre IA local: relatórios, podcasts, vídeos e pesquisas para rodar modelos no seu próprio hardware, com privacidade e sem mensalidade.";
+
 export const metadata: Metadata = {
-  title: "Matriz Central",
-  description: "Plataforma de aprendizado sobre IA local e ferramentas de desenvolvimento com IA.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Matriz Central — IA local, do diagnóstico ao domínio",
+    template: "%s · Matriz Central",
+  },
+  description: SITE_DESCRIPTION,
+  applicationName: "Matriz Central",
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    locale: "pt_BR",
+    siteName: "Matriz Central",
+    url: SITE_URL,
+    title: "Matriz Central — IA local, do diagnóstico ao domínio",
+    description: SITE_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Matriz Central — IA local, do diagnóstico ao domínio",
+    description: SITE_DESCRIPTION,
+  },
 };
 
 export default function RootLayout({

@@ -1,7 +1,7 @@
 import { FAQ_ITEMS } from "@/components/marketing/v2/faq-data";
 import ContatoForm from "@/components/support/ContatoForm";
 
-export const metadata = { title: "Suporte — Matriz Central", description: "Tire dúvidas ou fale com a gente." };
+export const metadata = { title: "Suporte", description: "Tire dúvidas ou fale com a gente." };
 
 export default function SuportePage() {
   return (
