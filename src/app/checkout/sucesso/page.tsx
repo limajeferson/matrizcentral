@@ -1,4 +1,5 @@
 import NeuralBackdrop from "@/components/marketing/v2/NeuralBackdrop";
+import LegalLinks from "@/components/marketing/LegalLinks";
 import AccessReveal from "./AccessReveal";
 import "../checkout-dark.css";
 
@@ -21,6 +22,7 @@ export default function CheckoutSucessoPage({
         <h1>Compra confirmada!</h1>
         <AccessReveal sessionId={sessionId} />
       </div>
+      <LegalLinks className="mc-checkout-legal" />
     </div>
   );
 }

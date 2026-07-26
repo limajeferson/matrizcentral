@@ -1,3 +1,5 @@
+import LegalLinks from "./LegalLinks";
+
 export default function Footer() {
   return (
     <footer>
@@ -6,9 +8,12 @@ export default function Footer() {
           Matriz<span>/</span>Central
         </span>
         <nav>
-          <a href="/#features">Features</a>
+          {/* /#features nao existe: os ids reais da landing sao sistema,
+              processo, preco, faq, central, momento, estrategia. */}
+          <a href="/#sistema">O sistema</a>
           <a href="/#preco">Preço</a>
         </nav>
+        <LegalLinks />
         <span>
           © {new Date().getFullYear()} Matriz Central. Todos os direitos
           reservados.

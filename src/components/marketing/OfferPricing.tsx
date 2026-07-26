@@ -93,7 +93,7 @@ export default function OfferPricing() {
             <li>Acesso à plataforma para <strong>visualizar</strong> toda a biblioteca (prévias)</li>
             <li>Gamificação da sua trilha do ebook (XP, níveis)</li>
             <li><strong>Cupom de R$47</strong> (válido 30 dias) para migrar ao Regular ou Advanced</li>
-            <li>Garantia condicional de 7 dias (ver termos)</li>
+            <li>Garantia condicional de 7 dias (<a href="/legal/termos#garantia">ver termos</a>)</li>
           </ul>
           <span className="foot">Por R$47, uma vez: seu núcleo de aprendizado — e a plataforma pra explorar o resto.</span>
         </div>

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import NeuralBackdrop from "@/components/marketing/v2/NeuralBackdrop";
+import LegalLinks from "@/components/marketing/LegalLinks";
 import "../checkout-dark.css";
 
 export default function CheckoutCanceladoPage() {
@@ -11,6 +12,7 @@ export default function CheckoutCanceladoPage() {
         <p>Sua compra não foi concluída.</p>
         <Link href="/">Voltar para a página inicial</Link>
       </div>
+      <LegalLinks className="mc-checkout-legal" />
     </div>
   );
 }
