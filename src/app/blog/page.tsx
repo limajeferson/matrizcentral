@@ -1,7 +1,16 @@
 import { BLOG_POSTS } from "@/data/blog";
 import { getSortedPosts } from "@/lib/blog";
 
-export const metadata = { title: "Blog", description: "Artigos sobre IA local: privacidade, custo, hardware e como sair das mensalidades." };
+export const metadata = {
+  title: "Blog",
+  description: "Artigos sobre IA local: privacidade, custo, hardware e como sair das mensalidades.",
+  alternates: { canonical: "/blog" },
+  openGraph: {
+    title: "Blog",
+    description: "Artigos sobre IA local: privacidade, custo, hardware e como sair das mensalidades.",
+    url: "/blog",
+  },
+};
 
 export default function BlogPage() {
   const posts = getSortedPosts(BLOG_POSTS);

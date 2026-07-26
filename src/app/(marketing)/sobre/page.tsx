@@ -26,6 +26,13 @@ export const metadata = {
   title: "Sobre",
   description:
     "Plataforma brasileira dedicada à autonomia em Inteligência Artificial. Nossa história, missão, visão e valores.",
+  alternates: { canonical: "/sobre" },
+  openGraph: {
+    title: "Sobre",
+    description:
+      "Plataforma brasileira dedicada à autonomia em Inteligência Artificial. Nossa história, missão, visão e valores.",
+    url: "/sobre",
+  },
 };
 
 export default function SobrePage() {

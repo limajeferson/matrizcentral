@@ -8,11 +8,23 @@ import Markdown from "@/components/ui/Markdown";
 import { ArticleToc } from "@/components/app/content/ArticleToc";
 import { ShareLinks } from "@/components/app/content/ShareLinks";
 import { extractHeadings, parseMarkdown } from "@/lib/markdown";
+import { SITE_URL } from "@/lib/seo";
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const post = getPostBySlug(BLOG_POSTS, params.slug);
   if (!post) return { title: "Artigo não encontrado" };
-  return { title: post.title, description: post.excerpt };
+  return {
+    title: post.title,
+    description: post.excerpt,
+    alternates: { canonical: `/blog/${post.slug}` },
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      url: `/blog/${post.slug}`,
+      type: "article",
+      publishedTime: post.date,
+    },
+  };
 }
 
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
@@ -22,7 +34,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
   let body = "";
   try { body = await readFile(path.join(process.cwd(), post.bodyPath), "utf-8"); } catch { body = post.excerpt; }
   const headings = extractHeadings(parseMarkdown(body));
-  const base = process.env.NEXT_PUBLIC_URL ?? "https://www.matrizcentral.com.br";
+  const base = process.env.NEXT_PUBLIC_URL ?? SITE_URL;
 
   return (
     <div className="mx-auto max-w-2xl space-y-6 p-6">

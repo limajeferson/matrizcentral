@@ -10,6 +10,12 @@ const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600"], variabl
 export const metadata = {
   title: "Termos de Uso",
   description: "Termos e condições de uso da plataforma Matriz Central.",
+  alternates: { canonical: "/legal/termos" },
+  openGraph: {
+    title: "Termos de Uso",
+    description: "Termos e condições de uso da plataforma Matriz Central.",
+    url: "/legal/termos",
+  },
 };
 
 export default function TermosPage() {

@@ -10,6 +10,12 @@ const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600"], variabl
 export const metadata = {
   title: "Política de Privacidade",
   description: "Como a Matriz Central coleta, usa e protege seus dados.",
+  alternates: { canonical: "/legal/privacidade" },
+  openGraph: {
+    title: "Política de Privacidade",
+    description: "Como a Matriz Central coleta, usa e protege seus dados.",
+    url: "/legal/privacidade",
+  },
 };
 
 export default function PrivacidadePage() {
