@@ -48,8 +48,12 @@
   font-family: var(--font-display), var(--font-body), sans-serif;
   text-transform: uppercase;
   line-height: 0.94;
+  /* 700 = "Display" da escala M3 aprovada (conceito tipografico 2026-07-22).
+     O 400 daqui era resíduo da Archivo Black, fonte de peso ÚNICO em que 400
+     já renderiza pesadíssimo; com a Outfit, 400 deixa o hero fino e sem
+     presença. Verificado lado a lado no navegador antes de fixar. */
   letter-spacing: -0.01em;
-  font-weight: 400;
+  font-weight: 700;
   margin: 0;
 }
 

@@ -702,13 +702,20 @@
   font-size: 13px;
   color: #2b1a4d;
 }
+/* NAO usar flex/grid aqui: num container flex, cada filho inline do <li>
+   (<strong>, <a>) vira um item proprio e ganha sua propria "coluna" — os
+   bullets se quebravam em pedacos ("Cupom de R$47" separado do resto, "ver
+   termos" saltando de linha). Recuo por padding + marcador absoluto preserva
+   o fluxo inline do texto. */
 .lp-guide .plan ul li {
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
+  position: relative;
+  padding-left: 20px;
 }
 .lp-guide .plan ul li::before {
   content: "✓";
+  position: absolute;
+  left: 0;
+  top: 0;
   color: #4c1d95;
   font-weight: 700;
 }
