@@ -19,7 +19,7 @@ export default function Header({ ctaLabel = "Ver preço", ctaHref = "/oferta" }:
         </span>
         <ul className="nav-links">
           <li>
-            <a href="/#features">Features</a>
+            <a href="/#sistema">O sistema</a>
           </li>
           <li>
             <a href="/#preco">Preço</a>
@@ -42,8 +42,8 @@ export default function Header({ ctaLabel = "Ver preço", ctaHref = "/oferta" }:
       </div>
       {open && (
         <div className="nav-mobile-panel">
-          <a href="/#features" onClick={() => setOpen(false)}>
-            Features
+          <a href="/#sistema" onClick={() => setOpen(false)}>
+            O sistema
           </a>
           <a href="/#preco" onClick={() => setOpen(false)}>
             Preço

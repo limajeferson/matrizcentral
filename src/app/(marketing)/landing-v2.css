@@ -990,6 +990,14 @@
 .mc-oferta-wrapper .plan .price small { color: var(--ink-soft); }
 .mc-oferta-wrapper .plan ul { color: var(--ink-soft); }
 .mc-oferta-wrapper .plan ul li::before { color: #a78bfa; }
+/* Sem isto o "ver termos" herda a cor do <li> e fica SEM sublinhado — some
+   como link bem no item da garantia, que e onde o cliente mais precisa clicar. */
+.mc-oferta-wrapper .plan ul li a {
+  color: #a78bfa;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.mc-oferta-wrapper .plan ul li a:hover { color: var(--ink); }
 .mc-oferta-wrapper .plan .foot { color: var(--ink-mute); }
 .mc-oferta-wrapper .plan-badge-soon {
   background: rgba(255, 255, 255, 0.08);
