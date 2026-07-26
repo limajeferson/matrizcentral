@@ -23,9 +23,16 @@ export async function POST(req: NextRequest) {
     // Métrica nunca quebra a experiência: erro de payload responde 204 e some.
     if (!parsed.ok) return new NextResponse(null, { status: 204 });
 
-    // `x-forwarded-for` é fornecido pelo requisitante e pode ser forjado; para
-    // rate limit de abuso (não controle de acesso) isso é aceitável.
-    const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "desconhecido";
+    // `req.ip` é preenchido pela própria Vercel (não vem de header do cliente);
+    // `x-forwarded-for` é fornecido pelo requisitante e pode ser forjado — só
+    // serve como fallback fora da Vercel (dev local, outro host). Mesma ordem
+    // do /api/resgate: sem `req.ip` primeiro, o limite não limita nada (basta
+    // variar o header a cada request para escrever sem teto no banco).
+    const ip =
+      req.ip ||
+      req.headers.get("x-real-ip") ||
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      "desconhecido";
     if (!limiter.check(`${ip}:${parsed.value.event}`, Date.now())) {
       return new NextResponse(null, { status: 204 });
     }
