@@ -21,6 +21,8 @@ próprio e verificação visual antes de seguir.
 | [`plano.md`](plano.md) | Plano mestre: restrições globais, sequência das ondas, **correções aos planos F e G antigos** |
 | [`plano-onda1.md`](plano-onda1.md) | Onda 1 detalhada, 6 tasks — ✅ executada |
 | [`plano-onda2.md`](plano-onda2.md) | Onda 2 detalhada, 7 tasks |
+| [`copy-para-aprovacao.md`](copy-para-aprovacao.md) | **🔒 Aguardando o usuário:** 11 copies (C1–C11) com texto atual vs proposto, para aprovar item a item |
+| [`upload-midias-passo-a-passo.md`](upload-midias-passo-a-passo.md) | **🔒 Aguardando o usuário:** guia de upload das 9 mídias, com títulos e descrições prontos para colar |
 | [`backlog-conteudo.md`](backlog-conteudo.md) | Insumos editoriais rastreados — inclui o **case Dragum** |
 
 ## As 6 ondas
@@ -38,6 +40,11 @@ próprio e verificação visual antes de seguir.
 
 - **Kiwify como caixa** (usuário, 2026-07-26), mantendo a entrega na nossa
   plataforma. A Stripe continua no código; a virada é a Onda 6.
+- **Parcelamento é "até 12x", não "12x"** (usuário, 2026-07-26): quem compra
+  pela Kiwify parcela em até 12x; quem compra direto pelo Stripe fica com o que
+  o emissor oferecer. Ter dois caixas é a vantagem — mas a copy tem que dizer
+  **"até"**, senão um dos caminhos vira promessa quebrada. Ver `C4` em
+  [`copy-para-aprovacao.md`](copy-para-aprovacao.md).
 - **Medição é própria** (`funnel_events` + `/api/track`), sem dependência npm,
   sem PII — `anon_id` opaco, nunca e-mail, nunca URL com token.
 - **A `/oferta` mantém o rodapé antigo, consertado** — não repontar para o
