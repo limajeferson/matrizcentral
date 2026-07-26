@@ -8,14 +8,13 @@
 > Ordem de leitura ao retomar: **este arquivo → `CLAUDE.md` → o `README.md` da
 > frente ativa → o código fonte-de-verdade.**
 
-_Última atualização: 2026-07-23 (**frente lateral kit-ecossistema-dragum ✅** —
-exportação destilada do ecossistema para o projeto novo DRAGUM; entregáveis
-FORA deste repo, em `C:\Users\Grazi\Claude\Projects\dragum\` (2 kits + 22
-arquivos + COMECE-AQUI.md); aqui só docs da frente. **Master 3 commits à frente
-do origin, todos docs-only desta frente — sem push nesta sessão, seguro pushar
-na próxima.** O estado do produto segue o de 2026-07-22, noite: sessão tripla
-Trilha D ✅ + E ✅ (E5 aguarda usuário) + identidade ✅, gate `tsc` 0 · 345
-testes · lint 0 em `58baa1a`. **Próxima = Trilha F (polish)** — roteiro abaixo.
+_Última atualização: 2026-07-26 (**FRENTE NOVA E ATIVA: `lancamento-publico`** —
+auditoria de código com 4 agentes paralelos achou **6 buracos que nenhum plano
+cobria**, e o checklist antigo foi reordenado em **6 ondas** por critério de
+receita. **Onda 1 (Receita & Descoberta) FECHADA**: 6 tasks + passe visual,
+gate `tsc` 0 · **364 testes / 58 arquivos** · lint 0. Migration `0030` aplicada
+e verificada. As Trilhas F e G do `lancamento-final` foram **absorvidas** como
+Ondas 2 e 4 — não há fila concorrente. **Próxima = Onda 2 (Identidade & Polish).**
 A seção "O QUE FALTA PARA O LANÇAMENTO" é o checklist mestre da inauguração.)_
 
 > **Convenção deste arquivo:** as seções de **estado** (`PRÓXIMA AÇÃO`,
@@ -27,6 +26,37 @@ A seção "O QUE FALTA PARA O LANÇAMENTO" é o checklist mestre da inauguraçã
 ---
 
 ## ⏭️ PRÓXIMA AÇÃO (leia isto primeiro ao retomar)
+
+> ### 🔴 LEIA ISTO ANTES DE TUDO — a fila mudou em 2026-07-26
+>
+> **A fila ativa agora é [`frentes/lancamento-publico/`](frentes/lancamento-publico/README.md).**
+> Uma auditoria de código (não de docs) encontrou seis problemas que o checklist
+> antigo não conhecia — entre eles **o botão de compra travando em erro de rede**,
+> **zero medição de funil** e **zero SEO técnico**. Como o objetivo do usuário é
+> *lançar e começar a captar cliente*, a ordem foi refeita por um critério só:
+> o que faz perder dinheiro ou perder dado vem primeiro.
+>
+> **As Trilhas F e G do `lancamento-final` viraram as Ondas 2 e 4 dessa frente**
+> (revalidadas contra o código — os planos antigos têm erros listados em
+> [`lancamento-publico/plano.md`](frentes/lancamento-publico/plano.md#correções-aos-planos-f-e-g-achadas-na-auditoria-de-2026-07-26)).
+> As Trilhas A–E continuam onde estavam. **Não existe fila concorrente.**
+>
+> **✅ Onda 1 (Receita & Descoberta) — FECHADA em 2026-07-26.** 6 tasks via SDD +
+> passe visual no navegador. Entregue: checkout da `/oferta` à prova de falha ·
+> termos alcançáveis da `/oferta` e do checkout · `sitemap.xml` + `robots.txt` +
+> `metadataBase`/OG/canonical · imagem de compartilhamento com a marca (PNG
+> estático, sem runtime) · **medição de funil própria** (`funnel_events` +
+> `/api/track`, migration `0030` aplicada e verificada) · 404/`error`/
+> `global-error`/`loading` com a marca. Gate: `tsc` 0 · **364 testes / 58
+> arquivos** · lint 0.
+>
+> **➡️ PRÓXIMA: Onda 2 — Identidade & Polish.** Escrever `plano-onda2.md`
+> (a spec já lista o escopo) e executar: cubo no favicon/header/OG, **Outfit +
+> Inter** aposentando as 6 famílias de fonte espalhadas, certificado
+> descobrível, a11y do `UserMenu`/`ProfileCard`, `ContentGate` em tokens.
+>
+> ⚠️ **A Onda 3 (Verdade da Oferta) tem portão humano** — garantia e preço têm
+> efeito jurídico e comercial; o Claude redige, o usuário aprova antes do deploy.
 
 **Estado agora:** site **no ar** em `www.matrizcentral.com.br` (Vercel, auto-deploy
 na `master`). Banco **em dia com TODAS as migrations do disco (0001–0029)** —
@@ -504,6 +534,10 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
 
 ## 🌿 Estado do git
 
+- **2026-07-26:** `master` com os commits da Onda 1 (`2f0cb4a..`) + os 3 commits
+  docs-only da frente `kit-ecossistema-dragum` que já estavam locais. **Push
+  seguro:** a migration `0030` já está aplicada e verificada no remoto (L-023
+  cumprida), e não há outro pré-requisito de deploy pendente.
 - **Branch ativa:** `master`. A Trilha D (`f2aa265..100c37b`, 5 commits de
   código + docs de fechamento) é pushada no fechamento desta sessão — a
   migration `0027` já está **aplicada e verificada** no remoto (pré-requisito
@@ -629,6 +663,38 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
   ver [hardening-criticos](frentes/hardening-criticos/README.md).
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
+
+- **2026-07-26 (Opus 5) — AUDITORIA + FRENTE NOVA `lancamento-publico` + ONDA 1 ✅:**
+  o usuário voltou de 2 dias no projeto **Dragum** (jogo) e pediu auditoria,
+  frentes priorizadas e execução. **Auditoria com 4 agentes paralelos** (escopo F,
+  escopo G, prontidão de lançamento/SEO, gate) contra o **código real**, não os
+  docs. Achou 6 buracos sem dono: `/oferta` travando o botão de compra em erro de
+  rede (`handleCheckout` sem `try/catch/finally`) · **zero medição** (grep achou
+  1 hit e era comentário) · **zero SEO técnico** (sem sitemap/robots/`metadataBase`/OG;
+  landing e `/oferta` sem metadata própria) · termos inacessíveis na `/oferta`
+  (rodapé antigo com `/#features` **morto**) · sem `error`/`not-found`/`loading`
+  em lugar nenhum · newsletter gravando em tabela **sem nenhum leitor**. Mais as
+  promessas descoladas do código (12x que a Stripe BR não entrega; garantia com
+  **3 versões** diferentes no ar; landing dizendo que R$47 = "todo o sistema" vs
+  `/oferta` dizendo que R$47 = prévias; 9 de 16 itens do hub "em breve" com o
+  eixo audiovisual 100% vazio) e a dívida da Trilha G intocada (XP de triagem
+  concedido **em dobro**, 3 APIs dando XP sem checar sessão, `/entrar/resgate`
+  replayável). **Decisão do usuário: Kiwify como caixa.** Frente nova
+  `docs/frentes/lancamento-publico/` (spec + plano mestre + plano da onda 1 +
+  backlog editorial), absorvendo F e G. **Onda 1 executada via SDD**, 6 tasks,
+  review por task + fixes + review final. Migration **`0030_funnel_events`**
+  aplicada e verificada. **3 achados graves vieram das reviews, não do gate:**
+  (1) `canonical` no layout raiz é **herdado** por toda página filha — `/blog`,
+  cada post, `/sobre`, `/oferta` apontavam a **home** como canônica (o Next não
+  faz merge profundo de metadata); (2) o **referrer** vazava a URL de
+  `/dashboard/<token>` — que **é** a credencial — para a tabela de métricas, por
+  navegação normal do `ContentGate`; (3) rate limit chaveado por valor do
+  cliente nunca limitava. Todos corrigidos e reverificados. O **passe visual**
+  ainda pegou 2 coisas que `curl` não pega: o link "ver termos" era **invisível
+  como link** (mesma cor do texto, sem sublinhado) e o `/#features` morto ainda
+  vivia no **Header** (o plano só tinha listado o rodapé). Lições **L-047..L-051**
+  destiladas. Gate final: `tsc` 0 · **364 testes / 58 arquivos** · lint 0.
+  **Dragum registrado como backlog editorial**, não como frente.
 
 - **2026-07-23 (Opus 4.8) — FRENTE LATERAL: KIT DE ECOSSISTEMA PARA O DRAGUM ✅:**
   brainstorming → spec → plano → execução inline. Entregues em
