@@ -26,9 +26,10 @@ export default function FooterNewsletter() {
     if (res && res.ok) {
       navigator.sendBeacon?.(
         "/api/track",
-        new Blob([JSON.stringify({ event: "newsletter_signup", path: "/" })], {
-          type: "application/json",
-        })
+        new Blob(
+          [JSON.stringify({ event: "newsletter_signup", path: window.location.pathname })],
+          { type: "application/json" }
+        )
       );
     }
     setStatus(res && res.ok ? "done" : "error");

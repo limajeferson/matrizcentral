@@ -15,7 +15,7 @@ export default function CheckoutSucessoPage({
 
   return (
     <div className="mc-checkout">
-      <TrackView event="checkout_success" />
+      <TrackView event="checkout_success" dedupeKey="checkout_success" />
       <NeuralBackdrop />
       <div className="mc-checkout-card">
         <span className="mc-checkout-success" aria-hidden="true">
