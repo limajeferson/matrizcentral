@@ -4,35 +4,76 @@ import { useState } from "react";
 import { isValidEmail } from "@/lib/email-validation";
 
 function PlanCheckout({ plan, cta }: { plan: "ebook" | "regular" | "advanced"; cta: string }) {
+  const inputId = `checkout-email-${plan}`;
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleCheckout = async () => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (!email || !isValidEmail(email)) {
       setError("Informe um e-mail válido.");
       return;
     }
-    setLoading(true); setError(null);
-    const res = await fetch("/api/checkout", {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, plan }),
-    });
-    if (!res.ok) { setLoading(false); setError("Não foi possível iniciar o checkout. Tente novamente."); return; }
-    const { url } = await res.json();
-    window.location.href = url;
+    setLoading(true);
+    setError(null);
+    // Em caso de sucesso a navegação já foi disparada: manter o botão travado
+    // evita duplo clique enquanto o browser troca de página.
+    let redirecting = false;
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, plan }),
+      });
+      if (!res.ok) {
+        setError("Não foi possível iniciar o checkout. Tente novamente.");
+        return;
+      }
+      const data = await res.json().catch(() => null);
+      const url = data?.url;
+      if (typeof url !== "string" || !url) {
+        setError("Não foi possível iniciar o checkout. Tente novamente.");
+        return;
+      }
+      redirecting = true;
+      window.location.href = url;
+    } catch {
+      setError("Conexão instável. Verifique sua internet e tente novamente.");
+    } finally {
+      if (!redirecting) setLoading(false);
+    }
   };
 
   return (
-    <div>
+    <form onSubmit={handleSubmit}>
       <div className="waitlist-form">
-        <input type="email" placeholder="seu@email.com" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <input
+          id={inputId}
+          name="email"
+          type="email"
+          autoComplete="email"
+          placeholder="seu@email.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          aria-invalid={error ? true : undefined}
+          aria-label="Seu e-mail para receber o acesso"
+        />
       </div>
-      <button type="button" className="btn btn-dark" style={{ width: "100%", justifyContent: "center", marginBottom: 20 }} onClick={handleCheckout} disabled={loading}>
+      <button
+        type="submit"
+        className="btn btn-dark"
+        style={{ width: "100%", justifyContent: "center", marginBottom: 20 }}
+        disabled={loading}
+      >
         {loading ? "Redirecionando..." : cta}
       </button>
-      {error && <p className="hero-error" style={{ marginBottom: 12 }}>{error}</p>}
-    </div>
+      {error && (
+        <p className="hero-error" style={{ marginBottom: 12 }} role="alert">
+          {error}
+        </p>
+      )}
+    </form>
   );
 }
 
