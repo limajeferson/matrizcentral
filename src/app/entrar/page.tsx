@@ -1,5 +1,7 @@
 import EntrarForm from "./EntrarForm";
 
+export const metadata = { robots: { index: false, follow: false } };
+
 export default function EntrarPage({
   searchParams,
 }: {

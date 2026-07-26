@@ -3,6 +3,8 @@ import NeuralBackdrop from "@/components/marketing/v2/NeuralBackdrop";
 import LegalLinks from "@/components/marketing/LegalLinks";
 import "../checkout-dark.css";
 
+export const metadata = { robots: { index: false, follow: false } };
+
 export default function CheckoutCanceladoPage() {
   return (
     <div className="mc-checkout">

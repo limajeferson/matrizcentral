@@ -1,6 +1,15 @@
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { IconCheck } from "@/components/ui/icons";
 
+export function generateMetadata({ params }: { params: { code: string } }) {
+  return {
+    title: "Certificado de conclusão",
+    description: `Verificação pública do certificado ${params.code} emitido pela Matriz Central.`,
+    alternates: { canonical: `/certificado/${params.code}` },
+    robots: { index: false, follow: true },
+  };
+}
+
 export default async function VerificacaoCertificadoPage({
   params,
 }: {

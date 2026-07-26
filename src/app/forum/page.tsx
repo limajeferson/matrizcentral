@@ -10,6 +10,8 @@ import NovoTopicoForm from "@/components/forum/NovoTopicoForm";
 // getSessionUser roda antes, mas isso é dependência de ordem — frágil).
 export const dynamic = "force-dynamic";
 
+export const metadata = { robots: { index: false, follow: false } };
+
 export default async function ForumPage() {
   const user = await getSessionUser();
   const access = user ? (await getAccessContext(user.id)).access : "view";

@@ -3,6 +3,8 @@ import LegalLinks from "@/components/marketing/LegalLinks";
 import AccessReveal from "./AccessReveal";
 import "../checkout-dark.css";
 
+export const metadata = { robots: { index: false, follow: false } };
+
 export default function CheckoutSucessoPage({
   searchParams,
 }: {

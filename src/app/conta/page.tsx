@@ -6,6 +6,8 @@ import { READER_DOCS } from "@/data/reader-docs";
 
 const readerEbook = READER_DOCS.find((d) => d.kind === "ebook");
 
+export const metadata = { robots: { index: false, follow: false } };
+
 export default async function ContaPage() {
   const user = await getSessionUser();
   if (!user) redirect("/entrar");

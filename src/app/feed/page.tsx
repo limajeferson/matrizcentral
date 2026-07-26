@@ -24,6 +24,8 @@ import { listPosts } from "@/lib/feed-posts";
 import { buildFeedTimeline } from "@/lib/feed-timeline";
 import type { AccessLevel } from "@/lib/entitlements";
 
+export const metadata = { robots: { index: false, follow: false } };
+
 const PLAN_LABEL: Record<AccessLevel, ProfileCardPlan> = {
   view: "Start",
   regular: "Regular",

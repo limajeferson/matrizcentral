@@ -1,5 +1,7 @@
+import type { Metadata } from "next";
 import { Archivo_Black, Inter, Press_Start_2P } from "next/font/google";
 import "./landing-v2.css";
+import { SITE_URL } from "@/lib/seo";
 
 import PixelGridBackground from "@/components/marketing/v2/PixelGridBackground";
 import LandingHeader from "@/components/marketing/v2/LandingHeader";
@@ -35,6 +37,22 @@ const pressStart2P = Press_Start_2P({
   weight: "400",
   variable: "--font-mc-pixel",
 });
+
+const HOME_TITLE = "IA local, do diagnóstico ao domínio";
+const HOME_DESCRIPTION =
+  "Descubra qual IA roda no seu hardware, monte sua trilha e acompanhe relatórios, podcasts e pesquisas da comunidade. Sem mensalidade, sem enviar seus dados para fora.";
+
+export const metadata: Metadata = {
+  title: HOME_TITLE,
+  description: HOME_DESCRIPTION,
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: HOME_TITLE,
+    description: HOME_DESCRIPTION,
+    url: SITE_URL,
+    images: ["/opengraph-image"],
+  },
+};
 
 export default function HomePage() {
   return (
