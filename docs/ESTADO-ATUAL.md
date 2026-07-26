@@ -70,7 +70,30 @@ A seção "O QUE FALTA PARA O LANÇAMENTO" é o checklist mestre da inauguraçã
 > foi **apagado** — ele tinha precedência sobre o SVG em vários navegadores e
 > seguraria o triângulo antigo no ar. Verificado em produção.
 >
-> **➡️ PRÓXIMA: Onda 2, Task 2 — tipografia (Outfit + Inter).** É a de **maior
+> **✅ Onda 2, Task 2 (tipografia) fechada e no ar** (`ab6af60` + fix visual
+> `d2fbe8c`): **Outfit** nos títulos e **Inter** no corpo, self-hosted pelo
+> `next/font/google` — **zero request a `fonts.googleapis`/`gstatic`** em
+> produção (custo zero verificado). Das 6 famílias sobraram 4: as 2 do sistema
+> + **JetBrains Mono** (números tabulares) e **Press Start 2P** (efeito retro
+> deliberado do `RotatingWord`), preservadas de propósito. Três bugs pegos que
+> o gate não pega: as vars estavam no `<body>` mas o `@apply font-sans` do
+> `html` as consome no `<html>` (custom property só herda pra baixo) →
+> `/blog`, `/suporte` e `/entrar` caíam em **Times New Roman**; `.mc-display`
+> com `font-weight: 400` (resíduo da Archivo Black, fonte de peso único)
+> deixava o hero **fino** com Outfit → 700 da escala M3; e `.lp-guide .plan ul
+> li` era `display:flex`, então cada `<strong>`/`<a>` virava item de flex com
+> coluna própria e **os bullets da `/oferta` se quebravam em pedaços**
+> (pré-existente, agravado pelo link "ver termos" da Onda 1).
+>
+> **➡️ PRÓXIMA: Onda 2, Task 3 — logo cubo nas superfícies**
+> (`AppHeader`, `LandingHeader`, rodapés; componente único, sem repetir o SVG).
+>
+> **🔒 Aguardando o usuário (não bloqueia a Onda 2):** aprovar as 11 copies em
+> [`frentes/lancamento-publico/copy-para-aprovacao.md`](frentes/lancamento-publico/copy-para-aprovacao.md)
+> · subir as 9 mídias com
+> [`upload-midias-passo-a-passo.md`](frentes/lancamento-publico/upload-midias-passo-a-passo.md)
+> · criar a conta Kiwify. **Web Analytics já ligado** (Hobby, custo zero) e
+> script servindo 200 em produção. É a de **maior
 > risco visual da onda inteira**: mexe em todas as páginas públicas de uma vez
 > (hoje há **6 famílias** espalhadas e Outfit tem zero ocorrências em `src/`).
 > Commit próprio e verificação visual página a página antes de seguir.
