@@ -1,13 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="8" fill="#7c3aed"/>
-  <g stroke="#ffffff" stroke-width="1.6">
-    <line x1="9" y1="20" x2="16" y2="9"/>
-    <line x1="16" y1="9" x2="23" y2="20"/>
-    <line x1="9" y1="20" x2="23" y2="20"/>
-  </g>
-  <g fill="#ffffff">
-    <circle cx="9" cy="20" r="2.6"/>
-    <circle cx="16" cy="9" r="2.6"/>
-    <circle cx="23" cy="20" r="2.6"/>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-150 -150 300 300">
+  <title>Matriz Central</title>
+  <!-- Cubo isométrico flat em 3 tons de violeta: topo #a78bfa, esquerda #7c5cff, direita #7c3aed -->
+  <!-- Geometry: hexágono com R=140 para legibilidade em 16px -->
+  <polygon points="-121.24,-70 0,-140 121.24,-70 0,0" fill="#a78bfa"/>
+  <polygon points="-121.24,-70 0,0 0,140 -121.24,70" fill="#7c5cff"/>
+  <polygon points="0,0 121.24,-70 121.24,70 0,140" fill="#7c3aed"/>
 </svg>
