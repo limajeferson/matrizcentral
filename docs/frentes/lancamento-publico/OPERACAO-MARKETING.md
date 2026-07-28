@@ -66,6 +66,23 @@ IA local — sem nuvem, sem mensalidade, com autonomia.
 
 # 📺 CANAL 1 — YouTube
 
+### ✅ Etapa 1 concluída (2026-07-28, via Claude Cowork) — canal no ar
+
+**Canal:** [youtube.com/@centralmatriz](https://www.youtube.com/@centralmatriz) — verificado ao vivo pelo Claude Code.
+
+> ⚠️ **Handle mudou de `@matrizcentral` para `@centralmatriz`.** O handle
+> planejado já estava em uso por outro canal (confirmado na hora de criar,
+> não dava para saber antes). **Este é o handle real e definitivo do YouTube**
+> — todas as referências abaixo foram corrigidas para ele.
+> **Decisão sua, sem prazo:** usar `@centralmatriz` também no Instagram (Etapa 7)
+> para manter o handle igual em todo canal, ou manter `@matrizcentral` lá, já
+> que esse ficou livre. Qualquer um dos dois funciona; só decida antes de criar
+> o perfil do Instagram, pra não ter que trocar depois.
+
+O que já está no ar: nome, handle, foto de perfil, banner (dentro da área
+segura, sem sobreposição), descrição completa, link do portal e as 12
+palavras-chave, todos salvos e publicados no canal.
+
 ### Configuração do canal
 
 **Nome do canal:**
@@ -73,9 +90,9 @@ IA local — sem nuvem, sem mensalidade, com autonomia.
 Matriz Central
 ```
 
-**Handle:**
+**Handle (real, no ar):**
 ```
-@matrizcentral
+@centralmatriz
 ```
 
 **Foto de perfil:** `public/brand/mc-avatar-800.png`
@@ -95,7 +112,7 @@ Vídeos novos acompanham o portal: https://www.matrizcentral.com.br
 ia local, inteligência artificial local, llm local, rodar ia no pc, ollama, lm studio, modelos open source, ia sem mensalidade, privacidade ia, hardware para ia, ia offline, alternativa chatgpt
 ```
 
-**Links do canal:** `Portal` → `https://www.matrizcentral.com.br`
+**Links do canal:** `Portal` → `https://www.matrizcentral.com.br` · **Contato:** `contato@matrizcentral.com.br`
 
 ---
 
@@ -340,7 +357,7 @@ Mais relatórios, vídeos e pesquisas em https://www.matrizcentral.com.br
 
 **Foto de perfil:** `public/brand/mc-avatar-800.png`
 
-**Nome:** `Matriz Central` · **Usuário:** `@matrizcentral`
+**Nome:** `Matriz Central` · **Usuário:** `@matrizcentral` *(livre — ou `@centralmatriz`, igual ao YouTube, se preferir handle único em todo canal; ver nota na seção do YouTube)*
 
 **Bio (colar):**
 ```
@@ -356,14 +373,18 @@ Relatórios, podcasts e vídeos para rodar IA na sua máquina.
 
 Faça **uma etapa por vez**. Ao concluir, me avise — eu ligo o que depende dela.
 
-### Etapa 1 — Criar o canal do YouTube
-- [ ] Criar canal com nome `Matriz Central` e handle `@matrizcentral`
-- [ ] Subir foto de perfil (`mc-avatar-800.png`) e banner (`mc-banner-youtube-2560x1440.png`)
-- [ ] Colar a descrição e as palavras-chave do canal
-- [ ] **Me avisar** → eu confiro se o canal aparece certo
+### Etapa 1 — Criar o canal do YouTube ✅ CONCLUÍDA (2026-07-28, via Claude Cowork)
+- [x] Criar canal com nome `Matriz Central` e handle `@centralmatriz` (`@matrizcentral` já estava em uso por outro canal)
+- [x] Subir foto de perfil (`mc-avatar-800.png`) e banner (`mc-banner-youtube-2560x1440.png`)
+- [x] Colar a descrição e as palavras-chave do canal
+- [x] **Verificado ao vivo pelo Claude Code** em [youtube.com/@centralmatriz](https://www.youtube.com/@centralmatriz)
 
-### Etapa 2 — Subir os 3 vídeos
-- [ ] Vídeo 1 (`video-verdade-ia-local.mp4`) com título, descrição, tags e thumbnail
+### Etapa 2 — Subir os 3 vídeos 🔄 EM ANDAMENTO
+- [ ] Vídeo 1 (`video-verdade-ia-local.mp4`) com título, descrição, tags e thumbnail —
+      **parado aguardando você**: o Cowork chegou na tela de envio do YouTube Studio
+      e precisa que você clique em "Selecionar arquivos" e escolha o vídeo (é a
+      janela nativa do Windows — nenhuma automação de navegador enxerga essa
+      janela; volte para a conversa do Cowork e selecione o arquivo).
 - [ ] Vídeo 2 (`video-evolucao-ia-local.mp4`)
 - [ ] Vídeo 3 (`video-lucrando-ia-local.mp4`)
 - [ ] **Me mandar os 3 links** → eu ligo os players no site e verifico em produção

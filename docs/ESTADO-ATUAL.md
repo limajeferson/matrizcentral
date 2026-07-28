@@ -87,19 +87,28 @@ A seção "O QUE FALTA PARA O LANÇAMENTO" é o checklist mestre da inauguraçã
 >
 > **➡️ PRÓXIMA: Onda 2, Task 3 — logo cubo nas superfícies**
 > (`AppHeader`, `LandingHeader`, rodapés; componente único, sem repetir o SVG).
+> Depois: âncoras do `LandingHeader` (ele renderiza fora da landing),
+> certificado descobrível, rótulos do `ContatoForm`, teclado no
+> `UserMenu`/`ProfileCard`, `ContentGate` em tokens.
+>
+> **📣 MARKETING — canal do YouTube criado (2026-07-28, via Claude Cowork):**
+> [youtube.com/@centralmatriz](https://www.youtube.com/@centralmatriz) no ar,
+> verificado ao vivo pelo Claude Code (banner, foto, descrição, link e 12
+> palavras-chave, tudo publicado). **Handle mudou de `@matrizcentral` para
+> `@centralmatriz`** — o planejado já estava em uso por outro canal. Detalhes e
+> decisão pendente (mesmo handle no Instagram ou não) em
+> [`OPERACAO-MARKETING.md`](frentes/lancamento-publico/OPERACAO-MARKETING.md).
+> **Etapa 2 (subir os 3 vídeos) parada aguardando o usuário**: o Cowork chegou
+> na tela de envio do YouTube Studio e precisa que ele selecione o arquivo do
+> Vídeo 1 — é janela nativa do Windows, nenhuma automação de navegador
+> enxerga essa janela.
 >
 > **🔒 Aguardando o usuário (não bloqueia a Onda 2):** aprovar as 11 copies em
 > [`frentes/lancamento-publico/copy-para-aprovacao.md`](frentes/lancamento-publico/copy-para-aprovacao.md)
-> · subir as 9 mídias com
-> [`upload-midias-passo-a-passo.md`](frentes/lancamento-publico/upload-midias-passo-a-passo.md)
+> · concluir Etapa 2 (vídeo 1 do YouTube) e seguir o roteiro do
+> [`OPERACAO-MARKETING.md`](frentes/lancamento-publico/OPERACAO-MARKETING.md)
 > · criar a conta Kiwify. **Web Analytics já ligado** (Hobby, custo zero) e
-> script servindo 200 em produção. É a de **maior
-> risco visual da onda inteira**: mexe em todas as páginas públicas de uma vez
-> (hoje há **6 famílias** espalhadas e Outfit tem zero ocorrências em `src/`).
-> Commit próprio e verificação visual página a página antes de seguir.
-> Depois: logo cubo nas superfícies, âncoras do `LandingHeader` (ele renderiza
-> fora da landing), certificado descobrível, rótulos do `ContatoForm`, teclado
-> no `UserMenu`/`ProfileCard`, `ContentGate` em tokens.
+> script servindo 200 em produção.
 >
 > ⚠️ **A Onda 3 (Verdade da Oferta) tem portão humano** — garantia e preço têm
 > efeito jurídico e comercial; o Claude redige, o usuário aprova antes do deploy.
