@@ -49,6 +49,39 @@ disso não há o que mostrar.
 
 ---
 
+## 🏪 Marketplace de afiliados (Hotmart / Kiwify / Eduzz) — decidido: BACKLOG
+
+**Decisão do usuário em 2026-07-28: entrar depois de validar, não agora.**
+
+O lançamento é **pelo site**, com a **Kiwify apenas como caixa** (checkout), e a
+entrega seguindo na nossa plataforma. Listar o produto num marketplace de
+afiliados fica para depois.
+
+**Por que não agora — três razões concretas:**
+
+1. **Hotmart tem cláusula de exclusividade de venda (5.1)** — pesquisada e
+   registrada em [`../../ESTADO-ATUAL.md`](../../ESTADO-ATUAL.md). Entrar lá
+   **bloqueia a venda direta no site**, que é onde a plataforma vive.
+2. **O produto não é um ebook.** O `CLAUDE.md` define a Matriz Central como
+   plataforma multi-formato; o ebook é material de apoio. Listar como
+   "ebook R$47" reposiciona para baixo e coloca o produto para competir com
+   ebook de R$9,90.
+3. **Copy ainda não está verdadeira.** A página de vendas promete "120+ páginas"
+   e o ebook tem ~15–20. Levar isso a um marketplace com afiliados é o caminho
+   mais rápido para reembolso em massa — e taxa alta de reembolso derruba o
+   ranking do produto e pode suspender a conta.
+
+**Gatilho para sair do backlog (os três, juntos):**
+- [ ] Copy corrigida e no ar (Onda 3, itens `C1`–`C12`)
+- [ ] Pelo menos uma venda real validada ponta a ponta pelo site
+- [ ] Número de conversão medido (`funnel_events` + Web Analytics já estão no ar)
+
+**Quando destravar:** começar pela **Kiwify**, que **não tem exclusividade** e já
+será nosso caixa. Hotmart só se a exclusividade for aceitável — decisão de
+posicionamento, não técnica.
+
+---
+
 ## Outros insumos rastreados
 
 - **Slides e infográficos do NotebookLM** (Trilha E): existem, mas **não há

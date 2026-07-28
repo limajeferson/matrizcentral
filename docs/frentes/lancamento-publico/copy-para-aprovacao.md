@@ -288,6 +288,62 @@ do produto inteiro:
 
 ---
 
+# 🔴 GRUPO F — O ebook promete 6× o que entrega *(achado novo, 2026-07-28)*
+
+### C12 · "120+ páginas de conteúdo técnico"
+
+**Onde:** `src/components/marketing/DemoWidget.tsx:108`
+
+**Está no ar:**
+> **120+ páginas** de conteúdo técnico
+
+**Realidade medida** (`content/ebooks/ebook_llm_local_matrizcentral.md`):
+**3.853 palavras ≈ 15 a 20 páginas.** A discrepância é de aproximadamente **6×**.
+
+A linha vizinha (`:103`) — "9 capítulos: da escolha do modelo ao troubleshooting
+real de hardware. Sem enrolação" — **é verdadeira** e não precisa mudar.
+
+**Proposta:**
+> **9 capítulos densos, sem enrolação** — do organograma de decisão ao troubleshooting real
+
+**Por quê:** para público técnico, "15 páginas que resolvem" vende melhor que
+"120 páginas". E o valor do produto não é o volume do ebook — é a plataforma, o
+diagnóstico e o roadmap. Prometer 6× é a origem número um de pedido de reembolso,
+e num marketplace de afiliados (backlog) seria fatal.
+
+> ⏳ **Este item pode mudar:** o ebook está em **avaliação externa no NotebookLM**
+> ([`dossie-ebook-para-notebooklm.md`](dossie-ebook-para-notebooklm.md)). Se a
+> avaliação recomendar expansão do material, o número volta a ser discutido. Até
+> lá, a copy tem que refletir o que existe hoje.
+
+**Sua decisão:** `C12 → ______________`
+
+---
+
+### C13 · O ebook manda o leitor para duas páginas que dão 404
+
+**Onde:** o próprio ebook, `content/ebooks/ebook_llm_local_matrizcentral.md`
+
+| Link no ebook | Onde | Status verificado em produção |
+|---|---|---|
+| `matrizcentral.com.br/setup` | Cap. 7 (linha 530) e nota final (linha 739) | **404** |
+| `matrizcentral.com.br/assinatura` | Cap. 9 (linha 697) | **404** |
+
+O ebook também promete *"links de afiliados para compra de componentes"* que não
+existem em lugar nenhum.
+
+**Proposta:**
+- `/assinatura` → trocar por **`/oferta`** (a rota real, que existe)
+- `/setup` → remover as duas menções, **ou** criar a página. Como o Cap. 7 já traz
+  a tabela de componentes por orçamento dentro do próprio ebook, **remover é o
+  suficiente** — a promessa de "preços atualizados" é uma dívida permanente que
+  ninguém vai manter.
+- Retirar a promessa de links de afiliados enquanto eles não existirem.
+
+**Sua decisão:** `C13 → ______________`
+
+---
+
 ## 📋 Resumo para responder rápido
 
 Pode copiar este bloco, preencher e mandar:
@@ -304,6 +360,8 @@ C8  (FAQ "e assinatura?")            →
 C9  (contador da biblioteca)         → 
 C10 (email "seu ebook")              → 
 C11 (demais mencoes a ebook)         → 
+C12 (ebook "120+ paginas")           → 
+C13 (links 404 dentro do ebook)      → 
 ```
 
 **O que acontece depois:** o Claude aplica os aprovados numa task por grupo, com
