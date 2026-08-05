@@ -3,16 +3,21 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import ScrambleText from "./ScrambleText";
+import Logo from "@/components/brand/Logo";
 
+// Âncoras ABSOLUTAS (`/#id`, não `#id`): este header também é renderizado fora
+// da landing — `/sobre`, `/legal/termos`, `/legal/privacidade` —, onde as
+// seções não existem e a âncora relativa não levava a lugar nenhum. Com `/#id`
+// funciona nos dois casos (na landing o navegador só rola até a seção).
 const LINKS = [
-  { href: "#sistema", label: "O Sistema" },
-  { href: "#processo", label: "Como Funciona" },
-  { href: "#preco", label: "Preço" },
+  { href: "/#sistema", label: "O Sistema" },
+  { href: "/#processo", label: "Como Funciona" },
+  { href: "/#preco", label: "Preço" },
   { href: "/feed", label: "Feed" },
   { href: "/forum", label: "Fórum" },
   { href: "/blog", label: "Blog" },
   { href: "/suporte", label: "Suporte" },
-  { href: "#faq", label: "FAQ" },
+  { href: "/#faq", label: "FAQ" },
 ];
 
 export default function LandingHeader({
@@ -26,9 +31,12 @@ export default function LandingHeader({
     <>
       <header className="mc-header">
         <div className="mc-container mc-header-row">
-          <span className="mc-logo mc-display">
+          {/* ScrambleText MANTIDO: é o efeito de assinatura da landing v2, já
+              respeita `prefers-reduced-motion` (ScrambleText.tsx:24) e o cubo
+              entra ao lado sem competir — o mark é estático e o texto anima. */}
+          <Logo size={22} className="mc-logo mc-display">
             <ScrambleText text="Matriz/Central" />
-          </span>
+          </Logo>
           <div className="mc-header-actions">
             {accountSlot}
             <button

@@ -1,12 +1,16 @@
 import LegalLinks from "./LegalLinks";
+import Logo from "@/components/brand/Logo";
 
 export default function Footer() {
   return (
     <footer>
       <div className="container foot-row">
-        <span className="logo" style={{ fontSize: 16 }}>
-          Matriz<span>/</span>Central
-        </span>
+        {/* Fragment (sem span extra) por causa de `.lp-guide .logo span`. */}
+        <Logo size={18} gap={6} className="logo" style={{ fontSize: 16 }}>
+          <>
+            Matriz<span>/</span>Central
+          </>
+        </Logo>
         <nav>
           {/* /#features nao existe: os ids reais da landing sao sistema,
               processo, preco, faq, central, momento, estrategia. */}

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { IconBell, IconClose, IconMenu, IconSearch } from "@/components/ui/icons";
+import Logo from "@/components/brand/Logo";
 
 export type AppHeaderProps = {
   /** Slot do menu de usuário (avatar/dropdown ou link "Entrar" se deslogado). */
@@ -73,8 +74,12 @@ export function AppHeader({ userMenu, mobileNav }: AppHeaderProps) {
             <IconMenu size={20} />
           </button>
 
-          <a href="/feed" className="shrink-0 text-lg font-bold tracking-tight">
-            Matriz <span className="text-violet-600">Central</span>
+          <a href="/feed" className="shrink-0">
+            <Logo size={22} className="text-lg font-bold tracking-tight">
+              <>
+                Matriz <span className="text-violet-600">Central</span>
+              </>
+            </Logo>
           </a>
 
           <div className="relative hidden max-w-md flex-1 md:block">

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { IconMenu, IconClose } from "@/components/marketing/v2/icons";
+import Logo from "@/components/brand/Logo";
 
 interface HeaderProps {
   ctaLabel?: string;
@@ -14,9 +15,14 @@ export default function Header({ ctaLabel = "Ver preço", ctaHref = "/oferta" }:
   return (
     <header>
       <div className="container nav">
-        <span className="logo">
-          Matriz<span>/</span>Central
-        </span>
+        {/* Wordmark como fragment, sem <span> extra: `.lp-guide .logo span`
+            (landing-clone.css:61) pinta QUALQUER span descendente com o acento —
+            um wrapper a mais deixaria o nome inteiro violeta. */}
+        <Logo size={22} className="logo">
+          <>
+            Matriz<span>/</span>Central
+          </>
+        </Logo>
         <ul className="nav-links">
           <li>
             <a href="/#sistema">O sistema</a>

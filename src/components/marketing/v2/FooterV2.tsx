@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { FOOTER_COLUMNS, type FooterLink } from "./footer-nav";
 import FooterNewsletter from "./FooterNewsletter";
+import Logo from "@/components/brand/Logo";
 import {
   IconFlag, IconClock, IconCpu,
   IconGithub, IconLinkedin, IconYoutube, IconInstagram, IconX, IconDiscord,
@@ -52,9 +53,11 @@ export default function FooterV2() {
 
         <div className="mc-footer-main">
           <div className="mc-footer-brand">
-            <span className="mc-logo mc-display">
-              Matriz<span className="mc-accent-text">/</span>Central
-            </span>
+            <Logo size={24} className="mc-logo mc-display">
+              <>
+                Matriz<span className="mc-accent-text">/</span>Central
+              </>
+            </Logo>
             <p className="mc-footer-slogan">Menos assinatura. Mais autonomia.</p>
             <p className="mc-footer-desc">
               Plataforma brasileira dedicada à autonomia em Inteligência
