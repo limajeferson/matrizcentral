@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { IconClose } from "@/components/ui/icons";
+import { useFocusTrap } from "@/lib/use-focus-trap";
 
 export type ProfileCardPlan = "Start" | "Regular" | "Advanced";
 
@@ -18,18 +19,44 @@ export type ProfileCardProps = {
  * Card de perfil flutuante: pill minimizado (canto inferior direito) que
  * expande para mostrar progresso de XP, plano e atalho para a conta.
  * Client component — não bloqueia o feed, `position: fixed` fora do fluxo.
+ *
+ * A11y — por que **não** é `role="dialog"`: o card expandido não é modal.
+ * Não tem backdrop, não inertiza o resto da página, o Tab sai dele
+ * livremente e nada no fluxo depende de fechá-lo. Anunciar "dialog" faria o
+ * leitor de tela prometer um contexto modal que não existe (e vários leitores
+ * entram em modo de aplicação ao ouvir "dialog"). O padrão certo aqui é
+ * **disclosure**: o gatilho carrega `aria-expanded` e o painel é um
+ * `role="group"` nomeado — container neutro, sem promessa de modalidade.
  */
 export function ProfileCard({ email, level, levelName, progressPercent, plan }: ProfileCardProps) {
   const [expanded, setExpanded] = useState(false);
+  const pillRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const wasExpanded = useRef(false);
   const initial = email.trim().charAt(0).toUpperCase() || "?";
   const shortEmail = email.length > 22 ? `${email.slice(0, 19)}...` : email;
   const clampedProgress = Math.min(100, Math.max(0, progressPercent));
 
+  const collapse = useCallback(() => setExpanded(false), []);
+  const expand = useCallback(() => setExpanded(true), []);
+
+  // Escape fecha o painel e o foco entra nele ao abrir (sem prender o Tab:
+  // o card não é modal).
+  useFocusTrap({ active: expanded, containerRef: panelRef, onClose: collapse });
+
+  // Ao recolher, o pill é remontado — devolve o foco a ele.
+  useEffect(() => {
+    if (!expanded && wasExpanded.current) pillRef.current?.focus();
+    wasExpanded.current = expanded;
+  }, [expanded]);
+
   if (!expanded) {
     return (
       <button
+        ref={pillRef}
         type="button"
-        onClick={() => setExpanded(true)}
+        onClick={expand}
+        aria-expanded={false}
         aria-label="Expandir card de perfil"
         className="fixed bottom-6 right-6 z-40 flex max-w-[calc(100vw-2rem)] items-center gap-2 rounded-full border border-border bg-card px-3 py-2 text-left shadow-lg transition hover:bg-accent sm:gap-3 sm:px-4"
       >
@@ -46,7 +73,8 @@ export function ProfileCard({ email, level, levelName, progressPercent, plan }: 
 
   return (
     <div
-      role="dialog"
+      ref={panelRef}
+      role="group"
       aria-label="Card de perfil"
       className="fixed bottom-6 right-6 z-40 w-72 max-w-[calc(100vw-2rem)] rounded-2xl border border-border bg-card p-4 shadow-xl"
     >
@@ -64,7 +92,8 @@ export function ProfileCard({ email, level, levelName, progressPercent, plan }: 
         </div>
         <button
           type="button"
-          onClick={() => setExpanded(false)}
+          onClick={collapse}
+          aria-expanded
           aria-label="Recolher card de perfil"
           className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-muted-foreground transition hover:bg-accent hover:text-accent-foreground"
         >

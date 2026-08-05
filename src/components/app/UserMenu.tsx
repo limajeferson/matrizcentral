@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTheme } from "@/components/theme/ThemeProvider";
 import { IconMoon, IconSun } from "@/components/ui/icons";
+import { useFocusTrap } from "@/lib/use-focus-trap";
 
 export type UserMenuProps = {
   email: string;
@@ -16,6 +17,8 @@ export function UserMenu({ email, level, levelName }: UserMenuProps) {
   const [open, setOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const { theme, toggle } = useTheme();
 
   useEffect(() => {
@@ -28,6 +31,17 @@ export function UserMenu({ email, level, levelName }: UserMenuProps) {
     document.addEventListener("mousedown", handlePointerDown);
     return () => document.removeEventListener("mousedown", handlePointerDown);
   }, [open]);
+
+  const close = useCallback(() => setOpen(false), []);
+
+  // Escape fecha e devolve o foco ao avatar; ↑/↓ circulam entre os menuitems.
+  useFocusTrap({
+    active: open,
+    containerRef: menuRef,
+    onClose: close,
+    returnFocusRef: triggerRef,
+    arrowNavigation: true,
+  });
 
   async function handleLogout() {
     setLoggingOut(true);
@@ -43,6 +57,7 @@ export function UserMenu({ email, level, levelName }: UserMenuProps) {
   return (
     <div ref={rootRef} className="relative">
       <button
+        ref={triggerRef}
         type="button"
         onClick={() => setOpen((prev) => !prev)}
         aria-haspopup="menu"
@@ -55,7 +70,9 @@ export function UserMenu({ email, level, levelName }: UserMenuProps) {
 
       {open && (
         <div
+          ref={menuRef}
           role="menu"
+          aria-label="Menu do usuário"
           className="absolute right-0 top-11 z-50 w-64 overflow-hidden rounded-xl border border-border bg-popover text-popover-foreground shadow-lg"
         >
           <div className="border-b border-border px-4 py-3">
