@@ -27,6 +27,80 @@ A seção "O QUE FALTA PARA O LANÇAMENTO" é o checklist mestre da inauguraçã
 
 ## ⏭️ PRÓXIMA AÇÃO (leia isto primeiro ao retomar)
 
+> ### 🔴 2026-08-05 — A FILA MUDOU DE ORDEM. Leia antes de qualquer coisa.
+>
+> **Decisão do usuário:** *"primeiro subir num marketplace como a Kiwify, para
+> acelerar os ganhos, e vamos evoluindo produtos e plataforma para seguir o
+> nosso modelo."* Isso **reverte** a decisão de 2026-07-28 (lançar pelo site
+> primeiro, marketplace depois).
+>
+> **Consequência na ordem:** a **Onda 3 (Verdade da Oferta) deixou de ser só "a
+> próxima" e virou PRÉ-REQUISITO da Onda 6 (Kiwify).** Copy falsa num
+> marketplace gera reembolso em massa → derruba o ranking do produto e pode
+> **suspender a conta**. Fila efetiva: **Onda 3 → Onda 6 → Onda 4 → Onda 5**.
+>
+> Das 3 razões que adiavam o marketplace, 2 caíram (a exclusividade era da
+> *Hotmart*; a Kiwify não tem — e o reposicionamento é trade-off assumido pelo
+> usuário). A 3ª — copy não-verdadeira — é justamente a Onda 3.
+>
+> **Ganhos colaterais:** o "até 12x" da `/oferta` **passa a ser verdade** (Stripe
+> BR não parcela, Kiwify parcela) e a garantia se alinha à incondicional de 7
+> dias que os marketplaces exigem — a mesma do CDC art. 49.
+>
+> **🔒 Pendência do usuário que destrava a Onda 6:** criar a conta Kiwify e
+> fornecer as chaves de API/webhook. **A chave o usuário digita** — o Claude
+> nunca digita credencial (limite 1 do `CLAUDE.md`).
+>
+> ### ✅ ONDA 2 — CÓDIGO FECHADO (2026-08-05), 7/7 tasks
+>
+> Tasks 1–2 (favicon, tipografia) já estavam no ar. As 5 restantes foram
+> executadas por **4 agentes em paralelo**, divididos por **domínio de arquivo
+> disjunto** e não por task — porque as Tasks 3 e 4 disputavam o mesmo
+> `LandingHeader.tsx`. Nenhum agente commitou; o coordenador integrou e commitou
+> por grupo (`338c8f7`, `eb46faf`, `e1e9967`, `662a364`).
+>
+> **Gate: `tsc` 0 · 391 testes / 61 arquivos** (baseline era 364/58) · lint 0
+> erros, 2 warnings `no-img-element` pré-existentes.
+>
+> Entregue: `brand/Logo.tsx` como fonte única do SVG nas 5 superfícies + logo nos
+> e-mails via PNG (SVG não renderiza no Gmail/Outlook) · âncoras absolutas no
+> `LandingHeader` (ele renderiza em `/sobre` e `/legal/*`) · **certificado
+> descobrível** com a rota nova `/certificado` sem token · `use-focus-trap.ts`
+> (o helper que a Trilha F previa, nunca escrito, e que bloqueava uma task da
+> Trilha G) · labels no `ContatoForm` · `ContentGate` em tokens · **stories não
+> pulam mais slide ao voltar de aba** · `useReducedMotion` em 8 componentes da
+> área logada (tinha zero).
+>
+> **Decisões dos agentes que valem registro:**
+> - **`role="dialog"` removido do `ProfileCard`** → virou disclosure
+>   (`aria-expanded` + `role="group"`). Não é modal: sem backdrop, sem inertizar
+>   a página, Tab sai livre. "dialog" faz leitores de tela entrarem em modo de
+>   aplicação sem motivo.
+> - **Botão do quiz:** passar no quiz **não** emite certificado sozinho (falta a
+>   missão final). O botão agora vai para a rota do certificado, que distingue os
+>   dois casos. Corrigida junto uma **corrida real**: o `POST /api/quiz` que emite
+>   o certificado roda sem `await`, então clicar rápido mostrava "ainda não
+>   concluiu" a quem tinha acabado de ganhar.
+> - **Armadilha de CSS evitada:** `landing-clone.css:61` pinta
+>   `.lp-guide .logo span` com `var(--accent)` — um `<span>` no wordmark deixaria
+>   "Matriz Central" inteiro violeta na `/oferta`. Wordmark passa como fragment.
+>
+> **⚠️ PENDENTE DA ONDA 2 — verificação visual não foi feita** (nenhum agente
+> rodou `npm run dev`, de propósito, para não disputar porta). Roteiro:
+> logo nas 5 superfícies nos 2 temas (atenção ao alinhamento no `FooterV2` e no
+> rodapé `.lp-guide`, que eram `span` inline e viraram `inline-flex`) · menu do
+> `LandingHeader` a partir de `/sobre` e `/legal/termos` · os 4 caminhos novos
+> até o certificado numa sessão logada · `UserMenu`/`ProfileCard` **só por
+> teclado** · `ContentGate` no tema claro · stories com aba em 2º plano >15s ·
+> área logada com "reduzir movimento" ligado no SO.
+>
+> **Backlog que a Onda 2 gerou:** `AppHeader` e `LeftSidebar` seguem sem
+> `useReducedMotion` (drawer, colapso, chevron) — estavam sob outro agente na
+> rodada. E dois achados de copy que viraram **I5/I6 da Onda 3**: o FAQ da
+> landing promete "certificado com QR code por 70% no quiz" — **o QR code não
+> existe** e o quiz é metade do requisito.
+
+
 > ### 💻 TROCOU DE MÁQUINA? Leia [`HANDOFF-OUTRA-MAQUINA.md`](HANDOFF-OUTRA-MAQUINA.md)
 > Lista o que o git **não** leva (`.env.local`, ledger do SDD, as 353 MB de
 > mídia) e como pedir cada coisa ao usuário. Sem o `.env.local`, nada funciona.

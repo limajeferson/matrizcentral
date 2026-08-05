@@ -31,20 +31,35 @@ próprio e verificação visual antes de seguir.
 | Onda | Nome | Estado |
 |---|---|---|
 | 1 | Receita & Descoberta | ✅ **fechada** (2026-07-26) |
-| 2 | Identidade & Polish *(era Trilha F)* | 📋 **planejada** — [`plano-onda2.md`](plano-onda2.md) |
-| 3 | Verdade da Oferta | 🔒 **portão humano** — Claude redige, usuário aprova |
+| 2 | Identidade & Polish *(era Trilha F)* | ✅ **código fechado** (2026-08-05) — 7/7 tasks; falta verificação visual |
+| 3 | Verdade da Oferta | 🔴 **PRÓXIMA e agora PRÉ-REQUISITO da Kiwify** — 🔒 portão humano |
 | 4 | Tech-debt & Segurança *(era Trilha G)* | 📐 planejar ao iniciar |
 | 5 | Motor de Marketing | 📐 planejar ao iniciar |
-| 6 | Kiwify + Auditoria final | 📐 planejar ao iniciar |
+| 6 | Kiwify + Auditoria final | 📐 planejar ao iniciar — **promovida** pela decisão de 2026-08-05 |
+
+> **⚠️ A ordem mudou em 2026-08-05.** Com a decisão de listar na Kiwify **antes**
+> do lançamento pelo site, a **Onda 3 deixou de ser "a próxima da fila" e virou
+> pré-requisito da Onda 6**: é ela que torna a copy verdadeira, e promessa falsa
+> num marketplace gera reembolso em massa, que derruba o ranking e pode
+> **suspender a conta**. Fila efetiva: **3 → 6 → 4 → 5**.
 
 ## Decisões travadas
 
 - **Kiwify como caixa** (usuário, 2026-07-26), mantendo a entrega na nossa
   plataforma. A Stripe continua no código; a virada é a Onda 6.
-- **Marketplace de afiliados fica no BACKLOG** (usuário, 2026-07-28): lançar
-  pelo site primeiro. Hotmart tem cláusula de exclusividade que bloquearia a
-  venda direta; e a copy ainda promete mais do que entrega. Gatilhos para
-  destravar em [`backlog-conteudo.md`](backlog-conteudo.md).
+- 🔄 **MARKETPLACE PRIMEIRO — decisão nova (usuário, 2026-08-05):** *"primeiro
+  subir num marketplace como a Kiwify, para acelerar os ganhos, e vamos
+  evoluindo produtos e plataforma para seguir o nosso modelo."* **Reverte** a
+  decisão de 2026-07-28 (que era lançar pelo site primeiro). Das 3 razões do
+  adiamento, **2 caíram**: a exclusividade era da *Hotmart*, e a **Kiwify não
+  tem** (vender lá e no site simultaneamente é permitido); o reposicionamento
+  "ebook R$47" é trade-off de marca, assumido pelo usuário. **A 3ª continua e
+  virou pré-requisito:** a copy ainda não é verdadeira → **Onda 3 antes da
+  listagem**. Detalhe em [`backlog-conteudo.md`](backlog-conteudo.md).
+  ~~Marketplace de afiliados fica no BACKLOG (2026-07-28)~~ — superada.
+- **Hotmart segue fora** — a cláusula de exclusividade de venda (5.1) bloquearia
+  a venda direta no site, que é onde a plataforma vive. Entrar lá é decisão de
+  posicionamento, não técnica.
 - **O ebook NÃO será expandido antes de avaliação externa** (usuário,
   2026-07-28): ele já existe (10 capítulos, ~15–20 páginas) e vai passar por
   auditoria no NotebookLM antes de qualquer decisão de conteúdo — IA local

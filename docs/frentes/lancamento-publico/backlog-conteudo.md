@@ -49,15 +49,51 @@ disso não há o que mostrar.
 
 ---
 
-## 🏪 Marketplace de afiliados (Hotmart / Kiwify / Eduzz) — decidido: BACKLOG
+## 🏪 Marketplace (Kiwify) — DESBLOQUEADO: decisão revertida em 2026-08-05
 
-**Decisão do usuário em 2026-07-28: entrar depois de validar, não agora.**
+> ### 🔄 DECISÃO NOVA DO USUÁRIO (2026-08-05) — esta seção foi revertida
+>
+> **"Primeiro subir num marketplace como a Kiwify, para acelerar os ganhos, e
+> vamos evoluindo produtos e plataforma para seguir o nosso modelo."**
+>
+> A listagem na Kiwify passa a vir **antes** do lançamento pelo site, não depois.
+> Das três razões que sustentavam o adiamento (abaixo), **duas caíram e uma
+> continua valendo**:
+>
+> - ❌ **Exclusividade — não se aplica.** Era razão contra a *Hotmart* (cláusula
+>   5.1). A **Kiwify não tem exclusividade**: vender lá e no site ao mesmo tempo
+>   é permitido. Hotmart segue fora por essa razão.
+> - ⚖️ **Posicionamento — assumido pelo usuário.** Listar como "ebook R$47"
+>   reposiciona uma plataforma multi-formato para baixo. É trade-off de marca
+>   (caixa agora vs. preço-âncora depois) e a escolha é do usuário, que optou
+>   por velocidade de receita.
+> - ⚠️ **Copy não-verdadeira — CONTINUA DE PÉ E VIRA PRÉ-REQUISITO.** A página
+>   promete "120+ páginas" e o ebook tem ~15–20. Num marketplace isso é mais
+>   perigoso que no site: reembolso em massa derruba o ranking e pode
+>   **suspender a conta**.
+>
+> **Consequência na fila:** a **Onda 3 (Verdade da Oferta) passa a vir ANTES da
+> listagem na Kiwify.** Ela já tinha portão humano (garantia e preço têm efeito
+> jurídico e comercial), então isso adianta um portão existente em vez de criar
+> um novo.
+>
+> **Ganhos colaterais da decisão:** o "até 12x" da `/oferta` **passa a ser
+> verdade** (Stripe BR não parcela, Kiwify parcela) e a garantia se alinha à
+> incondicional de 7 dias que os marketplaces exigem — a mesma do CDC art. 49.
+>
+> **Pendência do usuário:** criar a conta Kiwify e fornecer as chaves de
+> API/webhook. A integração (Onda 6, `spec.md` item K1) é do Claude; a chave
+> **o usuário digita** — o Claude nunca digita credencial.
 
-O lançamento é **pelo site**, com a **Kiwify apenas como caixa** (checkout), e a
-entrega seguindo na nossa plataforma. Listar o produto num marketplace de
-afiliados fica para depois.
+---
 
-**Por que não agora — três razões concretas:**
+### Registro histórico — a decisão anterior (2026-07-28), agora superada
+
+O lançamento seria **pelo site**, com a **Kiwify apenas como caixa** (checkout), e
+a entrega seguindo na nossa plataforma. Listar o produto num marketplace de
+afiliados ficaria para depois.
+
+**Por que não naquele momento — três razões concretas:**
 
 1. **Hotmart tem cláusula de exclusividade de venda (5.1)** — pesquisada e
    registrada em [`../../ESTADO-ATUAL.md`](../../ESTADO-ATUAL.md). Entrar lá

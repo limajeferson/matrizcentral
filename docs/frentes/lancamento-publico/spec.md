@@ -123,6 +123,19 @@ Levantado em 2026-07-26 contra o código e o banco remoto:
 - **I2** Preço honesto nos dois estados (Stripe hoje / Kiwify depois).
 - **I3** Landing ↔ oferta dizendo a mesma coisa sobre o que R$47 entrega.
 - **I4** Biblioteca enquadrada como "em expansão" onde hoje se anuncia mídia que não existe.
+- **I5** *(achado em 2026-08-05, durante a Onda 2)* **O FAQ da landing mente sobre
+  o certificado.** `src/components/marketing/v2/faq-data.ts:18-20` diz que *"com
+  70% de acerto o certificado com QR code é liberado"*. Dois erros: (a) o quiz é
+  **metade** do requisito — `src/lib/certificates.ts` também exige a **missão
+  final** da trilha concluída; (b) **não existe QR code** em nenhuma das duas
+  rotas de certificado. É promessa com efeito sobre expectativa de cliente.
+- **I6** *(menor, mesma origem)* O pill "Certificado" no bloco "Você ganhou:"
+  do `QuizValidacao.tsx:143-148` sugere emissão garantida ao passar no quiz.
+
+> ⚠️ **A Onda 3 virou pré-requisito da Onda 6** (decisão de 2026-08-05: listar
+> na Kiwify antes de lançar pelo site). Copy falsa num marketplace gera reembolso
+> em massa → queda de ranking e risco de **suspensão da conta**. `I1`–`I6` têm
+> que estar no ar **antes** da listagem.
 
 ### Onda 4 — Tech-debt & Segurança
 - **G-S1** XP de triagem deduplicado; fluxo por token aposentado.
