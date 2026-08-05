@@ -1,5 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
-import { isEligibleForCertificate, issueCertificateIfEligible } from "@/lib/certificates";
+import {
+  certificateRequirements,
+  isEligibleForCertificate,
+  issueCertificateIfEligible,
+} from "@/lib/certificates";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/types";
 
@@ -29,6 +33,34 @@ describe("isEligibleForCertificate", () => {
         quizValidacaoPassed: true,
       })
     ).toBe(true);
+  });
+});
+
+describe("certificateRequirements", () => {
+  it("devolve os dois requisitos, na ordem trilha → quiz", () => {
+    const reqs = certificateRequirements({
+      roadmapStagesCompleted: [],
+      quizValidacaoPassed: false,
+    });
+    expect(reqs.map((r) => r.key)).toEqual(["roadmap", "quiz"]);
+    expect(reqs.every((r) => r.done)).toBe(false);
+  });
+
+  it("marca só o quiz quando a trilha ainda não terminou", () => {
+    const reqs = certificateRequirements({
+      roadmapStagesCompleted: ["fundacao_local"],
+      quizValidacaoPassed: true,
+    });
+    expect(reqs.find((r) => r.key === "roadmap")?.done).toBe(false);
+    expect(reqs.find((r) => r.key === "quiz")?.done).toBe(true);
+  });
+
+  it("marca os dois quando o aluno cumpriu tudo", () => {
+    const reqs = certificateRequirements({
+      roadmapStagesCompleted: ["fundacao_local", "missao_final"],
+      quizValidacaoPassed: true,
+    });
+    expect(reqs.every((r) => r.done)).toBe(true);
   });
 });
 

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, type ComponentType } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { IconAccount, IconChevron, IconContent, IconFeed, IconForum, IconReport, IconSupport, type IconProps } from "@/components/ui/icons";
+import { IconAccount, IconBadge, IconChevron, IconContent, IconFeed, IconForum, IconReport, IconSupport, type IconProps } from "@/components/ui/icons";
 import { CONTENT_ICON } from "@/lib/content-icons";
 import { CONTENT_HUB, type ContentType } from "@/data/content-hub";
 import { formatAvailability } from "@/lib/format-availability";
@@ -29,6 +29,9 @@ const NAV_MAIN: NavItem[] = [
 
 const NAV_ACCOUNT: NavItem[] = [
   { href: "/conta", label: "Conta", icon: IconAccount },
+  // `/certificado` (sem token) resolve sozinho o estado do aluno — é o único
+  // caminho de descoberta possível daqui, já que a sidebar não conhece o token.
+  { href: "/certificado", label: "Certificado", icon: IconBadge },
   { href: "/suporte", label: "Suporte", icon: IconSupport },
 ];
 

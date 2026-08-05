@@ -17,7 +17,7 @@ export const FOOTER_COLUMNS: FooterColumn[] = [
       { label: "O Sistema", href: "/#sistema" },
       { label: "Como Funciona", href: "/#processo" },
       { label: "Preço", href: "/#preco" },
-      { label: "Certificação", soon: true },
+      { label: "Certificação", href: "/certificado" },
       { label: "FAQ", href: "/#faq" },
       { label: "Oferta", href: "/oferta" },
     ],

@@ -79,6 +79,18 @@ export default async function DashboardPage({ params }: { params: { token: strin
 
   const completedStages = (progressRows ?? []).map((row: { stage_key: string }) => row.stage_key);
 
+  // Só para a copy do card do certificado (emitido × ainda em requisitos).
+  let hasCertificate = false;
+  if (purchase) {
+    const { data: certificateRow } = await supabase
+      .from("certificates")
+      .select("id")
+      .eq("user_id", purchase.user_id)
+      .eq("certificate_type", "roadmap_completion")
+      .maybeSingle();
+    hasCertificate = !!certificateRow;
+  }
+
   let earnedBadgeIds: string[] = [];
   if (purchase) {
     const { data: badgeRows } = await supabase
@@ -234,6 +246,25 @@ export default async function DashboardPage({ params }: { params: { token: strin
           className="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-6 py-2 font-semibold text-white transition hover:bg-violet-700"
         >
           Ver ranking
+          <IconArrow size={16} />
+        </a>
+      </GlassCard>
+
+      <GlassCard className="p-6">
+        <div className="mb-2">
+          <CategoryBadge variant="quiz">Certificado</CategoryBadge>
+        </div>
+        <h2 className="mb-3 font-bold text-foreground">Seu certificado de conclusão</h2>
+        <p className="mb-3 text-muted-foreground">
+          {hasCertificate
+            ? "Já emitido — abra para imprimir ou salvar em PDF."
+            : "Emitido ao concluir a missão final da trilha e passar no quiz de validação."}
+        </p>
+        <a
+          href={`/dashboard/${params.token}/certificado`}
+          className="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-6 py-2 font-semibold text-white transition hover:bg-violet-700"
+        >
+          {hasCertificate ? "Ver meu certificado" : "Ver requisitos do certificado"}
           <IconArrow size={16} />
         </a>
       </GlassCard>

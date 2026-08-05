@@ -36,10 +36,17 @@ export default async function CertificadoPage({ params }: { params: { token: str
 
   if (!certificate) {
     return (
-      <p className="max-w-md mx-auto p-8 text-center">
-        Você ainda não concluiu os requisitos para o certificado (roadmap completo + quiz de
-        validação aprovado).
-      </p>
+      <div className="mx-auto max-w-md space-y-4 p-8 text-center">
+        <p>
+          Você ainda não concluiu os requisitos para o certificado (missão final da trilha +
+          quiz de validação aprovado).
+        </p>
+        <p>
+          <a href={`/dashboard/${params.token}`} className="text-violet-600 underline">
+            Voltar ao painel
+          </a>
+        </p>
+      </div>
     );
   }
 

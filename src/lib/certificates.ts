@@ -8,13 +8,42 @@ export function buildVerificationCode(): string {
   return generateCode();
 }
 
+export type CertificateRequirementKey = "roadmap" | "quiz";
+
+export type CertificateRequirement = {
+  key: CertificateRequirementKey;
+  label: string;
+  done: boolean;
+};
+
+/**
+ * Os dois requisitos do certificado, com o estado de cada um. Existe para a
+ * página `/certificado` poder dizer ao aluno **o que falta** — passar no quiz
+ * sozinho não emite nada (ver `issueCertificateForToken`).
+ */
+export function certificateRequirements(params: {
+  roadmapStagesCompleted: string[];
+  quizValidacaoPassed: boolean;
+}): CertificateRequirement[] {
+  return [
+    {
+      key: "roadmap",
+      label: "Concluir a missão final da sua trilha",
+      done: params.roadmapStagesCompleted.includes("missao_final"),
+    },
+    {
+      key: "quiz",
+      label: "Passar no quiz de validação de conhecimento",
+      done: params.quizValidacaoPassed,
+    },
+  ];
+}
+
 export function isEligibleForCertificate(params: {
   roadmapStagesCompleted: string[];
   quizValidacaoPassed: boolean;
 }): boolean {
-  return (
-    params.roadmapStagesCompleted.includes("missao_final") && params.quizValidacaoPassed
-  );
+  return certificateRequirements(params).every((r) => r.done);
 }
 
 export async function issueCertificateIfEligible(

@@ -16,7 +16,7 @@ interface QuizProps {
   token: string;
   onComplete: (
     answers: { questionId: number; selected: "A" | "B" | "C" | "D" }[]
-  ) => void;
+  ) => void | Promise<void>;
 }
 
 export default function QuizValidacao({ token, onComplete }: QuizProps) {
@@ -26,6 +26,9 @@ export default function QuizValidacao({ token, onComplete }: QuizProps) {
   const [answerState, setAnswerState] = useState<AnswerState>("unanswered");
   const [showResult, setShowResult] = useState(false);
   const [quizFinished, setQuizFinished] = useState(false);
+  // O certificado é emitido pelo servidor no POST de `onComplete`. Enquanto ele
+  // não termina, o botão do certificado ficaria à frente do próprio dado.
+  const [submitting, setSubmitting] = useState(false);
 
   const question = QUIZ_LLM_LOCAL[currentQ];
   const progress = ((currentQ) / QUIZ_LLM_LOCAL.length) * 100;
@@ -69,9 +72,12 @@ export default function QuizValidacao({ token, onComplete }: QuizProps) {
   useEffect(() => {
     if (quizFinished) {
       // Enviamos apenas as respostas escolhidas; o servidor recalcula a nota.
-      onComplete(
-        answers.map((a) => ({ questionId: a.questionId, selected: a.selected }))
-      );
+      setSubmitting(true);
+      Promise.resolve(
+        onComplete(
+          answers.map((a) => ({ questionId: a.questionId, selected: a.selected }))
+        )
+      ).finally(() => setSubmitting(false));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quizFinished]);
@@ -188,12 +194,25 @@ export default function QuizValidacao({ token, onComplete }: QuizProps) {
 
           {/* Botões */}
           {passed ? (
-            <button
-              onClick={() => window.location.href = `/dashboard/${token}`}
-              className="w-full bg-green-500 hover:bg-green-400 text-white font-bold py-3 rounded-xl transition"
-            >
-              Ver Meu Certificado →
-            </button>
+            <div className="space-y-3">
+              <button
+                onClick={() => (window.location.href = `/dashboard/${token}/certificado`)}
+                disabled={submitting}
+                className={`w-full font-bold py-3 rounded-xl transition ${
+                  submitting
+                    ? "bg-gray-700 text-gray-400 cursor-wait"
+                    : "bg-green-500 hover:bg-green-400 text-white"
+                }`}
+              >
+                {submitting ? "Registrando seu resultado..." : "Ver Meu Certificado →"}
+              </button>
+              <a
+                href={`/dashboard/${token}`}
+                className="block text-sm text-gray-300 underline hover:text-white"
+              >
+                Voltar ao painel
+              </a>
+            </div>
           ) : (
             <button
               onClick={() => {
