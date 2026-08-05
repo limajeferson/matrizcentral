@@ -594,6 +594,22 @@ Pedido original completo do usuário: [`prompt-pedido.md`](../prompt-pedido.md).
 
 ## 🌿 Estado do git
 
+- **2026-08-05 — RETORNO À MÁQUINA ORIGINAL, sincronização feita.** A máquina de
+  origem tinha **20 commits locais de 2026-07-08 nunca pushados** (frente
+  `comunidade-identidade-feed` / "F0": magic-link + planos/entitlements). Esse
+  trabalho foi **inteiramente superado** pelo que a máquina `Grazi` construiu
+  depois (Frente 1 `login-real` + Frente 2 `assinaturas`), e **colidia** na
+  migration `0014` (local: `login_e_entitlements`; remoto: `grant_service_role_privileges`).
+  **Decisão:** arquivar em vez de mesclar — branch `archive/f0-comunidade-local-2026-07-08`
+  preserva os 20 commits, e `master` foi resetada para `origin/master`
+  (`b460e9b`). **Não recuperar dali sem revalidar contra o código atual.**
+  Ambiente remontado: `npm install`, `.env.local` reconstruído (8 chaves + a
+  `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` antiga; backup em `.env.local.bak-2026-07-08`),
+  `notebooklm/audio|video` (353 MB) recolocados, `.next` velho apagado (guardava
+  tipos das rotas `/plataforma` do F0 e quebrava o `tsc`). **Gate verde:
+  `tsc` 0 · 364 testes / 58 arquivos.** ⚠️ **O ledger `.superpowers/sdd/progress.md`
+  NÃO veio** — a memória task-a-task do SDD se perdeu nesta máquina; o histórico
+  vive no `git log` e neste arquivo.
 - **2026-07-26:** `master` com os commits da Onda 1 (`2f0cb4a..`) + os 3 commits
   docs-only da frente `kit-ecossistema-dragum` que já estavam locais. **Push
   seguro:** a migration `0030` já está aplicada e verificada no remoto (L-023
