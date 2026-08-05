@@ -27,6 +27,11 @@ A seção "O QUE FALTA PARA O LANÇAMENTO" é o checklist mestre da inauguraçã
 
 ## ⏭️ PRÓXIMA AÇÃO (leia isto primeiro ao retomar)
 
+> ### 💻 TROCOU DE MÁQUINA? Leia [`HANDOFF-OUTRA-MAQUINA.md`](HANDOFF-OUTRA-MAQUINA.md)
+> Lista o que o git **não** leva (`.env.local`, ledger do SDD, as 353 MB de
+> mídia) e como pedir cada coisa ao usuário. Sem o `.env.local`, nada funciona.
+
+
 > ### 🔴 LEIA ISTO ANTES DE TUDO — a fila mudou em 2026-07-26
 >
 > **A fila ativa agora é [`frentes/lancamento-publico/`](frentes/lancamento-publico/README.md).**
