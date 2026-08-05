@@ -85,14 +85,34 @@ A seção "O QUE FALTA PARA O LANÇAMENTO" é o checklist mestre da inauguraçã
 >   `.lp-guide .logo span` com `var(--accent)` — um `<span>` no wordmark deixaria
 >   "Matriz Central" inteiro violeta na `/oferta`. Wordmark passa como fragment.
 >
-> **⚠️ PENDENTE DA ONDA 2 — verificação visual não foi feita** (nenhum agente
-> rodou `npm run dev`, de propósito, para não disputar porta). Roteiro:
-> logo nas 5 superfícies nos 2 temas (atenção ao alinhamento no `FooterV2` e no
-> rodapé `.lp-guide`, que eram `span` inline e viraram `inline-flex`) · menu do
-> `LandingHeader` a partir de `/sobre` e `/legal/termos` · os 4 caminhos novos
-> até o certificado numa sessão logada · `UserMenu`/`ProfileCard` **só por
-> teclado** · `ContentGate` no tema claro · stories com aba em 2º plano >15s ·
-> área logada com "reduzir movimento" ligado no SO.
+> **✅ VERIFICAÇÃO VISUAL DESLOGADA — FEITA (2026-08-05, dev server + Chrome):**
+> - **Logo** no header da landing (cubo + wordmark assentando depois do
+>   ScrambleText), no `FooterV2` e na `/oferta` — alinhamento correto nas três,
+>   apesar da troca de `span` inline para `inline-flex`.
+> - **Armadilha do CSS confirmada como evitada:** na `/oferta` só a barra `/`
+>   ficou violeta (o `span` que já existia); o wordmark **não** foi pintado
+>   inteiro pela regra `.lp-guide .logo span`.
+> - **Âncoras absolutas** conferidas por DOM a partir de `/sobre`: `/#sistema`,
+>   `/#processo`, `/#preco`, `/#faq`.
+> - **`footer-nav`**: "Certificação" renderiza **sem o selo BREVE** e com href.
+> - **`/certificado`** responde para visitante e enuncia o requisito **correto**
+>   (missão final **e** quiz). Sem header — mas isso **casa com as páginas
+>   irmãs** (`/suporte` também não tem); não é regressão.
+> - **Labels do `ContatoForm`** associados de verdade (`label[for]` → 
+>   `contato-email` / `contato-mensagem`, `autocomplete="email"`).
+> - **`ContentGate` no tema claro**: card claro com texto escuro, legível — o
+>   `bg-black/40` fixo (painel escuro sobre fundo claro) morreu. Branco sobre
+>   botão violeta preservado.
+>
+> **⚠️ AINDA NÃO VERIFICADO — exige sessão logada:** os 4 caminhos até o
+> certificado (`/conta`, `LeftSidebar`, painel, tela final do quiz) ·
+> `UserMenu`/`ProfileCard` **só por teclado** (Tab → Enter → setas → Escape,
+> conferindo onde o foco para) · stories com aba em 2º plano >15s · área logada
+> com "reduzir movimento" ligado no SO.
+>
+> **Achado da verificação:** a copy falsa do certificado tem **uma fonte só**
+> (`faq-data.ts:20`) alimentando **duas superfícies** (FAQ da landing e
+> `/suporte`) — então o `I5` da Onda 3 é um conserto, dois lugares.
 >
 > **Backlog que a Onda 2 gerou:** `AppHeader` e `LeftSidebar` seguem sem
 > `useReducedMotion` (drawer, colapso, chevron) — estavam sob outro agente na
