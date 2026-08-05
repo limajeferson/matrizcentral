@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { IconClose, IconLock, IconArrow } from "@/components/ui/icons";
 import { CONTENT_ICON } from "@/lib/content-icons";
 import { CONTENT_ACCENT, contentMeta } from "@/lib/content-accent";
@@ -23,6 +23,9 @@ export function ExpandableContentCard({ card }: { card: FeedCard }) {
   const meta = contentMeta(card.durationMinutes, card.xpReward);
   const locked = !card.emBreve && card.href === "/oferta";
   const dialogRef = useRef<HTMLDivElement>(null);
+  /* Com "reduzir movimento": o overlay aparece direto, sem fade nem escala.
+   * O `hover:-translate-y-0.5` do card também é desligado. */
+  const reduced = useReducedMotion();
 
   useEffect(() => {
     if (!open) return;
@@ -46,7 +49,9 @@ export function ExpandableContentCard({ card }: { card: FeedCard }) {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className={`group relative block w-full overflow-hidden rounded-2xl border border-border bg-card p-4 text-left shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg ${accent.hoverBorder}`}
+        className={`group relative block w-full overflow-hidden rounded-2xl border border-border bg-card p-4 text-left shadow-sm transition-all duration-200 hover:shadow-lg ${
+          reduced ? "" : "hover:-translate-y-0.5"
+        } ${accent.hoverBorder}`}
       >
         {/* brilho de canto na cor do tipo */}
         <span
@@ -102,18 +107,18 @@ export function ExpandableContentCard({ card }: { card: FeedCard }) {
            * engolindo todos os cliques da página (bug real, achado ao vivo). */
           <motion.div
             key={`overlay-${card.id}`}
-            initial={{ opacity: 0 }}
+            initial={reduced ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            exit={{ opacity: 0, transition: { duration: reduced ? 0 : 0.18 } }}
             onClick={() => setOpen(false)}
             className="fixed inset-0 z-[90] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
           >
               <motion.div
                 ref={dialogRef}
-                initial={{ opacity: 0, scale: 0.95, y: 8 }}
+                initial={reduced ? false : { opacity: 0, scale: 0.95, y: 8 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.97, y: 4 }}
-                transition={{ duration: 0.18, ease: "easeOut" }}
+                exit={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.97, y: 4 }}
+                transition={{ duration: reduced ? 0 : 0.18, ease: "easeOut" }}
                 tabIndex={-1}
                 role="dialog"
                 aria-modal="true"

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence, type PanInfo } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion, type PanInfo } from "framer-motion";
 import { IconBadge } from "@/components/ui/icons";
 import type { ActivityItem } from "@/lib/feed";
 import { relativeTime } from "@/lib/relative-time";
@@ -20,6 +20,9 @@ const DISMISS_THRESHOLD = -64;
  */
 export function SwipeableActivityList({ items }: SwipeableActivityListProps) {
   const [dismissed, setDismissed] = useState<Set<number>>(new Set());
+  /* Com "reduzir movimento": sem arrastar e sem animação de saída. O botão
+   * "Dispensar" continua visível, então a função permanece toda acessível. */
+  const reduced = useReducedMotion();
 
   function dismiss(index: number) {
     setDismissed((prev) => {
@@ -47,16 +50,16 @@ export function SwipeableActivityList({ items }: SwipeableActivityListProps) {
         {visible.map(({ item, index }) => (
           <motion.li
             key={index}
-            layout
-            exit={{ opacity: 0, height: 0, marginBottom: 0 }}
-            transition={{ duration: 0.18 }}
+            layout={!reduced}
+            exit={reduced ? { opacity: 0 } : { opacity: 0, height: 0, marginBottom: 0 }}
+            transition={{ duration: reduced ? 0 : 0.18 }}
             className="relative overflow-hidden rounded-xl"
           >
             <div className="absolute inset-0 flex items-center justify-end rounded-xl bg-destructive/10 px-4 text-xs font-semibold text-muted-foreground">
               Dispensar
             </div>
             <motion.div
-              drag="x"
+              drag={reduced ? false : "x"}
               dragConstraints={{ left: -96, right: 0 }}
               dragElastic={0.15}
               onDragEnd={(_event, info) => handleDragEnd(index, info)}

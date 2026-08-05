@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { parseMediaSource, withAutoplay } from "@/lib/media";
 import { IconHeadphones } from "@/components/ui/icons";
 
@@ -20,6 +20,9 @@ type MusicPlayerCardProps = {
 export function MusicPlayerCard({ title, description, embedUrl, durationMinutes }: MusicPlayerCardProps) {
   const source = parseMediaSource(embedUrl);
   const [playing, setPlaying] = useState(false);
+  // Com "reduzir movimento": botão sem escala no hover/tap (o foco/hover de
+  // cor continua sinalizando o alvo).
+  const reduced = useReducedMotion();
 
   if (playing && source) {
     if (source.kind === "spotify") {
@@ -65,8 +68,8 @@ export function MusicPlayerCard({ title, description, embedUrl, durationMinutes 
           type="button"
           aria-label={`Ouvir ${title}`}
           onClick={() => setPlaying(true)}
-          whileHover={{ scale: 1.08 }}
-          whileTap={{ scale: 0.96 }}
+          whileHover={reduced ? undefined : { scale: 1.08 }}
+          whileTap={reduced ? undefined : { scale: 0.96 }}
           className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-violet-600 text-white shadow-lg"
         >
           <svg viewBox="0 0 24 24" width={20} height={20} fill="currentColor">

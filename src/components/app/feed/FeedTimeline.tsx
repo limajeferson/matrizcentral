@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { IconForum } from "@/components/ui/icons";
 import { PostCard } from "./PostCard";
 import { VideoThumb } from "./VideoThumb";
@@ -76,6 +76,10 @@ export function FeedTimeline({ initial, initialCursor, canPost, canOpenThreads }
   const [loading, setLoading] = useState(false);
   const done = cursor === null;
   const sentinelRef = useRef<HTMLDivElement>(null);
+  /* Com "reduzir movimento": nada de entrada por scroll. Crítico aqui — o
+   * `initial` do `whileInView` é `opacity: 0`, então desligar a animação sem
+   * desligar o estado inicial deixaria o feed inteiro invisível. */
+  const reduced = useReducedMotion();
 
   const loadMore = useCallback(async () => {
     if (loading || cursor === null) return;
@@ -161,10 +165,10 @@ export function FeedTimeline({ initial, initialCursor, canPost, canOpenThreads }
       {entries.map((entry) => (
         <motion.div
           key={entryKey(entry)}
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={reduced ? false : { opacity: 0, y: 16 }}
+          whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: reduced ? 0 : 0.3 }}
         >
           <EntryCard entry={entry} canOpenThreads={canOpenThreads} />
         </motion.div>

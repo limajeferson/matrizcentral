@@ -2,10 +2,11 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { CONTENT_ICON } from "@/lib/content-icons";
 import { IconClose } from "@/components/ui/icons";
 import { STORY_DURATION_MS, type StoryGroup } from "@/lib/stories";
+import { advanceStoryClock, createStoryClock, storyProgress } from "@/lib/story-clock";
 
 export type StoryViewerProps = {
   groups: StoryGroup[];
@@ -24,6 +25,7 @@ export function StoryViewer({ groups, startGroup, onClose, onSlideSeen }: StoryV
   const [pos, setPos] = useState({ g: startGroup, s: 0 });
   const [paused, setPaused] = useState(false);
   const [progress, setProgress] = useState(0);
+  const reduced = useReducedMotion();
 
   // Refs para manter os callbacks estáveis dentro do loop de animação.
   const onCloseRef = useRef(onClose);
@@ -60,26 +62,39 @@ export function StoryViewer({ groups, startGroup, onClose, onSlideSeen }: StoryV
   const group = groups[pos.g];
   const slide = group?.slides[pos.s];
 
+  // Relógio do slide atual — vive num ref para que o handler de visibilidade
+  // consiga congelá-lo mesmo sem um frame de rAF acontecendo.
+  const clockRef = useRef(createStoryClock());
+
+  /* Aba em segundo plano: o navegador congela o `requestAnimationFrame`. Sem
+   * isso, o primeiro frame ao voltar chegava com o timestamp muito à frente e
+   * creditava o intervalo inteiro de uma vez — o slide pulava. Congelar o
+   * relógio no `visibilitychange` faz o progresso retomar de onde parou. */
+  useEffect(() => {
+    const onVisibility = () => {
+      if (document.visibilityState === "hidden") {
+        clockRef.current = advanceStoryClock(clockRef.current, 0, true);
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => document.removeEventListener("visibilitychange", onVisibility);
+  }, []);
+
   // Timer/progresso por slide, baseado em requestAnimationFrame (pausável).
   useEffect(() => {
     if (!slide) return;
     onSeenRef.current(slide.contentId);
     let raf = 0;
-    let elapsed = 0;
-    let last: number | null = null;
+    clockRef.current = createStoryClock();
     setProgress(0);
     const tick = (ts: number) => {
-      if (pausedRef.current) {
-        last = ts;
-      } else {
-        if (last != null) elapsed += ts - last;
-        last = ts;
-        const p = Math.min(elapsed / STORY_DURATION_MS, 1);
-        setProgress(p);
-        if (p >= 1) {
-          goNext();
-          return;
-        }
+      const frozen = pausedRef.current || document.visibilityState === "hidden";
+      clockRef.current = advanceStoryClock(clockRef.current, ts, frozen);
+      const p = storyProgress(clockRef.current.elapsed, STORY_DURATION_MS);
+      setProgress(p);
+      if (p >= 1) {
+        goNext();
+        return;
       }
       raf = requestAnimationFrame(tick);
     };
@@ -116,9 +131,9 @@ export function StoryViewer({ groups, startGroup, onClose, onSlideSeen }: StoryV
     <motion.div
       ref={containerRef}
       tabIndex={-1}
-      initial={{ opacity: 0 }}
+      initial={reduced ? false : { opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.18 }}
+      transition={{ duration: reduced ? 0 : 0.18 }}
       className="fixed inset-0 z-[100] flex flex-col bg-black/90 outline-none backdrop-blur-sm"
       role="dialog"
       aria-modal="true"

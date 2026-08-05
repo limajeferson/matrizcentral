@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { parseMediaSource, withAutoplay } from "@/lib/media";
 import { IconVideo } from "@/components/ui/icons";
 
@@ -19,6 +19,8 @@ type VideoPlayerProps = {
 export function VideoPlayer({ title, embedUrl, durationMinutes }: VideoPlayerProps) {
   const source = parseMediaSource(embedUrl);
   const [playing, setPlaying] = useState(false);
+  // Com "reduzir movimento": play sem escala no hover/tap.
+  const reduced = useReducedMotion();
 
   if (!source) {
     return (
@@ -60,8 +62,8 @@ export function VideoPlayer({ title, embedUrl, durationMinutes }: VideoPlayerPro
           type="button"
           aria-label={`Reproduzir ${title}`}
           onClick={() => setPlaying(true)}
-          whileHover={{ scale: 1.08 }}
-          whileTap={{ scale: 0.96 }}
+          whileHover={reduced ? undefined : { scale: 1.08 }}
+          whileTap={reduced ? undefined : { scale: 0.96 }}
           className="flex h-16 w-16 items-center justify-center rounded-full bg-violet-600 text-white shadow-lg"
         >
           <svg viewBox="0 0 24 24" width={26} height={26} fill="currentColor">

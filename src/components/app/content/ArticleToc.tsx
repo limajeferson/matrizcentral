@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { IconContent } from "@/components/ui/icons";
 import type { MdHeading } from "@/lib/markdown";
 
@@ -18,6 +18,9 @@ export function ArticleToc({ headings }: ArticleTocProps) {
   const [activeId, setActiveId] = useState<string>(headings[0]?.id ?? "");
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
+  /* Com "reduzir movimento": sem `layout` (a ilha não se re-mede animando),
+   * sem deslize do painel e sem rolagem suave ao pular para a seção. */
+  const reduced = useReducedMotion();
 
   useEffect(() => {
     if (headings.length < 3) return;
@@ -65,17 +68,17 @@ export function ArticleToc({ headings }: ArticleTocProps) {
   const handleItemClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     setOpen(false);
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById(id)?.scrollIntoView({ behavior: reduced ? "auto" : "smooth" });
   };
 
   return (
     <motion.div
       ref={rootRef}
-      layout
+      layout={!reduced}
       className="fixed top-3 left-1/2 z-40 -translate-x-1/2 max-w-[90vw] sm:max-w-md"
     >
       <motion.button
-        layout
+        layout={!reduced}
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
@@ -91,10 +94,12 @@ export function ArticleToc({ headings }: ArticleTocProps) {
         {open && (
           <motion.nav
             aria-label="Sumário"
-            initial={{ opacity: 0, y: -8 }}
+            initial={reduced ? false : { opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ type: "spring", stiffness: 400, damping: 32 }}
+            exit={reduced ? { opacity: 0 } : { opacity: 0, y: -8 }}
+            transition={
+              reduced ? { duration: 0 } : { type: "spring", stiffness: 400, damping: 32 }
+            }
             className="mt-2 max-h-[60vh] overflow-y-auto rounded-2xl border border-border bg-card/95 p-2 shadow-lg backdrop-blur"
           >
             <ul className="space-y-0.5">

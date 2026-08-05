@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, type Variants } from "framer-motion";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
 import type { RankRow } from "@/lib/leaderboard";
 
 export type RankingListProps = {
@@ -23,6 +23,14 @@ const row: Variants = {
   },
 };
 
+/* Com "reduzir movimento": nada de stagger nem deslize — as linhas já nascem
+ * no lugar e visíveis (o conteúdo nunca depende da animação para aparecer). */
+const staticContainer: Variants = { hidden: {}, show: {} };
+const staticRow: Variants = {
+  hidden: { opacity: 1, x: 0 },
+  show: { opacity: 1, x: 0, transition: { duration: 0 } },
+};
+
 /** 1º lugar em destaque dourado (`--mc-gold`, com fallback fora do escopo
  * `.mcv2`); 2º/3º em tons neutros decrescentes; demais posições neutras. */
 function rankTone(rank: number): string {
@@ -39,13 +47,15 @@ function rankTone(rank: number): string {
  * já ordenadas por `rankLeaderboard` (Task 1).
  */
 export function RankingList({ rows }: RankingListProps) {
+  const reduced = useReducedMotion();
+
   if (rows.length === 0) {
     return <p className="text-sm text-muted-foreground">Ninguém pontuou este mês ainda.</p>;
   }
 
   return (
     <motion.ol
-      variants={container}
+      variants={reduced ? staticContainer : container}
       initial="hidden"
       animate="show"
       className="space-y-2"
@@ -53,7 +63,7 @@ export function RankingList({ rows }: RankingListProps) {
       {rows.map((r) => (
         <motion.li
           key={r.rank}
-          variants={row}
+          variants={reduced ? staticRow : row}
           className="flex items-center gap-3 rounded-xl px-2 py-1.5"
         >
           <span className={`w-6 shrink-0 text-right text-sm font-bold ${rankTone(r.rank)}`}>
