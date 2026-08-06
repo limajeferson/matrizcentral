@@ -32,7 +32,7 @@ export async function createPost(userId: string, post: NewPost): Promise<FeedPos
   if (error || !data) return null;
   const { data: u } = await supabase.from("users").select("display_name").eq("id", userId).maybeSingle();
   return {
-    id: data.id, author: u?.display_name ?? "Aluno", body: data.body,
+    id: data.id, author: u?.display_name ?? "Membro", body: data.body,
     link_url: data.link_url, image_url: data.image_url, created_at: data.created_at,
   };
 }
@@ -48,9 +48,9 @@ export async function listPosts(limit = 15, before?: string): Promise<FeedPost[]
   if (list.length === 0) return [];
   const ids = Array.from(new Set(list.map((r) => r.user_id)));
   const { data: users } = await supabase.from("users").select("id, display_name").in("id", ids);
-  const nameById = new Map((users ?? []).map((u) => [u.id, u.display_name ?? "Aluno"]));
+  const nameById = new Map((users ?? []).map((u) => [u.id, u.display_name ?? "Membro"]));
   return list.map((r) => ({
-    id: r.id, author: nameById.get(r.user_id) ?? "Aluno", body: r.body,
+    id: r.id, author: nameById.get(r.user_id) ?? "Membro", body: r.body,
     link_url: r.link_url, image_url: r.image_url, created_at: r.created_at,
   }));
 }

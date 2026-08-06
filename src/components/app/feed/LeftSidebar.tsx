@@ -29,7 +29,7 @@ const NAV_MAIN: NavItem[] = [
 
 const NAV_ACCOUNT: NavItem[] = [
   { href: "/conta", label: "Conta", icon: IconAccount },
-  // `/certificado` (sem token) resolve sozinho o estado do aluno — é o único
+  // `/certificado` (sem token) resolve sozinho o estado do membro — é o único
   // caminho de descoberta possível daqui, já que a sidebar não conhece o token.
   { href: "/certificado", label: "Certificado", icon: IconBadge },
   { href: "/suporte", label: "Suporte", icon: IconSupport },

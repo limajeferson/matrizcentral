@@ -87,10 +87,10 @@ export default function PrivacidadePage() {
             </li>
             <li>
               <strong>Publicações no fórum e no feed da comunidade</strong> —
-              finalidade: operar o espaço de troca entre alunos. O que você
+              finalidade: operar o espaço de troca entre usuários. O que você
               escreve num tópico, resposta ou publicação{" "}
               <strong>fica visível aos demais usuários da plataforma</strong>,
-              junto do seu nome de exibição (ou de &quot;Aluno&quot;, se você
+              junto do seu nome de exibição (ou de &quot;Membro&quot;, se você
               não tiver definido um). Base legal:{" "}
               <strong>execução de contrato</strong> (art. 7º, V). Retenção:
               enquanto a publicação existir — você pode pedir a remoção pelo
@@ -138,7 +138,7 @@ export default function PrivacidadePage() {
             operadores acima, há um compartilhamento que acontece à vista do
             titular: o que você publica no <strong>fórum</strong> e no{" "}
             <strong>feed</strong> fica visível aos outros usuários, junto do seu
-            nome de exibição (ou de &quot;Aluno&quot;, se não houver um
+            nome de exibição (ou de &quot;Membro&quot;, se não houver um
             definido); e, se você ativar a opção &quot;Aparecer no ranking
             público&quot;, seu <strong>nome de exibição</strong> passa a ser
             listado no ranking mensal de XP e no mural de conquistas. O ranking
