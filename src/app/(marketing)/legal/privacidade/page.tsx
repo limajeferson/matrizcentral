@@ -4,6 +4,7 @@ import LandingHeader from "@/components/marketing/v2/LandingHeader";
 import FooterV2 from "@/components/marketing/v2/FooterV2";
 import { pageMetadata } from "@/lib/seo";
 import { SELLER } from "@/data/legal";
+import SellerIdentityBlock from "@/components/legal/SellerIdentityBlock";
 
 // Display/corpo já vêm de Outfit/Inter (--font-display/--font-body) do layout raiz.
 
@@ -36,12 +37,11 @@ export default function PrivacidadePage() {
           <h2>Quem é o controlador</h2>
           <p>
             A Matriz Central é o controlador dos dados tratados nesta
-            plataforma, nos termos da LGPD (Lei 13.709/2018). {/* Bloco de
-            identificação (razão social/CPF/CNPJ, endereço) entra aqui via
-            SellerIdentityBlock — Task 5. */} O canal de contato para qualquer
-            assunto sobre dados pessoais é{" "}
+            plataforma, nos termos da LGPD (Lei 13.709/2018). O canal de
+            contato para qualquer assunto sobre dados pessoais é{" "}
             <a href={`mailto:${SELLER.email}`}>{SELLER.email}</a>.
           </p>
+          <SellerIdentityBlock variant="page" />
 
           <h2 id="bases">O que tratamos, para quê e com que base legal</h2>
           <p>
