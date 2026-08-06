@@ -61,12 +61,11 @@ export default function UsoAceitavelPage() {
           </ul>
           <p>
             O descumprimento destas vedações segue o mesmo tratamento previsto
-            nos Termos: pode levar à suspensão do acesso, conforme os limites
-            descritos na seção{" "}
-            <a href="/legal/termos#responsabilidade">
-              Limites da nossa responsabilidade
-            </a>
-            .
+            nos Termos: pode levar à suspensão do acesso, nas condições
+            descritas na seção{" "}
+            <a href="/legal/termos#suspensao">Suspensão e encerramento</a> —
+            com aviso e oportunidade de correção sempre que a gravidade da
+            violação permitir.
           </p>
 
           <h2 id="compromissos-comunicacao">
@@ -105,9 +104,12 @@ export default function UsoAceitavelPage() {
           </ul>
 
           <p className="mc-legal-note">
-            Este documento pode ser atualizado periodicamente. O uso continuado
-            da plataforma após alterações implica concordância com os novos
-            termos.
+            Este documento pode ser atualizado periodicamente. Alterações
+            relevantes são <strong>comunicadas por e-mail</strong> a quem tem
+            acesso ativo, antes de passarem a valer, e{" "}
+            <strong>não retroagem sobre contratações já feitas</strong>: para a
+            sua compra continua valendo a versão vigente na data em que ela foi
+            realizada.
           </p>
         </article>
       </div>

@@ -90,6 +90,7 @@ const STATIC_ROUTES: Array<Omit<SitemapEntry, "url"> & { path: string }> = [
   { path: "/suporte", changeFrequency: "monthly", priority: 0.5 },
   { path: "/legal/termos", changeFrequency: "yearly", priority: 0.3 },
   { path: "/legal/privacidade", changeFrequency: "yearly", priority: 0.3 },
+  { path: "/legal/uso-aceitavel", changeFrequency: "yearly", priority: 0.3 },
 ];
 
 export function buildSitemapEntries(

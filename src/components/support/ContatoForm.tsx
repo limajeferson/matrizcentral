@@ -52,7 +52,7 @@ export default function ContatoForm() {
         {state === "loading" ? "Enviando..." : "Enviar mensagem"}
       </button>
       <p className="text-xs text-muted-foreground mt-2">
-        Respondemos em até {SELLER.supportResponseDays} dias úteis.
+        Respondemos em até {SELLER.supportResponseDays} dias corridos.
       </p>
     </form>
   );

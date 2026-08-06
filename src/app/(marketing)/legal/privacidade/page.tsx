@@ -69,18 +69,41 @@ export default function PrivacidadePage() {
               plataforma.
             </li>
             <li>
-              <strong>Identificador anônimo (`anon_id`) e eventos de funil</strong>{" "}
+              <strong>
+                Identificador anônimo (<code>anon_id</code>) e eventos de funil
+              </strong>{" "}
               — finalidade: medir conversão de forma agregada (visita, início
               de checkout, compra concluída, inscrição na newsletter, abertura
               de conteúdo). Base legal: <strong>legítimo interesse</strong>{" "}
-              (art. 7º, IX). O `anon_id` é um identificador aleatório gravado
-              em cookie, sem e-mail e sem URL com token de acesso associados.
+              (art. 7º, IX). O <code>anon_id</code> é um identificador aleatório
+              gravado em cookie, sem e-mail e sem URL com token de acesso
+              associados.
             </li>
             <li>
               <strong>Progresso de leitura, XP e certificado</strong> —
               finalidade: operar a trilha de aprendizado e emitir o
               certificado de conclusão. Base legal:{" "}
               <strong>execução de contrato</strong> (art. 7º, V).
+            </li>
+            <li>
+              <strong>Publicações no fórum e no feed da comunidade</strong> —
+              finalidade: operar o espaço de troca entre alunos. O que você
+              escreve num tópico, resposta ou publicação{" "}
+              <strong>fica visível aos demais usuários da plataforma</strong>,
+              junto do seu nome de exibição (ou de &quot;Aluno&quot;, se você
+              não tiver definido um). Base legal:{" "}
+              <strong>execução de contrato</strong> (art. 7º, V). Retenção:
+              enquanto a publicação existir — você pode pedir a remoção pelo
+              e-mail de contato.
+            </li>
+            <li>
+              <strong>Nome de exibição no ranking</strong> — finalidade:
+              publicar sua posição no ranking mensal de XP para os demais
+              usuários. Base legal: <strong>consentimento</strong> (art. 7º, I),
+              manifestado ao marcar a opção &quot;Aparecer no ranking
+              público&quot; no painel. É <strong>revogável a qualquer
+              momento</strong>: ao desmarcar a opção, o nome de exibição é
+              apagado e você deixa de ser listado. Retenção: até a revogação.
             </li>
           </ul>
 
@@ -106,10 +129,23 @@ export default function PrivacidadePage() {
               plataforma.
             </li>
             <li>
-              <strong>Vercel</strong> — hospeda a aplicação e mantém logs de
-              acesso.
+              <strong>Vercel</strong> — hospeda a aplicação e mantém os
+              registros técnicos de servidor da hospedagem.
             </li>
           </ul>
+          <p>
+            <strong>Com os demais usuários da plataforma.</strong> Além dos
+            operadores acima, há um compartilhamento que acontece à vista do
+            titular: o que você publica no <strong>fórum</strong> e no{" "}
+            <strong>feed</strong> fica visível aos outros usuários, junto do seu
+            nome de exibição (ou de &quot;Aluno&quot;, se não houver um
+            definido); e, se você ativar a opção &quot;Aparecer no ranking
+            público&quot;, seu <strong>nome de exibição</strong> passa a ser
+            listado no ranking mensal de XP e no mural de conquistas. O ranking
+            depende de consentimento e pode ser desativado a qualquer momento
+            pelo painel; publicações já feitas podem ser removidas a pedido,
+            pelo e-mail de contato.
+          </p>
 
           <h2 id="internacional">Transferência internacional</h2>
           <p>
@@ -124,9 +160,44 @@ export default function PrivacidadePage() {
           <p>
             Cada dado é guardado pelo prazo indicado na seção{" "}
             <a href="#bases">O que tratamos, para quê e com que base legal</a>.
-            Além disso, registros de acesso à aplicação são guardados por 6
-            meses, conforme exige o Marco Civil da Internet (Lei 12.965/2014,
-            art. 15).
+            Em resumo:
+          </p>
+          <ul>
+            <li>
+              <strong>Cadastro, compra e acesso</strong> — enquanto a conta
+              existir, mais o prazo legal de guarda de documentos fiscais e de
+              defesa em juízo.
+            </li>
+            <li>
+              <strong>E-mail da newsletter</strong> — até você revogar a
+              inscrição.
+            </li>
+            <li>
+              <strong>Mensagens de suporte</strong> — enquanto durar a relação
+              com a plataforma.
+            </li>
+            <li>
+              <strong>Progresso, XP, selos e certificados</strong> — enquanto a
+              conta existir; o certificado já emitido continua verificável pelo
+              código de verificação.
+            </li>
+            <li>
+              <strong>Publicações no fórum e no feed</strong> — enquanto a
+              publicação existir, ou até você pedir a remoção.
+            </li>
+            <li>
+              <strong>Eventos de funil</strong> — mantidos de forma
+              pseudonimizada, ligados apenas ao <code>anon_id</code>, sem
+              vínculo com o seu e-mail.
+            </li>
+          </ul>
+          <p>
+            <strong>Não mantemos base própria de log de acesso.</strong> Os
+            registros técnicos de servidor ficam com a Vercel, nossa
+            hospedagem, sujeitos à política de retenção dela. Não operamos a
+            plataforma como provedor de aplicação constituído em pessoa
+            jurídica e, portanto, não guardamos registros de acesso na forma do
+            art. 15 do Marco Civil da Internet.
           </p>
 
           <h2 id="direitos">Seus direitos</h2>
@@ -155,7 +226,7 @@ export default function PrivacidadePage() {
           <p>
             Para exercer qualquer desses direitos, entre em contato pelo
             e-mail <a href={`mailto:${SELLER.email}`}>{SELLER.email}</a>.
-            Respondemos em até {SELLER.supportResponseDays} dias úteis.
+            Respondemos em até {SELLER.supportResponseDays} dias corridos.
           </p>
 
           <h2 id="cookies">Cookies</h2>
@@ -176,6 +247,9 @@ export default function PrivacidadePage() {
             <a href="#operadores">Com quem compartilhamos</a>, e as bases
             legais de cada tratamento estão na seção{" "}
             <a href="#bases">O que tratamos, para quê e com que base legal</a>.
+            As regras de uso da plataforma estão nos{" "}
+            <a href="/legal/termos">Termos de Uso</a> e na{" "}
+            <a href="/legal/uso-aceitavel">Política de Uso Aceitável</a>.
           </p>
 
           <p className="mc-legal-note">

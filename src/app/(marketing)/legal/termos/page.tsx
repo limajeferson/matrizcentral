@@ -53,10 +53,19 @@ export default function TermosPage() {
             direito de acessá-los nas condições descritas aqui.
           </p>
           <p>
-            No plano de entrada, a licença do material adquirido vigora por{" "}
-            <strong>prazo indeterminado</strong>. Nos passes (Regular e
-            Advanced), a licença acompanha o período de{" "}
-            <strong>12 meses</strong> contratado.
+            <strong>Ebook.</strong> A licença do ebook vigora por{" "}
+            <strong>prazo indeterminado</strong>: ele fica acessível pelo{" "}
+            <strong>leitor da própria plataforma</strong>, bastando entrar com o{" "}
+            <strong>e-mail usado na compra</strong>. A leitura não depende de
+            download nem de arquivo salvo no seu computador — acontece dentro da
+            plataforma, e por isso não há prazo para consumir o material.
+          </p>
+          <p>
+            <strong>Passes Regular e Advanced.</strong> A licença dos conteúdos
+            do passe acompanha o período de <strong>12 meses</strong>{" "}
+            contratado. Encerrado esse período, o acesso aos conteúdos do passe
+            se encerra; o ebook, quando incluído no passe, permanece acessível
+            pela regra do parágrafo anterior.
           </p>
 
           <h2 id="uso-permitido">O que não é permitido</h2>
@@ -184,7 +193,10 @@ export default function TermosPage() {
             As condições da licença de uso do software e do conteúdo estão na
             seção <a href="#licenca-software">Licença de uso</a>, e o que não
             é permitido fazer com o acesso está na seção{" "}
-            <a href="#uso-permitido">O que não é permitido</a>.
+            <a href="#uso-permitido">O que não é permitido</a>. Um resumo em
+            linguagem direta dessas vedações, junto dos compromissos que
+            assumimos na forma de comunicar o produto, está na{" "}
+            <a href="/legal/uso-aceitavel">Política de Uso Aceitável</a>.
           </p>
 
           <h2 id="direitos">Direitos Autorais</h2>
@@ -195,9 +207,12 @@ export default function TermosPage() {
           </p>
 
           <p className="mc-legal-note">
-            Este documento pode ser atualizado periodicamente. O uso continuado
-            da plataforma após alterações implica concordância com os novos
-            termos.
+            Este documento pode ser atualizado periodicamente. Alterações
+            relevantes são <strong>comunicadas por e-mail</strong> a quem tem
+            acesso ativo, antes de passarem a valer, e{" "}
+            <strong>não retroagem sobre contratações já feitas</strong>: para a
+            sua compra continua valendo a versão vigente na data em que ela foi
+            realizada.
           </p>
         </article>
       </div>
