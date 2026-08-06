@@ -27,6 +27,66 @@ A seção "O QUE FALTA PARA O LANÇAMENTO" é o checklist mestre da inauguraçã
 
 ## ⏭️ PRÓXIMA AÇÃO (leia isto primeiro ao retomar)
 
+> ### 🔴 2026-08-06 — BRANCH `conformidade-legal` PRONTA, AGUARDANDO O USUÁRIO
+>
+> **Não está na `master` de propósito.** A Vercel publica automático e esta
+> branch altera **termos, privacidade e uso aceitável** — texto com efeito sobre
+> o cliente, que o limite 3 do `CLAUDE.md` proíbe publicar sem o usuário ver.
+>
+> **8 commits** (`dde2c45..43c2c96`), 6 tasks via subagent-driven-development +
+> revisão final whole-branch (opus) + uma onda de correções + re-review escopada.
+> Gate: `tsc` 0 · **405 testes / 63 arquivos** (era 391/61) · lint 0 erros.
+>
+> **O que motivou a frente:** o site vai listar na Kiwify, e marketplace verifica
+> conformidade do produtor. Uma auditoria achou três buracos sérios:
+> 1. **O site não identificava o fornecedor** — nem razão social, nem CNPJ/CPF,
+>    nem endereço. Decreto 7.962/2013, art. 2º, I e II. É a primeira coisa que o
+>    Procon olha.
+> 2. **A política de privacidade afirmava algo falso** — dizia não compartilhar
+>    dados com terceiros, mas Stripe, Brevo, Supabase e Vercel são operadores.
+> 3. **A plataforma é software e não havia contrato de licença** — a seção
+>    "Licenciamento" tinha 3 linhas e falava só do conteúdo.
+>
+> **Entregue:** `src/data/legal.ts` como fonte única da identificação (com
+> sentinela que **não renderiza nada** enquanto o dado real não vier — exibir
+> `__PREENCHER__` seria pior que omitir) · `SellerIdentityBlock` no rodapé e na
+> privacidade · privacidade reescrita (bases legais do art. 7º, operadores
+> nominados, transferência internacional, os dez direitos do art. 18, retenção,
+> fórum e ranking declarados) · termos com licença de software (escopo,
+> vedações, conta, disponibilidade **sem promessa de uptime**, suspensão,
+> responsabilidade dentro do art. 51, **foro do domicílio do consumidor**) ·
+> `/legal/uso-aceitavel` nova · prazos de acesso e de suporte declarados ·
+> sumário da contratação nos e-mails de compra (art. 4º, VII).
+>
+> **A revisão final pegou 3 Critical** — e um deles ensina: os termos afirmavam
+> "prazo indeterminado" para o Start enquanto `tokenAccessExpiry` expira em 365
+> dias. Investigado: a premissa era **parcialmente falsa**. O `/api/download` já
+> está aposentado e o leitor `/biblioteca/[slug]` libera o ebook por **sessão +
+> compra paga, sem checar expiração** (`reader-data.ts:37-50`). O que expira é o
+> painel `/dashboard/[token]`. **Decisão do usuário (2026-08-06):** o ebook é
+> lido pela ferramenta de leitura, e o **e-mail cadastrado dá acesso ilimitado
+> ao ebook, sem prazo** — só o ebook tem essa regalia. O texto foi ajustado para
+> essa precisão. Os outros dois Critical eram afirmações falsas: retenção de
+> logs por 6 meses que não existe, e o sumário de contratação vazando para o
+> e-mail de **reenvio** de acesso (quem pedia o link 8 meses depois recebia
+> "garantia de 30 dias" de um contrato encerrado).
+>
+> ### 🔒 O QUE FALTA — e nenhuma linha de código resolve
+>
+> 1. **Razão social ou nome civil · CNPJ ou CPF · endereço físico completo.**
+>    Enquanto `SELLER` estiver com `IDENTITY_PLACEHOLDER`, o bloco não renderiza
+>    e **o Decreto 7.962 segue descumprido no ar** — que era a falha mais grave
+>    do diagnóstico. O Claude não preenche: são dados cadastrais reais.
+> 2. **Revisão por advogado**, com atenção a `#responsabilidade` e `#suspensao`.
+> 3. **Aval do usuário para o merge** — é o portão do limite 3.
+>
+> **Backlog que a frente deixou** (no ledger, nada bloqueia): compra de passe
+> dispara dois e-mails, ambos com "Resumo da sua contratação" e o mesmo valor —
+> redundante, o comprador pode achar que pagou duas vezes · `#bases` diz
+> "enquanto durar o acesso" e `#retencao` diz "enquanto a conta existir" ·
+> `quizUrl` interpola `NEXT_PUBLIC_URL` sem guard (pré-existente).
+
+
 > ### 🔴 2026-08-05 — A FILA MUDOU DE ORDEM. Leia antes de qualquer coisa.
 >
 > **Decisão do usuário:** *"primeiro subir num marketplace como a Kiwify, para
