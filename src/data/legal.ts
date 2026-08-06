@@ -37,17 +37,41 @@ export function isIdentityComplete(s: SellerIdentity): boolean {
 }
 
 /**
- * 🔒 DEPENDE DO USUÁRIO: legalName, taxId e address.
- * O Claude não preenche esses campos — são dados pessoais/cadastrais reais.
- * Enquanto estiverem com IDENTITY_PLACEHOLDER, o bloco de identificação
- * NÃO é renderizado (ver SellerIdentityBlock, Task 5) — melhor não exibir
- * do que exibir identificação falsa.
+ * Campos sensíveis (nome civil, CPF, endereço) NÃO moram aqui — este módulo
+ * é importado por client components (OfferPricing, ContatoForm) e o Next.js
+ * troca env sem NEXT_PUBLIC_ por `undefined` no bundle do cliente. Por isso
+ * a montagem é uma função pura que recebe o env por parâmetro: quem lê
+ * `process.env` de verdade é `seller-identity.server.ts` (server-only).
  */
-export const SELLER: SellerIdentity = {
-  legalName: IDENTITY_PLACEHOLDER,
+export function buildSellerIdentity(env: Record<string, string | undefined>): SellerIdentity {
+  const pick = (v: string | undefined): string => {
+    const trimmed = v?.trim();
+    return trimmed ? trimmed : IDENTITY_PLACEHOLDER;
+  };
+
+  return {
+    legalName: pick(env.MC_SELLER_LEGAL_NAME),
+    taxIdLabel: SELLER.taxIdLabel,
+    taxId: pick(env.MC_SELLER_TAX_ID),
+    address: pick(env.MC_SELLER_ADDRESS),
+    email: SELLER.email,
+    supportResponseDays: SELLER.supportResponseDays,
+    accessReleaseText: SELLER.accessReleaseText,
+  };
+}
+
+/**
+ * Campos NÃO sensíveis da identificação do fornecedor (Decreto 7.962/2013,
+ * art. 2º). Nome civil, CPF e endereço ficam de fora de propósito: vivem em
+ * variável de ambiente de servidor (ver seller-identity.server.ts) porque
+ * este arquivo é importado por client components e não pode ler
+ * `process.env` sem vazar `undefined` no bundle do cliente.
+ */
+export const SELLER: Pick<
+  SellerIdentity,
+  "taxIdLabel" | "email" | "supportResponseDays" | "accessReleaseText"
+> = {
   taxIdLabel: "CPF",
-  taxId: IDENTITY_PLACEHOLDER,
-  address: IDENTITY_PLACEHOLDER,
   email: "contato@matrizcentral.com.br",
   supportResponseDays: 5,
   accessReleaseText: "imediatamente após a confirmação do pagamento",
