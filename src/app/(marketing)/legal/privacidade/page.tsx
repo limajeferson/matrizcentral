@@ -98,8 +98,8 @@ export default function PrivacidadePage() {
             </li>
             <li>
               <strong>Brevo</strong> — envia e-mail transacional (confirmação
-              de compra, magic link de acesso, avisos de progresso). Recebe
-              e-mail e nome.
+              de compra, magic link de acesso, avisos de progresso). Recebe o
+              endereço de e-mail do destinatário e o conteúdo da mensagem.
             </li>
             <li>
               <strong>Supabase</strong> — hospeda o banco de dados da
