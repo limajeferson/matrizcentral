@@ -725,6 +725,21 @@
   color: #2a1155;
   text-align: center;
 }
+/* C1/C4 (Onda 3): qualificador da garantia (arts. 37 e 54, §4) + ressalva de
+   parcelamento (art. 52). Fica FORA dos cards, direto sobre o fundo da pagina —
+   por isso usa var(--ink-mute), que o .mc-oferta-wrapper sobrescreve para claro
+   no tema escuro. Cor fixa aqui ficaria ilegivel na /oferta (ja aconteceu). */
+.lp-guide .plans-note {
+  margin-top: 18px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ink-mute);
+  text-align: center;
+}
+.lp-guide .plans-note a {
+  color: inherit;
+  text-decoration: underline;
+}
 
 /* ---------- CTA + FOOTER ---------- */
 .lp-guide .cta {

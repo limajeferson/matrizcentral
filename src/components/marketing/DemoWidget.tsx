@@ -103,9 +103,13 @@ export default function DemoWidget() {
                 9 capítulos: da escolha do modelo ao troubleshooting real de
                 hardware. Sem enrolação.
               </p>
+              {/* C12 (Onda 3): dizia "120+ paginas". O ebook tem ~3.853
+                  palavras, ou seja 15 a 20 paginas - discrepancia de ~6x, que e
+                  a origem numero um de pedido de reembolso. Densidade vende
+                  melhor que volume para publico tecnico. */}
               <div className="ebook-check">
                 <span><IconCheck className="ebook-check-icon" /></span>
-                120+ páginas de conteúdo técnico
+                9 capítulos densos, sem enrolação
               </div>
             </div>
           )}

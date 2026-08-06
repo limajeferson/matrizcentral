@@ -55,7 +55,7 @@ export async function sendTokenEmail(params: { to: string; token: string }): Pro
       to: [{ email: params.to }],
       subject: "Seu token chegou! Descubra seu perfil",
       htmlContent: emailShell(`
-        <p>Seu ebook está confirmado.</p>
+        <p>Seu acesso à Matriz Central está confirmado.</p>
         <p>Descubra seu perfil de aprendizado e desbloqueie seu roadmap personalizado:</p>
         <p><a href="${quizUrl}">${quizUrl}</a></p>
       `),

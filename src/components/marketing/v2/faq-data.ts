@@ -12,12 +12,12 @@ export const FAQ_ITEMS: { question: string; answer: string }[] = [
   {
     question: "É assinatura?",
     answer:
-      "Não. O ebook avulso é pagamento único de R$47. Os planos com mais conteúdo (em breve) terão lista de espera em /oferta.",
+      "Não. Nada aqui renova sozinho. O plano de entrada é pagamento único de R$47 e dá o ebook, o diagnóstico e o roadmap. Os passes Regular e Advanced, que liberam a biblioteca e o feed, são de 12 meses cobrados uma vez, sem renovação automática.",
   },
   {
     question: "Como funciona o certificado?",
     answer:
-      "Você responde um quiz de validação de 15 questões; com 70% de acerto o certificado com QR code é liberado, verificável publicamente.",
+      "São dois passos: concluir a missão final da sua trilha e ser aprovado no quiz de validação. Cumpridos os dois, o certificado é emitido automaticamente, com código de verificação público — qualquer pessoa confere a autenticidade pelo link.",
   },
   {
     question: "Como recebo o acesso?",

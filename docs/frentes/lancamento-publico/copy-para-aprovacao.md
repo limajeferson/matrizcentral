@@ -1,5 +1,42 @@
 # ✍️ Copy para aprovação — Onda 3 "Verdade da Oferta"
 
+> ## ✅ APLICADO EM 2026-08-06 — este documento virou registro, não fila
+>
+> **Direcionamento reafirmado pelo usuário:** *"já existe um direcionamento,
+> 47 é apenas o ebook"*. As propostas abaixo já refletiam isso; foram aplicadas
+> sem nova rodada de aprovação item a item. **C1–C3 autorizados explicitamente**
+> pelo usuário depois de verificado que os três não conflitam entre si.
+>
+> | Item | O que foi feito |
+> |---|---|
+> | **C1** | `/oferta`: "garantia condicional de 7 dias" → **"30 dias de garantia — os 7 primeiros sem precisar justificar\*"**, com o qualificador do 8º ao 30º dia logo abaixo do bloco de planos |
+> | **C2** | Termos: seção Garantia reescrita em três janelas (1–7 legal · 8–30 comercial · 31+ encerra) |
+> | **C3** | Nada a mudar — `refundWindowExpiry` já eram 30 dias (conferido em `tokens.ts:16`) |
+> | **C4** | Advanced: **R$497 à vista** em destaque, "até 12x de R$47 (total R$564)" ao lado, + ressalva de parcelamento (art. 52 do CDC) |
+> | **C5** | **Mantido** "acesso vitalício" — as duas frases já se qualificam ("ao seu núcleo", "à versão adquirida") |
+> | **C6** | Landing: "Todo o sistema por apenas R$47" → **"Comece por R$47 — seu diagnóstico, seu roadmap e o ebook técnico"** |
+> | **C7** | Landing: lista reordenada — ebook/diagnóstico/roadmap/gamificação primeiro; **biblioteca e feed marcados como prévia / "disponível nos passes"** |
+> | **C8** | FAQ "É assinatura?" reescrito, dizendo o que o R$47 dá e o que é dos passes |
+> | **C9** | **Não aplicado de propósito** — resolve-se sozinho quando as 9 mídias subirem (opção (a), recomendada) |
+> | **C10** | E-mail: "Seu ebook está confirmado" → "Seu acesso à Matriz Central está confirmado" |
+> | **C11** | **Não aplicado** — ver ressalva abaixo |
+> | **C12** | "120+ páginas" → **"9 capítulos densos, sem enrolação"** |
+> | **C13** | Ebook: `/assinatura` → `/oferta`; as duas menções a `/setup` removidas; promessa de links de afiliados retirada |
+> | **C14** | FAQ do certificado reescrito — sem QR code (não existe), com os **dois** requisitos |
+> | **C15** | Pill do quiz → "Certificado (se a trilha estiver completa)" |
+>
+> ### ⚠️ Ressalva sobre o C11 — proposta invertida pelo direcionamento
+>
+> O C11 propunha **tirar** a palavra "ebook" de onde ela era usada como sinônimo
+> do produto inteiro. Mas o direcionamento de 2026-08-06 é o oposto: **o R$47 é
+> o ebook**. Manter "Gamificação da sua trilha do ebook" na `/oferta` é
+> **mais** verdadeiro que trocar por "sua trilha", porque no plano de entrada a
+> trilha é mesmo a do ebook. **C11 foi deixado como está de propósito** — só o
+> C10 (e-mail, que é compartilhado com quem compra os passes e por isso não pode
+> dizer "ebook") foi aplicado.
+>
+> **Gate no momento da aplicação:** `tsc` 0 · 391 testes / 61 arquivos · lint 0 erros.
+
 > **Para o Jeferson aprovar item a item.** Nada aqui está no ar ainda com o texto
 > novo — é tudo proposta. Responda por código (**C1**, **C2**, …) com
 > **APROVADO** ou com a sua observação. O que você aprovar, o Claude aplica e

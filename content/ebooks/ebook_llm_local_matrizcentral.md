@@ -527,8 +527,6 @@ Interface visual, sem terminal. Ideal para quem quer experimentar sem configurar
 <a name="cap7"></a>
 ## Capítulo 7: Monte Sua Máquina — Configurações por Budget
 
-> 💡 Links de hardware com preços atualizados disponíveis em matrizcentral.com.br/setup
-
 ### Budget Entrada: até R$1.500 (Upgrade de GPU)
 
 **Objetivo:** Rodar modelos até 13B com conforto
@@ -694,7 +692,7 @@ Uma IA local que:
 - Usa as ferramentas certas (roteamento automático por tarefa)
 - Roda sem internet (100% local, 100% privado)
 
-**Para acessar:** matrizcentral.com.br/assinatura
+**Para acessar:** matrizcentral.com.br/oferta
 
 ---
 
@@ -736,4 +734,4 @@ Uma IA local que:
 *Construa Seu Próprio ChatGPT Particular — Matriz Central, 2026*  
 *matrizcentral.com.br | Versão 1.0*
 
-> **Nota:** Hardware evolui rapidamente. Verifique matrizcentral.com.br/setup para a versão atualizada desta tabela e links de afiliados para compra de componentes.
+> **Nota:** Hardware evolui rapidamente. Os relatórios comparativos publicados na plataforma acompanham os lançamentos e trazem as recomendações atualizadas.

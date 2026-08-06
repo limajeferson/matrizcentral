@@ -99,7 +99,12 @@ export default function OfferPricing() {
             <li>Acesso à plataforma para <strong>visualizar</strong> toda a biblioteca (prévias)</li>
             <li>Gamificação da sua trilha do ebook (XP, níveis)</li>
             <li><strong>Cupom de R$47</strong> (válido 30 dias) para migrar ao Regular ou Advanced</li>
-            <li>Garantia condicional de 7 dias (<a href="/legal/termos#garantia">ver termos</a>)</li>
+            {/* C1 (Onda 3): dizia "garantia condicional de 7 dias". Os 7 dias do
+                art. 49 do CDC sao irrenunciaveis - chamar de "condicional" tende
+                a ser nulo pelo art. 51, I. A politica real e 30 dias, entao o
+                texto passa a dizer o que de fato se oferece, com o qualificador
+                no ponto da promessa (arts. 37 e 54, §4). */}
+            <li><strong>30 dias de garantia</strong> — os 7 primeiros sem precisar justificar* (<a href="/legal/termos#garantia">ver termos</a>)</li>
           </ul>
           <span className="foot">Por R$47, uma vez: seu núcleo de aprendizado — e a plataforma pra explorar o resto.</span>
         </div>
@@ -119,7 +124,12 @@ export default function OfferPricing() {
         <div className="plan recommended">
           <span className="plan-tag mono plan-tag-hot">Mais procurado</span>
           <h3 style={{ marginTop: 20 }}>Advanced</h3>
-          <div className="price"><b><span style={{ fontSize: "0.5em", fontWeight: 400, verticalAlign: "middle" }}>12x</span> R$47</b><small>ou R$497 à vista<br />acesso completo 12 meses</small></div>
+          {/* C4 (Onda 3): dizia "12x R$47" como se fosse sempre. No Stripe quem
+              decide o numero de parcelas e o emissor do cartao - o codigo so liga
+              a opcao. E 12 x R$47 = R$564 contra R$497 a vista: +13,5% sem a
+              palavra "juros" em lugar nenhum. O art. 52 do CDC exige informar o
+              valor total e os acrescimos na venda a prazo. */}
+          <div className="price"><b>R$497</b><small>à vista — ou até 12x de R$47 (total R$564)<br />acesso completo 12 meses</small></div>
           <PlanCheckout plan="advanced" cta="Assinar o Advanced" />
           <ul>
             <li>Tudo do Start, com <strong>a plataforma inteira liberada</strong></li>
@@ -129,6 +139,13 @@ export default function OfferPricing() {
           <span className="foot">Pra quem vai estudar o ano inteiro</span>
         </div>
       </div>
+      <p className="plans-note">
+        * Do 8º ao 30º dia a garantia é comercial e considera o consumo do
+        material. Detalhes nos <a href="/legal/termos#garantia">termos</a>.
+        <br />
+        As opções de parcelamento variam conforme a forma de pagamento e o
+        emissor do cartão.
+      </p>
     </div>
   );
 }

@@ -13,13 +13,18 @@ import {
   IconTrophy,
 } from "./icons";
 
+// C7 (Onda 3): a lista apresentava os 6 itens como se todos fossem do R$47.
+// Biblioteca e feed sao dos passes (Regular/Advanced) - o plano de entrada da
+// previa. A pessoa continua vendo tudo o que existe, mas ninguem compra achando
+// que leva a biblioteca inteira: essa descoberta pos-compra e a origem numero um
+// de pedido de reembolso.
 const INCLUDED = [
-  { icon: IconBooks, label: "Biblioteca multi-formato", description: "Relatórios, podcasts, vídeos e apresentações sobre IA local." },
-  { icon: IconPuzzle, label: "Plataforma-feed", description: "Aprenda no seu ritmo, como numa rede social de aprendizado." },
+  { icon: IconBookOpen, label: "Ebook técnico completo", description: "9 capítulos, do organograma de decisão ao troubleshooting de hardware." },
   { icon: IconCompass, label: "Diagnóstico inicial", description: "Uma trilha recomendada para o seu contexto." },
   { icon: IconRoad, label: "Roadmap inteligente", description: "Sempre o próximo passo certo, sem excesso de conteúdo." },
   { icon: IconTrophy, label: "Gamificação + Certificado", description: "XP, níveis e certificação verificável ao concluir a trilha." },
-  { icon: IconBookOpen, label: "Ebook técnico (bônus)", description: "Material de apoio para rodar IA local do zero ao uso prático." },
+  { icon: IconBooks, label: "Biblioteca multi-formato", description: "Relatórios, podcasts, vídeos e apresentações. No plano de entrada você navega e vê as prévias; o acesso completo é dos passes." },
+  { icon: IconPuzzle, label: "Plataforma-feed", description: "Aprenda no seu ritmo, como numa rede social de aprendizado. Disponível nos passes." },
 ];
 
 export default function PricingV2() {
@@ -31,15 +36,15 @@ export default function PricingV2() {
         </Reveal>
         <Reveal delay={0.1}>
           <h2 className="mc-display mc-price-headline">
-            Todo o sistema por apenas
+            Comece por
             <br />
             R$47
           </h2>
         </Reveal>
         <Reveal delay={0.15}>
           <p className="mc-price-sub">
-            Pagamento único. Sem mensalidade. Sem renovação automática. Sem
-            fidelidade.
+            Seu diagnóstico, seu roadmap e o ebook técnico — pagamento único.
+            Sem mensalidade, sem renovação automática, sem fidelidade.
           </p>
         </Reveal>
         <Reveal delay={0.2}>

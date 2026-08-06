@@ -41,9 +41,29 @@ export default function TermosPage() {
 
           <h2 id="garantia">Garantia</h2>
           <p>
-            O produto de entrada (R$47) inclui garantia de 7 dias. Se, dentro
-            desse prazo, você concluir que o conteúdo não atende às suas
-            expectativas, devolvemos o valor pago.
+            <strong>Dias 1 a 7 — arrependimento (direito legal).</strong> Você
+            pode desistir da compra em até 7 dias corridos contados da liberação
+            do acesso, <strong>sem precisar justificar</strong> e sem qualquer
+            análise da nossa parte. A devolução é integral. Este é o direito
+            previsto no art. 49 do Código de Defesa do Consumidor e não depende
+            de nenhuma condição.
+          </p>
+          <p>
+            <strong>
+              Dias 8 a 30 — garantia comercial (cortesia da Matriz Central).
+            </strong>{" "}
+            Depois do 7º dia, mantemos a possibilidade de devolução por mais 23
+            dias como cortesia. Nessa janela, avaliamos o uso feito do material:
+            a garantia comercial pressupõe que você estudou o conteúdo e ainda
+            assim ele não serviu. Se não houver registro de consumo, o pedido
+            continua coberto pela regra dos dias 1 a 7, e não por esta.
+          </p>
+          <p>
+            <strong>A partir do dia 31</strong>, a garantia se encerra.
+          </p>
+          <p>
+            Em qualquer das janelas, o pedido é feito pelo e-mail de suporte,
+            informando o e-mail usado na compra.
           </p>
 
           <h2 id="reembolso">Política de Reembolso</h2>

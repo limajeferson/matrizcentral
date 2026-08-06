@@ -149,8 +149,11 @@ export default function QuizValidacao({ token, onComplete }: QuizProps) {
                 <span className="flex items-center gap-1 bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full">
                   <CheckCircle className="w-3.5 h-3.5" /> Badge: Validador
                 </span>
+                {/* C15 (Onda 3): o pill dizia so "Certificado", sugerindo
+                    emissao garantida ao passar no quiz. Passar no quiz e metade
+                    do requisito - certificates.ts tambem exige a missao final. */}
                 <span className="flex items-center gap-1 bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full">
-                  <GraduationCap className="w-3.5 h-3.5" /> Certificado
+                  <GraduationCap className="w-3.5 h-3.5" /> Certificado (se a trilha estiver completa)
                 </span>
               </div>
             </div>
