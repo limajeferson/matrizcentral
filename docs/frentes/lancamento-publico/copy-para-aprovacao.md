@@ -224,6 +224,45 @@ tipo de descoberta pós-compra é a origem número um de pedido de reembolso.
 
 ---
 
+### C14 · O FAQ promete um QR code que não existe *(achado novo, 2026-08-05)*
+
+**Onde:** `src/components/marketing/v2/faq-data.ts:20` — **uma fonte só, duas
+superfícies**: o FAQ da landing **e** a página `/suporte`.
+
+**Está no ar:**
+> **Como funciona o certificado?** — Você responde um quiz de validação de 15 questões; com **70% de acerto** o certificado **com QR code** é liberado, verificável publicamente.
+
+**Problema — duas afirmações falsas:**
+1. **O QR code não existe.** Nenhuma das duas rotas de certificado
+   (`dashboard/[token]/certificado` e `certificado/[code]`) gera QR code. O que
+   existe é um **código de verificação** e um link público.
+2. **O quiz é metade do requisito.** `src/lib/certificates.ts` exige **dois**:
+   a **missão final** da trilha concluída **e** o quiz aprovado. Quem passa só
+   no quiz não recebe certificado — e hoje a página promete que recebe.
+
+**Proposta:**
+> **Como funciona o certificado?** — São dois passos: concluir a missão final da sua trilha e ser aprovado no quiz de validação. Cumpridos os dois, o certificado é emitido automaticamente, com **código de verificação público** — qualquer pessoa confere a autenticidade pelo link.
+
+**Sua decisão:** `C14 → ______________`
+
+---
+
+### C15 · O pill "Certificado" na tela do quiz *(menor, mesma origem)*
+
+**Onde:** `src/components/quiz/QuizValidacao.tsx:143-148`
+
+**Problema:** o bloco "Você ganhou:" mostra um pill **"Certificado"** ao passar
+no quiz, sugerindo emissão garantida — mas falta a missão final. O destino do
+botão já foi corrigido na Onda 2 (leva à rota que explica o que falta); resta a
+promessa do pill.
+
+**Proposta:** condicionar o pill à emissão real, ou trocar por
+**"Certificado (se a trilha estiver completa)"**.
+
+**Sua decisão:** `C15 → ______________`
+
+---
+
 # 🟢 GRUPO D — A biblioteca anuncia mídia que ainda não existe
 
 Hoje **9 dos 16 itens** do hub são podcasts e vídeos, e **todos os 9 estão
@@ -357,6 +396,8 @@ C5  (acesso vitalicio)               →
 C6  (titulo do preco na landing)     → 
 C7  (o que o R$47 inclui, na landing)→ 
 C8  (FAQ "e assinatura?")            → 
+C14 (FAQ promete QR code inexistente)→ 
+C15 (pill "Certificado" no quiz)     → 
 C9  (contador da biblioteca)         → 
 C10 (email "seu ebook")              → 
 C11 (demais mencoes a ebook)         → 
