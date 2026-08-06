@@ -60,8 +60,15 @@ export default function PrivacidadePage() {
             Em conformidade com a Lei Geral de Proteção de Dados (Lei
             13.709/2018), você tem direito a acessar, corrigir e solicitar a
             exclusão dos seus dados pessoais. Para exercer esses direitos,
-            entre em contato pelo e-mail de suporte da plataforma. Não vendemos
-            nem compartilhamos seus dados com terceiros para fins de marketing.
+            entre em contato pelo e-mail de suporte da plataforma.
+          </p>
+          <p>
+            <strong>Nunca vendemos seus dados</strong> e não os compartilhamos com
+            terceiros para que façam marketing próprio. Para operar a plataforma,
+            porém, alguns fornecedores tratam dados por nossa conta e sob nossa
+            instrução — pagamento, envio de e-mail, banco de dados e hospedagem.
+            A lista completa, com o que cada um recebe, está na seção{" "}
+            <a href="#operadores">Com quem compartilhamos</a>.
           </p>
 
           <p className="mc-legal-note">
