@@ -40,6 +40,26 @@ function tierHint(tier?: CapacityTier): string {
   return `<p>Para o seu caminho <strong>${path.publicName}</strong>: ${path.setup}</p>`;
 }
 
+/**
+ * Bloco de resumo da contratação (Decreto 7.962/2013, art. 4º, VII): o que foi
+ * adquirido, a janela de garantia e o link dos termos. Anexado aos e-mails de
+ * confirmação de compra abaixo.
+ *
+ * O valor pago NÃO entra aqui: nenhuma das funções que chamam este helper
+ * recebe o preço — só o webhook que as invoca conhece `session.amount_total`.
+ * Adicionar esse dado exigiria mudar a assinatura de `sendTokenEmail`/
+ * `sendPassPurchaseEmail` para receber o valor do chamador, o que é escopo de
+ * outra task (ver relatório da Task 6).
+ */
+function purchaseSummaryBlock(item: string): string {
+  const termsUrl = `${process.env.NEXT_PUBLIC_URL}/legal/termos#garantia`;
+  return `
+        <p><strong>Resumo da sua contratação</strong></p>
+        <p>Item adquirido: ${item}.</p>
+        <p>Garantia: 30 dias corridos a partir da liberação do acesso — os 7 primeiros sem precisar justificar.</p>
+        <p>Condições completas: <a href="${termsUrl}">${termsUrl}</a></p>`;
+}
+
 export async function sendTokenEmail(params: { to: string; token: string }): Promise<void> {
   const quizUrl = `${process.env.NEXT_PUBLIC_URL}/quiz/${params.token}`;
 
@@ -58,6 +78,7 @@ export async function sendTokenEmail(params: { to: string; token: string }): Pro
         <p>Seu acesso à Matriz Central está confirmado.</p>
         <p>Descubra seu perfil de aprendizado e desbloqueie seu roadmap personalizado:</p>
         <p><a href="${quizUrl}">${quizUrl}</a></p>
+        ${purchaseSummaryBlock("acesso à Matriz Central")}
       `),
     }),
   });
@@ -184,7 +205,8 @@ export async function sendPassPurchaseEmail(params: { to: string; plan: "regular
     params.to,
     `Seu passe ${nome} está ativo`,
     `<p>Seu passe <strong>${nome}</strong> foi ativado — 12 meses de acesso.</p>
-     <p>Entre pela sua conta em <a href="${process.env.NEXT_PUBLIC_URL}/entrar">${process.env.NEXT_PUBLIC_URL}/entrar</a> e comece a consumir.</p>`
+     <p>Entre pela sua conta em <a href="${process.env.NEXT_PUBLIC_URL}/entrar">${process.env.NEXT_PUBLIC_URL}/entrar</a> e comece a consumir.</p>
+     ${purchaseSummaryBlock(`Passe ${nome} — 12 meses de acesso`)}`
   );
 }
 
