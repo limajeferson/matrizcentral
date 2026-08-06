@@ -27,11 +27,37 @@ A seção "O QUE FALTA PARA O LANÇAMENTO" é o checklist mestre da inauguraçã
 
 ## ⏭️ PRÓXIMA AÇÃO (leia isto primeiro ao retomar)
 
-> ### 🔴 2026-08-06 — BRANCH `conformidade-legal` PRONTA, AGUARDANDO O USUÁRIO
+> ### ✅ 2026-08-06 — FRENTE `conformidade-legal` MESCLADA E NO AR
 >
-> **Não está na `master` de propósito.** A Vercel publica automático e esta
-> branch altera **termos, privacidade e uso aceitável** — texto com efeito sobre
-> o cliente, que o limite 3 do `CLAUDE.md` proíbe publicar sem o usuário ver.
+> **Aprovada pelo usuário** ("tudo validado, aprovado por mim") depois de revisar
+> as três páginas legais rodando localmente. Merge `a70a9fc`, push
+> `f9b96db..a70a9fc`, deploy automático da Vercel. O portão do limite 3 do
+> `CLAUDE.md` (texto com efeito sobre o cliente) foi cumprido pela revisão dele.
+>
+> **⚠️ Recomendação que continua de pé, e que o usuário optou por não bloquear:**
+> revisão por advogado, com atenção a `#responsabilidade` e `#suspensao` dos
+> termos. O texto entregue é insumo qualificado, não parecer jurídico.
+>
+> **Nomenclatura:** "aluno" saiu do site inteiro (`de83b91`). Virou **"membro"**
+> no texto exibido e **"usuário"** na política de privacidade, onde o vocabulário
+> da LGPD é mais preciso. O usuário preferia "assinante", **descartado com
+> motivo**: o produto não é assinatura ("Pare de pagar mensalidade", "É
+> assinatura? Não. Nada aqui renova sozinho", passes de cobrança única) — o termo
+> criaria contradição direta com a copy alinhada na Onda 3.
+>
+> **Identificação do fornecedor:** preenchida com os dados reais do usuário
+> (pessoa física, CPF), lidos do painel da Kiwify com autorização explícita.
+> **Não estão no repositório** — vivem em `MC_SELLER_LEGAL_NAME`,
+> `MC_SELLER_TAX_ID` e `MC_SELLER_ADDRESS`, já configuradas na Vercel em
+> Production e Preview como **Sensitive**. Sem prefixo `NEXT_PUBLIC_`, de
+> propósito: nunca entram no bundle do navegador. Quando o CNPJ existir, é trocar
+> três variáveis — o CPF nunca terá passado pelo histórico do git.
+>
+> **Histórico da decisão:** o usuário escolheu **acelerar o lançamento com CPF** e
+> tratar a abertura de CNPJ como passo seguinte. Caixa postal foi avaliada e
+> descartada: não satisfaz com segurança o "endereço físico" do art. 2º, II
+> (cuja finalidade é a *localização* do fornecedor), e trocaria um descumprimento
+> conhecido por um com aparência de resolvido.
 >
 > **8 commits** (`dde2c45..43c2c96`), 6 tasks via subagent-driven-development +
 > revisão final whole-branch (opus) + uma onda de correções + re-review escopada.
