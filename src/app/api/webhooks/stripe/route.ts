@@ -241,9 +241,17 @@ export async function POST(req: NextRequest) {
   //    session_id) ou por /api/resend-access. Falha de e-mail não derruba o
   //    webhook — senão a Stripe reentregaria só por causa do e-mail.
   try {
-    await sendTokenEmail({ to: email, token: accessToken });
+    // `withSummary` só aqui: este é o caminho da COMPRA. O reenvio de acesso
+    // (`resendAccessByEmail`) chama a mesma função sem o resumo, para não
+    // mandar "resumo da contratação" a quem comprou meses atrás.
+    await sendTokenEmail({
+      to: email,
+      token: accessToken,
+      withSummary: true,
+      amountTotalCents: session.amount_total,
+    });
     if (entitlementWasCreated && plan) {
-      await sendPassPurchaseEmail({ to: email, plan });
+      await sendPassPurchaseEmail({ to: email, plan, amountTotalCents: session.amount_total });
     }
   } catch (err) {
     console.error(

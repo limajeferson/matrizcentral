@@ -18,7 +18,7 @@ export type CertificateRequirement = {
 
 /**
  * Os dois requisitos do certificado, com o estado de cada um. Existe para a
- * página `/certificado` poder dizer ao aluno **o que falta** — passar no quiz
+ * página `/certificado` poder dizer ao membro **o que falta** — passar no quiz
  * sozinho não emite nada (ver `issueCertificateForToken`).
  */
 export function certificateRequirements(params: {

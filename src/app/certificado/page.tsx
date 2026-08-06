@@ -30,7 +30,7 @@ function Shell({ children }: { children: React.ReactNode }) {
 /**
  * Porta de entrada sem token para o certificado. É o alvo estável dos links de
  * descoberta (rodapé, `/conta`, sidebar, painel): decide sozinha entre explicar
- * a certificação (visitante), mostrar o que falta (aluno em andamento) ou levar
+ * a certificação (visitante), mostrar o que falta (membro em andamento) ou levar
  * ao certificado emitido.
  */
 export default async function CertificadoHubPage() {

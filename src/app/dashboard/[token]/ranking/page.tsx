@@ -47,7 +47,7 @@ export default async function RankingPage({ params }: { params: { token: string 
       <div>
         <h1 className="text-2xl font-bold text-foreground">Ranking</h1>
         <p className="text-muted-foreground">
-          Top 20 alunos que optaram por aparecer publicamente no ranking.
+          Top 20 membros que optaram por aparecer publicamente no ranking.
         </p>
       </div>
 

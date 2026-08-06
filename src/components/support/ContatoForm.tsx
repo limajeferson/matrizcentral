@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { SELLER } from "@/data/legal";
 
 export default function ContatoForm() {
   const [email, setEmail] = useState("");
@@ -50,6 +51,9 @@ export default function ContatoForm() {
       <button type="submit" disabled={state === "loading"} className="rounded-lg bg-violet-600 px-4 py-2 font-semibold text-white disabled:opacity-60">
         {state === "loading" ? "Enviando..." : "Enviar mensagem"}
       </button>
+      <p className="text-xs text-muted-foreground mt-2">
+        Respondemos em até {SELLER.supportResponseDays} dias corridos.
+      </p>
     </form>
   );
 }

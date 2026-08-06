@@ -65,6 +65,7 @@ export const FOOTER_COLUMNS: FooterColumn[] = [
       { label: "LGPD", href: "/legal/privacidade#lgpd" },
       { label: "Licenciamento", href: "/legal/termos#licenciamento" },
       { label: "Direitos Autorais", href: "/legal/termos#direitos" },
+      { label: "Uso Aceitável", href: "/legal/uso-aceitavel" },
     ],
   },
 ];

@@ -40,7 +40,59 @@ function tierHint(tier?: CapacityTier): string {
   return `<p>Para o seu caminho <strong>${path.publicName}</strong>: ${path.setup}</p>`;
 }
 
-export async function sendTokenEmail(params: { to: string; token: string }): Promise<void> {
+/**
+ * Formata um valor em centavos (o `amount_total` da Stripe) como moeda
+ * brasileira. Retorna `null` quando não há valor confiável — o chamador deve
+ * OMITIR a linha do valor em vez de imprimir algo errado.
+ *
+ * Formatação manual (e não `Intl.NumberFormat`) para o resultado não depender
+ * do ICU disponível no runtime: o mesmo e-mail sai igual em qualquer ambiente.
+ */
+export function formatBrlFromCents(cents: number | null | undefined): string | null {
+  if (typeof cents !== "number" || !Number.isFinite(cents)) return null;
+  const rounded = Math.round(cents);
+  const abs = Math.abs(rounded);
+  const reais = String(Math.floor(abs / 100)).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  const centavos = String(abs % 100).padStart(2, "0");
+  return `${rounded < 0 ? "-" : ""}R$ ${reais},${centavos}`;
+}
+
+/**
+ * Bloco de resumo da contratação (Decreto 7.962/2013, art. 4º, VII): o que foi
+ * adquirido, o valor pago, a janela de garantia e o link dos termos.
+ *
+ * Só pode ser anexado no caminho da COMPRA. Reenvio de acesso
+ * (`resendAccessByEmail`) usa a mesma função de e-mail e não pode receber o
+ * resumo — quem comprou há meses receberia o resumo de um contrato encerrado.
+ *
+ * O `siteUrl` recebe o mesmo guard de `emailShell`: sem `NEXT_PUBLIC_URL` a
+ * linha do link some, em vez de sair `undefined/legal/termos#garantia`.
+ */
+export function purchaseSummaryBlock(
+  item: string,
+  amountTotalCents?: number | null,
+  siteUrl: string | undefined = process.env.NEXT_PUBLIC_URL
+): string {
+  const termsUrl = siteUrl ? `${siteUrl}/legal/termos#garantia` : null;
+  const price = formatBrlFromCents(amountTotalCents);
+  return `
+        <p><strong>Resumo da sua contratação</strong></p>
+        <p>Item adquirido: ${item}.</p>${
+          price ? `\n        <p>Valor pago: ${price}.</p>` : ""
+        }
+        <p>Garantia: 30 dias corridos a partir da liberação do acesso. Nos 7 primeiros dias você pode desistir sem precisar justificar (direito de arrependimento, art. 49 do CDC). Do 8º ao 30º dia a devolução é cortesia nossa e pressupõe que você estudou o material e ainda assim ele não serviu.</p>${
+          termsUrl ? `\n        <p>Condições completas: <a href="${termsUrl}">${termsUrl}</a></p>` : ""
+        }`;
+}
+
+export async function sendTokenEmail(params: {
+  to: string;
+  token: string;
+  /** Só o caminho da compra anexa o resumo da contratação (ver bloco acima). */
+  withSummary?: boolean;
+  /** `session.amount_total` da Stripe, em centavos. Sem ele, o valor é omitido. */
+  amountTotalCents?: number | null;
+}): Promise<void> {
   const quizUrl = `${process.env.NEXT_PUBLIC_URL}/quiz/${params.token}`;
 
   const response = await fetch(BREVO_API_URL, {
@@ -58,6 +110,7 @@ export async function sendTokenEmail(params: { to: string; token: string }): Pro
         <p>Seu acesso à Matriz Central está confirmado.</p>
         <p>Descubra seu perfil de aprendizado e desbloqueie seu roadmap personalizado:</p>
         <p><a href="${quizUrl}">${quizUrl}</a></p>
+        ${params.withSummary ? purchaseSummaryBlock("acesso à Matriz Central", params.amountTotalCents) : ""}
       `),
     }),
   });
@@ -178,13 +231,18 @@ async function sendBrevo(to: string, subject: string, htmlContent: string): Prom
   }
 }
 
-export async function sendPassPurchaseEmail(params: { to: string; plan: "regular" | "advanced" }): Promise<void> {
+export async function sendPassPurchaseEmail(params: {
+  to: string;
+  plan: "regular" | "advanced";
+  amountTotalCents?: number | null;
+}): Promise<void> {
   const nome = params.plan === "advanced" ? "Advanced" : "Regular";
   await sendBrevo(
     params.to,
     `Seu passe ${nome} está ativo`,
     `<p>Seu passe <strong>${nome}</strong> foi ativado — 12 meses de acesso.</p>
-     <p>Entre pela sua conta em <a href="${process.env.NEXT_PUBLIC_URL}/entrar">${process.env.NEXT_PUBLIC_URL}/entrar</a> e comece a consumir.</p>`
+     <p>Entre pela sua conta em <a href="${process.env.NEXT_PUBLIC_URL}/entrar">${process.env.NEXT_PUBLIC_URL}/entrar</a> e comece a consumir.</p>
+     ${purchaseSummaryBlock(`Passe ${nome} — 12 meses de acesso`, params.amountTotalCents)}`
   );
 }
 

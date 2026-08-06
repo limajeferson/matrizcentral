@@ -10,7 +10,7 @@ export function generateMetadata({ params }: { params: { code: string } }) {
     description,
     ...pageMetadata({ title, description, path: `/certificado/${params.code}` }),
     // Não indexa (é a página de uma pessoa), mas mantém openGraph/twitter
-    // para o card ficar bonito quando o aluno compartilhar o link.
+    // para o card ficar bonito quando o membro compartilhar o link.
     robots: { index: false, follow: true },
   };
 }

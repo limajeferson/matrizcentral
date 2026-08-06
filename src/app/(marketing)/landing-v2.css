@@ -819,6 +819,22 @@
   color: var(--mc-gray); font-size: 0.9rem; line-height: 1.6;
 }
 .mcv2 .mc-footer-since { margin-top: 14px; color: var(--mc-gray); font-size: 0.7rem; }
+/* Identificacao do fornecedor (Decreto 7.962 art. 2). Precisa ser legivel,
+   nao "letra miuda decorativa" - a exigencia e destaque e facil visualizacao. */
+.mcv2 .mc-seller-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 14px;
+  font-style: normal;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--mc-gray);
+}
+.mcv2 .mc-seller-identity a {
+  color: inherit;
+  text-decoration: underline;
+}
 .mcv2 .mc-footer-social { display: flex; gap: 12px; margin-top: 20px; }
 .mcv2 .mc-footer-social-item {
   display: inline-flex; align-items: center; justify-content: center;

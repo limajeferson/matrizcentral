@@ -2,6 +2,7 @@ import Link from "next/link";
 import { FOOTER_COLUMNS, type FooterLink } from "./footer-nav";
 import FooterNewsletter from "./FooterNewsletter";
 import Logo from "@/components/brand/Logo";
+import SellerIdentityBlock from "@/components/legal/SellerIdentityBlock";
 import {
   IconFlag, IconClock, IconCpu,
   IconGithub, IconLinkedin, IconYoutube, IconInstagram, IconX, IconDiscord,
@@ -65,6 +66,7 @@ export default function FooterV2() {
               mais controle, privacidade e independência.
             </p>
             <p className="mc-footer-since mc-mono">Atuando desde 2025.</p>
+            <SellerIdentityBlock />
             <div className="mc-footer-social" aria-label="Redes sociais (em breve)">
               {SOCIALS.map(({ Icon, label }) => (
                 <span

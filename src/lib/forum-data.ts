@@ -12,13 +12,13 @@ export async function listTopics(limit = 50): Promise<TopicListItem[]> {
   if (rows.length === 0) return [];
   const userIds = Array.from(new Set(rows.map((t) => t.user_id)));
   const { data: users } = await supabase.from("users").select("id, display_name").in("id", userIds);
-  const nameById = new Map((users ?? []).map((u) => [u.id, u.display_name ?? "Aluno"]));
+  const nameById = new Map((users ?? []).map((u) => [u.id, u.display_name ?? "Membro"]));
   const topicIds = rows.map((t) => t.id);
   const { data: replies } = await supabase.from("forum_replies").select("topic_id").in("topic_id", topicIds);
   const counts = new Map<string, number>();
   for (const r of replies ?? []) counts.set(r.topic_id, (counts.get(r.topic_id) ?? 0) + 1);
   return rows.map((t) => ({
-    id: t.id, title: t.title, author: nameById.get(t.user_id) ?? "Aluno",
+    id: t.id, title: t.title, author: nameById.get(t.user_id) ?? "Membro",
     created_at: t.created_at, replyCount: counts.get(t.id) ?? 0,
   }));
 }
@@ -38,12 +38,12 @@ export async function getTopicWithReplies(topicId: string): Promise<TopicDetail 
     .order("created_at", { ascending: true });
   const userIds = Array.from(new Set([topic.user_id, ...(replies ?? []).map((r) => r.user_id)]));
   const { data: users } = await supabase.from("users").select("id, display_name").in("id", userIds);
-  const nameById = new Map((users ?? []).map((u) => [u.id, u.display_name ?? "Aluno"]));
+  const nameById = new Map((users ?? []).map((u) => [u.id, u.display_name ?? "Membro"]));
   return {
     id: topic.id, title: topic.title, body: topic.body,
-    author: nameById.get(topic.user_id) ?? "Aluno", created_at: topic.created_at,
+    author: nameById.get(topic.user_id) ?? "Membro", created_at: topic.created_at,
     replies: (replies ?? []).map((r) => ({
-      id: r.id, body: r.body, author: nameById.get(r.user_id) ?? "Aluno", created_at: r.created_at,
+      id: r.id, body: r.body, author: nameById.get(r.user_id) ?? "Membro", created_at: r.created_at,
       parent_reply_id: r.parent_reply_id,
     })),
   };

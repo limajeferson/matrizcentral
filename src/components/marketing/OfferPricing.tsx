@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { isValidEmail } from "@/lib/email-validation";
+import { SELLER } from "@/data/legal";
 
 function PlanCheckout({ plan, cta }: { plan: "ebook" | "regular" | "advanced"; cta: string }) {
   const inputId = `checkout-email-${plan}`;
@@ -140,6 +141,8 @@ export default function OfferPricing() {
         </div>
       </div>
       <p className="plans-note">
+        Acesso liberado {SELLER.accessReleaseText}.
+        <br />
         * Do 8º ao 30º dia a garantia é comercial e considera o consumo do
         material. Detalhes nos <a href="/legal/termos#garantia">termos</a>.
         <br />

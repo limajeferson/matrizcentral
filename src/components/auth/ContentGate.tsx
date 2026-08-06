@@ -41,7 +41,7 @@ export default function ContentGate({
               Adquirir acesso
             </a>
             <a href={entrarHref} className="text-sm text-muted-foreground underline">
-              Já sou aluno? Entrar
+              Já sou membro? Entrar
             </a>
           </div>
         </>
