@@ -8,7 +8,7 @@
 > Ordem de leitura ao retomar: **este arquivo → `CLAUDE.md` → o `README.md` da
 > frente ativa → o código fonte-de-verdade.**
 
-_Última atualização: 2026-07-26 (**FRENTE NOVA E ATIVA: `lancamento-publico`** —
+_Última atualização: 2026-09-04 (**BANCO DE PRODUÇÃO PAUSADO — leia o primeiro bloco da PRÓXIMA AÇÃO.** Onda 4 com código completo na branch `onda4-techdebt-seguranca`, não mesclável até a migration `0031` ser aplicada. Frente nova `case-assistente-continuo` em pesquisa.) _(histórico: 2026-07-26 — **FRENTE NOVA E ATIVA: `lancamento-publico`** —
 auditoria de código com 4 agentes paralelos achou **6 buracos que nenhum plano
 cobria**, e o checklist antigo foi reordenado em **6 ondas** por critério de
 receita. **Onda 1 (Receita & Descoberta) FECHADA**: 6 tasks + passe visual,
@@ -26,6 +26,108 @@ A seção "O QUE FALTA PARA O LANÇAMENTO" é o checklist mestre da inauguraçã
 ---
 
 ## ⏭️ PRÓXIMA AÇÃO (leia isto primeiro ao retomar)
+
+> ### 🔴 2026-09-04 — LEIA ISTO PRIMEIRO: o banco de produção está PAUSADO
+>
+> **O projeto Supabase `rzolsrzyafijaogjcjjb` está pausado.** Descoberto ao
+> tentar aplicar a migration `0031` — a CLI falhava com
+> `Failed to create login role: Connection terminated due to connection timeout`,
+> que é o sintoma, não a causa.
+>
+> **O site continua respondendo 200 em todas as rotas** (home, `/feed`,
+> `/forum`, `/entrar`, `/blog`) — e isso é justamente o perigo: as páginas
+> degradam em silêncio em vez de falhar. Nada que dependa do banco funciona:
+> login por magic link, feed, fórum, gravação de compra, XP.
+>
+> **Por que não foi religado:** retomar exige um slot livre, e a conta
+> `jefersonlima@outlook.com` está no teto de **2 projetos free ativos**. O
+> mapa completo, levantado em 04/09:
+>
+> | Org | Projeto | Estado |
+> |---|---|---|
+> | MatrizCentral | `jefersonlima@outlook.com's Project` (`rzolsrzyafijaogjcjjb`) | 🔴 **PAUSADO — é o nosso** |
+> | MatrizCentral | `tramppa-learn` | 🟢 ativo (ocupa 1 slot) |
+> | promobest | `promobest` | 🟢 ativo (ocupa o outro) |
+> | DescontoApp | `Desconte` | pausado |
+> | Melhor Sabor | `Melhor Sabor` | pausado |
+>
+> **Decisão do usuário (2026-09-04): DEIXAR PAUSADO por ora.** Perguntado
+> entre pausar o `tramppa-learn`, pausar o `promobest`, assinar o Pro
+> (US$ 25/mês) ou não mexer, escolheu não mexer. Portanto **não é pendência
+> esquecida — é escolha registrada.** Para religar depois, é pausar um dos
+> dois ativos pelo painel; os dados de ambos ficam intactos e retomáveis.
+>
+> ⚠️ **Consequência que amarra a Onda 4:** a branch
+> `onda4-techdebt-seguranca` **NÃO pode ir para a `master`** enquanto a
+> `0031` não estiver aplicada — a Vercel publica automático e o
+> `/entrar/resgate` leria uma coluna que não existe. É o limite 2 do
+> `CLAUDE.md`.
+>
+> ### ✅ 2026-09-04 — ONDA 4 (Tech-debt & Segurança) CÓDIGO COMPLETO, na branch
+>
+> `onda4-techdebt-seguranca`, 9 commits, **não mesclada** (ver acima).
+> Gate: `tsc` 0 · **428 testes / 65 arquivos** (era 410/63) · lint 0 erros.
+> Plano revalidado contra o código em
+> [`frentes/lancamento-publico/plano-onda4.md`](frentes/lancamento-publico/plano-onda4.md).
+>
+> | Task | O que fechou |
+> |---|---|
+> | T1 `G-S1` | **Triagem pagava 100 XP.** `/api/quiz` usava o token como `reference_id` e `/api/diagnostico` o `user.id` — o índice único nunca colidia. Chave unificada. |
+> | T2 `G-D1` | `resolveUserIdByToken` **ignorava `valid_until`**. Novo `lib/token-access.ts` (`resolveTokenRow`/`resolveTokenOwner`) checa expiração e, se `valid_until` vier ausente, **nega** (fail-closed). |
+> | T3 `G-S2` | As **3 APIs de mutação** exigem sessão (401), posse do token (403) e acesso ao conteúdo (403). O acesso usa `hasContentAccess` = `allowed && !willUnlock`, para que um POST **não queime a cota mensal** do Regular. Clientes tratam 401 indo para `/entrar/resgate`. |
+> | T4 `G-S3` | Resgate de **uso único** por `tokens.redeemed_at` (migration `0031`), com liberação se a criação da sessão falhar. **Código pronto, coluna não aplicada.** |
+> | T5 `G-S4` | Auto-login **perdia o login**: o `session_id` era consumido antes de `createSession`, e uma falha do banco queimava o resgate para sempre. Liberação compensatória. |
+> | T6 `G-D2` | `/api/access-status` (zero consumidores) e `resolveQuizUrlBySessionId` apagados. Levou junto o item de backlog do `quizUrl` sem guard. |
+> | T7 `G-D3` | `forum-tree` com desempate por `id` (o comparador nunca devolvia 0 → ordem instável entre SSR e cliente = hydration mismatch) e teto de profundidade que **reparenta em vez de descartar**. |
+> | T8 `G-D4` | Paginação do feed com cursor composto `created_at|id` — post não some nem repete na borda. |
+>
+> **Duas inversões deliberadas em relação à spec, com o porquê no plano:** o
+> auto-login ficou *consume-then-mint* com liberação (mintar primeiro obrigaria
+> a **revogar** sessão já emitida no replay, mais frágil), e o resgate virou
+> uso único por coluna nova em vez de invalidar o token (o painel ainda
+> depende dele).
+>
+> **Adiado com motivo, para a Onda 6:** aposentar o fluxo por token (a 2ª
+> metade do `G-S1`) e o `G-D5`. São migração de superfície — 5 rotas filhas,
+> **8 geradores de link tokenizado** e o e-mail de compra — não limpeza. A
+> Onda 6 já mexe no e-mail de compra pela virada Kiwify; é lá que cabe.
+>
+> **➡️ PRÓXIMA na Onda 4:** revisão final whole-branch com **opus** antes do
+> merge (foi ela que pegou os 3 Critical da frente anterior), e a `0031`
+> aplicada quando o banco voltar.
+>
+> ### 🌱 2026-09-04 — FRENTE NOVA: `case-assistente-continuo` (pesquisa)
+>
+> Pedido do usuário: um **case** para a plataforma — assistente em modo
+> contínuo estilo JARVIS, em Android, que ouve conversas e age como agente
+> live. Nada disso existia no repositório nem nos 18 notebooks do NotebookLM,
+> então foi disparado um **Deep Research** (86 fontes) e destilado em
+> [`frentes/case-assistente-continuo/spec.md`](frentes/case-assistente-continuo/spec.md).
+>
+> **A pesquisa não confirmou o pedido — corrigiu.** O JARVIS 24h não é
+> construível por terceiro no Android: o `SoundTrigger`/`AlwaysOnHotwordDetector`
+> (o DSP que faz o "Hey Google" custar microwatts) é **fechado por assinatura
+> do sistema**; sem ele a escuta roda na CPU, que não entra em deep sleep —
+> **15–25% de bateria por 24 h só para ouvir**. E o SO fechou as portas
+> laterais (Android 11 tipo `microphone`; Android 14 proíbe `BOOT_COMPLETED`
+> iniciar FGS com microfone; Android 15 limita a 6 h por 24 h).
+>
+> **Resolveu de brinde a decisão de escopo que estava aberta:** gravar conversa
+> da qual você participa é lícito (STF), gravar terceiros dos quais não
+> participa é **crime** (Lei 9.296/1996). Então é "ouve você", não "ouve o
+> ambiente" — e processamento 100% local tira o desenvolvedor da posição de
+> **controlador** da LGPD, o que transforma o local-primeiro de bandeira de
+> marketing em estrutura jurídica.
+>
+> **O ângulo do case melhorou:** "tentei construir o JARVIS e descobri por que
+> ninguém consegue — e o que dá para construir no lugar" é conteúdo que
+> ninguém tem, e é a voz que a plataforma vende. **Não é caminho crítico de
+> receita** e não pode empurrar o `lancamento-publico`.
+>
+> ⚠️ **Nenhum número da spec vai para conteúdo publicado sem reprodução em
+> aparelho real** — a síntese já errou um detalhe verificável (datou a Lei
+> 9.296 como 1966).
+
 
 > ### ✅ 2026-08-06 — FRENTE `conformidade-legal` MESCLADA E NO AR
 >
@@ -919,6 +1021,19 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
   ver [hardening-criticos](frentes/hardening-criticos/README.md).
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
+
+- **2026-09-04 (Opus 5) — Onda 4 inteira, um incidente e uma frente nova.**
+  Onda 4 planejada (revalidada contra o código) e **executada por completo em
+  9 commits** na branch `onda4-techdebt-seguranca` — 428 testes, lint limpo,
+  não mesclada. No meio, ao aplicar a migration `0031`, descobri que o
+  **Supabase de produção está pausado** e que a conta está no teto de 2
+  projetos free; o site respondia 200 em tudo, degradando em silêncio. O
+  usuário optou por **deixar pausado por ora** (registrado no topo). A branch
+  fica retida por isso. Também abri a frente `case-assistente-continuo` a
+  pedido do usuário: Deep Research no NotebookLM com 86 fontes mostrou que o
+  "JARVIS 24h" é bloqueado pelo próprio Android, o que **melhorou** o ângulo do
+  case e resolveu a decisão de escopo (ouve você, não o ambiente). **Próximo:**
+  revisão final opus da Onda 4; `0031` quando o banco voltar.
 
 - **2026-07-26 (Opus 5) — AUDITORIA + FRENTE NOVA `lancamento-publico` + ONDA 1 ✅:**
   o usuário voltou de 2 dias no projeto **Dragum** (jogo) e pediu auditoria,
