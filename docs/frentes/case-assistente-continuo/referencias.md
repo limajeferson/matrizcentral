@@ -44,4 +44,29 @@ qual vídeo é mais útil:
 
 ## Fontes
 
-<!-- Cole abaixo. Uma por linha; comentário livre depois do link se quiser. -->
+### Lote 1 — ViktorKav e a pilha de voz local (2026-09-07) ✅ no notebook
+
+| Fonte | O que é |
+|---|---|
+| [Vídeo: A IA Gratuita Que Escreve Tudo Que Você Fala](https://youtu.be/R0sxg4yx800) | Whisper na prática; comparação de modelos (`large-v3-turbo` batendo o `medium`); o Handy ditando em qualquer campo |
+| [Tutorial: Whisper, transcrição local do zero](https://viktorkav.com.br/tutoriais/whisper.html) | Passo a passo em Python, configuração em VPS, e os três ajustes: vocabulário customizado, trava de loop infinito, VAD filter |
+| [Handy](https://handy.computer/) | App aberto (Win/Mac/Linux): segura o atalho, fala, solta, o texto cola. 100% local |
+| [SYSTRAN/faster-whisper](https://github.com/SYSTRAN/faster-whisper) | Whisper em CTranslate2 — até 4× mais rápido, `int8`, fração da RAM |
+| [openai/whisper](https://github.com/openai/whisper) | Repositório original |
+| [Tutorial: Nextcloud em casa](https://viktorkav.com.br/tutoriais/nextcloud.html) | Nuvem privada para guardar áudio e transcrição sem Big Tech |
+
+**Leitura destas fontes** (o cruzamento com a pesquisa está na
+[`spec.md`](spec.md#9-o-que-as-referencias-do-usuario-mudaram-2026-09-07)):
+
+- **Respondeu a pergunta 1, e a resposta muda o projeto: roda em PC e VPS,
+  não em Android.** Nada aqui é celular.
+- **Respondeu a pergunta 3: é sob demanda, não contínuo.** O Handy é
+  *push-to-talk* — exatamente o "primeiro corte" que a pesquisa recomendou.
+- **Nenhuma delas é um assistente.** É transcrição — excelente, local e
+  gratuita, mas transcrição. O laço de ferramentas (pergunta 2) **não existe
+  em nenhuma**: é o buraco onde o case vive.
+
+⚠️ **Nota sobre o notebook:** antes de receber estes links, ele especulou que
+"Viktor Kav" seria associação fonética de um criador tcheco. Era invenção. O
+NotebookLM inventa quando não tem fonte — vale para qualquer resposta dele que
+não venha com citação.

@@ -144,3 +144,86 @@ pública: **reproduzir os números de bateria em aparelho real** (são o eixo do
 argumento) e **conferir a citação de cada bloqueio do Android na documentação
 oficial** — o erro "Lei 9.296/1966" já mostra que a síntese erra em detalhe.
 Nenhum número desta spec vai para conteúdo publicado sem essa checagem.
+
+---
+
+## 9. O que as referências do usuário mudaram (2026-09-07)
+
+O usuário trouxe a pilha do **ViktorKav** — Whisper / faster-whisper / Handy /
+Nextcloud (lista e links em [`referencias.md`](referencias.md)). São seis fontes
+de gente que **de fato roda isso**, e elas corrigem a spec em dois pontos e a
+confirmam num terceiro.
+
+### 9.1 Correção: o alvo é desktop, não Android
+
+**Nada nesse material é celular.** Whisper roda em PC ou VPS; o Handy é
+Windows/Mac/Linux; o Nextcloud é servidor de casa. Isso responde de forma
+definitiva a pergunta que estava aberta desde o README — *"roda em quê?"* — e
+reposiciona a frente inteira:
+
+- **O produto construível é de mesa/casa**, não de bolso.
+- **A pesquisa de Android não foi desperdiçada — virou o melhor capítulo.**
+  "Por que isto não roda no seu celular, e o motivo não é técnico, é o Google
+  ter fechado o DSP" é conteúdo que quase ninguém sabe explicar com fonte. Ela
+  sai da posição de "veredito que mata o projeto" para "a parte que ninguém
+  mais conta".
+- **O eixo do argumento de bateria muda de dono.** Num PC ligado na tomada, os
+  15–25% por 24 h deixam de ser impeditivo — e é por isso que a pilha do
+  ViktorKav existe e a do celular não.
+
+### 9.2 Confirmação: sob demanda venceu, e já está pronto
+
+A pesquisa recomendou trocar always-on por **sessão sob demanda com um toque**.
+O **Handy é exatamente isso**, já construído, aberto e gratuito: segura o
+atalho, fala, solta, o texto cola — 100% local.
+
+**Consequência prática, e é a decisão de engenharia mais importante desta
+frente:** o "primeiro corte" que a spec desenhou **não precisa ser construído.**
+Reescrevê-lo seria queimar o case refazendo software que já existe e funciona.
+O case fica de pé **sobre** o Handy.
+
+### 9.3 O buraco real: nenhuma dessas ferramentas é um assistente
+
+Isto precisa ser dito sem rodeio, porque é onde o projeto vive ou morre:
+**Whisper + Handy é transcrição, não agente.** Escrever o que você fala e
+*fazer* o que você pede são coisas separadas por toda a engenharia que importa.
+Falta o que a spec já tinha mapeado e que nenhuma fonte do usuário cobre:
+
+- **memória** — sqlite-vec + embeddings, para o que foi dito ontem valer hoje;
+- **intenção** — decidir se a fala é nota, pergunta ou ordem;
+- **ação** — o laço de ferramentas que executa.
+
+**É exatamente esse vão que faz o case ter conteúdo.** Se a pilha pronta já
+fizesse tudo, não haveria o que construir nem o que contar.
+
+### 9.4 Sobre o n8n
+
+O próprio NotebookLM sugeriu ao usuário fechar o laço com **n8n**. É uma ponte
+razoável: self-hosted é gratuito (compatível com a regra de custo zero), e
+resolve "ação" sem escrever integrações à mão.
+
+**Mas é decisão de arquitetura, não detalhe** — n8n é mais um serviço para
+subir, manter e explicar a quem for reproduzir o case. Um assistente que exige
+um orquestrador rodando 24 h é mais difícil de vender como "IA local simples"
+do que um binário e um banco. **Vai para a lista de decisões do usuário**, ao
+lado de "case documentado ou app publicado".
+
+### 9.5 O que isso faz com a arquitetura da §2
+
+A §2 continua válida como mapa do que é possível **no Android**, e é ela que
+sustenta o capítulo do "por que não no celular". Para o alvo desktop, a pilha
+candidata passa a ser: **Handy** (captura e transcrição) → **faster-whisper**
+(`int8`, o motor que o próprio tutorial mostra rodando em VPS) → **camada nova
+nossa** (memória + intenção + ação) → **Nextcloud** opcional, se o usuário
+quiser guardar áudio e transcrição em casa.
+
+Os três ajustes do tutorial do ViktorKav — vocabulário customizado, trava de
+loop infinito em corte de áudio, VAD filter para ignorar silêncio — são
+detalhes de quem já apanhou, e entram direto no roteiro. Foi por isso que pedi
+referências de quem roda, e não mais pesquisa.
+
+### 9.6 Próximo passo
+
+Assistir ao vídeo e ler o tutorial **antes** de escrever qualquer roteiro
+técnico: o que está acima veio dos links e do resumo do usuário, não de ter
+visto o material rodando. Depois disso, o plano da frente — que hoje não existe.
