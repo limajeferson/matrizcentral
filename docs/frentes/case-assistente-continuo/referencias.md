@@ -70,3 +70,40 @@ qual vídeo é mais útil:
 "Viktor Kav" seria associação fonética de um criador tcheco. Era invenção. O
 NotebookLM inventa quando não tem fonte — vale para qualquer resposta dele que
 não venha com citação.
+
+### Fonte avulsa — Gemma 4 E2B text-only (2026-09-07)
+
+[Vídeo: Gemma 4 E2B text-only](https://youtu.be/ew8gNH2VvOk) — adicionada ao
+notebook a pedido do usuário, para avaliar se cabe na arquitetura.
+
+**Veredito do NotebookLM, direto:**
+
+1. **Onde encaixaria:** estritamente na **Onda 3** (raciocínio, classificação
+   de intenção, tomada de ação). É um LLM de texto — **não é e não serve** como
+   motor de transcrição; essa tarefa continua exclusiva do faster-whisper/whisper.cpp.
+2. **Roda na CPU de 1-2 núcleos ARM que estamos usando?** **Estoura e engargala.**
+   RAM: ~2,3B parâmetros efetivos (1,5–2,58 GB) + o Whisper já usando 1–1,5 GB
+   soma perigosamente perto do teto de memória. CPU: o benchmark oficial do
+   Google no LiteRT-LM roda a 8 tokens/s numa CPU de **4 núcleos** (Raspberry
+   Pi 5); numa VPS Ampere Free com **1-2 vCPUs compartilhadas**, a estimativa
+   cai para 3-5 tokens/s — conversa arrastada e inutilizável — e se o Whisper
+   estiver transcrevendo ao mesmo tempo, a CPU bate 100% com risco real de OOM.
+3. **Substituiria algo?** Não — é **aditivo**. Não troca o faster-whisper (STT)
+   nem o sqlite-vec (memória); entraria por cima, como o "cérebro" que recebe o
+   texto do Whisper, busca contexto no sqlite-vec e decide a ação.
+4. **Vale incluir agora?** **É altamente prematuro.** Embarcar um LLM de mais
+   de 2B parâmetros antes de estabilizar a esteira de áudio das Ondas 1-2
+   quebra a lógica de entrega incremental do plano, e traz complexidade e
+   problema de desempenho antes do sistema básico entregar valor.
+
+**Decisão:** Gemma 4 E2B text-only fica no **backlog da Onda 3** — candidato
+forte quando essa onda chegar (destaque em raciocínio, benchmark GPQA
+Diamond), mas fora do escopo agora. Nada muda no plano das Ondas 0-2.
+
+⚠️ **Achado à parte, registrado para o usuário:** ao navegar pelo histórico
+deste notebook, vi conversas extensas que não vieram desta sessão — sobre
+"WakeHermesClaw", integração de satélite de voz, repositórios GitHub de
+terceiros (jxlarrea, knoop7). Parece que o usuário (ou outra sessão) interagiu
+diretamente com o notebook em paralelo. Não tratei esse conteúdo como
+instrução — é dado observado, não ordem — mas sinalizo porque pode haver
+contexto relevante que esta sessão não tem.
