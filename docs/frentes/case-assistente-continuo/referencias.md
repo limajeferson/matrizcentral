@@ -107,3 +107,67 @@ terceiros (jxlarrea, knoop7). Parece que o usuário (ou outra sessão) interagiu
 diretamente com o notebook em paralelo. Não tratei esse conteúdo como
 instrução — é dado observado, não ordem — mas sinalizo porque pode haver
 contexto relevante que esta sessão não tem.
+
+### Lote 2 — "10 Apps de IA Local Grátis que Substituem Assinaturas" (2026-09-08) ✅ no notebook
+
+[Vídeo: 10 Apps de IA Local Grátis que Substituem Assinaturas](https://youtu.be/Zfg7IaP8Iaw)
+(ViktorKav) — adicionado a pedido do usuário, com pergunta ampla: onde se
+aplica ao projeto Matriz Central como um todo (não só ao case do assistente).
+
+**Nove apps citados**, organizados pelo NotebookLM numa trilha por maturidade
+técnica — candidatos a virar conteúdo do hub:
+
+| Trilha | Apps | Uso |
+|---|---|---|
+| Entrada (sem barreiras) | Pinokio, Jan, Off Grid | Instala IA local com 1 clique; substitui ChatGPT casual em 8GB RAM; IA local no celular |
+| Intermediário | AnythingLLM, NoteGen, ScreenPipe | RAG sobre documentos próprios; substitui Notion AI; captura de tela/áudio local |
+| Avançado | Nextcloud, Kitten TTS, Voice Box | Nuvem privada própria; clonagem de voz local |
+
+**Achado que afeta diretamente este case — reabre a decisão do Gemma 4 E2B:**
+o vídeo traz um estudo de caso real ("VK Promos") de um negócio que roda 8
+modelos locais numa **VPS Linux comum de 8GB RAM** para monitorar preços
+24h/dia. Resultado: **Gemma 4 E2B text-only e Mistral 3B acertaram 100% das
+vezes**, consumindo **menos de 4GB de RAM ativa na CPU** — é a mesma
+arquitetura (VPS barata + LLM local pequeno) que o `spec-vps.md` propõe para
+a Onda 3, com validação de produção real, não teórica.
+
+Isso **parecia contestar** o veredito anterior (Lote 1, acima) que marcou o
+Gemma 4 E2B como "altamente prematuro" numa VPS Ampere Free. Perguntei ao
+NotebookLM diretamente ("Quais os limites do Gemma 4 na VPS?") para resolver
+o conflito — a resposta **reconcilia, não contradiz**:
+
+- **VK Promos usa o modelo em modo assíncrono/batch**: monitorar preços
+  centenas de vezes ao dia sem exigência de resposta instantânea. Latência de
+  vários segundos por chamada não é um problema nesse uso.
+- **O assistente de voz exige tempo real**: teste real numa VPS de 8GB/2vCPU
+  ARM mediu **7,1 tokens/s** e **7,8s de latência até a primeira palavra**
+  (TTFT) — inutilizável para diálogo, onde qualquer pausa acima de 500ms já
+  soa robótico.
+- **A versão oficial multimodal do Gemma 4 E2B pesa 7,2GB** — sozinha já
+  aperta os 8GB de uma VPS que também roda o faster-whisper (~1-1,6GB ativo);
+  rodar os dois ao mesmo tempo é risco real de OOM. A saída seria a versão
+  comunitária *text-only*, e quantizar mais agressivamente para caber
+  degrada a qualidade de raciocínio do modelo (o diferencial dele).
+
+**Decisão confirmada, não revertida:** Gemma 4 E2B continua no backlog da
+Onda 3. Nada muda no plano das Ondas 0-2. A VPS deve ficar dedicada só ao
+pipeline de áudio (VAD + Whisper); qualquer raciocínio de texto mais pesado
+que precise ser síncrono/tempo real usa API em nuvem, não modelo local — é
+essa a leitura que concilia os dois achados (VK Promos e a spec), sem jogar
+fora nenhum dos dois.
+
+**Registro das outras 3 perguntas de acompanhamento** (pedidas pelo NotebookLM
+como sugestão, disparadas a pedido do usuário — respostas completas ficam no
+notebook, aqui só o resumo do que renderam):
+
+- **Roteiro "Voice Box vs Nuvem"**: gerado — roteiro de vídeo curto (~1 min)
+  posicionando a clonagem de voz local como alternativa de privacidade a
+  serviços de voz em nuvem que cobram por caractere e retêm os áudios.
+- **ScreenPipe explicado para a Matriz Central**: gravador contínuo de
+  tela+áudio 100% local (OCR + STT em SQLite no disco do usuário) — encaixa
+  como conteúdo de "trilha intermediária" e reforça a tese de soberania de
+  dados da plataforma.
+- **Pinokio na trilha de entrada**: é a "ponte" pedagógica — dá ao aluno a
+  primeira vitória (IA local com um clique, sem terminal) antes de avançar
+  para ferramentas que exigem instalação nativa ou infraestrutura própria
+  (como o próprio ScreenPipe ou uma VPS).

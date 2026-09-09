@@ -19,6 +19,7 @@
 | 7 | `notebooklm/video/video-verdade-ia-local.mp4` | `video-verdade-ia-local` — "A Verdade sobre IA Local" | YouTube |
 | 8 | `notebooklm/video/video-evolucao-ia-local.mp4` | `video-evolucao-ia-local` — "A Evolução da IA Local" | YouTube |
 | 9 | `notebooklm/video/video-lucrando-ia-local.mp4` | `video-lucrando-ia-local` — "Lucrando com IA Local" (novo, Task E6) | YouTube |
+| 10 | `notebooklm/audio/podcast-case-vps-oracle-always-free.m4a` | `podcast-case-vps-oracle-always-free` — "O Custo Real do Always Free Oracle" (novo, 2026-09-08, gerado pelo NotebookLM a partir do case da VPS Oracle desta sessão) | Spotify |
 
 ## Passo a passo — Spotify (podcasts, itens 1–6)
 

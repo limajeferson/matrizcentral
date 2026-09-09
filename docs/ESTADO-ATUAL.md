@@ -8,7 +8,7 @@
 > Ordem de leitura ao retomar: **este arquivo → `CLAUDE.md` → o `README.md` da
 > frente ativa → o código fonte-de-verdade.**
 
-_Última atualização: 2026-09-04 (**BANCO DE PRODUÇÃO PAUSADO — leia o primeiro bloco da PRÓXIMA AÇÃO.** Onda 4 com código completo na branch `onda4-techdebt-seguranca`, não mesclável até a migration `0031` ser aplicada. Frente nova `case-assistente-continuo` em pesquisa.) _(histórico: 2026-07-26 — **FRENTE NOVA E ATIVA: `lancamento-publico`** —
+_Última atualização: 2026-09-08 (**BANCO DE PRODUÇÃO AINDA PAUSADO** — nada mudou aí, ver bloco abaixo. `case-assistente-continuo`: spec-vps.md auditada e aprovada, Fase A do plano (8 tasks) implementada e testada no repo `assistente-local`, **criação da VPS Oracle travada em falta de capacidade ARM — script de retry automático rodando em background, janela de 7 dias**.) _(histórico: 2026-07-26 — **FRENTE NOVA E ATIVA: `lancamento-publico`** —
 auditoria de código com 4 agentes paralelos achou **6 buracos que nenhum plano
 cobria**, e o checklist antigo foi reordenado em **6 ondas** por critério de
 receita. **Onda 1 (Receita & Descoberta) FECHADA**: 6 tasks + passe visual,
@@ -96,7 +96,64 @@ A seção "O QUE FALTA PARA O LANÇAMENTO" é o checklist mestre da inauguraçã
 > merge (foi ela que pegou os 3 Critical da frente anterior), e a `0031`
 > aplicada quando o banco voltar.
 >
-> ### 🌱 2026-09-04 — FRENTE NOVA: `case-assistente-continuo` (pesquisa)
+> ### 🔴 2026-09-08 — `case-assistente-continuo`: VPS travada em falta de capacidade, retry automático rodando
+>
+> **Estado real, verificado por API (não suposição):** o repositório
+> `C:\Users\jefer\Documents\Projetos\assistente-local` tem a **Fase A completa**
+> (Tasks 1-8 do `plano-vps-ondas-0-1.md`, via subagent-driven-development,
+> revisadas, 25 testes verdes) — Config, normalização de áudio, motor de
+> transcrição pluggable, API FastAPI, PWA de push-to-talk, benchmark, e o
+> script de provisionamento (`infra/provisiona.sh`). **Nenhuma dessas partes
+> está no ar ainda** porque a Fase B (rodar isso num servidor real) depende de
+> uma instância Oracle Cloud que a Oracle não está conseguindo alocar.
+>
+> **A instância `assistente-voz` (Ubuntu 24.04, `VM.Standard.A1.Flex`,
+> 1 OCPU/6GB, Always Free) não existe ainda** — toda tentativa retorna
+> `Out of host capacity` na região `sa-saopaulo-1` (home region da conta,
+> obrigatória para o Always Free valer; não dá pra trocar de região sem virar
+> custo). Confirmado por pesquisa: é esgotamento real e temporário do pool
+> físico Ampere compartilhado entre todos os usuários free-tier da região —
+> não é bug de conta nem de cota, e não há padrão de horário confiável.
+>
+> **Retry automático rodando em background, não no console web.** Depois de
+> enfrentar bugs sérios de UI no console Oracle (seletor de imagem não
+> aplicava a seleção — resolvido inspecionando o DOM via JS; um subagente
+> Haiku chegou a criar uma instância errada com nome/imagem/shape default,
+> terminada depois), a estratégia mudou para a **OCI Python SDK direto**
+> (`assistente-local/infra/oci_retry_launch.py`), que evita tanto a
+> fragilidade do console quanto o bug de long-path do Windows que impede
+> instalar a `oci-cli` via pip. Autenticação por API key própria (gerada e
+> cadastrada nesta sessão, `~/.oci/config`), chave SSH dedicada
+> (`~/.ssh/assistente_voz`).
+>
+> **Custo confirmado zero** (nenhuma tentativa falha cria recurso cobrável;
+> quando criar, fica dentro do limite Always Free) e **latência da chamada
+> confirmada baixa e estável** (~1-2s por tentativa, medido nos logs).
+> **Janela atual: 7 dias, tentando a cada 15s**, decisão do usuário depois de
+> perguntar se um prazo de horas era razoável dado que a pesquisa achou
+> relatos de pessoas esperando dias. Depende do computador do usuário ficar
+> ligado (ele confirmou: não desliga há um mês, só reinicia às vezes — nesse
+> caso o processo para e precisa ser reiniciado manualmente).
+>
+> **Decisão técnica reconciliada nesta sessão:** o Gemma 4 E2B text-only
+> **continua no backlog da Onda 3** (não muda a decisão anterior). Uma fonte
+> nova (vídeo "10 Apps de IA Local Grátis", ViktorKav) trouxe um caso real
+> (VK Promos) de Gemma 4 E2B com 100% de acerto numa VPS de 8GB — parecia
+> contradizer o veredito de "prematuro". Perguntei ao NotebookLM para
+> resolver: VK Promos usa o modelo em modo **assíncrono/batch** (latência não
+> importa); o assistente de voz precisa de **tempo real**, e teste real numa
+> VPS de 8GB/2vCPU ARM mediu 7,1 tokens/s e 7,8s até a primeira palavra —
+> inutilizável para diálogo. Registro completo em
+> [`referencias.md`](frentes/case-assistente-continuo/referencias.md).
+>
+> **➡️ PRÓXIMA AÇÃO:** aguardar o script de retry (roda sozinho, notifica
+> quando a instância for criada ou o prazo de 7 dias esgotar). Quando a VPS
+> existir: Task 9 (rodar `infra/provisiona.sh` via SSH), Task 10 (medir
+> faster-whisper vs whisper.cpp na máquina real), Task 11 (ligar o motor
+> escolhido), Task 12 (provar os 2 critérios de sucesso: recriar a VPS em
+> <15min, round-trip celular→transcrição funcionando).
+>
+> ### 🌱 2026-09-04 — FRENTE NOVA: `case-assistente-continuo` (pesquisa) — histórico, ver bloco acima para o estado atual
 >
 > Pedido do usuário: um **case** para a plataforma — assistente em modo
 > contínuo estilo JARVIS, em Android, que ouve conversas e age como agente
@@ -1021,6 +1078,37 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
   ver [hardening-criticos](frentes/hardening-criticos/README.md).
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
+
+- **2026-09-08 (Sonnet 5) — `case-assistente-continuo`: Fase A concluída, VPS
+  travada em capacidade, retry automático + reconciliação do Gemma 4 E2B.**
+  Retomei a auditoria da spec-vps.md (Fable) já aplicada em sessão anterior,
+  executei a Fase A do plano (8 tasks via SDD) inteira no repo novo
+  `assistente-local` — 25 testes verdes, código pronto para rodar num
+  servidor. A Fase B travou logo na Task 9: a Oracle não aloca capacidade
+  `VM.Standard.A1.Flex` em `sa-saopaulo-1`. Perdi tempo real com bugs sérios
+  do console web da Oracle (seletor de imagem silenciosamente não aplicava a
+  seleção — só descobri inspecionando o DOM via `javascript_tool`, já que a
+  aplicação roda dentro de um iframe) e **um erro meu**: delegar o clique de
+  retry a um subagente Haiku sem instrução específica o suficiente resultou
+  numa instância **errada** sendo criada (nome/imagem/shape todos default) —
+  identifiquei, terminei, e não voltei a delegar esse tipo de ação sem
+  supervisão direta. Resolvi definitivamente trocando o console web pela
+  **OCI Python SDK direto**, com API key própria e retry script
+  (`oci_retry_launch.py`) rodando em background — sem essa troca, o bug do
+  console teria continuado consumindo tempo sem gerar progresso real.
+  **Verifiquei e confirmei com o usuário**: custo zero (falha de capacidade
+  não cria recurso cobrável), latência da chamada ~1-2s, sem risco técnico —
+  ele decidiu estender a janela de retry de 6h para **7 dias**, rodando a
+  cada 15s, dado que a pesquisa mostrou relatos de pessoas esperando dias
+  numa região disputada. Também levei uma fonte nova (vídeo "10 Apps de IA
+  Local Grátis", ViktorKav) a dois notebooks do NotebookLM e reconciliei uma
+  aparente contradição que ela trouxe: um caso real (VK Promos) de Gemma 4
+  E2B com 100% de acerto **não** invalida a decisão anterior de deixá-lo no
+  backlog da Onda 3 — o caso real usa o modelo em modo assíncrono/batch,
+  enquanto o assistente de voz precisa de tempo real, onde o mesmo modelo
+  mediu 7,1 tokens/s e ~8s de latência inicial (inutilizável para diálogo).
+  **Próximo:** aguardar o retry (notifica sozinho); quando a VPS existir,
+  Tasks 9-12 da Fase B.
 
 - **2026-09-04 (Opus 5) — Onda 4 inteira, um incidente e uma frente nova.**
   Onda 4 planejada (revalidada contra o código) e **executada por completo em

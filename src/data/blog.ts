@@ -54,4 +54,13 @@ export const BLOG_POSTS: BlogPost[] = [
     bodyPath: "content/blog/casos-de-uso-ia-local.md",
     tags: ["casos-de-uso", "ia-local"],
   },
+  {
+    slug: "case-vps-oracle-jornada",
+    title: "O que \"grátis para sempre\" não conta: nossa jornada até uma VPS Always Free",
+    excerpt: "Bug de console, um assistente que errou e um limite de requisições descoberto na marra — o relato honesto de tentar hospedar de graça.",
+    date: "2026-09-08",
+    author: "Matriz Central",
+    bodyPath: "content/blog/case-vps-oracle-jornada.md",
+    tags: ["case", "vps", "custo-zero"],
+  },
 ];
