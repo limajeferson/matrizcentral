@@ -556,6 +556,88 @@ Um erro de configuração sem explicação é frustrante duas vezes: você perde
    → netstat -ano | findstr :11434 (Windows)
 ```
 
+### Projeto Guiado: O Estagiário Extrator de Leads
+
+Tudo até aqui foi ensinar a ligar o motor. Este projeto é a diferença entre "meu LLM local funciona" e "meu LLM local resolveu um problema real" — um script completo, de menos de 40 linhas, que você termina de rodar antes de fechar este capítulo.
+
+**O objetivo:** ler uma mensagem bagunçada de cliente (e-mail, WhatsApp, chamado de suporte) e devolver cinco campos estruturados — nome, empresa, intenção, urgência e assunto — em JSON limpo, sem mandar um único byte pra API paga nenhuma.
+
+- **Tempo:** 15-20 minutos. **Custo:** R$0,00. **Modelo:** `mistral` ou `gemma4:e2b`.
+
+**Preparação:**
+```bash
+ollama pull mistral
+pip install requests
+```
+
+**O script (`extrator_leads.py`):**
+
+```python
+import json
+import requests
+
+OLLAMA_API_URL = "http://localhost:11434/api/generate"
+MODELO_LOCAL = "mistral"  # ou "gemma4:e2b" / "phi3"
+
+mensagem_bruta = """
+Olá, pessoal! Aqui é o Carlos da Silva, diretor da empresa Lotus Marketing.
+Nosso sistema de automação parou de funcionar desde ontem. Precisamos de um
+orçamento urgente para manutenção ainda hoje.
+"""
+
+def extrair_dados_lead(texto: str) -> dict:
+    prompt_sistema = f"""
+    Você é um extrator de dados cirúrgico. Analise o texto abaixo e extraia
+    as informações estritamente em formato JSON. Não responda com saudações,
+    introduções ou explicações. Responda APENAS com o objeto JSON válido
+    contendo as chaves: "nome", "empresa", "intencao", "urgencia" (Baixa,
+    Média, Alta) e "assunto".
+
+    Texto para análise:
+    "{texto}"
+    """
+    payload = {
+        "model": MODELO_LOCAL,
+        "prompt": prompt_sistema,
+        "stream": False,
+        "format": "json",  # força o Ollama a estruturar a saída em JSON
+        "options": {"temperature": 0.1, "num_ctx": 4096},  # baixa temp = menos alucinação
+    }
+    try:
+        response = requests.post(OLLAMA_API_URL, json=payload)
+        response.raise_for_status()
+        return json.loads(response.json()["response"])
+    except Exception as e:
+        print(f"❌ Erro ao conectar ao Ollama local: {e}")
+        return {}
+
+if __name__ == "__main__":
+    print("🔄 Processando mensagem com IA local...")
+    lead = extrair_dados_lead(mensagem_bruta)
+    if lead:
+        print("\n✅ Dados extraídos:")
+        print(json.dumps(lead, indent=2, ensure_ascii=False))
+        with open("lead_extraido.json", "w", encoding="utf-8") as f:
+            json.dump(lead, f, indent=2, ensure_ascii=False)
+        print("\n💾 Salvo em 'lead_extraido.json'.")
+```
+
+Rode com `python extrator_leads.py`. A saída esperada em `lead_extraido.json`:
+
+```json
+{
+  "nome": "Carlos da Silva",
+  "empresa": "Lotus Marketing",
+  "intencao": "Orçamento / Manutenção",
+  "urgencia": "Alta",
+  "assunto": "Sistema de automação parado"
+}
+```
+
+> ⚠️ **Regra de governança pra modelo leve:** a chave `"format": "json"` no payload é o que trava a saída — sem ela, um modelo compacto (2-3B) pode tentar "conversar" em vez de responder estruturado. E se você trocar o modelo por Llama 3.2 3B, lembre do Capítulo 1: em automação sem supervisão, ele pode devolver campo nulo em até 92% das tentativas. Fique com Gemma 4 E2B ou Mistral 3B.
+
+Esse mesmo padrão — endpoint local, `format: json`, temperatura baixa — é o que sustenta qualquer automação séria rodando sobre LLM local, de um webhook simples a um pipeline inteiro no n8n. Você não terminou só um exercício; terminou o esqueleto de uma ferramenta que já pode virar produto.
+
 ---
 
 <a name="cap6"></a>
@@ -708,6 +790,14 @@ Arquitetura que conecta seu LLM local a:
 Uma IA local que não alucina (contexto limpo, memória estruturada), lembra de você (memória persistente entre sessões), usa as ferramentas certas (roteamento automático por tarefa) e roda sem internet (100% local, 100% privado).
 
 Isso é opcional, não pré-requisito — o que você aprendeu até aqui já te tira do grupo dos que racionam prompt e te coloca no dos que decidem com que ferramenta trabalhar. O Módulo Avançado existe pra quem já sentiu esses quatro limites na prática e quer resolvê-los. **Para acessar:** matrizcentral.com.br/oferta
+
+---
+
+## Nota de Metodologia — De Onde Vêm os Números Deste Guia
+
+Toda métrica de desempenho citada neste livro (precisão de extração, tokens por segundo, tempo total de tarefa, consumo de RAM) veio de execução real, não de estimativa de fabricante nem de material de marketing — os testes do Gemma 4 E2B e do Llama 3.2 3B rodaram em VPS de 8GB, os benchmarks Dense vs. MoE do Capítulo 2 em Mac Studio M3 Ultra, e a jornada de infraestrutura do Capítulo 6 é a experiência de produção da própria Matriz Central provisionando sua VPS.
+
+Esses números têm origem em fontes públicas do ecossistema de IA local, compiladas e verificadas para este guia — não são medição proprietária da Matriz Central em todos os casos. A rastreabilidade completa (qual vídeo, qual repositório, qual data) é mantida viva na plataforma em vez de congelada aqui: **[matrizcentral.com.br](https://www.matrizcentral.com.br)** aponta pra fonte exata de cada dado citado, porque ela pode ser atualizada quando um número muda — coisa que uma nota de rodapé impressa não consegue fazer.
 
 ---
 
