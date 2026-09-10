@@ -20,6 +20,17 @@ const ICON_BUTTON_CLASS =
 export function ShareLinks({ url, text }: ShareLinksProps) {
   const [copied, setCopied] = useState(false);
 
+  // Calculado só após montar: no servidor `navigator` não existe (sempre
+  // renderizaria `false`), então decidir isso durante o render dispara
+  // hydration mismatch sempre que o navegador do cliente suporta a Web Share
+  // API. `useState(false)` + `useEffect` garante que os dois primeiros
+  // renders (servidor e cliente) batem, e só então o botão aparece.
+  // Precisa vir ANTES do `if` abaixo — hooks não podem ser condicionais.
+  const [canNativeShare, setCanNativeShare] = useState(false);
+  useEffect(() => {
+    setCanNativeShare(typeof navigator !== "undefined" && "share" in navigator);
+  }, []);
+
   if (isTokenizedPath(url)) return null;
 
   const openShare = (platform: "whatsapp" | "x" | "linkedin") => {
@@ -43,16 +54,6 @@ export function ShareLinks({ url, text }: ShareLinksProps) {
       // Usuário cancelou o compartilhamento nativo — não é um erro.
     }
   };
-
-  // Calculado só após montar: no servidor `navigator` não existe (sempre
-  // renderizaria `false`), então decidir isso durante o render dispara
-  // hydration mismatch sempre que o navegador do cliente suporta a Web Share
-  // API. `useState(false)` + `useEffect` garante que os dois primeiros
-  // renders (servidor e cliente) batem, e só então o botão aparece.
-  const [canNativeShare, setCanNativeShare] = useState(false);
-  useEffect(() => {
-    setCanNativeShare(typeof navigator !== "undefined" && "share" in navigator);
-  }, []);
 
   return (
     <div className="flex flex-wrap items-center gap-2">
