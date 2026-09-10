@@ -27,7 +27,44 @@ A seção "O QUE FALTA PARA O LANÇAMENTO" é o checklist mestre da inauguraçã
 
 ## ⏭️ PRÓXIMA AÇÃO (leia isto primeiro ao retomar)
 
-> ### 🟡 2026-09-10 (sessão nova) — Ebook reescrito (voz/narrativa), aguardando aprovação do usuário antes de push
+> ### ✅ 2026-09-10 — Ebook reescrito, aprovado pelo usuário, PUSHED, e SUBMETIDO ao Google Play Livros
+>
+> Sessão fechada. Resumo do que saiu: 7 commits (`bb31193`..`84efa4f`) **pushed pro
+> master** (só `content/ebooks/*` e `docs/*` — zero risco de deploy, sem migration
+> pendente). O ebook `construa-seu-proprio-chatgpt-particular` foi **publicado no
+> Google Play Livros** (Central de Parceiros, `GGKEY:35L6KLJ22GG`) — está em
+> **"A análise da conta está pendente"**, o portão de revisão de política do Google
+> antes de ir ao ar de verdade (não é erro, é o fluxo normal pro primeiro livro).
+>
+> **Cadastro no Play Livros (o que ficou definido):**
+> - Título: "Construa Seu Próprio ChatGPT Particular em Poucos Minutos" · Subtítulo
+>   igual ao ebook · Autor: Jeferson Lima · **Editora: "Tramppa"** (não "Matriz
+>   Central" — confirmado pelo usuário: é assim que a conta Google está configurada
+>   entre os projetos dele, não trocar de volta sem ele pedir)
+> - Gêneros BISAC: Computers/Artificial Intelligence/General +
+>   Computers/Programming/Open Source · Idioma: português · 36 páginas (estimado)
+> - Preço: **R$47,00, mundo todo (66 países)** — decisão do usuário (mesmo preço do
+>   site, para não canibalizar o checkout próprio)
+> - DRM ativado, prévia de 20%, sem cópia — configurações padrão do Google
+>
+> **🔴 Pendências que só o usuário resolve (fora do meu alcance):**
+> 1. **Confirmar conta bancária** — alerta vermelho na Central de Parceiros
+>    ("Verifique a conta corrente ····34") — sem isso o Google não paga o repasse.
+> 2. **Aguardar a análise da conta** (política/compliance do Google) — prazo não
+>    informado pela plataforma.
+> 3. Quando aprovado: acompanhar o livro ir ao ar e cruzar com o checkout do
+>    site — não fiz nada pra sincronizar as duas vendas (Play Livros vs. Kiwify/Stripe
+>    futuro), é catálogo/canal separado por enquanto.
+>
+> **Achado da sessão que vale registrar:** o campo "Editora" no Play Livros veio
+> **pré-preenchido com "Tramppa"** (outro projeto do usuário) por causa de como a
+> conta Google é configurada entre os projetos — quase troquei sem perguntar,
+> o usuário corrigiu a tempo. Cuidado com esse tipo de campo pré-preenchido em
+> qualquer central de parceiros/admin que atenda mais de um projeto na mesma conta.
+>
+> ---
+>
+> ### 🟡 (histórico da sessão) — Reescrita completa do ebook, aguardando aprovação do usuário antes de push
 >
 > Retomando a pendência da sessão anterior (bloco abaixo, `ce989416`): o usuário leu
 > o ebook, aprovou o Capítulo 6B (case da VPS) e a nova capa (corrigida por ele para
@@ -1235,6 +1272,39 @@ propósito sem `STRIPE_SECRET_KEY` (pré-existente). Para o visual, rodar
   ver [hardening-criticos](frentes/hardening-criticos/README.md).
 
 ## 📓 Log de sessões (append-only, mais recente no topo)
+
+- **2026-09-10 (Sonnet 5, sessão nova) — Ebook reescrito de ponta a ponta e
+  submetido ao Google Play Livros.** Retomei a pendência da sessão anterior
+  (`342523b` sem revisão do usuário). Rodei 3 rodadas de auditoria no
+  NotebookLM do projeto (a 1ª e 2ª em cima de uma paráfrase que eu digitei
+  como fonte — limitação real, registrada; a 3ª sobre o `.md` literal
+  enviado pelo usuário, essa sim confiável) e apliquei as mudanças de craft
+  editorial: Capítulos 1/2/6 viraram crônicas de engenharia (Problema →
+  Falsa Pista → Descoberta → Resolução) usando os casos reais já existentes
+  (Gemma 4 E2B, Llama 3.2 3B, VPS Oracle) sem inventar número novo;
+  Capítulos 4+5+7 (hardware, triplicavam as mesmas GPUs) fundidos num só;
+  abertura/fechamento ganharam o arco de identidade "Refém Ansioso →
+  Operador Autônomo"; mini-projeto guiado (extrator de leads em Python via
+  Ollama) e nota de metodologia adicionados; e, a pedido explícito do
+  usuário pensando "como arquiteto e mentor", **Capítulo 5 + mini-projeto +
+  Caminho 2/3 do Capítulo 6 reestruturados em fases com checkpoint**
+  explícito (✅ resultado esperado + onde voltar se não aparecer) — a
+  correção pedagógica mais importante da sessão. **Recusei citar fontes
+  externas que o NotebookLM sugeriu** (AI ProgBr, Moonshot AI, QuantBrasil)
+  por não conseguir confirmar que estavam de fato entre as fontes
+  carregadas no notebook — o mesmo notebook misturou modelos que não
+  existem no livro (LFM 2.5, Ornith 9B, Kimi K3) ao descrever o Capítulo 3,
+  sinal de contaminação cruzada com as ~100 outras fontes do notebook.
+  5.717 → **8.962 palavras**. Gate revalidado a cada rodada: `tsc` 0 · 410
+  testes · epubcheck 0 erros/0 avisos. **7 commits pushed** (`bb31193`
+  → `84efa4f`). Depois de aprovado, **publiquei o livro no Google Play
+  Livros** (Central de Parceiros) — título, gêneros, autor, preço R$47
+  mundial, upload de EPUB+capa — e submeti pra análise da conta (status
+  "pendente", fluxo normal do primeiro livro). Aprendizado de processo: o
+  campo "Editora" veio pré-preenchido com "Tramppa" (outro projeto do
+  usuário) pela config da conta Google compartilhada entre projetos — quase
+  troquei sem perguntar, o usuário corrigiu a tempo; cuidado com campos
+  pré-preenchidos em painéis multi-projeto.
 
 - **2026-09-08 (Sonnet 5) — `case-assistente-continuo`: Fase A concluída, VPS
   travada em capacidade, retry automático + reconciliação do Gemma 4 E2B.**
