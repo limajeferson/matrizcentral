@@ -11,6 +11,8 @@ export type AppShellProps = {
   right: ReactNode;
   /** Slot do menu de usuário (avatar/dropdown ou link "Entrar" se deslogado). */
   userMenu: ReactNode;
+  /** Busca e notificações só fazem sentido pra quem já tem conta. */
+  loggedIn: boolean;
 };
 
 /**
@@ -19,10 +21,10 @@ export type AppShellProps = {
  * coluna abaixo de `lg`. Client-agnóstico — recebe as colunas já montadas
  * pelo chamador (server component), então funciona com ou sem sessão.
  */
-export function AppShell({ left, center, right, userMenu }: AppShellProps) {
+export function AppShell({ left, center, right, userMenu, loggedIn }: AppShellProps) {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <AppHeader userMenu={userMenu} mobileNav={left} />
+      <AppHeader userMenu={userMenu} mobileNav={left} loggedIn={loggedIn} />
 
       <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-6 px-4 py-6 lg:grid-cols-[260px_1fr_320px] lg:px-6">
         <aside className="hidden lg:sticky lg:top-24 lg:order-none lg:block lg:self-start">{left}</aside>

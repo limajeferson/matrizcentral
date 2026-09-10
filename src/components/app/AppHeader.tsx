@@ -10,6 +10,9 @@ export type AppHeaderProps = {
   userMenu: ReactNode;
   /** Nav lateral (mesmos nós da `LeftSidebar`), renderizada dentro do drawer mobile. */
   mobileNav: ReactNode;
+  /** Busca e notificações só fazem sentido pra quem já tem conta — visitante
+   *  deslogado não vê nenhum dos dois (nada pra buscar, nada pra notificar). */
+  loggedIn: boolean;
 };
 
 /**
@@ -17,7 +20,7 @@ export type AppHeaderProps = {
  * reaparece ao rolar para cima; sempre visível no topo. Abaixo de `md`, expõe
  * um botão hambúrguer que abre um drawer lateral com a navegação (`mobileNav`).
  */
-export function AppHeader({ userMenu, mobileNav }: AppHeaderProps) {
+export function AppHeader({ userMenu, mobileNav, loggedIn }: AppHeaderProps) {
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -82,28 +85,32 @@ export function AppHeader({ userMenu, mobileNav }: AppHeaderProps) {
             </Logo>
           </a>
 
-          <div className="relative hidden max-w-md flex-1 md:block">
-            <IconSearch
-              size={16}
-              className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-            />
-            <input
-              type="search"
-              placeholder="Buscar conteúdo (em breve)"
-              disabled
-              aria-label="Buscar conteúdo (em breve)"
-              className="w-full rounded-xl border border-border bg-card py-2 pl-9 pr-3 text-sm text-foreground placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-70"
-            />
-          </div>
+          {loggedIn && (
+            <div className="relative hidden max-w-md flex-1 md:block">
+              <IconSearch
+                size={16}
+                className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+              />
+              <input
+                type="search"
+                placeholder="Buscar conteúdo (em breve)"
+                disabled
+                aria-label="Buscar conteúdo (em breve)"
+                className="w-full rounded-xl border border-border bg-card py-2 pl-9 pr-3 text-sm text-foreground placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-70"
+              />
+            </div>
+          )}
 
           <div className="ml-auto flex shrink-0 items-center gap-3">
-            <button
-              type="button"
-              aria-label="Notificações"
-              className="flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground transition hover:bg-accent hover:text-accent-foreground"
-            >
-              <IconBell size={18} />
-            </button>
+            {loggedIn && (
+              <button
+                type="button"
+                aria-label="Notificações"
+                className="flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground transition hover:bg-accent hover:text-accent-foreground"
+              >
+                <IconBell size={18} />
+              </button>
+            )}
             {userMenu}
           </div>
         </div>

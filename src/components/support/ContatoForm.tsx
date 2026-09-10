@@ -2,8 +2,8 @@
 import { useState } from "react";
 import { SELLER } from "@/data/legal";
 
-export default function ContatoForm() {
-  const [email, setEmail] = useState("");
+export default function ContatoForm({ initialEmail = "" }: { initialEmail?: string }) {
+  const [email, setEmail] = useState(initialEmail);
   const [message, setMessage] = useState("");
   const [state, setState] = useState<"idle" | "loading" | "done" | "error">("idle");
   const [error, setError] = useState<string | null>(null);

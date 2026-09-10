@@ -113,6 +113,7 @@ export default async function FeedPage({
     <>
       <AppShell
         userMenu={userMenu}
+        loggedIn={!!user}
         left={<LeftSidebar />}
         center={
           <>

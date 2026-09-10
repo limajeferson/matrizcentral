@@ -1,5 +1,6 @@
 import { FAQ_ITEMS } from "@/components/marketing/v2/faq-data";
 import ContatoForm from "@/components/support/ContatoForm";
+import { getSessionUser } from "@/lib/auth-session";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata = {
@@ -12,7 +13,9 @@ export const metadata = {
   }),
 };
 
-export default function SuportePage() {
+export default async function SuportePage() {
+  const user = await getSessionUser();
+
   return (
     <div className="mx-auto max-w-2xl space-y-8 p-6">
       <div>
@@ -34,7 +37,7 @@ export default function SuportePage() {
 
       <section>
         <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">Fale com a gente</h2>
-        <ContatoForm />
+        <ContatoForm initialEmail={user?.email ?? ""} />
       </section>
     </div>
   );
