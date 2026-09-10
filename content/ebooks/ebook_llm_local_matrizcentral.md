@@ -235,6 +235,8 @@ ollama run gemma4:26b --parameter think false
 
 **Resultado:** a latência cai de 30 segundos — tempo suficiente pra você checar o celular e esquecer o que estava fazendo — para 1 a 5 segundos por resposta.
 
+> 💭 **Ponto de vista:** usar `think=true` num assistente de terminal é como pedir pra um engenheiro sênior escrever um parecer de dez páginas justificando a sintaxe antes de te entregar o `git commit`. Desativar o raciocínio é pedir pra ele simplesmente digitar o comando na sua frente. Você não perde competência — troca a tese acadêmica pelo par de mãos extra que você realmente precisava.
+
 Para programadores usando IA no terminal no dia a dia, **latência baixa vence profundidade de raciocínio**. Você faz mais iterações, mais rápido, e o fluxo de trabalho não quebra.
 
 ### Quantização — O Segredo dos Modelos Pequenos
@@ -700,16 +702,32 @@ Depois, descubra o IP local da máquina (`ipconfig` no Windows, `ifconfig` ou `i
 
 **Para acessar de fora de casa** sem expor a rede inteira à internet, a forma mais simples e gratuita é uma VPN pessoal como o [Tailscale](https://tailscale.com) (grátis para uso pessoal): instala no PC e no celular, e os dois passam a se enxergar como se estivessem na mesma rede, em qualquer lugar do mundo.
 
+```bash
+# No PC (Linux/Mac) — instala e ativa
+curl -fsSL https://tailscale.com/install.sh | sh
+sudo tailscale up
+# Abre um link no navegador pra autenticar com sua conta (Google, GitHub etc.)
+
+# Descobre o IP da tailnet (o endereço fixo que o Tailscale te dá)
+tailscale ip -4
+```
+No celular, instale o app Tailscale (Android/iOS), faça login com a mesma conta, e pronto: o telefone enxerga o IP da tailnet do seu PC de qualquer lugar do mundo, sem abrir porta nenhuma pra internet pública — o tráfego passa só entre os dois aparelhos autenticados.
+
 ### Caminho 3 — VPS na nuvem (a que testamos de verdade)
 
-Esse é o caminho pra quem quer acesso de qualquer lugar sem depender do PC de casa estar ligado. A Matriz Central fez isso de verdade, com a **Oracle Cloud Always Free** (servidor ARM Ampere, grátis para sempre, sem cartão cobrado) — e a jornada real foi bem menos linear do que "criar conta, clicar num botão, rodar um comando":
+Esse é o caminho pra quem quer acesso de qualquer lugar sem depender do PC de casa estar ligado. A Matriz Central fez isso de verdade, com a **Oracle Cloud Always Free** (servidor ARM Ampere, grátis para sempre, sem cartão cobrado) — e vale contar como foi, porque a jornada real foi bem menos linear do que "criar conta, clicar num botão, rodar um comando".
 
-| Obstáculo real | O que parecia ser | Causa real | O que resolveu |
-|---|---|---|---|
-| Formulário não aplicava a imagem escolhida | Erro de clique | O console roda num iframe; clicar no logo do sistema só filtra, não seleciona | Clicar na linha exata da versão numa tabela interna |
-| "Out of host capacity" ao criar a instância | Erro de configuração | Pool físico de servidores da região esgotado — comum em regiões concorridas | Retry automatizado; **não** mexer na configuração |
-| `HTTP 429` ao tentar acelerar o retry | Servidor instável | Limite de requisições por janela acumulada, não por velocidade | Manter o intervalo em 60s — é o teto que a própria Oracle recomenda, não um piso pra reduzir |
-| SSH não conectava com a instância já rodando | Firewall bloqueando | Tabela de rotas da rede vazia — sem regra apontando pro Internet Gateway, e o firewall do próprio SO ainda ativo por cima | Adicionar a rota antes de suspeitar do firewall |
+**O problema** parecia trivial: criar uma instância grátis pra sempre e instalar o Ollama nela. Bastava seguir o passo a passo do painel.
+
+**A primeira falsa pista** apareceu no próprio formulário de criação: clicar na imagem do sistema operacional desejado não selecionava nada. Parecia bug de navegador. Não era — o console roda dentro de um iframe, e o clique no logo do sistema só *filtra* a lista, não *seleciona* a linha. A seleção de verdade exige clicar na linha exata da versão, numa tabela escondida um nível abaixo.
+
+**A segunda pista falsa** veio quando a criação da instância passou a devolver `Out of host capacity`. Parecia erro de configuração — trocar a forma de pagamento, mudar algum parâmetro. Não era: é o pool físico de servidores Ampere daquela região esgotado, algo temporário e comum em regiões concorridas, que nenhuma configuração resolve. A saída foi retry automatizado, tentando de novo em intervalos — e resistir à tentação de "otimizar" mexendo em algo que já estava certo.
+
+**A terceira pista falsa** foi acelerar esse retry: tentar de 5 em 5 segundos em vez de esperar. Resultado: `HTTP 429`. Parecia instabilidade do servidor Oracle. Era, na verdade, um limite de requisições por janela de tempo acumulada — e o intervalo de 60 segundos não era um piso conservador pra reduzir, era o teto que a própria Oracle recomenda.
+
+**A quarta, e mais teimosa:** com a instância finalmente criada e rodando, o SSH simplesmente não conectava. Todo instinto apontava pro firewall — checar regras, liberar porta 22, checar de novo. A causa real estava um nível abaixo: a tabela de rotas da rede vinha vazia por padrão, sem nenhuma regra apontando pro Internet Gateway, e por cima disso o firewall do próprio sistema operacional (não só o da nuvem) ainda estava ativo. Duas camadas, e as duas erradas — a rota primeiro, o firewall depois.
+
+**A resolução** não foi um comando mágico, foi mudar de estratégia: entender a arquitetura de rede da nuvem antes de mexer em qualquer coisa, configurar a rota manualmente, liberar as portas nas duas camadas, e — a lição que ficou — estruturar todo o processo de instalação num script versionado, pra nunca mais precisar repetir essa investigação de memória.
 
 Quatro obstáculos, quatro vezes em que a causa aparente não era a causa real. É esse tipo de atrito que a maioria dos tutoriais omite — e é exatamente por isso que ele está aqui: pra você reconhecer o sintoma e já saber onde olhar, em vez de repetir a investigação do zero. O relato completo, com números e prints, está publicado como caso real na plataforma — ["O Custo Real do Always Free Oracle"](https://www.matrizcentral.com.br) (relatório, tutorial passo a passo e podcast).
 
