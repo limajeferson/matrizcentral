@@ -27,6 +27,11 @@ import type { AccessLevel } from "@/lib/entitlements";
 import { NOINDEX_METADATA } from "@/lib/seo";
 import { toContentType } from "@/lib/content-format";
 
+// Explícito (como o /forum): sem isso, o Router Cache do client pode servir o
+// RSC payload de uma visita anterior à mesma rota quando só o `?formato=`
+// muda — o filtro fica "preso" na primeira variante visitada.
+export const dynamic = "force-dynamic";
+
 export const metadata = NOINDEX_METADATA;
 
 const PLAN_LABEL: Record<AccessLevel, ProfileCardPlan> = {

@@ -165,6 +165,7 @@ export const CONTENT_HUB: ContentItem[] = [
     recommendedStage: "automacoes",
     embedUrl: "https://youtu.be/tLarIxO-814",
     capacityFit: ["equilibrio", "performance"],
+    publishedAt: "2026-09-10",
   },
   {
     id: "podcast-rode-ia-potente",
@@ -220,6 +221,7 @@ export const CONTENT_HUB: ContentItem[] = [
     xpReward: 25,
     recommendedStage: "fluxo_trabalho",
     embedUrl: "https://youtu.be/YmhXd3OlROE",
+    publishedAt: "2026-09-10",
   },
   {
     id: "video-evolucao-ia-local",
@@ -230,6 +232,7 @@ export const CONTENT_HUB: ContentItem[] = [
     xpReward: 25,
     recommendedStage: "automacoes",
     embedUrl: "https://youtu.be/yhrAt19-_34",
+    publishedAt: "2026-09-10",
   },
   {
     id: "pesquisa-hardware-atual",
