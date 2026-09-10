@@ -410,10 +410,11 @@ Nem todo caso de uso precisa de uma máquina na sua mesa. Para automações que 
 <a name="cap5"></a>
 ## Capítulo 5: Setup Passo a Passo — Do Zero ao Primeiro Prompt
 
+Este capítulo é construído em fases, de propósito. Cada fase termina com um **checkpoint** — um resultado que você confirma com os próprios olhos antes de seguir pra próxima. Se travar em algum ponto, você sabe exatamente qual fase falhou, em vez de precisar depurar tudo de uma vez. Não pule fase — mesmo que pareça óbvio, é o checkpoint que garante que o problema (se aparecer) é pequeno e localizado.
+
 ### Opção A: Ollama (Recomendado para Devs)
 
-**Instalação:**
-
+**Fase 1 — Instalar o motor**
 ```bash
 # Linux/Mac:
 curl -fsSL https://ollama.ai/install.sh | sh
@@ -421,36 +422,28 @@ curl -fsSL https://ollama.ai/install.sh | sh
 # Windows:
 # Baixe o instalador em: https://ollama.ai/download/windows
 ```
+✅ **Checkpoint:** rode `ollama --version` no terminal. Apareceu um número de versão? Instalação ok, siga pra Fase 2. Deu "comando não encontrado"? A instalação não terminou — não avance, resolva isso primeiro (reabra o terminal, ou reinstale).
 
-**Baixar e rodar seu primeiro modelo:**
-
+**Fase 2 — Baixar e carregar seu primeiro modelo**
 ```bash
-# Verifica se Ollama está rodando
-ollama --version
-
-# Baixa e roda Mistral 7B (bom para começar)
 ollama run mistral
-
-# Baixa modelo específico (sem rodar)
-ollama pull qwen2.5-coder:7b
-
-# Lista modelos instalados
-ollama list
-
-# Remove modelo (libera espaço)
-ollama rm mistral
 ```
+✅ **Checkpoint:** a primeira vez baixa o modelo (barra de progresso) e depois abre um prompt interativo `>>>` esperando você digitar. Esse `>>>` é a prova de que o modelo carregou de verdade na memória. Ainda vendo a barra de progresso? Espere terminar — não interrompa o download.
 
-**Seu primeiro prompt:**
-```bash
-# Terminal interativo
-ollama run mistral
-
+**Fase 3 — Seu primeiro prompt**
+```
 >>> Explique o que é quantização de LLMs em 3 parágrafos simples
 ```
+✅ **Checkpoint:** texto de resposta aparece na tela. **Este é o momento em que você passa a ter um ChatGPT particular rodando.** Pare aqui um instante — use de verdade por alguns minutos antes de seguir. O Capítulo 4 te ajuda a saber se vale trocar de modelo depois de sentir a velocidade real na sua máquina.
 
-**Usando via API (para integrar com código):**
+**Comandos úteis pra gerenciar modelos** (não são uma fase nova, é referência pro dia a dia):
+```bash
+ollama pull qwen2.5-coder:7b   # baixa um modelo específico sem rodar
+ollama list                     # lista modelos já instalados
+ollama rm mistral               # remove modelo (libera espaço em disco)
+```
 
+**Fase 4 — Testar a API isolada, antes de meter em código**
 ```bash
 # Ollama expõe API REST na porta 11434
 curl http://localhost:11434/api/generate -d '{
@@ -459,6 +452,11 @@ curl http://localhost:11434/api/generate -d '{
   "stream": false
 }'
 ```
+✅ **Checkpoint:** volta um bloco JSON no terminal com um campo `"response"` contendo o texto gerado. Deu `connection refused` ou `curl: (7)`? O Ollama não está rodando em segundo plano — volte pra Fase 2 e confirme que o `ollama run` continua ativo (em outra aba do terminal, se precisar digitar o `curl`).
+
+**Fase 5 — Só agora, integrar com código**
+
+Se a Fase 4 funcionou, o código abaixo é só a mesma chamada, empacotada. Se ele falhar, **o problema não é o Ollama — é o código**, e você já sabe disso porque testou a API sozinha antes.
 
 ```python
 # Python - integração direta
@@ -481,7 +479,7 @@ def ask_local_llm(prompt: str, model: str = "mistral") -> str:
 
 # Uso
 resposta = ask_local_llm("Quais são os 3 principais modelos de LLM local em 2026?")
-print(resposta)
+print(resposta)  # <- esse print é seu checkpoint: se aparecer texto, a integração funcionou
 ```
 
 ```typescript
@@ -505,21 +503,21 @@ async function askLocalLLM(prompt: string, model: string = "mistral"): Promise<s
 
 ### Opção B: LM Studio (Recomendado para Iniciantes)
 
-Interface visual, sem terminal. Ideal para quem quer experimentar sem configurar nada.
+Interface visual, sem terminal — o checkpoint de cada passo aqui é literalmente ver a tela mudar, então a numeração abaixo já funciona como fases:
 
 **Instalação:**
 1. Baixe em: https://lmstudio.ai
 2. Instale normalmente (Windows/Mac/Linux)
-3. Abra o app
+3. Abra o app — ✅ checkpoint: a janela principal do LM Studio abre, com abas no topo (Chat, Discover, etc.)
 
 **Usar um modelo:**
 1. Clique na aba "Discover" (lupa)
 2. Busque: "mistral 7b gguf"
 3. Clique no resultado do TheBloke
 4. Selecione quantização: `Q4_K_M` (melhor equilíbrio)
-5. Clique "Download"
-6. Após download, clique "Load Model"
-7. Vá para aba "Chat" e comece a usar
+5. Clique "Download" — ✅ checkpoint: barra de progresso até 100%
+6. Após download, clique "Load Model" — ✅ checkpoint: o nome do modelo aparece no topo da tela, sem erro vermelho
+7. Vá para aba "Chat" e comece a usar — ✅ checkpoint: digite algo e receba resposta de texto
 
 **Para desativar o modo thinking (Gemma 4 26B MoE):**
 - Context Settings → Uncheck "Enable thinking"
@@ -560,7 +558,7 @@ Um erro de configuração sem explicação é frustrante duas vezes: você perde
 
 ### Projeto Guiado: O Estagiário Extrator de Leads
 
-Tudo até aqui foi ensinar a ligar o motor. Este projeto é a diferença entre "meu LLM local funciona" e "meu LLM local resolveu um problema real" — um script completo, de menos de 40 linhas, que você termina de rodar antes de fechar este capítulo.
+Tudo até aqui foi ensinar a ligar o motor. Este projeto é a diferença entre "meu LLM local funciona" e "meu LLM local resolveu um problema real". Em vez de um script de uma vez só, ele também é construído em fases — se travar, você sabe exatamente em qual das quatro.
 
 **O objetivo:** ler uma mensagem bagunçada de cliente (e-mail, WhatsApp, chamado de suporte) e devolver cinco campos estruturados — nome, empresa, intenção, urgência e assunto — em JSON limpo, sem mandar um único byte pra API paga nenhuma.
 
@@ -572,9 +570,68 @@ ollama pull mistral
 pip install requests
 ```
 
-**O script (`extrator_leads.py`):**
+**Fase 1 — Só confirmar que dá pra falar com o modelo, sem se preocupar com formato**
 
 ```python
+# fase1_conexao.py
+import requests
+
+OLLAMA_API_URL = "http://localhost:11434/api/generate"
+
+mensagem_bruta = """
+Olá, pessoal! Aqui é o Carlos da Silva, diretor da empresa Lotus Marketing.
+Nosso sistema de automação parou de funcionar desde ontem. Precisamos de um
+orçamento urgente para manutenção ainda hoje.
+"""
+
+response = requests.post(OLLAMA_API_URL, json={
+    "model": "mistral",
+    "prompt": f"Resuma esta mensagem em uma frase: {mensagem_bruta}",
+    "stream": False,
+})
+print(response.text)  # <- checkpoint: imprime a resposta CRUA, sem tratar nada ainda
+```
+✅ **Checkpoint:** aparece um bloco de texto com um campo `"response"` contendo um resumo da mensagem. Se der erro de conexão, volte pra Fase 4 do setup (a API isolada) antes de continuar aqui.
+
+**Fase 2 — Trocar o pedido livre por saída estruturada, ainda olhando cru**
+
+```python
+# fase2_json_bruto.py — mesma base da Fase 1, prompt e payload mudam
+prompt_sistema = f"""
+Você é um extrator de dados cirúrgico. Analise o texto abaixo e extraia
+as informações estritamente em formato JSON. Não responda com saudações,
+introduções ou explicações. Responda APENAS com o objeto JSON válido
+contendo as chaves: "nome", "empresa", "intencao", "urgencia" (Baixa,
+Média, Alta) e "assunto".
+
+Texto para análise:
+"{mensagem_bruta}"
+"""
+
+response = requests.post(OLLAMA_API_URL, json={
+    "model": "mistral",
+    "prompt": prompt_sistema,
+    "stream": False,
+    "format": "json",  # força o Ollama a estruturar a saída em JSON
+    "options": {"temperature": 0.1, "num_ctx": 4096},  # baixa temp = menos alucinação
+})
+print(response.json()["response"])  # <- checkpoint: ainda é string, mas já deve "parecer" JSON
+```
+✅ **Checkpoint:** o texto impresso tem cara de JSON (`{"nome": "...", ...}`), mesmo que ainda seja só uma string. Se vier com saudação ou explicação em volta, confira se `"format": "json"` está mesmo no payload — é ele que trava o modelo nesse formato.
+
+**Fase 3 — Transformar a string em dado de verdade**
+
+```python
+import json
+dados = json.loads(response.json()["response"])
+print(json.dumps(dados, indent=2, ensure_ascii=False))  # <- checkpoint: dicionário formatado, campo a campo
+```
+✅ **Checkpoint:** os 5 campos aparecem separados e legíveis, não mais uma string única. Deu erro de `json.loads`? O modelo devolveu algo que não é JSON válido — normalmente resolve trocando pra um modelo maior ou revisando o prompt da Fase 2.
+
+**Fase 4 — Juntar tudo, com tratamento de erro, e salvar em arquivo**
+
+```python
+# extrator_leads.py — versão final, juntando as 3 fases anteriores
 import json
 import requests
 
@@ -602,8 +659,8 @@ def extrair_dados_lead(texto: str) -> dict:
         "model": MODELO_LOCAL,
         "prompt": prompt_sistema,
         "stream": False,
-        "format": "json",  # força o Ollama a estruturar a saída em JSON
-        "options": {"temperature": 0.1, "num_ctx": 4096},  # baixa temp = menos alucinação
+        "format": "json",
+        "options": {"temperature": 0.1, "num_ctx": 4096},
     }
     try:
         response = requests.post(OLLAMA_API_URL, json=payload)
@@ -623,8 +680,7 @@ if __name__ == "__main__":
             json.dump(lead, f, indent=2, ensure_ascii=False)
         print("\n💾 Salvo em 'lead_extraido.json'.")
 ```
-
-Rode com `python extrator_leads.py`. A saída esperada em `lead_extraido.json`:
+✅ **Checkpoint final:** roda `python extrator_leads.py` e o arquivo `lead_extraido.json` aparece na pasta, com esta cara:
 
 ```json
 {
@@ -636,9 +692,9 @@ Rode com `python extrator_leads.py`. A saída esperada em `lead_extraido.json`:
 }
 ```
 
-> ⚠️ **Regra de governança pra modelo leve:** a chave `"format": "json"` no payload é o que trava a saída — sem ela, um modelo compacto (2-3B) pode tentar "conversar" em vez de responder estruturado. E se você trocar o modelo por Llama 3.2 3B, lembre do Capítulo 1: em automação sem supervisão, ele pode devolver campo nulo em até 92% das tentativas. Fique com Gemma 4 E2B ou Mistral 3B.
+> ⚠️ **Regra de governança pra modelo leve:** a chave `"format": "json"` (Fase 2) é o que trava a saída — sem ela, um modelo compacto (2-3B) pode tentar "conversar" em vez de responder estruturado. E se você trocar o modelo por Llama 3.2 3B, lembre do Capítulo 1: em automação sem supervisão, ele pode devolver campo nulo em até 92% das tentativas. Fique com Gemma 4 E2B ou Mistral 3B.
 
-Esse mesmo padrão — endpoint local, `format: json`, temperatura baixa — é o que sustenta qualquer automação séria rodando sobre LLM local, de um webhook simples a um pipeline inteiro no n8n. Você não terminou só um exercício; terminou o esqueleto de uma ferramenta que já pode virar produto.
+Esse mesmo padrão — endpoint local, `format: json`, temperatura baixa — é o que sustenta qualquer automação séria rodando sobre LLM local, de um webhook simples a um pipeline inteiro no n8n. Você não terminou só um exercício; terminou o esqueleto de uma ferramenta que já pode virar produto, construído em fases que você mesmo pode confirmar do início ao fim.
 
 ---
 
@@ -675,15 +731,21 @@ COMPUTADOR PRÓPRIO    COMPUTADOR DE CASA          VPS (NUVEM)
 
 A diferença para o Caminho 1 é só uma: deixar o Ollama acessível pra **outros dispositivos da sua casa** (celular incluso), não só para quem está sentado na máquina.
 
-**No Linux**, o instalador oficial do Ollama já registra o serviço como `systemd` automaticamente — confirme com:
+Assim como o Capítulo 5, isto aqui também é feito em fases — cada uma ampliando o alcance de quem consegue falar com o seu Ollama, e cada uma com um jeito de confirmar que funcionou antes de abrir mais uma porta.
+
+**Fase 1 — Confirmar que o serviço fica ligado sozinho**
+
+**No Linux**, o instalador oficial do Ollama já registra o serviço como `systemd` automaticamente:
 ```bash
 systemctl status ollama
 ```
-Se estiver ativo, ele já reinicia sozinho se o PC reiniciar. Isso é exatamente o mesmo princípio que usamos pra manter o assistente de voz da Matriz Central no ar numa VPS (via `systemd`, sem intervenção manual) — a técnica é a mesma, muda só onde a máquina está.
+✅ **Checkpoint:** o status mostra `active (running)`. Isso é exatamente o mesmo princípio que usamos pra manter o assistente de voz da Matriz Central no ar numa VPS (via `systemd`, sem intervenção manual) — a técnica é a mesma, muda só onde a máquina está.
 
-**No Windows e Mac**, o Ollama roda em segundo plano (ícone na bandeja/menu bar) e já inicia com o sistema por padrão.
+**No Windows e Mac**, o Ollama roda em segundo plano (ícone na bandeja/menu bar) e já inicia com o sistema por padrão — o checkpoint aqui é ver o ícone ativo depois de reiniciar o computador.
 
-**Para acessar de outro aparelho na mesma rede** (seu celular, por exemplo), o Ollama por padrão só escuta a própria máquina — ele foi pensado pra ser privado por padrão, não pra vazar pra rede sem você pedir. É preciso abrir essa porta deliberadamente:
+**Fase 2 — Abrir a porta pra rede local**
+
+Por padrão, o Ollama só escuta a própria máquina — ele foi pensado pra ser privado, não pra vazar pra rede sem você pedir. É preciso abrir essa porta deliberadamente:
 
 ```bash
 # Linux/Mac — antes de iniciar o Ollama
@@ -696,11 +758,17 @@ OLLAMA_HOST = 0.0.0.0:11434
 # (reinicie o Ollama depois de definir)
 ```
 
-Depois, descubra o IP local da máquina (`ipconfig` no Windows, `ifconfig` ou `ip a` no Linux/Mac — algo como `192.168.x.x`) e acesse de outro aparelho na mesma rede pela porta 11434 desse IP.
+Descubra o IP local da máquina (`ipconfig` no Windows, `ifconfig` ou `ip a` no Linux/Mac — algo como `192.168.x.x`).
 
-> ⚠️ **Lição do nosso próprio case:** ao provisionar a VPS da Matriz Central, o SSH parou de responder mesmo com a porta liberada no firewall — a causa real era a tabela de rotas da rede, não o firewall. Em casa o equivalente é o **roteador**: se abrir a porta no PC e mesmo assim não funcionar de fora da rede, confira o **redirecionamento de porta (port forward) no roteador** antes de suspeitar do PC. Dentro da própria rede Wi-Fi isso não é necessário — só entra em jogo se você quiser acessar de fora de casa.
+✅ **Checkpoint (na própria máquina primeiro):** antes de sair testando de outro aparelho, confirme dali mesmo que a porta está de fato aberta pra rede — `curl http://192.168.x.x:11434/api/tags` (usando o IP que você acabou de descobrir, não o `localhost`). Voltou uma lista de modelos? A porta está aberta corretamente. Isso isola o problema: se der erro aqui, é configuração do Ollama; se funcionar aqui mas não no celular, é rede/roteador — não perca tempo desconfiando da coisa errada.
 
-**Para acessar de fora de casa** sem expor a rede inteira à internet, a forma mais simples e gratuita é uma VPN pessoal como o [Tailscale](https://tailscale.com) (grátis para uso pessoal): instala no PC e no celular, e os dois passam a se enxergar como se estivessem na mesma rede, em qualquer lugar do mundo.
+**Checkpoint 2 (de outro aparelho na mesma rede):** só agora acesse `http://192.168.x.x:11434` do celular ou outro PC conectado no mesmo Wi-Fi.
+
+> ⚠️ **Lição do nosso próprio case:** ao provisionar a VPS da Matriz Central, o SSH parou de responder mesmo com a porta liberada no firewall — a causa real era a tabela de rotas da rede, não o firewall. Em casa o equivalente é o **roteador**: se o checkpoint acima funcionou na própria máquina mas não de outro aparelho, e mesmo assim não funcionar de fora da rede, confira o **redirecionamento de porta (port forward) no roteador** antes de suspeitar do PC. Dentro da própria rede Wi-Fi isso não é necessário — só entra em jogo se você quiser acessar de fora de casa.
+
+**Fase 3 — Acesso de fora de casa, com VPN**
+
+Sem expor a rede inteira à internet, a forma mais simples e gratuita é uma VPN pessoal como o [Tailscale](https://tailscale.com) (grátis para uso pessoal): instala no PC e no celular, e os dois passam a se enxergar como se estivessem na mesma rede, em qualquer lugar do mundo.
 
 ```bash
 # No PC (Linux/Mac) — instala e ativa
@@ -711,7 +779,7 @@ sudo tailscale up
 # Descobre o IP da tailnet (o endereço fixo que o Tailscale te dá)
 tailscale ip -4
 ```
-No celular, instale o app Tailscale (Android/iOS), faça login com a mesma conta, e pronto: o telefone enxerga o IP da tailnet do seu PC de qualquer lugar do mundo, sem abrir porta nenhuma pra internet pública — o tráfego passa só entre os dois aparelhos autenticados.
+✅ **Checkpoint:** instale o app Tailscale no celular (Android/iOS), faça login com a mesma conta, e — **antes de tentar acessar o Ollama** — teste só a conexão da VPN: `ping <IP-da-tailnet>` a partir do celular (ou o próprio app mostrando "conectado"). Deu ping? A VPN está de pé, e qualquer problema depois disso é do Ollama, não da rede. Só então acesse `http://<IP-da-tailnet>:11434` do celular — sem abrir porta nenhuma pra internet pública, o tráfego passa só entre os dois aparelhos autenticados.
 
 ### Caminho 3 — VPS na nuvem (a que testamos de verdade)
 
@@ -731,13 +799,18 @@ Esse é o caminho pra quem quer acesso de qualquer lugar sem depender do PC de c
 
 Quatro obstáculos, quatro vezes em que a causa aparente não era a causa real. É esse tipo de atrito que a maioria dos tutoriais omite — e é exatamente por isso que ele está aqui: pra você reconhecer o sintoma e já saber onde olhar, em vez de repetir a investigação do zero. O relato completo, com números e prints, está publicado como caso real na plataforma — ["O Custo Real do Always Free Oracle"](https://www.matrizcentral.com.br) (relatório, tutorial passo a passo e podcast).
 
-**Depois que a VPS está no ar**, instalar o Ollama é **idêntico** ao Caminho 1 — mesmo comando `curl -fsSL https://ollama.ai/install.sh | sh` — só que numa máquina na nuvem em vez da sua. Duas diferenças específicas de VPS:
+**Depois que a VPS está no ar**, instalar o Ollama é **idêntico** ao Caminho 1 — mesmo comando `curl -fsSL https://ollama.ai/install.sh | sh` — só que numa máquina na nuvem em vez da sua.
+
+> 💡 **Princípio de debug que vale pra qualquer VPS:** antes de mexer em firewall de nuvem, rota ou qualquer coisa "de rede", rode o Ollama localmente na VPS via SSH e teste com `curl http://localhost:11434/api/tags` **de dentro da própria máquina**. Funcionou? O Ollama está saudável, e qualquer problema de acesso remoto é rede — não perca tempo reinstalando o Ollama achando que é ele. É a mesma lógica do checkpoint da Fase 2 do Caminho 2, só que na nuvem em vez de casa.
+
+Duas diferenças específicas de VPS em relação ao Caminho 2, ambas de rede — não de Ollama:
 
 1. **Firewall duplo.** Imagens da Oracle (e de várias outras nuvens) trazem regra de firewall no próprio sistema operacional **além** da regra do painel da nuvem. Liberar a porta só no painel não é suficiente:
    ```bash
    sudo ufw allow 11434/tcp
    sudo iptables -I INPUT -p tcp --dport 11434 -j ACCEPT
    ```
+   ✅ **Checkpoint:** com as duas camadas liberadas, `curl http://<IP-publico-da-vps>:11434/api/tags` funciona de fora — do seu próprio computador, não mais só de dentro da VPS via SSH.
 2. **A instância é descartável — trate assim.** VPS gratuita pode ser recuperada por ociosidade sem aviso prévio. A defesa não é tentar parecer "ocupada" pra enganar a métrica — é conseguir recriar tudo em minutos. Deixe o processo de instalação num script versionado (o que a Matriz Central faz com o próprio assistente de voz), não em comandos digitados manualmente que ninguém lembra depois.
 
 **Se não tiver paciência para esperar a capacidade gratuita:** o custo real medido (não estimado) de uma instância paga pequena (1 OCPU / 4GB) foi **R$27,27 por 7 dias rodando em tempo integral** — dá pra decidir com número real, não com estimativa de vendedor.
