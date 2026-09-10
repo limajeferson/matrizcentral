@@ -25,3 +25,4 @@ modelo-esfera.ia.png
 
 # Local: dados de conta/billing (nao versionar)
 reclamacao-anthropic/
+__pycache__/
