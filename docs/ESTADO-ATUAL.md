@@ -27,6 +27,42 @@ A seção "O QUE FALTA PARA O LANÇAMENTO" é o checklist mestre da inauguraçã
 
 ## ⏭️ PRÓXIMA AÇÃO (leia isto primeiro ao retomar)
 
+> ### 🟡 2026-09-10 (sessão nova) — Ebook reescrito (voz/narrativa), aguardando aprovação do usuário antes de push
+>
+> Retomando a pendência da sessão anterior (bloco abaixo, `ce989416`): o usuário leu
+> o ebook, aprovou o Capítulo 6B (case da VPS) e a nova capa (corrigida por ele para
+> **2048×3200px**, acima do mínimo do Google Play Books), mas achou o livro **"com
+> pouca cara de livro, parece manual técnico de montagem de móveis"** — sem robustez,
+> persuasão nem narrativa. Pediu para consultar o NotebookLM antes de reescrever.
+>
+> **Feito nesta sessão:**
+> 1. Rodei uma auditoria de craft editorial no NotebookLM do projeto
+>    (`notebook.google.com/notebook/10e73de4-...`), usando a versão atual do ebook
+>    como fonte. Resposta completa salva em
+>    [`respostas-coladas.md`](frentes/lancamento-publico/respostas-coladas.md).
+>    Diagnóstico: padrão "afirmação → tabela → bullet" mata o ritmo; os 3 casos reais
+>    do livro (Gemma 4 E2B, Llama 3.2 3B, VPS Oracle) eram dado solto, não história.
+> 2. **Reescrevi o livro inteiro** aplicando as 5 mudanças de maior impacto que o
+>    NotebookLM apontou: Capítulos 1/2/6 viraram crônicas de engenharia (Problema →
+>    Falsa Pista → Descoberta → Resolução, sem inventar número novo); os 3 capítulos
+>    de hardware redundantes (antigos 4/5/7, repetiam as mesmas GPUs 3x) viraram um
+>    Capítulo 4 único por tier de investimento; abertura/fechamento ganharam o arco de
+>    identidade "Refém Ansioso → Operador Autônomo"; caixas de opinião do autor e
+>    analogias (MoE como conselho de PhDs) inseridas ao longo do texto; troubleshooting
+>    do setup ganhou o "porquê" de cada erro. Capítulos renumerados (6B→6, 8→7, 9→8) —
+>    conferido por grep que nenhum código referencia número de capítulo, só o próprio
+>    arquivo do ebook.
+> 3. Palavras: 5.717 → **6.963**. Gate: `tsc` 0 · **410 testes / 63 arquivos** · EPUB
+>    regenerado e revalidado (**epubcheck 0 erros/0 avisos**).
+> 4. **Commitado localmente** (`bb31193`), **NÃO pushed** — é conteúdo do produto pago
+>    principal, o usuário ainda não leu esta versão.
+>
+> **➡️ PRÓXIMA AÇÃO:** o usuário lê o Capítulo 1 (mais transformado — crônica do
+> Gemma 4 E2B e do Llama 3.2 3B) e diz se o tom bateu com o que ele queria. Se sim,
+> `git push` e regerar o `.epub` final pro Google Play Books (ele já está logado lá,
+> aguardando o primeiro livro). Ainda em aberto, sem solução minha: **ilustrações
+> reais** (sem ferramenta de geração de imagem neste ambiente).
+>
 > ### 🔴 2026-09-10 — SESSÃO `ce989416` ENCERRADA POR ERRO (usuário abriu sessão nova). Leia isto primeiro.
 >
 > A sessão anterior fez bastante trabalho real e publicado, mas **terminou no
