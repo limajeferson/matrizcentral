@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { buildShareUrl, isTokenizedPath } from "@/lib/share";
-import { IconWhatsApp, IconXTwitter, IconLinkedIn, IconShare } from "@/components/ui/icons";
+import { IconWhatsApp, IconXTwitter, IconLinkedIn, IconShare, IconCopy } from "@/components/ui/icons";
 
 export type ShareLinksProps = {
   url: string;
@@ -103,7 +103,7 @@ export function ShareLinks({ url, text }: ShareLinksProps) {
         aria-label="Copiar link"
         className={ICON_BUTTON_CLASS}
       >
-        <IconShare size={16} />
+        <IconCopy size={16} />
       </button>
       <span aria-live="polite" className="text-sm text-muted-foreground">
         {copied ? "Copiado!" : ""}
