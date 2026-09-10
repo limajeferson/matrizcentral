@@ -57,11 +57,27 @@ A seção "O QUE FALTA PARA O LANÇAMENTO" é o checklist mestre da inauguraçã
 > 4. **Commitado localmente** (`bb31193`), **NÃO pushed** — é conteúdo do produto pago
 >    principal, o usuário ainda não leu esta versão.
 >
-> **➡️ PRÓXIMA AÇÃO:** o usuário lê o Capítulo 1 (mais transformado — crônica do
-> Gemma 4 E2B e do Llama 3.2 3B) e diz se o tom bateu com o que ele queria. Se sim,
-> `git push` e regerar o `.epub` final pro Google Play Books (ele já está logado lá,
-> aguardando o primeiro livro). Ainda em aberto, sem solução minha: **ilustrações
-> reais** (sem ferramenta de geração de imagem neste ambiente).
+> **✅ Atualização (mesma sessão, 4 commits depois):** usuário aprovou a reescrita.
+> Rodadas seguintes, todas commitadas localmente (`bb31193`→`afde473`, ainda **sem
+> push**): (1) mini-projeto guiado "Estagiário Extrator de Leads" + nota de
+> metodologia no apêndice — **sem citar fontes externas não confirmadas** que o
+> NotebookLM sugeriu (AI ProgBr/Moonshot AI/QuantBrasil — não achadas entre as 103
+> fontes do notebook por busca no DOM, e o mesmo notebook misturou modelos que não
+> existem no livro ao descrever o Cap. 3 — sinal de contaminação cruzada com outras
+> fontes; não usar sem verificação futura); (2) analogia do `think=false`, passos
+> reais do Tailscale, case Oracle virou crônica completa (Problema→4 falsas
+> pistas→resolução); (3) **Capítulo 5, o mini-projeto e o Caminho 2/3 do Cap. 6
+> reestruturados em fases com checkpoint** (✅ resultado esperado + onde voltar se
+> não aparecer) — pedido do usuário como arquiteto/mentor, pra não empilhar passo
+> novo sem confirmar que o anterior funcionou. 6.963 → **8.962 palavras**. Gate
+> sempre revalidado: `tsc` 0 · 410 testes · epubcheck 0/0.
+>
+> **➡️ PRÓXIMA AÇÃO:** usuário lê a versão atual inteira (já aprovou pedaços ao
+> longo da sessão). Quando aprovar o todo: `git push` + regerar `.epub` final pro
+> Google Play Books (usuário já logado lá). Em aberto: **diagramas do Cap. 3/6/7**
+> (ASCII não vira imagem no PDF/EPUB final — NotebookLM sugeriu Mermaid/Python
+> graphviz como caminho viável, ainda não executado) e **ilustrações/capa** (capa já
+> resolvida pelo usuário, 2048×3200px, ok pro Play Books).
 >
 > ### 🔴 2026-09-10 — SESSÃO `ce989416` ENCERRADA POR ERRO (usuário abriu sessão nova). Leia isto primeiro.
 >
