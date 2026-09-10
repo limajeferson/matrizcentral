@@ -274,6 +274,12 @@ Criar tag nova exige editar este arquivo e o PLAYBOOK juntos.
 - **Faça:** o `getSupabaseServerClient` central usa `global.fetch` com `cache: "no-store"` (fix `a2ab956`) — manter em qualquer client novo. E o gate visual de rota nova que lê banco inclui **mutação em produção** (criar um dado e vê-lo aparecer), não só o render — cache stale não aparece num load único.
 - **Fonte:** verificação ao vivo da Trilha D (2026-07-22), commits `6b8faf6` (force-dynamic, insuficiente sozinho) e `a2ab956` (no-store no wrapper, resolveu).
 
+### L-052 · Provedor de e-mail transacional com restrição de IP quebra silenciosamente em serverless
+- **Gatilho:** `deploy`, `acesso-dinheiro`
+- **Não faça:** presumir que "o endpoint respondeu sem erro" prova que o e-mail saiu — o login por magic-link ficou dias fora do ar porque o Brevo tem um recurso de segurança ("IPs autorizados") que rejeita a API com 401 sempre que a chamada vem de um IP nunca visto; como a Vercel roda serverless (IP novo a cada invocação, ex.: `3.228.13.244` depois `98.80.96.12` depois `2804:7f0:...`), TODO envio falhava, e o teste de verificação caiu por acaso dentro da janela de 1 min de throttle do `requestMagicLink` (que retorna `"sent"` sem chamar o provedor de novo), mascarando o 401 real.
+- **Faça:** ao integrar/depurar qualquer provedor de e-mail transacional (Brevo, Sendgrid, etc.) atrás de infra serverless, desativar de saída qualquer allowlist de IP de origem no painel do provedor (não dá pra manter lista de IP fixo). Para verificar entrega de e-mail, ler os **runtime logs da Vercel** (`mcp__claude_ai_Vercel__get_runtime_logs`, filtrando `error`) em vez de confiar só no status HTTP do endpoint — e esperar passar qualquer janela de throttle/dedupe antes de repetir o teste, senão o "sucesso" é o branch de skip, não o envio real.
+- **Fonte:** sessão 2026-09-10 (login por magic-link fora do ar; causa raiz achada via Vercel runtime logs, resolvida desativando "IPs autorizados" no Brevo).
+
 ## `subagentes`
 
 ### L-024 · Coordenador deve assumir gate e commit quando um subagente cai no meio por falha de API
