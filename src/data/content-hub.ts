@@ -129,7 +129,7 @@ export const CONTENT_HUB: ContentItem[] = [
     durationMinutes: 24,
     xpReward: 20,
     recommendedStage: "automacoes",
-    embedUrl: null,
+    embedUrl: "https://open.spotify.com/episode/0zFifoq23AmZxbT8TsUGJ5",
     capacityFit: ["equilibrio", "essencial"],
   },
   {
@@ -141,7 +141,7 @@ export const CONTENT_HUB: ContentItem[] = [
     durationMinutes: 29,
     xpReward: 20,
     recommendedStage: "automacoes",
-    embedUrl: null,
+    embedUrl: "https://open.spotify.com/episode/170wTBVrHTzqWtxrvzKeIQ",
   },
   {
     id: "podcast-vibe-coding-engenharia",
@@ -152,7 +152,7 @@ export const CONTENT_HUB: ContentItem[] = [
     durationMinutes: 13,
     xpReward: 20,
     recommendedStage: "automacoes",
-    embedUrl: null,
+    embedUrl: "https://open.spotify.com/episode/38W3iQAtKCRkFpycwyUt1X",
   },
   {
     id: "video-lucrando-ia-local",
@@ -175,7 +175,7 @@ export const CONTENT_HUB: ContentItem[] = [
     durationMinutes: 18,
     xpReward: 20,
     recommendedStage: "fundacao_local",
-    embedUrl: null,
+    embedUrl: "https://open.spotify.com/episode/5WxwlPCpveoIOfGiTsazOy",
     capacityFit: ["essencial", "equilibrio"],
   },
   {
@@ -186,7 +186,7 @@ export const CONTENT_HUB: ContentItem[] = [
     durationMinutes: 16,
     xpReward: 20,
     recommendedStage: "fluxo_trabalho",
-    embedUrl: null,
+    embedUrl: "https://open.spotify.com/episode/7GTW3vRbQPvqylZs7EuA2D",
     capacityFit: ["equilibrio"],
   },
   {
@@ -198,7 +198,7 @@ export const CONTENT_HUB: ContentItem[] = [
     durationMinutes: 20,
     xpReward: 20,
     recommendedStage: "modelos_performance",
-    embedUrl: null,
+    embedUrl: "https://open.spotify.com/episode/2uQ30WzYgY6ghMp9FunvpL",
   },
   {
     id: "podcast-escolher-ias-sem-travar",
@@ -208,7 +208,7 @@ export const CONTENT_HUB: ContentItem[] = [
     durationMinutes: 15,
     xpReward: 20,
     recommendedStage: "automacoes",
-    embedUrl: null,
+    embedUrl: "https://open.spotify.com/episode/3paOti5PZZgpMOhTQ5zpwd",
     capacityFit: ["essencial", "equilibrio"],
   },
   {
