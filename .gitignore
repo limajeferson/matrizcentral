@@ -26,3 +26,6 @@ modelo-esfera.ia.png
 # Local: dados de conta/billing (nao versionar)
 reclamacao-anthropic/
 __pycache__/
+
+# Ebook: artefato binario gerado (.epub), fonte e' o .md em content/ebooks/
+content/ebooks/dist/

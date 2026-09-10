@@ -18,8 +18,38 @@ Este guia mostra como.
 
 ---
 
+<a name="plataforma"></a>
+## A Matriz Central — Onde Este Guia Continua
+
+Este ebook é a porta de entrada, não o destino final.
+
+Tudo que você vai aprender aqui — quantização, arquitetura, escolha de modelo, setup, hardware — continua evoluindo depois da última página. Modelos novos saem toda semana, ferramentas mudam, e o que é "o melhor modelo para rodar localmente" hoje pode não ser em três meses. Por isso este guia tem uma casa: **[matrizcentral.com.br](https://www.matrizcentral.com.br)**.
+
+### O que você encontra lá
+
+A Matriz Central é uma plataforma multi-formato de IA local — não um curso fechado, um **feed vivo** que cresce com relatórios, podcasts, vídeos e pesquisas da própria comunidade. Você lê, ouve ou assiste no formato que preferir, e ganha XP e níveis conforme avança — até um certificado de conclusão da trilha.
+
+Alguns exemplos do que já está publicado lá dentro:
+
+- **Cases reais, com os erros incluídos** — como o "Custo Real do Always Free Oracle": a jornada completa (relatório, tutorial passo a passo e podcast) de provisionar um servidor gratuito na nuvem para rodar IA local, contando também o que deu errado no caminho e como foi corrigido. Aprender com o erro alheio é mais rápido que repetir o mesmo erro sozinho.
+- **Relatórios comparativos** de modelos e ferramentas de automação, atualizados conforme o cenário muda — o complemento vivo da Tabela Comparativa deste livro (Capítulo 4).
+- **Podcasts e vídeos** sobre vibe coding, escolha de hardware e fluxo de trabalho com IA local, pensados pra quem prefere ouvir ou assistir a ler.
+
+### Como a comunidade se ajuda
+
+A plataforma tem um fórum onde quem já passou pelo setup ajuda quem está começando — dúvida de configuração, benchmark de hardware específico, o que funcionou (ou não) em cada máquina. O conhecimento que um usuário ganha na prática vira conteúdo que ajuda o próximo; é assim que a biblioteca cresce mais rápido do que qualquer equipe sozinha conseguiria produzir.
+
+### Como usar
+
+O acesso é por login (magic-link, sem senha pra decorar) e existem diferentes planos de acesso conforme o quanto você quer aprofundar — do essencial ao completo, com pagamento único, sem mensalidade (o mesmo princípio deste guia: você paga uma vez, usa para sempre). Os detalhes atuais de cada plano estão sempre no site, porque preço e catálogo evoluem — o link acima leva direto pra página de planos.
+
+Se este ebook já resolveu seu problema imediato, ótimo. Se você quer continuar aprendendo — com conteúdo novo, comunidade e uma trilha estruturada — é lá que este guia continua.
+
+---
+
 ## Índice
 
+- [A Matriz Central — Onde Este Guia Continua](#plataforma)
 - [Capítulo 0: Por Que Você Está Pagando Demais](#cap0)
 - [Capítulo 1: A Ilusão do Tamanho — O Maior Mito da IA Local](#cap1)
 - [Capítulo 2: Arquitetura Importa Mais que Parâmetros](#cap2)
