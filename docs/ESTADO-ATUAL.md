@@ -8,7 +8,7 @@
 > Ordem de leitura ao retomar: **este arquivo → `CLAUDE.md` → o `README.md` da
 > frente ativa → o código fonte-de-verdade.**
 
-_Última atualização: 2026-09-08 (**BANCO DE PRODUÇÃO AINDA PAUSADO** — nada mudou aí, ver bloco abaixo. `case-assistente-continuo`: spec-vps.md auditada e aprovada, Fase A do plano (8 tasks) implementada e testada no repo `assistente-local`, **criação da VPS Oracle travada em falta de capacidade ARM — script de retry automático rodando em background, janela de 7 dias**.) _(histórico: 2026-07-26 — **FRENTE NOVA E ATIVA: `lancamento-publico`** —
+_Última atualização: 2026-09-10 (ver bloco "Ebook reescrito, PUSHED, submetido ao Play Livros" no topo da Próxima Ação. **BANCO DE PRODUÇÃO AINDA PAUSADO** — nada mudou aí, ver bloco abaixo. `case-assistente-continuo`: spec-vps.md auditada e aprovada, Fase A do plano (8 tasks) implementada e testada no repo `assistente-local`, **criação da VPS Oracle travada em falta de capacidade ARM — script de retry automático de outra sessão ainda rodando em background, janela de 7 dias (a partir de ~2026-09-08, expira ~2026-09-15). Hoje a conta só tem o shape AMD Always Free (`VM.Standard.E2.1.Micro`, 1GB RAM) — o retry é pela instância ARM Ampere (`VM.Standard.A1.Flex`, até 24GB), que é a que o plano precisa.**) _(histórico: 2026-07-26 — **FRENTE NOVA E ATIVA: `lancamento-publico`** —
 auditoria de código com 4 agentes paralelos achou **6 buracos que nenhum plano
 cobria**, e o checklist antigo foi reordenado em **6 ondas** por critério de
 receita. **Onda 1 (Receita & Descoberta) FECHADA**: 6 tasks + passe visual,
