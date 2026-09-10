@@ -14,16 +14,17 @@ export async function getAccessContext(userId: string): Promise<{
   access: AccessLevel; startsAt: Date | null; unlockedContentIds: string[]; unlockedCycleKeys: string[];
 }> {
   const supabase = getSupabaseServerClient();
-  const { data: ents } = await supabase
-    .from("entitlements").select("plan, starts_at, expires_at").eq("user_id", userId);
+  // Nenhuma das duas depende do resultado da outra — só de `userId`.
+  const [{ data: ents }, { data: unlocks }] = await Promise.all([
+    supabase.from("entitlements").select("plan, starts_at, expires_at").eq("user_id", userId),
+    supabase.from("content_unlocks").select("content_id, cycle_key").eq("user_id", userId),
+  ]);
   const access = resolveAccess(ents ?? []);
   // starts_at do entitlement vigente de nível `access` (o mais recente), para o ciclo.
   const active = (ents ?? [])
     .filter((e) => e.plan === access && new Date(e.expires_at).getTime() > Date.now())
     .sort((a, b) => new Date(b.starts_at).getTime() - new Date(a.starts_at).getTime())[0];
   const startsAt = active ? new Date(active.starts_at) : null;
-  const { data: unlocks } = await supabase
-    .from("content_unlocks").select("content_id, cycle_key").eq("user_id", userId);
   return {
     access, startsAt,
     unlockedContentIds: (unlocks ?? []).map((u) => u.content_id),

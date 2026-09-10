@@ -33,17 +33,18 @@ export default async function ConteudoDetailPage({
   }
 
   const supabase = getSupabaseServerClient();
-  const { data: tokenRow } = await supabase
-    .from("tokens")
-    .select("valid_until")
-    .eq("token", params.token)
-    .maybeSingle();
+  // As duas consultas abaixo só dependem de `params.token`, não uma da
+  // outra — rodar em paralelo poupa um round-trip inteiro ao banco no
+  // carregamento de toda página de conteúdo.
+  const [{ data: tokenRow }, userId] = await Promise.all([
+    supabase.from("tokens").select("valid_until").eq("token", params.token).maybeSingle(),
+    resolveUserIdByToken(params.token),
+  ]);
 
   if (!tokenRow || isTokenExpired(tokenRow.valid_until)) {
     return <p className="max-w-md mx-auto p-8 text-center">Token inválido ou expirado.</p>;
   }
 
-  const userId = await resolveUserIdByToken(params.token);
   const decision = userId
     ? await tryConsume(userId, item.id, item.startIncluded === true)
     : { allowed: false, reason: "gated" };
