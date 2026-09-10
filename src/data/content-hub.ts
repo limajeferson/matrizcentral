@@ -220,7 +220,7 @@ export const CONTENT_HUB: ContentItem[] = [
     durationMinutes: 8,
     xpReward: 25,
     recommendedStage: "fluxo_trabalho",
-    embedUrl: "https://youtu.be/YmhXd3OlROE",
+    embedUrl: "https://youtu.be/YmhXd3OIROE",
     publishedAt: "2026-09-10",
   },
   {
