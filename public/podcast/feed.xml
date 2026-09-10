@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Matriz Central Podcast</title>
+    <link>https://www.matrizcentral.com.br</link>
+    <language>pt-br</language>
+    <description>IA local, sem Big Tech e sem mensalidade -- conversas e cases reais sobre rodar IA no seu proprio hardware.</description>
+    <itunes:author>Matriz Central</itunes:author>
+    <itunes:owner>
+      <itunes:name>Matriz Central</itunes:name>
+      <itunes:email>contato@matrizcentral.com.br</itunes:email>
+    </itunes:owner>
+    <itunes:image href="https://www.matrizcentral.com.br/brand/favicon.svg" />
+    <itunes:category text="Technology" />
+    <itunes:explicit>false</itunes:explicit>
+    <image>
+      <url>https://www.matrizcentral.com.br/brand/favicon.svg</url>
+      <title>Matriz Central Podcast</title>
+      <link>https://www.matrizcentral.com.br</link>
+    </image>
+    <item>
+      <title>Vibe Coding e o Fim do Programador Tradicional?</title>
+      <description>Debate: o que os projetos 100% gerados por IA dizem sobre o futuro de quem programa.</description>
+      <pubDate>Wed, 22 Jul 2026 00:00:00 +0000</pubDate>
+      <enclosure url="https://rzolsrzyafijaogjcjjb.supabase.co/storage/v1/object/public/podcast-audio/podcast-vibe-coding-fim-programador-comprimido.m4a" length="21583934" type="audio/mp4" />
+      <guid isPermaLink="false">https://rzolsrzyafijaogjcjjb.supabase.co/storage/v1/object/public/podcast-audio/podcast-vibe-coding-fim-programador-comprimido.m4a</guid>
+      <itunes:explicit>false</itunes:explicit>
+    </item>
+    <item>
+      <title>Vibe Coding e a Engenharia de Software</title>
+      <description>Velocidade de producao vs qualidade: onde a IA acelera e onde ela quebra o design.</description>
+      <pubDate>Wed, 22 Jul 2026 00:00:00 +0000</pubDate>
+      <enclosure url="https://rzolsrzyafijaogjcjjb.supabase.co/storage/v1/object/public/podcast-audio/podcast-vibe-coding-engenharia.m4a" length="24234553" type="audio/mp4" />
+      <guid isPermaLink="false">https://rzolsrzyafijaogjcjjb.supabase.co/storage/v1/object/public/podcast-audio/podcast-vibe-coding-engenharia.m4a</guid>
+      <itunes:explicit>false</itunes:explicit>
+    </item>
+    <item>
+      <title>Rode IA Potente Direto no Seu Computador</title>
+      <description>Como colocar uma IA de verdade rodando na sua maquina sem pagar mensalidade.</description>
+      <pubDate>Wed, 22 Jul 2026 00:00:00 +0000</pubDate>
+      <enclosure url="https://rzolsrzyafijaogjcjjb.supabase.co/storage/v1/object/public/podcast-audio/podcast-rode-ia-potente.m4a" length="31088826" type="audio/mp4" />
+      <guid isPermaLink="false">https://rzolsrzyafijaogjcjjb.supabase.co/storage/v1/object/public/podcast-audio/podcast-rode-ia-potente.m4a</guid>
+      <itunes:explicit>false</itunes:explicit>
+    </item>
+    <item>
+      <title>IAs Poderosas Rodando no Seu Computador</title>
+      <description>O setup que transforma um computador comum em uma central de IA para o dia a dia.</description>
+      <pubDate>Wed, 22 Jul 2026 00:00:00 +0000</pubDate>
+      <enclosure url="https://rzolsrzyafijaogjcjjb.supabase.co/storage/v1/object/public/podcast-audio/podcast-ias-poderosas.m4a" length="36397760" type="audio/mp4" />
+      <guid isPermaLink="false">https://rzolsrzyafijaogjcjjb.supabase.co/storage/v1/object/public/podcast-audio/podcast-ias-poderosas.m4a</guid>
+      <itunes:explicit>false</itunes:explicit>
+    </item>
+    <item>
+      <title>A Melhor IA para Seu Hardware Local</title>
+      <description>O organograma que usamos para decidir qual IA instalar em menos de dois minutos.</description>
+      <pubDate>Wed, 22 Jul 2026 00:00:00 +0000</pubDate>
+      <enclosure url="https://rzolsrzyafijaogjcjjb.supabase.co/storage/v1/object/public/podcast-audio/podcast-melhor-ia-hardware.m4a" length="44291512" type="audio/mp4" />
+      <guid isPermaLink="false">https://rzolsrzyafijaogjcjjb.supabase.co/storage/v1/object/public/podcast-audio/podcast-melhor-ia-hardware.m4a</guid>
+      <itunes:explicit>false</itunes:explicit>
+    </item>
+    <item>
+      <title>Como Escolher IAs Locais Sem Travar</title>
+      <description>Os erros mais comuns que travam a IA local -- e como evita-los antes de instalar.</description>
+      <pubDate>Wed, 22 Jul 2026 00:00:00 +0000</pubDate>
+      <enclosure url="https://rzolsrzyafijaogjcjjb.supabase.co/storage/v1/object/public/podcast-audio/podcast-escolher-ias-sem-travar.m4a" length="48743245" type="audio/mp4" />
+      <guid isPermaLink="false">https://rzolsrzyafijaogjcjjb.supabase.co/storage/v1/object/public/podcast-audio/podcast-escolher-ias-sem-travar.m4a</guid>
+      <itunes:explicit>false</itunes:explicit>
+    </item>
+    <item>
+      <title>O Custo Real do Always Free Oracle</title>
+      <description>Audio gerado a partir do case real: o que a VPS gratuita da Oracle entrega de verdade, sem esconder os erros no caminho.</description>
+      <pubDate>Tue, 08 Sep 2026 00:00:00 +0000</pubDate>
+      <enclosure url="https://rzolsrzyafijaogjcjjb.supabase.co/storage/v1/object/public/podcast-audio/podcast-case-vps-oracle-always-free.m4a" length="46648600" type="audio/mp4" />
+      <guid isPermaLink="false">https://rzolsrzyafijaogjcjjb.supabase.co/storage/v1/object/public/podcast-audio/podcast-case-vps-oracle-always-free.m4a</guid>
+      <itunes:explicit>false</itunes:explicit>
+    </item>
+  </channel>
+</rss>
