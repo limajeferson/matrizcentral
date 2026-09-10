@@ -2,8 +2,30 @@ export type MdHeading = { level: 1 | 2 | 3 | 4; text: string; id: string };
 export type MdBlock =
   | ({ kind: "heading" } & MdHeading)
   | { kind: "paragraph"; text: string }
-  | { kind: "list"; items: string[] }
+  | { kind: "list"; items: string[]; ordered?: boolean }
   | { kind: "table"; header: string[]; rows: string[][] };
+
+/** Trecho de texto inline: `bold` marca `**negrito**`. Usado por quem
+ *  renderiza `MdBlock.text`/`items`/`rows` (ver `parseInline`). */
+export type MdInlineSegment = { text: string; bold?: boolean };
+
+/** Parseia `**negrito**` dentro de um texto já desescapado. Único inline
+ *  suportado de propósito — o resto do conteúdo publicado não usa itálico,
+ *  links ou código inline, e cada um a mais é mais superfície pra divergir
+ *  do que o parser realmente entende. */
+export function parseInline(text: string): MdInlineSegment[] {
+  const segments: MdInlineSegment[] = [];
+  const re = /\*\*(.+?)\*\*/g;
+  let last = 0;
+  let match: RegExpExecArray | null;
+  while ((match = re.exec(text))) {
+    if (match.index > last) segments.push({ text: text.slice(last, match.index) });
+    segments.push({ text: match[1], bold: true });
+    last = match.index + match[0].length;
+  }
+  if (last < text.length) segments.push({ text: text.slice(last) });
+  return segments.length > 0 ? segments : [{ text }];
+}
 
 export function slugify(text: string): string {
   return text
@@ -29,12 +51,14 @@ export function parseMarkdown(source: string): MdBlock[] {
   const blocks: MdBlock[] = [];
   const slugCount = new Map<string, number>();
   let list: string[] | null = null;
+  let listOrdered = false;
   let table: { header: string[]; rows: string[][] } | null = null;
 
   const flush = () => {
-    if (list) blocks.push({ kind: "list", items: list });
+    if (list) blocks.push({ kind: "list", items: list, ...(listOrdered ? { ordered: true } : {}) });
     if (table) blocks.push({ kind: "table", ...table });
     list = null;
+    listOrdered = false;
     table = null;
   };
 
@@ -56,8 +80,15 @@ export function parseMarkdown(source: string): MdBlock[] {
       continue;
     }
     if (line.startsWith("- ")) {
-      if (table) flush();
+      if (table || listOrdered) flush();
       (list ??= []).push(unescapeMd(line.slice(2)));
+      continue;
+    }
+    const ordered = line.match(/^\d+\.\s+(.+)$/);
+    if (ordered) {
+      if (table || (list && !listOrdered)) flush();
+      listOrdered = true;
+      (list ??= []).push(unescapeMd(ordered[1]));
       continue;
     }
     if (line.startsWith("|")) {

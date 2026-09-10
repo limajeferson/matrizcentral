@@ -1,4 +1,16 @@
-import { parseMarkdown, type MdBlock } from "@/lib/markdown";
+import { parseMarkdown, parseInline, type MdBlock } from "@/lib/markdown";
+
+/** Renderiza texto com `**negrito**` como spans reais — todo texto de bloco
+ *  (parágrafo, item de lista, célula de tabela) passa por aqui. */
+function Inline({ text }: { text: string }) {
+  return (
+    <>
+      {parseInline(text).map((seg, i) =>
+        seg.bold ? <strong key={i}>{seg.text}</strong> : <span key={i}>{seg.text}</span>
+      )}
+    </>
+  );
+}
 
 /**
  * Aceita `source` (markdown bruto, re-parseado aqui — uso histórico do blog e
@@ -53,16 +65,21 @@ export default function Markdown(props: MarkdownProps) {
             </h4>
           );
         }
-        if (block.kind === "list")
+        if (block.kind === "list") {
+          const ListTag = block.ordered ? "ol" : "ul";
           return (
-            <ul key={index} className="list-disc pl-5 space-y-1">
+            <ListTag
+              key={index}
+              className={`${block.ordered ? "list-decimal" : "list-disc"} pl-5 space-y-1`}
+            >
               {block.items.map((item, itemIndex) => (
                 <li key={itemIndex} className={body}>
-                  {item}
+                  <Inline text={item} />
                 </li>
               ))}
-            </ul>
+            </ListTag>
           );
+        }
         if (block.kind === "table")
           return (
             <div key={index} className="overflow-x-auto">
@@ -71,7 +88,7 @@ export default function Markdown(props: MarkdownProps) {
                   <tr className="bg-card font-semibold">
                     {block.header.map((cell, cellIndex) => (
                       <th key={cellIndex} className="px-3 py-2 border border-border text-left">
-                        {cell}
+                        <Inline text={cell} />
                       </th>
                     ))}
                   </tr>
@@ -81,7 +98,7 @@ export default function Markdown(props: MarkdownProps) {
                     <tr key={rowIndex}>
                       {row.map((cell, cellIndex) => (
                         <td key={cellIndex} className="px-3 py-2 border border-border">
-                          {cell}
+                          <Inline text={cell} />
                         </td>
                       ))}
                     </tr>
@@ -92,7 +109,7 @@ export default function Markdown(props: MarkdownProps) {
           );
         return (
           <p key={index} className={`mt-2 ${body}`}>
-            {block.text}
+            <Inline text={block.text} />
           </p>
         );
       })}

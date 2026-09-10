@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { parseMarkdown, extractHeadings, slugify } from "./markdown";
+import { parseMarkdown, extractHeadings, slugify, parseInline } from "./markdown";
 
 describe("slugify", () => {
   it("minúsculas, sem acento, hífens", () => {
@@ -29,6 +29,42 @@ describe("parseMarkdown", () => {
       { kind: "list", items: ["a", "b"] },
       { kind: "table", header: ["Col1", "Col2"], rows: [["x", "y"]] },
     ]);
+  });
+});
+
+describe("parseMarkdown — lista numerada", () => {
+  it("linhas '1. ' viram list ordered", () => {
+    const blocks = parseMarkdown("1. primeiro\n2. segundo");
+    expect(blocks).toEqual([
+      { kind: "list", items: ["primeiro", "segundo"], ordered: true },
+    ]);
+  });
+  it("lista com marcador '- ' continua sem `ordered` (compat)", () => {
+    const blocks = parseMarkdown("- a\n- b");
+    expect(blocks).toEqual([{ kind: "list", items: ["a", "b"] }]);
+  });
+  it("trocar de ordenada para não-ordenada fecha o bloco anterior", () => {
+    const blocks = parseMarkdown("1. a\n- b");
+    expect(blocks).toEqual([
+      { kind: "list", items: ["a"], ordered: true },
+      { kind: "list", items: ["b"] },
+    ]);
+  });
+});
+
+describe("parseInline", () => {
+  it("sem **negrito**: um único segmento com o texto original", () => {
+    expect(parseInline("texto normal")).toEqual([{ text: "texto normal" }]);
+  });
+  it("**negrito** no meio do texto vira 3 segmentos", () => {
+    expect(parseInline("antes **meio** depois")).toEqual([
+      { text: "antes " },
+      { text: "meio", bold: true },
+      { text: " depois" },
+    ]);
+  });
+  it("todo o texto em negrito", () => {
+    expect(parseInline("**tudo**")).toEqual([{ text: "tudo", bold: true }]);
   });
 });
 
