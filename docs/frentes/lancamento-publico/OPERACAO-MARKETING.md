@@ -379,15 +379,14 @@ Faça **uma etapa por vez**. Ao concluir, me avise — eu ligo o que depende del
 - [x] Colar a descrição e as palavras-chave do canal
 - [x] **Verificado ao vivo pelo Claude Code** em [youtube.com/@centralmatriz](https://www.youtube.com/@centralmatriz)
 
-### Etapa 2 — Subir os 3 vídeos 🔄 EM ANDAMENTO
-- [ ] Vídeo 1 (`video-verdade-ia-local.mp4`) com título, descrição, tags e thumbnail —
-      **parado aguardando você**: o Cowork chegou na tela de envio do YouTube Studio
-      e precisa que você clique em "Selecionar arquivos" e escolha o vídeo (é a
-      janela nativa do Windows — nenhuma automação de navegador enxerga essa
-      janela; volte para a conversa do Cowork e selecione o arquivo).
-- [ ] Vídeo 2 (`video-evolucao-ia-local.mp4`)
-- [ ] Vídeo 3 (`video-lucrando-ia-local.mp4`)
-- [ ] **Me mandar os 3 links** → eu ligo os players no site e verifico em produção
+### Etapa 2 — Subir os 3 vídeos ✅ CONCLUÍDA (2026-09-10)
+- [x] Vídeo 1 (`video-verdade-ia-local.mp4`) — https://youtu.be/YmhXd3OlROE
+- [x] Vídeo 2 (`video-evolucao-ia-local.mp4`) — https://youtu.be/yhrAt19-_34
+- [x] Vídeo 3 (`video-lucrando-ia-local.mp4`) — https://youtu.be/tLarIxO-814
+- [x] Publicados como **Não listado**, categoria Ciência e tecnologia, título/descrição/thumbnail do roteiro aplicados
+- [x] `embedUrl` ligado no `content-hub.ts`, selo "em breve" removido, commit `8edba73` pushed
+- [ ] Campo "Tags" não apareceu no fluxo novo do Studio (pode ter sido movido para a edição pós-publicação) — pendente conferir/preencher depois, não bloqueia
+- [ ] Verificar players em produção depois do deploy
 
 ### Etapa 3 — Criar o programa no Spotify
 - [ ] Criar `Matriz Central Podcast` com a capa e a descrição

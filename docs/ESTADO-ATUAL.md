@@ -8,7 +8,7 @@
 > Ordem de leitura ao retomar: **este arquivo → `CLAUDE.md` → o `README.md` da
 > frente ativa → o código fonte-de-verdade.**
 
-_Última atualização: 2026-09-10 (ver bloco "Ebook reescrito, PUSHED, submetido ao Play Livros" no topo da Próxima Ação. **BANCO DE PRODUÇÃO AINDA PAUSADO** — nada mudou aí, ver bloco abaixo. `case-assistente-continuo`: spec-vps.md auditada e aprovada, Fase A do plano (8 tasks) implementada e testada no repo `assistente-local`, **criação da VPS Oracle travada em falta de capacidade ARM — script de retry automático de outra sessão ainda rodando em background, janela de 7 dias (a partir de ~2026-09-08, expira ~2026-09-15). Hoje a conta só tem o shape AMD Always Free (`VM.Standard.E2.1.Micro`, 1GB RAM) — o retry é pela instância ARM Ampere (`VM.Standard.A1.Flex`, até 24GB), que é a que o plano precisa.**) _(histórico: 2026-07-26 — **FRENTE NOVA E ATIVA: `lancamento-publico`** —
+_Última atualização: 2026-09-10 (ver bloco "Login por magic-link consertado, bug de 'nenhuma compra' corrigido, 3 vídeos do YouTube publicados" no topo da Próxima Ação; o bloco "Ebook reescrito, PUSHED, submetido ao Play Livros" logo abaixo continua igual, não tocado nesta sessão. **BANCO DE PRODUÇÃO AINDA PAUSADO** — nada mudou aí, ver bloco abaixo. `case-assistente-continuo`: spec-vps.md auditada e aprovada, Fase A do plano (8 tasks) implementada e testada no repo `assistente-local`, **criação da VPS Oracle travada em falta de capacidade ARM — script de retry automático de outra sessão ainda rodando em background, janela de 7 dias (a partir de ~2026-09-08, expira ~2026-09-15). Hoje a conta só tem o shape AMD Always Free (`VM.Standard.E2.1.Micro`, 1GB RAM) — o retry é pela instância ARM Ampere (`VM.Standard.A1.Flex`, até 24GB), que é a que o plano precisa.**) _(histórico: 2026-07-26 — **FRENTE NOVA E ATIVA: `lancamento-publico`** —
 auditoria de código com 4 agentes paralelos achou **6 buracos que nenhum plano
 cobria**, e o checklist antigo foi reordenado em **6 ondas** por critério de
 receita. **Onda 1 (Receita & Descoberta) FECHADA**: 6 tasks + passe visual,
@@ -27,6 +27,55 @@ A seção "O QUE FALTA PARA O LANÇAMENTO" é o checklist mestre da inauguraçã
 
 ## ⏭️ PRÓXIMA AÇÃO (leia isto primeiro ao retomar)
 
+> ### ✅ 2026-09-10 — Login por magic-link consertado, bug de "nenhuma compra" corrigido, 3 vídeos do YouTube publicados
+>
+> **Login por magic-link estava fora do ar** (usuário reportou "nunca chegou e-mail
+> nenhum"). Causa raiz achada pelos runtime logs da Vercel: o Brevo (provedor
+> transacional) tem restrição de "IPs autorizados" que rejeitava com 401 toda
+> chamada vinda de IP novo — e a Vercel roda serverless, IP novo a cada invocação
+> (`3.228.13.244`, depois `98.80.96.12`, depois um IPv6). O link era criado no
+> banco normalmente, o e-mail nunca saía. **Corrigido pelo usuário** desativando
+> "IPs autorizados" no painel do Brevo (opção "Interromper a revisão dos
+> endereços de IP" no e-mail de alerta de segurança — as outras duas opções não
+> resolveriam, IP muda sempre). Confirmado com teste real: e-mail chegou.
+> Lição registrada: **L-052** em `docs/LICOES.md`.
+>
+> **Bug real achado ao testar o login:** a conta do usuário mostrava "nenhuma
+> compra encontrada" mesmo com 2 compras pagas no banco. Causa: `resolveDashboardToken`
+> (`src/lib/dashboard-token.ts`) pegava só a compra **mais recente** e travava
+> nela — a mais recente (`advanced_pass` concedido fora do fluxo do ebook/quiz)
+> não tem linha na tabela `tokens`, só a compra antiga do ebook tem. Corrigido
+> para buscar a compra mais recente **que de fato tem token**, com fallback pelas
+> anteriores. Afeta `/conta` e `/certificado`. Commit `eee1826`, gate `tsc` 0 ·
+> 410 testes, **pushed** (sem migration pendente).
+>
+> **Os 3 vídeos do YouTube (Etapa 2 do `OPERACAO-MARKETING.md`) publicados**,
+> "Não listado", com título/descrição/thumbnail do roteiro:
+> - A Verdade sobre IA Local — https://youtu.be/YmhXd3OlROE
+> - A Evolução da IA Local — https://youtu.be/yhrAt19-_34
+> - Lucrando com IA Local — https://youtu.be/tLarIxO-814
+>
+> `embedUrl` ligado no `content-hub.ts`, selo "em breve" removido dos 3, commit
+> `8edba73`, **pushed**. **Campo "Tags" não apareceu no fluxo novo do YouTube
+> Studio** (Detalhes → Elementos do vídeo → Verificações → Visibilidade, sem
+> uma etapa de tags) — pode ter sido movido para a edição pós-publicação;
+> pendência menor, não bloqueia, conferir na próxima sessão que tocar em vídeo.
+>
+> **Achado de segurança durante o upload:** o YouTube Studio tenta empurrar uma
+> "verificação de conta" (foto de documento de identidade, vídeo de 6s do rosto,
+> ou QR code vinculando a conta Google) para liberar "recursos avançados"
+> (links clicáveis na descrição). **Recusado/cancelado em todas as etapas** — não
+> é algo que o Claude deve fazer por conta própria (viola o limite de nunca agir
+> em nome do usuário com dados de identidade). Os vídeos foram publicados sem
+> isso; só os links da descrição não ficam clicáveis (cosmético).
+>
+> **➡️ PRÓXIMA AÇÃO:** nenhuma bloqueante. Pendências menores: (1) preencher tags
+> dos 3 vídeos se o campo aparecer em outra tela do Studio; (2) confirmar players
+> em produção depois do deploy do commit `8edba73`; (3) revisar o ebook
+> (`342523b`, ver bloco abaixo) continua em aberto, não tocado nesta sessão.
+>
+> ---
+>
 > ### ✅ 2026-09-10 — Ebook reescrito, aprovado pelo usuário, PUSHED, e SUBMETIDO ao Google Play Livros
 >
 > Sessão fechada. Resumo do que saiu: 7 commits (`bb31193`..`84efa4f`) **pushed pro
