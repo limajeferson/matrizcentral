@@ -57,6 +57,7 @@ Se este ebook já resolveu seu problema imediato, ótimo. Se você quer continua
 - [Capítulo 4: Tabela Comparativa (2026) — Todos os Modelos Relevantes](#cap4)
 - [Capítulo 5: Performance por Hardware — Seus Resultados Reais](#cap5)
 - [Capítulo 6: Setup Passo a Passo — Do Zero ao Primeiro Prompt](#cap6)
+- [Capítulo 6B: Escolha Seu Caminho — Computador, Casa ou Nuvem](#cap6b)
 - [Capítulo 7: Monte Sua Máquina — Configurações por Budget](#cap7)
 - [Capítulo 8: Linha do Tempo — Como Chegamos Aqui](#cap8)
 - [Capítulo 9: O Que Vem a Seguir (Módulo Avançado)](#cap9)
@@ -554,6 +555,100 @@ Interface visual, sem terminal. Ideal para quem quer experimentar sem configurar
 
 ---
 
+<a name="cap6b"></a>
+## Capítulo 6B: Escolha Seu Caminho — Computador, Casa ou Nuvem
+
+O Capítulo 6 te deixou com um LLM rodando. Mas "rodando" pode significar três coisas bem diferentes, e o título deste guia promete **construir**, não só explicar — então este capítulo é o "como fazer" que falta: separado por onde você vai colocar isso pra funcionar de verdade.
+
+```
+                    ONDE VOCÊ VAI RODAR?
+                            │
+   ┌────────────────────────┼────────────────────────┐
+   ▼                        ▼                         ▼
+COMPUTADOR PRÓPRIO    COMPUTADOR DE CASA          VPS (NUVEM)
+(só pra você usar)    (servidor sempre ligado)    (acesso de qualquer lugar)
+   │                        │                         │
+   Cap. 6, como já         Ligado 24/7,              Grátis (Oracle) ou
+   está                    acessível na sua          paga (~R$27/semana
+                           rede e, com VPN,          em instância pequena,
+                           de fora dela              medido de verdade)
+```
+
+| Caminho | Custo real | Fica ligado sem você? | Acesso fora de casa? |
+|---|---|---|---|
+| **Computador próprio** (Cap. 6) | R$0 | Não — só enquanto o PC está ligado | Não |
+| **Computador de casa como servidor** | R$0 + energia elétrica | Sim | Sim, com VPN (ex.: Tailscale, grátis) |
+| **VPS na nuvem** | R$0 (Always Free) a ~R$27/semana | Sim | Sim, direto |
+
+### Caminho 1 — Totalmente local, no seu computador
+
+É o que o Capítulo 6 já ensinou: instale Ollama ou LM Studio, baixe o modelo, use. Zero passo extra. Ideal se só você usa, na sua própria máquina, sem precisar acessar de outro lugar.
+
+### Caminho 2 — Seu computador de casa como servidor sempre ligado
+
+A diferença para o Caminho 1 é só uma: deixar o Ollama acessível pra **outros dispositivos da sua casa** (celular incluso), não só para quem está sentado na máquina.
+
+**No Linux**, o instalador oficial do Ollama já registra o serviço como `systemd` automaticamente — confirme com:
+```bash
+systemctl status ollama
+```
+Se estiver ativo, ele já reinicia sozinho se o PC reiniciar. Isso é exatamente o mesmo princípio que usamos pra manter o assistente de voz da Matriz Central no ar numa VPS (via `systemd`, sem intervenção manual) — a técnica é a mesma, muda só onde a máquina está.
+
+**No Windows e Mac**, o Ollama roda em segundo plano (ícone na bandeja/menu bar) e já inicia com o sistema por padrão.
+
+**Para acessar de outro aparelho na mesma rede** (seu celular, por exemplo), o Ollama por padrão só escuta `127.0.0.1` (a própria máquina). É preciso abrir para a rede:
+
+```bash
+# Linux/Mac — antes de iniciar o Ollama
+export OLLAMA_HOST=0.0.0.0:11434
+ollama serve
+```
+```
+# Windows — Variáveis de Ambiente do Sistema
+OLLAMA_HOST = 0.0.0.0:11434
+# (reinicie o Ollama depois de definir)
+```
+
+Depois, descubra o IP local da máquina (`ipconfig` no Windows, `ifconfig` ou `ip a` no Linux/Mac — algo como `192.168.x.x`) e acesse de outro aparelho na mesma rede via `http://192.168.x.x:11434`.
+
+> ⚠️ **Lição do nosso próprio case:** ao provisionar a VPS da Matriz Central, o SSH parou de responder mesmo com a porta liberada no firewall — a causa real era a tabela de rotas da rede, não o firewall. Em casa o equivalente é o **roteador**: se abrir a porta no PC e mesmo assim não funcionar de fora da rede, confira o **redirecionamento de porta (port forward) no roteador** antes de suspeitar do PC. Dentro da própria rede Wi-Fi isso não é necessário — só entra em jogo se você quiser acessar de fora de casa.
+
+**Para acessar de fora de casa** sem expor a rede inteira à internet, a forma mais simples e gratuita é uma VPN pessoal como o [Tailscale](https://tailscale.com) (grátis para uso pessoal): instala no PC e no celular, e os dois passam a se enxergar como se estivessem na mesma rede, em qualquer lugar do mundo.
+
+### Caminho 3 — VPS na nuvem (a que testamos de verdade)
+
+Esse é o caminho pra quem quer acesso de qualquer lugar sem depender do PC de casa estar ligado. A Matriz Central fez isso de verdade, com a **Oracle Cloud Always Free** (servidor ARM Ampere, grátis para sempre, sem cartão cobrado) — e documentou cada obstáculo real, não só o caminho de sucesso:
+
+| Obstáculo real | O que parecia ser | Causa real | O que resolveu |
+|---|---|---|---|
+| Formulário não aplicava a imagem escolhida | Erro de clique | O console roda num iframe; clicar no logo do sistema só filtra, não seleciona | Clicar na linha exata da versão numa tabela interna |
+| "Out of host capacity" ao criar a instância | Erro de configuração | Pool físico de servidores da região esgotado — comum em regiões concorridas | Retry automatizado; **não** mexer na configuração |
+| `HTTP 429` ao tentar acelerar o retry | Servidor instável | Limite de requisições por janela acumulada, não por velocidade | Manter o intervalo em 60s — é o teto que a própria Oracle recomenda, não um piso pra reduzir |
+| SSH não conectava com a instância já rodando | Firewall bloqueando | Tabela de rotas da rede vazia — sem regra apontando pro Internet Gateway | Adicionar a rota antes de suspeitar do firewall |
+
+O relato completo, com números e prints, está publicado como caso real na plataforma — ["O Custo Real do Always Free Oracle"](https://www.matrizcentral.com.br) (relatório, tutorial passo a passo e podcast).
+
+**Depois que a VPS está no ar**, instalar o Ollama é **idêntico** ao Caminho 1 — mesmo comando `curl -fsSL https://ollama.ai/install.sh | sh` — só que numa máquina na nuvem em vez da sua. Duas diferenças específicas de VPS:
+
+1. **Firewall duplo.** Imagens da Oracle (e de várias outras nuvens) trazem regra de firewall no próprio sistema operacional **além** da regra do painel da nuvem. Liberar a porta só no painel não é suficiente:
+   ```bash
+   sudo ufw allow 11434/tcp
+   sudo iptables -I INPUT -p tcp --dport 11434 -j ACCEPT
+   ```
+2. **A instância é descartável — trate assim.** VPS gratuita pode ser recuperada por ociosidade sem aviso prévio. A defesa não é tentar parecer "ocupada" pra enganar a métrica — é conseguir recriar tudo em minutos. Deixe o processo de instalação num script versionado (o que a Matriz Central faz com o próprio assistente de voz), não em comandos digitados manualmente que ninguém lembra depois.
+
+**Se não tiver paciência para esperar a capacidade gratuita:** o custo real medido (não estimado) de uma instância paga pequena (1 OCPU / 4GB) foi **R$27,27 por 7 dias rodando em tempo integral** — dá pra decidir com número real.
+
+### E o celular?
+
+Aqui vale honestidade em vez de promessa vazia: **rodar um modelo grande direto no celular ainda não é realista** para a maioria dos casos — RAM e processador móveis seguram bem modelos bem pequenos (1-3B), com qualidade abaixo do que este guia recomenda.
+
+O caminho que funciona **hoje**: o celular como **cliente** do servidor que você montou no Caminho 2 ou 3 — acessando pela rede local, por VPN (Tailscale) ou por um app/navegador que fala com a API do Ollama.
+
+A Matriz Central tem uma frente de pesquisa aberta sobre assistente de voz contínuo no Android — ainda em fase de pesquisa, sem produto pronto. O motivo de não estar pronto já é conteúdo por si só: o Android fecha as portas que um assistente "sempre ouvindo" precisa (acesso a microfone em segundo plano, DSP dedicado) para qualquer app de terceiro, e entender por que ajuda a não perder tempo tentando construir o que a própria plataforma impede. O andamento dessa pesquisa é publicado conforme avança, sem prometer o que ainda não existe.
+
+---
+
 <a name="cap7"></a>
 ## Capítulo 7: Monte Sua Máquina — Configurações por Budget
 
@@ -752,12 +847,23 @@ Uma IA local que:
 
 ---
 
-## Próximos Passos
+## Seus Próximos Passos — Por Onde Começar de Verdade
 
-1. **Instale o Ollama** e rode `ollama run mistral` — seu primeiro LLM local em 5 minutos
-2. **Use o organograma** (Capítulo 3) para identificar o modelo certo para seu caso
-3. **Acesse seu dashboard** em matrizcentral.com.br para o seu roadmap personalizado
-4. **Considere o Módulo Avançado** quando quiser eliminar alucinações e adicionar memória
+Este guia te deu o mapa completo: por que modelo pequeno vence modelo grande (Cap. 1-2), como escolher o seu (Cap. 3-4), o que esperar do seu hardware (Cap. 5), como instalar (Cap. 6) e onde rodar — computador, casa ou nuvem (Cap. 6B). Falta só a ordem de execução.
+
+**Se você nunca rodou um LLM local:**
+1. Instale o Ollama (Cap. 6) e rode `ollama run mistral` — 5 minutos até o primeiro prompt.
+2. Use o organograma do Capítulo 3 pra achar o modelo certo pro que você realmente vai fazer com ele — não o modelo "melhor" no abstrato.
+3. Pare aqui por uma semana. Use de verdade antes de complicar o setup.
+
+**Se você já tem um modelo rodando e quer torná-lo útil de verdade:**
+1. Decida seu caminho no Capítulo 6B — computador próprio, servidor de casa ou VPS — com base em quem vai acessar e de onde.
+2. Se escolher VPS, siga o relatório e o tutorial completos do case real da Oracle na plataforma — o caminho com os erros já mapeados custa muito menos tempo que descobrir sozinho.
+3. Monte a configuração certa pro seu orçamento (Capítulo 7) só depois de saber que o modelo que você quer realmente precisa de hardware novo — muita gente troca de PC antes de testar se o que já tem resolve.
+
+**Se você já tem tudo rodando e quer ir além:**
+- O Módulo Avançado (Cap. 9) resolve os dois problemas que sobram depois do básico — alucinação por contexto sujo e falta de memória entre sessões. É opcional, não pré-requisito: o que este guia ensinou até aqui já é uma IA local funcional.
+- A plataforma [matrizcentral.com.br](https://www.matrizcentral.com.br) segue publicando o que muda — novos modelos, novos cases reais (com os erros incluídos), e as respostas que a comunidade do fórum já resolveu antes de você precisar perguntar.
 
 ---
 
