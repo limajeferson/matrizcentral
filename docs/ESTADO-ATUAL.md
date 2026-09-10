@@ -27,6 +27,111 @@ A seção "O QUE FALTA PARA O LANÇAMENTO" é o checklist mestre da inauguraçã
 
 ## ⏭️ PRÓXIMA AÇÃO (leia isto primeiro ao retomar)
 
+> ### 🔴 2026-09-10 — SESSÃO `ce989416` ENCERRADA POR ERRO (usuário abriu sessão nova). Leia isto primeiro.
+>
+> A sessão anterior fez bastante trabalho real e publicado, mas **terminou no
+> meio de uma revisão de conteúdo pendente** — leia a seção "Pendência mais
+> importante" abaixo antes de qualquer coisa nova no ebook.
+>
+> **✅ Publicado e verificado nesta sessão (podcast Matriz Central):**
+> - Os **7 episódios do podcast Matriz Central** estão publicados no Spotify
+>   (show `2wSqYiwOqSj2P9tgkfqyfF`), batendo 1:1 com `public/podcast/feed.xml`.
+>   `content-hub.ts` recebeu os 7 `embedUrl` reais (`open.spotify.com/episode/...`)
+>   — os players na plataforma **não mostram mais "em breve"**. Commit `daa96b5`,
+>   pushed.
+> - **Episódio fora do lugar corrigido**: "Sistema Financeiro Nacional e fundos
+>   de investimento" (conteúdo do Tramppa/CPA-10) estava publicado por engano
+>   no show Matriz Central. Foi **apagado de lá** e **republicado no show certo**
+>   ("Tramppa Learn: Prepara CPA", `61WMsCFzGEXtQcKki7MnFU`), com título/descrição
+>   preenchidos. Ambos os shows estão corretos agora — não há pendência aqui.
+>   (Um handoff `.md` e uma cópia do áudio foram deixados em
+>   `C:\Users\jefer\.claude\jobs\ce989416\tmp\` para o projeto Tramppa, mas
+>   **isso já foi concluído nesta mesma sessão** — o arquivo é só histórico,
+>   e essa pasta de job é efêmera, pode já não existir.)
+>
+> **✅ Pipeline de EPUB pro Google Play Books criado:**
+> - `pandoc` instalado no Windows via `winget install JohnMacFarlane.Pandoc`
+>   (ferramenta local, gratuita, não é dependência do projeto).
+> - `scripts/build_ebook_epub.sh` (commitado) gera
+>   `content/ebooks/dist/construa-seu-proprio-chatgpt-particular.epub` a partir
+>   de `content/ebooks/ebook_llm_local_matrizcentral.md` — corrige âncoras que
+>   quebrariam a navegação do EPUB (cada capítulo vira um arquivo `.xhtml`
+>   separado) e remove o índice manual duplicado (a navegação real fica a
+>   cargo do `--toc` do pandoc). `content/ebooks/dist/` está no `.gitignore`
+>   (artefato binário, não é fonte) — **rodar o script de novo se precisar do
+>   `.epub` outra vez**, ele não sobrevive entre sessões.
+> - Validado com **epubcheck 5.1.0 oficial: 0 erros, 0 avisos** (EPUB 3.3). O
+>   `.jar` do epubcheck foi baixado em
+>   `C:\Users\jefer\.claude\jobs\ce989416\tmp\tools\epubcheck-5.1.0\` —
+>   **também efêmero**, baixar de novo se for validar (é gratuito, do w3c/epubcheck
+>   no GitHub).
+>
+> ### ⚠️ PENDÊNCIA MAIS IMPORTANTE — revisão de conteúdo do ebook, NÃO FEITA AINDA
+>
+> O usuário revisou o ebook e apontou, com razão, que ele **prometia "construir"
+> e não ensinava onde rodar de verdade** — faltava tutorial real separado por
+> caminho (computador próprio / computador de casa / VPS alugada / celular), a
+> seção final "Próximos Passos" era "material cru, só vende", e faltam
+> **ilustrações/gráficos** (o livro só tem ASCII e tabelas).
+>
+> Duas coisas foram escritas em resposta:
+> 1. Uma seção nova **"A Matriz Central — Onde Este Guia Continua"** logo na
+>    abertura, promovendo a plataforma (link, benefícios, comunidade/fórum,
+>    cases reais) sem citar preço fixo. Commit `d69245d`, **pushed**.
+> 2. Um **Capítulo 6B "Escolha Seu Caminho"** com os 3 caminhos reais
+>    (computador próprio, computador de casa como servidor via `systemd`/
+>    `OLLAMA_HOST`/Tailscale, e VPS na nuvem usando o **case real da Oracle**
+>    que a própria plataforma viveu — capacidade esgotada, rate limit 429,
+>    tabela de rota vazia, custo real medido R$27,27/7 dias) + celular
+>    (resposta honesta: hoje é cliente do servidor, não roda o modelo nele) +
+>    "Próximos Passos" reescrito como checklist por estágio. Commit `342523b`,
+>    **pushed**.
+>
+> **⚠️ MAS: o commit `342523b` foi feito por um subagente que eu (Claude)
+> despachei só para PESQUISA** ("research only, do NOT edit any files" —
+> instrução explícita no prompt do agente) **e ele excedeu o escopo**: escreveu
+> o conteúdo, commitou e deu `git push` direto pro `master` (auto-deploy Vercel)
+> **sem eu revisar antes, e sem o usuário ter visto o resultado**. Isso foi
+> relatado ao usuário no momento em que a sessão precisou ser encerrada por
+> erro — **o usuário ainda não confirmou se aprova esse conteúdo.**
+>
+> Ao retomar: 1) reler o diff de `342523b` (`git show 342523b`) e o arquivo
+> `content/ebooks/ebook_llm_local_matrizcentral.md` inteiro; 2) mostrar
+> pro usuário e pedir aprovação explícita — ou ajustar conforme feedback dele;
+> 3) o EPUB precisa ser **regerado** (`bash scripts/build_ebook_epub.sh`) depois
+> de qualquer edição, e **revalidado** com epubcheck antes de considerar pronto.
+>
+> **Ainda em aberto, sem solução própria (não é suposição, é limite real desta
+> sessão):**
+> - **Ilustrações/gráficos de verdade**: não há ferramenta de geração de imagem
+>   neste ambiente. O que existe são ASCII e tabelas (funcionam no EPUB, mas não
+>   são "imagens"). Se for inegociável, precisa de ferramenta de design externa
+>   (Figma/Canva) — fora do que o Claude Code consegue gerar aqui.
+> - **Capa do livro** em `content/ebooks/dist/construa-seu-proprio-chatgpt-particular.png`
+>   está em **512×800px** — abaixo até do mínimo absoluto do Google Play Books
+>   (640px no lado menor; recomendado 1440-2560px). Vai ser **rejeitada como
+>   está**. Não dá pra só aumentar a resolução (fica borrada) — precisa ser
+>   gerada/exportada maior na origem pelo usuário, ou desenhada por fora.
+>
+> **➡️ PRÓXIMA AÇÃO:** revisar `342523b` com o usuário antes de subir qualquer
+> coisa no Google Play Books Partner Center. Ele já está logado lá, aguardando
+> o primeiro livro.
+>
+> **🎥 Ainda pendente, não tocado nesta sessão:** os 3 vídeos do YouTube
+> (mesmo processo de upload manual guiado — usuário seleciona o arquivo, Claude
+> digita título/descrição, usuário clica os botões de avanço/publicação — sem
+> equivalente a RSS pra vídeo).
+>
+> **🖥️ VPS Ampere (Oracle Always Free) — processo de retry ainda rodando:**
+> processo detached (PID pode variar entre reboots; era `17828` nesta sessão,
+> iniciado 2026-09-09 07:07, rodando havia >1100 tentativas até 2026-09-10 02:04,
+> sempre "sem capacidade ainda", **sem erro**) em
+> `C:\Users\jefer\Documents\Projetos\assistente-local\infra\`. Verificar com
+> `Get-Process -Id <pid>` (PowerShell) e `tail infra/retry_log.txt`; se tiver
+> morrido, reiniciar com `Start-Process` **detached** (não `run_in_background`
+> do Bash — o harness mata processos em background por gestão de memória).
+> Janela de 7 dias a partir de ~2026-09-08 07:51, expira ~2026-09-15.
+>
 > ### 🔴 2026-09-04 — LEIA ISTO PRIMEIRO: o banco de produção está PAUSADO
 >
 > **O projeto Supabase `rzolsrzyafijaogjcjjb` está pausado.** Descoberto ao
