@@ -1,13 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useState, type ComponentType } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { IconAccount, IconBadge, IconChevron, IconContent, IconFeed, IconForum, IconReport, IconSupport, type IconProps } from "@/components/ui/icons";
 import { CONTENT_ICON } from "@/lib/content-icons";
-import { CONTENT_HUB, type ContentType } from "@/data/content-hub";
+import { CONTENT_HUB } from "@/data/content-hub";
 import { formatAvailability } from "@/lib/format-availability";
+import { FORMAT_ITEMS } from "@/lib/content-format";
 import { READER_DOCS } from "@/data/reader-docs";
 
 type NavItem = { href: string; label: string; icon: ComponentType<IconProps> };
@@ -33,13 +34,6 @@ const NAV_ACCOUNT: NavItem[] = [
   // caminho de descoberta possível daqui, já que a sidebar não conhece o token.
   { href: "/certificado", label: "Certificado", icon: IconBadge },
   { href: "/suporte", label: "Suporte", icon: IconSupport },
-];
-
-const FORMAT_ITEMS: { type: ContentType; label: string }[] = [
-  { type: "relatorio", label: "Relatórios" },
-  { type: "podcast", label: "Podcasts" },
-  { type: "video", label: "Vídeos" },
-  { type: "pesquisa", label: "Pesquisas" },
 ];
 
 /** Item é "página atual" só em match exato de path. Âncoras (`/feed#conteudos`)
@@ -90,6 +84,8 @@ function NavSection({ label, items, pathname }: { label: string; items: NavItem[
 /** Nav lateral em seções (rotas reais) + bloco colapsável "Explorar por formato". */
 export function LeftSidebar() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const activeFormat = pathname === "/feed" ? searchParams.get("formato") : null;
   const [formatOpen, setFormatOpen] = useState(true);
   const availability = formatAvailability(CONTENT_HUB);
 
@@ -129,11 +125,17 @@ export function LeftSidebar() {
                 {FORMAT_ITEMS.map(({ type, label }) => {
                   const Icon = CONTENT_ICON[type];
                   const emBreve = availability[type].emBreve;
+                  const active = activeFormat === type;
                   return (
                     <Link
                       key={type}
-                      href="/feed#conteudos"
-                      className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-foreground transition hover:bg-accent hover:text-accent-foreground"
+                      href={`/feed?formato=${type}#conteudos`}
+                      aria-current={active ? "page" : undefined}
+                      className={`flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition ${
+                        active
+                          ? "bg-accent text-foreground"
+                          : "text-foreground hover:bg-accent hover:text-accent-foreground"
+                      }`}
                     >
                       <Icon size={16} className="text-violet-600" />
                       <span className="flex-1">{label}</span>

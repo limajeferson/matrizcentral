@@ -1,6 +1,7 @@
 import { stripe } from "@/lib/stripe";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { sendTokenEmail } from "@/lib/email";
+import { resolveDashboardToken } from "@/lib/dashboard-token";
 
 const AUTO_LOGIN_WINDOW_MS = 30 * 60 * 1000; // 30 min
 
@@ -63,23 +64,10 @@ export async function resendAccessByEmail(email: string): Promise<boolean> {
       .maybeSingle();
     if (!user) return false;
 
-    const { data: purchase } = await supabase
-      .from("purchases")
-      .select("id")
-      .eq("user_id", user.id)
-      .order("created_at", { ascending: false })
-      .limit(1)
-      .maybeSingle();
-    if (!purchase) return false;
+    const token = await resolveDashboardToken(supabase, user.id);
+    if (!token) return false;
 
-    const { data: tokenRow } = await supabase
-      .from("tokens")
-      .select("token")
-      .eq("purchase_id", purchase.id)
-      .maybeSingle();
-    if (!tokenRow) return false;
-
-    await sendTokenEmail({ to: email, token: tokenRow.token });
+    await sendTokenEmail({ to: email, token });
     return true;
   } catch (err) {
     console.error("Falha ao reenviar acesso por e-mail:", err);
