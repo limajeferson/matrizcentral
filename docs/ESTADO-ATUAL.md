@@ -219,7 +219,10 @@ A seção "O QUE FALTA PARA O LANÇAMENTO" é o checklist mestre da inauguraçã
 > `Get-Process -Id <pid>` (PowerShell) e `tail infra/retry_log.txt`; se tiver
 > morrido, reiniciar com `Start-Process` **detached** (não `run_in_background`
 > do Bash — o harness mata processos em background por gestão de memória).
-> Janela de 7 dias a partir de ~2026-09-08 07:51, expira ~2026-09-15.
+> Janela de 7 dias a partir de ~2026-09-08 07:51, expira ~2026-09-15. **A outra
+> sessão está verificando o status a cada 30 minutos e retornando pro usuário**
+> (não é só o script rodando sem supervisão) — confirmado pelo usuário em
+> 2026-09-10.
 >
 > ### 🔴 2026-09-04 — LEIA ISTO PRIMEIRO: o banco de produção está PAUSADO
 >
