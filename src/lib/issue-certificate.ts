@@ -2,6 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/types";
 import { issueCertificateIfEligible } from "@/lib/certificates";
 import { sendCertificateEmail } from "@/lib/email";
+import { resolveAllTokensForUser } from "@/lib/user-tokens";
 
 /**
  * Tenta emitir o certificado de conclusão para o dono de um token, se ele já
@@ -19,10 +20,16 @@ export async function issueCertificateForToken(
   params: { userId: string; token: string; profileId: string | null }
 ): Promise<void> {
   try {
+    // Todos os tokens do usuário, não só o desta chamada: quem completou a
+    // trilha com um token antigo (ex.: compra do ebook) e comprou outro
+    // passe depois não pode ficar sem o certificado que já conquistou.
+    const userTokens = await resolveAllTokensForUser(supabase, params.userId);
+    const allTokens = Array.from(new Set([params.token, ...userTokens]));
+
     const { data: allProgress } = await supabase
       .from("roadmap_progress")
       .select("stage_key")
-      .eq("token", params.token);
+      .in("token", allTokens);
 
     const { data: validacaoEvent } = await supabase
       .from("xp_events")

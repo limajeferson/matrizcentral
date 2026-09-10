@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getSessionUser } from "@/lib/auth-session";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { resolveDashboardToken } from "@/lib/dashboard-token";
+import { resolveAllTokensForUser } from "@/lib/user-tokens";
 import { certificateRequirements } from "@/lib/certificates";
 import { IconArrow, IconBadge, IconCheck } from "@/components/ui/icons";
 import { NOINDEX_METADATA } from "@/lib/seo";
@@ -106,12 +107,16 @@ export default async function CertificadoHubPage() {
   }
 
   // Sem certificado: mostrar exatamente o que falta, em vez de um "não elegível".
+  // Considera o progresso de TODOS os tokens do usuário, não só o mais
+  // recente — uma trilha concluída com um token antigo não pode ficar
+  // invisível só porque uma compra mais nova ainda não tem progresso.
   let roadmapStagesCompleted: string[] = [];
-  if (token) {
+  const userTokens = await resolveAllTokensForUser(supabase, user.id);
+  if (userTokens.length > 0) {
     const { data: progressRows } = await supabase
       .from("roadmap_progress")
       .select("stage_key")
-      .eq("token", token);
+      .in("token", userTokens);
     roadmapStagesCompleted = (progressRows ?? []).map((row) => row.stage_key);
   }
 

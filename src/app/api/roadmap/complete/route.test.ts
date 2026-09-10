@@ -29,6 +29,7 @@ function buildSupabaseMock(
         },
         select: () => ({
           eq: async () => ({ data: [{ stage_key: "missao_final" }], error: null }),
+          in: async () => ({ data: [{ stage_key: "missao_final" }], error: null }),
         }),
       };
     }
@@ -57,6 +58,10 @@ function buildSupabaseMock(
         select: () => ({
           eq: () => ({
             single: async () => ({ data: { user_id: "user-1" }, error: null }),
+            // Também usado sem `.single()` por resolveAllTokensForUser (lista
+            // de compras do usuário) — thenable para servir os dois formatos.
+            then: (resolve: (v: { data: unknown; error: null }) => void) =>
+              resolve({ data: [{ id: "purchase-1" }], error: null }),
           }),
         }),
       };

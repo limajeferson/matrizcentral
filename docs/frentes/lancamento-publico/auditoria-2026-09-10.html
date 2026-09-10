@@ -1,0 +1,149 @@
+<title>Auditoria da Plataforma</title>
+<style>
+:root{
+  --bg:#0b0b0f; --card:#141419; --border:#26262e; --fg:#e8e8ec; --muted:#9a9aa5;
+  --accent:#7c5cff; --crit:#ef4444; --imp:#f59e0b; --minor:#6b7280; --ok:#22c55e;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){--bg:#f7f7fb;--card:#ffffff;--border:#e4e4ea;--fg:#18181b;--muted:#6b6b76;}
+}
+:root[data-theme="light"]{--bg:#f7f7fb;--card:#ffffff;--border:#e4e4ea;--fg:#18181b;--muted:#6b6b76;}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:Inter,system-ui,-apple-system,sans-serif;margin:0;padding-block:32px;}
+.wrap{max-width:880px;margin:0 auto;padding-inline:20px;}
+h1{font-size:26px;margin:0 0 6px;font-family:Outfit,system-ui,sans-serif;}
+.sub{color:var(--muted);font-size:14px;margin-bottom:28px;}
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:32px;}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;}
+.stat b{display:block;font-size:22px;}
+.stat span{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.04em;}
+.section-title{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:32px 0 12px;font-weight:600;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px 20px;margin-bottom:12px;}
+.card.resolved{opacity:.7;}
+.badge{display:inline-block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:2px 9px;border-radius:99px;margin-right:8px;}
+.badge.crit{background:color-mix(in srgb, var(--crit) 18%, transparent);color:var(--crit);}
+.badge.imp{background:color-mix(in srgb, var(--imp) 18%, transparent);color:var(--imp);}
+.badge.minor{background:color-mix(in srgb, var(--minor) 25%, transparent);color:var(--muted);}
+.badge.ok{background:color-mix(in srgb, var(--ok) 18%, transparent);color:var(--ok);}
+.card h3{margin:6px 0 6px;font-size:16px;}
+.card p{margin:4px 0;font-size:14px;line-height:1.55;color:var(--fg);}
+.card .meta{font-size:12px;color:var(--muted);margin-top:8px;}
+.card code{background:color-mix(in srgb, var(--fg) 8%, transparent);padding:1px 5px;border-radius:5px;font-size:12.5px;}
+.card .where{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--accent);}
+.fixed-tag{color:var(--ok);font-weight:600;font-size:12px;}
+.footer{margin-top:40px;padding-top:20px;border-top:1px solid var(--border);font-size:12.5px;color:var(--muted);line-height:1.6;}
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;}
+.toc a{font-size:12.5px;color:var(--muted);text-decoration:none;border:1px solid var(--border);border-radius:99px;padding:5px 12px;}
+.toc a:hover{color:var(--accent);border-color:var(--accent);}
+</style>
+
+<div class="wrap">
+  <h1>Auditoria da plataforma — 10/09/2026</h1>
+  <div class="sub">5 agentes em paralelo (Sonnet ×4 + Fable ×1), sessão logada como conta advanced. Achados consolidados e verificados.</div>
+
+  <div class="summary">
+    <div class="stat"><b style="color:var(--crit)">2</b><span>Críticos</span></div>
+    <div class="stat"><b style="color:var(--imp)">6</b><span>Importantes</span></div>
+    <div class="stat"><b style="color:var(--minor)">6</b><span>Menores</span></div>
+    <div class="stat"><b style="color:var(--ok)">4</b><span>Já corrigidos</span></div>
+  </div>
+
+  <div class="toc">
+    <a href="#incidente">Incidente da auditoria</a>
+    <a href="#criticos">Críticos</a>
+    <a href="#importantes">Importantes</a>
+    <a href="#menores">Menores</a>
+    <a href="#corrigidos">Corrigidos hoje</a>
+    <a href="#decisoes">Decisões suas</a>
+  </div>
+
+  <div class="section-title" id="incidente">⚠️ Incidente causado pela própria auditoria</div>
+  <div class="card">
+    <span class="badge imp">Operacional</span>
+    <h3>5 agentes em paralelo sobrecarregaram o banco (Nano, free tier)</h3>
+    <p>O compute Postgres foi a 85% CPU/85% memória com a carga simultânea de teste ao vivo, e <strong>o site ficou fora do ar por ~20 minutos</strong> (timeout 300s em qualquer rota com banco: <code>/feed</code>, <code>/forum</code>, <code>/dashboard/*/conteudo/*</code>) — inclusive para usuários reais, não só para os agentes.</p>
+    <p>Isso produziu <strong>falsos positivos</strong>: dois auditores reportaram "fórum sempre redireciona pro feed" e "deep-link de conteúdo cai no feed" como bugs de produto. Confirmei por leitura direta do código que <strong>não existe nenhum <code>redirect()</code></strong> nessas rotas — o sintoma real era requisição pendurada, não redirecionamento.</p>
+    <p class="meta">Resolvido reiniciando o projeto no painel do Supabase (com sua autorização). Site confirmado normal depois. Lição registrada: <code>L-053</code> em <code>docs/LICOES.md</code>. O Supabase sugeriu upgrade gratuito Nano→Micro (dobra a memória) — decisão sua, não apliquei.</p>
+  </div>
+
+  <div class="section-title" id="criticos">🔴 Críticos</div>
+
+  <div class="card">
+    <span class="badge crit">Crítico</span>
+    <h3>2 dos 6 relatórios renderizam Markdown cru</h3>
+    <p>O parser só suporta <code>#</code>–<code>####</code>, listas <code>- </code>, tabelas e parágrafos — não <code>**negrito**</code> nem listas numeradas. Nos relatórios "Comparativo de Modelos" (120 ocorrências de <code>**</code>) e "Panorama Estratégico" (115 ocorrências), o texto sai com asteriscos literais na tela.</p>
+    <p class="meta"><span class="where">content/relatorios/*.md</span> · já era dívida conhecida (lição <code>L-045</code>), mas é o defeito mais visível do produto pago — o cliente vê o relatório "quebrado" na primeira leitura.</p>
+  </div>
+
+  <div class="card">
+    <span class="badge crit">Crítico</span>
+    <h3>Botão "Compartilhar" distribui o link que abre o conteúdo pago sem login</h3>
+    <p>Confirmado num navegador sem nenhum cookie: <code>/dashboard/&lt;token&gt;/conteudo/&lt;slug&gt;</code> devolve 200 com o relatório inteiro. O token de 10 caracteres na URL é a única barreira — e a própria página tem um botão "Compartilhar" (WhatsApp/X/LinkedIn/copiar link) que distribui exatamente essa URL.</p>
+    <p class="meta">Isso é a arquitetura "a URL é a credencial" já documentada (lição <code>L-047</code>), mas o botão de compartilhar ativamente incentiva vazar o acesso pago. É uma decisão de produto — ver seção "Decisões suas" abaixo.</p>
+  </div>
+
+  <div class="section-title" id="importantes">🟠 Importantes</div>
+
+  <div class="card">
+    <span class="badge imp">Importante</span>
+    <h3>Certificado nunca emitido pra quem tem múltiplas compras/tokens</h3>
+    <p>Mesma classe de bug do <code>resolveDashboardToken</code> (já corrigido hoje), mas no lado do certificado: <code>issue-certificate.ts</code> e <code>/certificado</code> checam <code>roadmap_progress</code> só do token mais recente. Quem completou a trilha com um token antigo (ex.: comprou o ebook, terminou tudo, meses depois comprou o Advanced) nunca recebe o certificado — a trilha genuinamente concluída fica invisível.</p>
+    <p class="meta"><span class="where">src/lib/issue-certificate.ts:22-25</span> · <span class="where">src/app/certificado/page.tsx:110-116</span> · achado pela auditoria estática, não corrigido ainda.</p>
+  </div>
+
+  <div class="card">
+    <span class="badge imp">Importante</span>
+    <h3>Erro de hidratação React (#418) em toda página de conteúdo</h3>
+    <p>11 ocorrências por carregamento em <code>/dashboard/.../conteudo/&lt;slug&gt;</code>. O servidor manda uma versão, o cliente descarta e renderiza de novo — visível como título duplicado no texto extraído da página. Pode causar "piscada" e estado inicial errado.</p>
+    <p class="meta">Não investigado a fundo ainda — precisa de um passe dedicado.</p>
+  </div>
+
+  <div class="card">
+    <span class="badge imp">Importante</span>
+    <h3>Página de conteúdo sem navegação de volta</h3>
+    <p>Ao abrir um relatório/vídeo/podcast, não há link pra voltar ao feed, ao painel, ou ir pro próximo conteúdo — só o botão voltar do navegador. Usuário fica "preso" dentro da peça.</p>
+  </div>
+
+  <div class="card">
+    <span class="badge imp">Importante</span>
+    <h3>Feed deslogado é redundante e todo item diz "Novo"</h3>
+    <p>"Comece por aqui" lista os 19 itens do catálogo, todos com selo "Novo"; "Do hub e da comunidade" repete 10 dos mesmos itens. Mesmo card, mesmo destino (<code>/oferta</code>), dois rótulos diferentes. "Novo" em 100% dos itens deixa de significar algo.</p>
+  </div>
+
+  <div class="card">
+    <span class="badge imp">Importante</span>
+    <h3>"Acessar →" para quem não comprou leva pra `/oferta`, não pro conteúdo</h3>
+    <p>O rótulo promete acesso, mas o destino é a página de preço. "Ver planos" seria honesto sobre o que vai acontecer ao clicar.</p>
+  </div>
+
+  <div class="card">
+    <span class="badge imp">Importante</span>
+    <h3>Textos de "assistir"/vídeo vazam pra contextos sem vídeo</h3>
+    <p>O card "Comunidade" no feed e o cabeçalho do fórum dizem "Para assistir, entre na sua conta" — texto reaproveitado de contexto de vídeo num lugar sem nada pra assistir. Esperado: "Para participar…".</p>
+  </div>
+
+  <div class="section-title" id="menores">⚪ Menores</div>
+  <div class="card"><p><strong>`/conta` não mostra o nome do plano</strong> — só e-mail e botões, em lugar nenhum aparece Start/Regular/Advanced.</p></div>
+  <div class="card"><p><strong>Bloco "Em breve" contradiz botões funcionais da mesma tela</strong> — `/conta` diz "feed e fórum aparecerão em breve" logo abaixo de botões que já levam pra lá funcionando.</p></div>
+  <div class="card"><p><strong>Formulário de suporte não pré-preenche e-mail</strong> do usuário logado.</p></div>
+  <div class="card"><p><strong>Header mostra "Notificações" e busca desabilitada</strong> pra visitante deslogado, sem contexto do que seriam.</p></div>
+  <div class="card"><p><strong>Copy "vitalício" (`/oferta`) vs. "prazo indeterminado" (Termos)</strong> — mesma ideia, "vitalício" é promessa mais forte que o texto jurídico.</p></div>
+  <div class="card"><p><strong>SLA de suporte (5 dias) vs. "acesso liberado imediatamente"</strong> — se o acesso imediato falhar, 5 dias de espera é longo pra quem acabou de pagar.</p></div>
+
+  <div class="section-title" id="corrigidos">✅ Corrigidos nesta sessão</div>
+  <div class="card resolved"><span class="fixed-tag">✓ Corrigido</span><p>Login por magic-link fora do ar (Brevo bloqueava IP serverless da Vercel).</p></div>
+  <div class="card resolved"><span class="fixed-tag">✓ Corrigido</span><p><code>resolveDashboardToken</code> travava na compra mais recente sem token, escondendo acesso real — corrigido em 3 lugares (<code>dashboard-token.ts</code>, <code>feed/page.tsx</code>, <code>access.ts</code>).</p></div>
+  <div class="card resolved"><span class="fixed-tag">✓ Corrigido</span><p>"Explorar por formato" não filtrava nada (todos os 4 links iam pro mesmo lugar) — agora filtra de verdade, com título e "Ver tudo".</p></div>
+  <div class="card resolved"><span class="fixed-tag">✓ Corrigido</span><p>Router Cache do Next servia versão desatualizada do filtro; vídeos sem <code>publishedAt</code> nunca apareciam na timeline.</p></div>
+
+  <div class="section-title" id="decisoes">🔒 Decisões que são suas</div>
+  <div class="card">
+    <p><strong>1. Botão "Compartilhar" no conteúdo pago</strong> — remover, trocar por link de prévia pública, ou manter como está (aceitando que o token é a credencial e compartilhar é "por conta e risco" de quem compra)?</p>
+    <p><strong>2. Markdown cru nos 2 relatórios</strong> — normalizar o conteúdo pro subset suportado, ou ampliar o parser pra aceitar <code>**negrito**</code> e listas numeradas? (a lição L-045 já recomendava normalizar o conteúdo)</p>
+    <p><strong>3. Upgrade Nano→Micro no Supabase</strong> — gratuito segundo o aviso do painel, dobra a memória do banco. Vale considerar pra evitar nova sobrecarga sob tráfego real.</p>
+  </div>
+
+  <div class="footer">
+    Gerado a partir de 5 agentes de auditoria (acesso/conta, feed/fórum, marketing/oferta, estática de código, Fable) + verificação manual dos achados contraditórios. Sessão de 10/09/2026.
+  </div>
+</div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { buildShareUrl, isTokenizedPath } from "@/lib/share";
 import { IconWhatsApp, IconXTwitter, IconLinkedIn, IconShare } from "@/components/ui/icons";
 
@@ -44,7 +44,15 @@ export function ShareLinks({ url, text }: ShareLinksProps) {
     }
   };
 
-  const canNativeShare = typeof navigator !== "undefined" && "share" in navigator;
+  // Calculado só após montar: no servidor `navigator` não existe (sempre
+  // renderizaria `false`), então decidir isso durante o render dispara
+  // hydration mismatch sempre que o navegador do cliente suporta a Web Share
+  // API. `useState(false)` + `useEffect` garante que os dois primeiros
+  // renders (servidor e cliente) batem, e só então o botão aparece.
+  const [canNativeShare, setCanNativeShare] = useState(false);
+  useEffect(() => {
+    setCanNativeShare(typeof navigator !== "undefined" && "share" in navigator);
+  }, []);
 
   return (
     <div className="flex flex-wrap items-center gap-2">
