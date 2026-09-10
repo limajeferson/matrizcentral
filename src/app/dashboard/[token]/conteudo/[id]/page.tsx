@@ -1,5 +1,6 @@
 import { readFile } from "fs/promises";
 import path from "path";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { isTokenExpired } from "@/lib/tokens";
@@ -99,6 +100,12 @@ export default async function ConteudoDetailPage({
 
     return (
       <div className="mx-auto max-w-3xl space-y-6 p-6">
+        <Link
+          href={`/dashboard/${params.token}`}
+          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
+        >
+          ← Voltar ao painel
+        </Link>
         <CategoryBadge variant="hub">{item.title}</CategoryBadge>
         <p className="text-sm text-muted-foreground">+{item.xpReward} XP ao responder</p>
 
@@ -113,6 +120,12 @@ export default async function ConteudoDetailPage({
 
   return (
     <div className="mx-auto max-w-3xl space-y-6 p-6">
+      <Link
+        href={`/dashboard/${params.token}`}
+        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
+      >
+        ← Voltar ao painel
+      </Link>
       <CategoryBadge variant="hub">{item.title}</CategoryBadge>
       <p className="text-sm text-muted-foreground">
         {item.durationMinutes} min · +{item.xpReward} XP

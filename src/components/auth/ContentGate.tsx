@@ -34,7 +34,7 @@ export default function ContentGate({
       ) : (
         <>
           <p className="mb-5 text-sm text-muted-foreground">
-            Para assistir, entre na sua conta ou adquira o acesso.
+            Entre na sua conta ou adquira o acesso para continuar.
           </p>
           <div className="flex flex-col gap-2">
             <a href="/oferta" className="rounded-lg bg-violet-600 px-4 py-2 font-semibold text-white">

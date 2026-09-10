@@ -27,15 +27,17 @@ function RailCard({ card }: { card: FeedCard }) {
         >
           <Icon size={30} />
         </span>
-        <span
-          className={
-            card.emBreve
-              ? "absolute right-3 top-3 rounded-full bg-amber-500/25 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-amber-300"
-              : "absolute right-3 top-3 rounded-full bg-violet-600/30 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-violet-200"
-          }
-        >
-          {card.emBreve ? "Em breve" : "Novo"}
-        </span>
+        {(card.emBreve || card.isNew) && (
+          <span
+            className={
+              card.emBreve
+                ? "absolute right-3 top-3 rounded-full bg-amber-500/25 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-amber-300"
+                : "absolute right-3 top-3 rounded-full bg-violet-600/30 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-violet-200"
+            }
+          >
+            {card.emBreve ? "Em breve" : "Novo"}
+          </span>
+        )}
       </div>
 
       <div className="flex flex-1 flex-col p-4">
@@ -57,7 +59,9 @@ function RailCard({ card }: { card: FeedCard }) {
               href={card.href}
               className="text-xs font-semibold text-violet-400 transition hover:text-violet-300"
             >
-              Acessar →
+              {/* Quem não tem token cai em /oferta (preço), não no conteúdo —
+                  o rótulo não pode prometer acesso que o destino não entrega. */}
+              {card.href.startsWith("/oferta") ? "Ver planos →" : "Acessar →"}
             </a>
           )}
         </div>
