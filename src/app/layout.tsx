@@ -5,6 +5,13 @@ import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { THEME_INIT_SCRIPT } from "@/components/theme/theme-script";
 import { SITE_URL } from "@/lib/seo";
 
+// O banco (Supabase) roda em sa-east-1 (São Paulo); sem isso, toda função
+// serverless da Vercel rodava no default (iad1, EUA) e cada query ao banco
+// cruzava o Atlântico duas vezes — dominava o tempo de páginas com várias
+// consultas sequenciais. Reconhecido só pela Vercel (Next.js); ignorado em
+// qualquer outro host.
+export const preferredRegion = "gru1";
+
 // Identidade tipográfica aprovada (docs/frentes/lancamento-final/insumos/
 // 2026-07-22-conceito-tipografico.md): Outfit para display/título, Inter
 // para corpo/interface. Declaradas uma vez aqui e disponíveis em todo o app
