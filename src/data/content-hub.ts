@@ -163,7 +163,7 @@ export const CONTENT_HUB: ContentItem[] = [
     durationMinutes: 7,
     xpReward: 20,
     recommendedStage: "automacoes",
-    embedUrl: null,
+    embedUrl: "https://youtu.be/tLarIxO-814",
     capacityFit: ["equilibrio", "performance"],
   },
   {
@@ -219,7 +219,7 @@ export const CONTENT_HUB: ContentItem[] = [
     durationMinutes: 8,
     xpReward: 25,
     recommendedStage: "fluxo_trabalho",
-    embedUrl: null,
+    embedUrl: "https://youtu.be/YmhXd3OlROE",
   },
   {
     id: "video-evolucao-ia-local",
@@ -229,7 +229,7 @@ export const CONTENT_HUB: ContentItem[] = [
     durationMinutes: 10,
     xpReward: 25,
     recommendedStage: "automacoes",
-    embedUrl: null,
+    embedUrl: "https://youtu.be/yhrAt19-_34",
   },
   {
     id: "pesquisa-hardware-atual",
